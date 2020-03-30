@@ -19,7 +19,7 @@ const PrivacyPolicy = ({ navigation }) => {
 
     return (
         <>
-            <ScrollView style={[s.scrollWrapper]}>
+            <ScrollView>
                 <Logo />
 
                 <Text style={[s.header, gs.mainHeader]}>Privacybeleid</Text>
@@ -91,6 +91,7 @@ const PrivacyPolicy = ({ navigation }) => {
                     <Text style={s.section}>Hoe wij persoonsgegevens beveiligen. Up4me neemt de bescherming van jouw gegevens serieus en neemt passende maatregelen om misbruik, verlies, onbevoegde toegang, ongewenste openbaarmaking en ongeoorloofde wijziging tegen te gaan. Als jij het idee hebt dat jouw gegevens toch niet goed beveiligd zijn of er aanwijzingen zijn van misbruik, neem dan contact op met onze klantenservice of via info@upforme.nl></Text>
                 </View>
                 <BigButton n={navigation} component="" text="doorgaan" />
+                <View style={{ marginBottom: 24 }} />
             </ScrollView>
 
         </>
@@ -99,10 +100,6 @@ const PrivacyPolicy = ({ navigation }) => {
 }
 
 const s = StyleSheet.create({
-
-    scrollWrapper: {
-        marginBottom: 24
-    },
 
     header: {
         marginHorizontal: 25,
