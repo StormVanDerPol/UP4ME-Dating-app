@@ -11,9 +11,7 @@ function LoginButton(p) {
             <Text style={s.buttonText}>{p.text}</Text>
         </TouchableOpacity>
     );
-
 }
-
 
 const s = StyleSheet.create({
     button: {

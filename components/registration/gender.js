@@ -123,7 +123,7 @@ const Gender = ({ navigation }) => {
                 <Text>{genNotif}</Text>
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="" text="doorgaan" disabled={canContinue()} />
+                    <BigButton n={navigation} component="ProfilePictures" text="doorgaan" disabled={canContinue()} />
                 </View>
             </View>
 

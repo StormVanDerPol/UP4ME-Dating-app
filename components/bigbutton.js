@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
     StyleSheet,
     TouchableOpacity,
@@ -25,7 +25,14 @@ function BigButton(p) {
     return (
         <>
             <LinearGradient style={s.button} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={gradient(p.disabled)}>
-                <TouchableOpacity onPress={() => p.n.navigate(p.component)}>
+                <TouchableOpacity onPress={() => {
+                    if (p.component != "back") {
+                        p.n.navigate(p.component)
+                    }
+                    else {
+                        p.n.goBack()
+                    }
+                }}>
                     <Text style={s.buttonText}>{p.text}</Text>
                 </TouchableOpacity>
             </LinearGradient>

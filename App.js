@@ -15,6 +15,9 @@ import UserData from './components/registration/userdata';
 import Gender from './components/registration/gender';
 import UserProps from './components/registration/userprops';
 import Location from './components/registration/location';
+import PhotoGuidelines from './components/policy/photoGuidelines';
+import ProfileText from './components/policy/profileText';
+import ProfilePictures from './components/registration/profilePictures';
 
 const Stack = createStackNavigator();
 
@@ -32,6 +35,13 @@ const App = () => {
         <Stack.Screen name="UserData" component={UserData} />
         <Stack.Screen name="Location" component={Location} />
         <Stack.Screen name="Gender" component={Gender} />
+
+        <Stack.Screen name="ProfilePictures" component={ProfilePictures} />
+        <Stack.Screen name="UserProps" component={UserProps} />
+
+        <Stack.Screen name="PhotoGuidelines" component={PhotoGuidelines} />
+        <Stack.Screen name="ProfileText" component={ProfileText} />
+
 
       </Stack.Navigator>
     </NavigationContainer>
