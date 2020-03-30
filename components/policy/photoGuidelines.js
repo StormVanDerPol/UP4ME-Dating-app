@@ -19,7 +19,7 @@ const PhotoGuidelines = ({ navigation }) => {
 
     return (
         <>
-            <ScrollView style={[s.scrollWrapper]}>
+            <ScrollView>
                 <Logo />
                 <Text style={[s.header, gs.mainHeader]}>Richtlijnen foto's</Text>
 
@@ -54,6 +54,7 @@ const PhotoGuidelines = ({ navigation }) => {
                 </View>
 
                 <BigButton n={navigation} component="" text="doorgaan uwu" />
+                <View style={{ marginBottom: 24 }} />
 
             </ScrollView>
         </>
@@ -61,10 +62,6 @@ const PhotoGuidelines = ({ navigation }) => {
 };
 
 const s = StyleSheet.create({
-
-    scrollWrapper: {
-        marginBottom: 24
-    },
 
     header: {
         marginHorizontal: 25,

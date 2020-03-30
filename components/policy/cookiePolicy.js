@@ -17,7 +17,7 @@ const CookiePolicy = ({ navigation }) => {
 
     return (
         <>
-            <ScrollView style={[s.scrollWrapper]}>
+            <ScrollView>
                 <Logo />
                 <Text style={[s.header, gs.mainHeader]}>Cookiebeleid</Text>
 
@@ -44,6 +44,7 @@ const CookiePolicy = ({ navigation }) => {
 
                 </View>
                 <BigButton n={navigation} component="" text="terug" />
+                <View style={{ marginBottom: 24 }} />
             </ScrollView>
         </>
 
@@ -51,10 +52,6 @@ const CookiePolicy = ({ navigation }) => {
 }
 
 const s = StyleSheet.create({
-    scrollWrapper: {
-        marginBottom: 24
-    },
-
     header: {
         marginHorizontal: 25,
         marginBottom: 100,

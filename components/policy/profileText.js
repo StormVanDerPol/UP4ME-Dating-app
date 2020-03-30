@@ -18,23 +18,20 @@ const ProfileText = ({ navigation }) => {
 
     return (
         <>
-            <ScrollView style={[s.scrollWrapper]}>
+            <ScrollView>
                 <Logo />
                 <Text style={[s.header, gs.mainHeader]}>Profieltekst</Text>
                 <View style={[gs.grayTextBox, s.textContainer]}>
                     <Text>Vertel hier wat jouw date over je moet weten. Heb jij een bijzondere of tijdrovende hobby? Een speciale wens, een niet alledaags beroep? Een handicap of een speciale levensstijl? Bij Up4me mag je direct jezelf zijn. Zo laat jij alles van je echte kan zien.</Text>
                 </View>
                 <BigButton n={navigation} component="" text="doorgaan uwu" />
+                <View style={{ marginBottom: 24 }} />
             </ScrollView>
         </>
     );
 };
 
 const s = StyleSheet.create({
-
-    scrollWrapper: {
-        marginBottom: 24
-    },
 
     header: {
         marginHorizontal: 25,

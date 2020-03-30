@@ -19,7 +19,7 @@ const Agreement = ({ navigation }) => {
 
     return (
         <>
-            <ScrollView style={[s.scrollWrapper]}>
+            <ScrollView>
                 <Logo />
 
                 <Text style={[s.header, gs.mainHeader]}>Voorwaarden</Text>
@@ -148,6 +148,7 @@ const Agreement = ({ navigation }) => {
 
                 </View>
                 <BigButton n={navigation} component="" text="akkoord" />
+                <View style={{ marginBottom: 24 }} />
             </ScrollView>
         </>
 
@@ -155,9 +156,6 @@ const Agreement = ({ navigation }) => {
 }
 
 const s = StyleSheet.create({
-    scrollWrapper: {
-        marginBottom: 24
-    },
 
     header: {
         marginHorizontal: 25,
