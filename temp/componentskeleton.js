@@ -1,5 +1,4 @@
 //class
-
 import React, { Component } from 'react';
 
 import {
@@ -11,6 +10,7 @@ class ClassComponent extends Component {
     render() {
         return (
             <>
+
             </>
         );
     }
@@ -43,3 +43,5 @@ const s = StyleSheet.create({
 });
 
 export default ES6Component;
+
+
