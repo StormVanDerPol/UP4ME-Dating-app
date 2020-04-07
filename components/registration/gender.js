@@ -28,11 +28,13 @@ const Gender = ({ navigation }) => {
     const onPressRadioBtnSelectedCanReset = (id) => {
         if (radioBtnSelected == id) {
             setRadioBtnSelected(0);
+            toggleGenNotif(0);
         }
         else {
             setRadioBtnSelected(id);
+            toggleGenNotif(id);
         }
-        toggleGenNotif(id);
+
     };
 
     const gradient = (id, colors) => {
@@ -73,25 +75,6 @@ const Gender = ({ navigation }) => {
             return false
     };
 
-    // const slideCheckboxGrad = (id) => {
-    //     if (id == radioBtnSelected) {
-    //         return [pallette[0], pallette[1]]
-    //     }
-    //     else {
-    //         return ['#FFFFFF', '#FFFFFF']
-    //     }
-    // }
-
-    // const radioBtnGrad = (id) => {
-
-    //     if (id == radioBtnSelected) {
-    //         return [pallette[0], pallette[1]]
-    //     }
-    //     else {
-    //         return ['#DDDDDD', '#DDDDDD']
-    //     }
-    // }
-
     return (
         <>
             <View style={gs.screenWrapper}>
@@ -130,137 +113,6 @@ const Gender = ({ navigation }) => {
         </>
     );
 }
-
-
-// class Gender extends Component {
-
-//     constructor(props) {
-//         super(props);
-
-//         this.state = {
-//             radioBtnSelected: 0
-//         }
-
-//         this.radioBtnActive = this.radioBtnActive.bind(this);
-//         this.radioBtnActiveCanReset = this.radioBtnActiveCanReset.bind(this);
-//         this.radioBtnStyle = this.radioBtnGrad.bind(this);
-//         this.canContinue = this.canContinue.bind(this);
-//     }
-
-//     radioBtnGrad(id) {
-//         if (id == this.state.radioBtnSelected) {
-//             return [pallette[0], pallette[1]]
-//         }
-//         else {
-//             return ['#DDDDDD', '#DDDDDD']
-//         }
-//     }
-
-
-//     slideCheckboxGrad(id) {
-//         if (id == this.state.radioBtnSelected) {
-//             return [pallette[0], pallette[1]]
-//         }
-//         else {
-//             return ['#FFFFFF', '#FFFFFF']
-//         }
-//     }
-
-//     slideCheckboxStyle(id) {
-//         if (id == this.state.radioBtnSelected) {
-//             return {
-//                 justifyContent: "flex-end",
-//             }
-//         }
-//         else {
-//             return {
-//                 justifyContent: "flex-start"
-//             }
-//         }
-//     }
-
-//     radioBtnActive(id) {
-
-//         this.setState({
-//             radioBtnSelected: id
-//         });
-//     }
-
-//     radioBtnActiveCanReset(id) {
-//         if (id == this.state.radioBtnSelected) {
-//             this.setState({
-//                 radioBtnSelected: 0
-//             });
-
-//         }
-//         else {
-//             this.setState({
-//                 radioBtnSelected: id
-//             });
-//         }
-//     }
-
-//     noGenderNotification;
-
-//     canContinue() {
-//         if (this.state.radioBtnSelected == 0)
-//             return true
-//         else
-//             return false
-//     }
-
-//     render() {
-
-
-//         if (this.state.radioBtnSelected == 4) {
-//             this.noGenderNotification = "Let op, indien je er voor kiest om het liever niet te zeggen, zul je alleen zichtbaar zijn voor de personen die gefilterd hebben op zowel mannen als vrouwen."
-//         }
-
-//         else {
-//             this.noGenderNotification = ""
-//         }
-
-//         return (
-//             <>
-
-//                 <View style={gs.screenWrapper}>
-
-//                     <View>
-//                         <Logo />
-//                         <Text style={[s.header, gs.mainHeader]}>Ik ben een</Text>
-//                     </View>
-
-//                     <LinearGradient colors={this.radioBtnGrad(1)} style={[s.radioBtnOuter]}>
-//                         <TouchableOpacity style={[s.radioBtnInner]} onPress={() => this.radioBtnActive(1)}><Text>Man</Text></TouchableOpacity>
-//                     </LinearGradient>
-//                     <LinearGradient colors={this.radioBtnGrad(2)} style={[s.radioBtnOuter]}>
-//                         <TouchableOpacity style={[s.radioBtnInner]} onPress={() => this.radioBtnActive(2)}><Text>Vrouw</Text></TouchableOpacity>
-//                     </LinearGradient>
-//                     <LinearGradient colors={this.radioBtnGrad(3)} style={[s.radioBtnOuter]}>
-//                         <TouchableOpacity style={[s.radioBtnInner]} onPress={() => this.radioBtnActive(3)}><Text>Non-binair</Text></TouchableOpacity>
-//                     </LinearGradient>
-
-//                     <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
-//                         <Text>Ik zeg het liever niet</Text>
-//                         <TouchableWithoutFeedback onPress={() => this.radioBtnActiveCanReset(4)}>
-//                             <LinearGradient colors={this.slideCheckboxGrad(4)} style={[s.slideCheckbox, this.slideCheckboxStyle(4)]}>
-//                                 <View style={[s.slideCheckboxBall]}></View>
-//                             </LinearGradient>
-//                         </TouchableWithoutFeedback>
-//                     </View>
-//                     <Text>{this.noGenderNotification}</Text>
-
-
-//                     <View style={gs.bottom}>
-//                         <BigButton text="doorgaan" disabled={this.canContinue()} />
-//                     </View>
-
-//                 </View>
-
-//             </>
-//         );
-//     }
-// };
 
 const s = StyleSheet.create({
 

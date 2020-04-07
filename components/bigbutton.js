@@ -26,11 +26,15 @@ function BigButton(p) {
         <>
             <LinearGradient style={s.button} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={gradient(p.disabled)}>
                 <TouchableOpacity onPress={() => {
-                    if (p.component != "back") {
-                        p.n.navigate(p.component)
-                    }
-                    else {
-                        p.n.goBack()
+
+                    if (!p.disabled) {
+
+                        if (p.component != "back") {
+                            p.n.navigate(p.component)
+                        }
+                        else {
+                            p.n.goBack()
+                        }
                     }
                 }}>
                     <Text style={s.buttonText}>{p.text}</Text>
