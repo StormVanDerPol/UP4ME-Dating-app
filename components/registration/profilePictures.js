@@ -1,45 +1,116 @@
 import React, { useState } from 'react';
+import ImagePicker from 'react-native-image-picker';
 
 import {
     StyleSheet,
     View,
     Text,
+    Image,
 } from 'react-native';
 
-import { gs, deviceWidth, deviceHeight } from '../../globals';
+import { TouchableWithoutFeedback, ScrollView } from 'react-native-gesture-handler';
+
+import { gs, deviceWidth, deviceHeight, mx } from '../../globals';
+
 import Logo from '../logo';
 import BigButton from '../bigbutton';
-import ProfilePicItem from './profilePicItem';
 
 const ProfilePictures = ({ navigation }) => {
 
+    const [src, setSrc] = useState([]);
+
+    let pfpArray = [];
+
+    const handleChoosePhoto = (id) => {
+        const opt = {
+
+        };
+
+        ImagePicker.launchImageLibrary(opt, (res) => {
+            console.log(res.uri);
+            src[id] = res.uri;
+
+            setSrc([...src]);
+
+            pfpArray.push(res.data);
+
+            console.log(res);
+
+            // console.log(src);
+        })
+    }
+
     return (
         <>
-            <View style={gs.screenWrapper}>
-                <View>
-                    <Logo />
-                    <Text style={[s.header, gs.mainHeader]}>Profiel foto's</Text>
+            <ScrollView style={gs.screenWrapperScroll}>
+
+
+                <Logo />
+                <Text style={[s.header, gs.mainHeader]}>Foto's toevoegen</Text>
+
+                <View style={[s.pfpContainer]}>
+                    <View>
+                        {
+                            [...Array(3)].map((val, id) => <TouchableWithoutFeedback
+                                style={[s.pfpItem]}
+                                onPress={() => handleChoosePhoto(id)}>
+                                <Image
+                                    style={[s.pfpImage]}
+                                    source={{ uri: src[id] }} />
+                            </TouchableWithoutFeedback>)
+                        }
+                    </View>
+
+                    <View >
+                        {
+                            [...Array(3)].map((val, id) => <TouchableWithoutFeedback
+                                style={[s.pfpItem]}
+                                onPress={() => handleChoosePhoto(id + 3)}>
+                                <Image
+                                    style={[s.pfpImage]}
+                                    source={{ uri: src[id + 3] }} />
+                            </TouchableWithoutFeedback>)
+                        }
+                    </View>
                 </View>
 
-                <View style={[s.picContainer]}>
-                    <ProfilePicItem />
-                    <ProfilePicItem />
+                <View style={{ paddingBottom: 15 }}>
+                    <View style={[gs.bottom]}>
+                        <BigButton n={navigation} component="UserProps" text="doorgaan" />
+                    </View>
                 </View>
 
-                <View style={gs.bottom}>
-                    <BigButton n={navigation} component="UserProps" text="doorgaan" />
-                </View>
-
-            </View>
+            </ScrollView>
         </>
     );
 }
 
+
+const boxMarginX = 10;
+const boxMarginY = 10;
+const cols = 2
+
 const s = StyleSheet.create({
-    picContainer: {
-        // flex: 1,
-        borderWidth: 1,
-        flexDirection: "row"
+    pfpContainer: {
+
+        flexDirection: "row",
+        marginBottom: 24,
+
+    },
+    pfpItem: {
+
+        width: ((deviceWidth - (mx * 2)) / cols) - (boxMarginX * 2),
+        height: 270,
+        marginHorizontal: boxMarginX,
+        marginVertical: boxMarginY,
+        backgroundColor: 'gray',
+        borderRadius: 15,
+        overflow: 'hidden',
+
+    },
+    pfpImage: {
+        width: '100%',
+        height: '100%',
     },
 });
 

@@ -38,14 +38,15 @@ const picHeight = 250;
 
 const s = StyleSheet.create({
     button: {
-        width: "50%",
-        height: 20,
+        height: '33%',
+        width: '50%',
         backgroundColor: 'gray',
         borderWidth: 1,
-        borderColor: "red"
+        borderColor: "red",
     },
     profilepic: {
 
+        height: 50,
     }
 });
 
