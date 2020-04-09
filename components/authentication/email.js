@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -8,9 +8,11 @@ import {
 
 import BigButton from '../bigbutton';
 import Logo from '../logo';
-import { gs } from '../../globals';
+import { gs, regexEmail } from '../../globals';
 
 const Email = ({ navigation }) => {
+
+    const [email, setEmail] = useState('')
 
     return (
         <>
@@ -22,12 +24,12 @@ const Email = ({ navigation }) => {
                 </View>
 
                 <View>
-                    <TextInput style={s.input} />
+                    <TextInput style={s.input} onChangeText={(input) => setEmail(input)} />
                     <Text>We sturen je een email met een verificatiecode.</Text>
                 </View>
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="ConfirmationCode" text="doorgaan" />
+                    <BigButton n={navigation} component="ConfirmationCode" text="doorgaan" disabled={!regexEmail.test(email)} data={{ email: email }} />
                 </View>
             </View>
         </>

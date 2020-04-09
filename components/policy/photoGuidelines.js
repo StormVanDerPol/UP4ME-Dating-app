@@ -53,7 +53,7 @@ const PhotoGuidelines = ({ navigation }) => {
                     />
                 </View>
 
-                <BigButton n={navigation} component="ProfileText" text="doorgaan" />
+                <BigButton n={navigation} component="back" text="Terug" />
                 <View style={{ marginBottom: 24 }} />
 
             </ScrollView>

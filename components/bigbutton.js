@@ -30,7 +30,8 @@ function BigButton(p) {
                     if (!p.disabled) {
 
                         if (p.component != "back") {
-                            p.n.navigate(p.component)
+                            console.log(p.data);
+                            p.n.navigate(p.component, p.data)
                         }
                         else {
                             p.n.goBack()

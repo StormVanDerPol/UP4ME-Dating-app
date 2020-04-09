@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { WebView } from 'react-native-webview';
 
@@ -17,7 +17,9 @@ import Logo from '../logo';
 import BigButton from '../bigbutton';
 
 
-const Location = ({ navigation }) => {
+const Location = ({ route, navigation }) => {
+
+    const [data] = useState(route.params);
 
     return (
         <>
@@ -36,7 +38,9 @@ const Location = ({ navigation }) => {
                         />
                     </View>
 
-                    <BigButton n={navigation} component="Gender" text="doorgaan" />
+                    <BigButton n={navigation} component="Gender" text="doorgaan"
+                        data={Object.assign(data, {})}
+                    />
                 </View>
             </View>
         </>

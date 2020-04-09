@@ -14,31 +14,33 @@ import LinearGradient from 'react-native-linear-gradient';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
-const Gender = ({ navigation }) => {
+const Gender = ({ route, navigation }) => {
 
-    const [radioBtnSelected, setRadioBtnSelected] = useState(0);
+    const [data] = useState(route.params);
+
+    const [selectedGender, setSelectedGender] = useState(0);
     const [genNotif, setGenNotif] = useState('');
 
 
-    const onPressRadioBtnSelected = (id) => {
-        setRadioBtnSelected(id);
+    const onPressSelectGender = (id) => {
+        setSelectedGender(id);
         toggleGenNotif(id);
     };
 
-    const onPressRadioBtnSelectedCanReset = (id) => {
-        if (radioBtnSelected == id) {
-            setRadioBtnSelected(0);
+    const onPressSelectGenderCanReset = (id) => {
+        if (selectedGender == id) {
+            setSelectedGender(0);
             toggleGenNotif(0);
         }
         else {
-            setRadioBtnSelected(id);
+            setSelectedGender(id);
             toggleGenNotif(id);
         }
 
     };
 
     const gradient = (id, colors) => {
-        if (id == radioBtnSelected) {
+        if (id == selectedGender) {
             return [colors[0], colors[1]];
         }
         else {
@@ -47,7 +49,7 @@ const Gender = ({ navigation }) => {
     };
 
     const slideCheckboxStyle = (id) => {
-        if (id == radioBtnSelected) {
+        if (id == selectedGender) {
             return {
                 justifyContent: "flex-end",
             }
@@ -68,13 +70,6 @@ const Gender = ({ navigation }) => {
         }
     };
 
-    const canContinue = () => {
-        if (radioBtnSelected == 0)
-            return true
-        else
-            return false
-    };
-
     return (
         <>
             <View style={gs.screenWrapper}>
@@ -85,18 +80,18 @@ const Gender = ({ navigation }) => {
                 </View>
 
                 <LinearGradient colors={gradient(1, [pallette[0], pallette[1], '#FFFFFF', '#FFFFFF'])} style={[s.radioBtnOuter]}>
-                    <TouchableOpacity style={[s.radioBtnInner]} onPress={() => { onPressRadioBtnSelected(1) }}><Text>Man</Text></TouchableOpacity>
+                    <TouchableOpacity style={[s.radioBtnInner]} onPress={() => { onPressSelectGender(1) }}><Text>Man</Text></TouchableOpacity>
                 </LinearGradient>
                 <LinearGradient colors={gradient(2, [pallette[0], pallette[1], '#FFFFFF', '#FFFFFF'])} style={[s.radioBtnOuter]}>
-                    <TouchableOpacity style={[s.radioBtnInner]} onPress={() => { onPressRadioBtnSelected(2) }}><Text>Vrouw</Text></TouchableOpacity>
+                    <TouchableOpacity style={[s.radioBtnInner]} onPress={() => { onPressSelectGender(2) }}><Text>Vrouw</Text></TouchableOpacity>
                 </LinearGradient>
                 <LinearGradient colors={gradient(3, [pallette[0], pallette[1], '#FFFFFF', '#FFFFFF'])} style={[s.radioBtnOuter]}>
-                    <TouchableOpacity style={[s.radioBtnInner]} onPress={() => { onPressRadioBtnSelected(3) }}><Text>Non-binair</Text></TouchableOpacity>
+                    <TouchableOpacity style={[s.radioBtnInner]} onPress={() => { onPressSelectGender(3) }}><Text>Non-binair</Text></TouchableOpacity>
                 </LinearGradient>
 
                 <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
                     <Text>Ik zeg het liever niet</Text>
-                    <TouchableWithoutFeedback onPress={() => { onPressRadioBtnSelectedCanReset(4) }}>
+                    <TouchableWithoutFeedback onPress={() => { onPressSelectGenderCanReset(4) }}>
                         <LinearGradient colors={gradient(4, [pallette[0], pallette[1], '#DDDDDD', '#DDDDDD'])} style={[s.slideCheckbox, slideCheckboxStyle(4)]}>
                             <View style={[s.slideCheckboxBall]}></View>
                         </LinearGradient>
@@ -106,7 +101,9 @@ const Gender = ({ navigation }) => {
                 <Text>{genNotif}</Text>
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="ProfilePictures" text="doorgaan" disabled={canContinue()} />
+                    <BigButton n={navigation} component="ProfilePictures" text="doorgaan" disabled={(selectedGender == 0)}
+                        data={Object.assign(data, { gender: selectedGender })}
+                    />
                 </View>
             </View>
 

@@ -1,23 +1,22 @@
 
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import {
     StyleSheet, View, Text, TextInput,
 } from 'react-native';
 import Logo from '../logo';
 
-import { gs, regexNumerical } from '../../globals';
+import { gs } from '../../globals';
 import BigButton from '../bigbutton';
 
-let confCode = '';
+const ConfirmationCode = ({ route, navigation }) => {
 
-const handleChange = (input) => {
-    confCode = input;
+    const [data] = useState(route.params);
+    const [confcode, setConfcode] = useState('')
 
-    console.log(confCode);
-};
-
-const ConfirmationCode = ({ navigation }) => {
+    const handleChange = (input) => {
+        setConfcode(input);
+    }
 
     return (
         <>
@@ -28,11 +27,12 @@ const ConfirmationCode = ({ navigation }) => {
                 </View>
 
                 <View style={s.inputWrapper}>
-                    <TextInput keyboardType='numeric' onChangeText={(input) => handleChange(input)} style={s.input} />
+                    <TextInput keyboardType='numeric' maxLength={6} onChangeText={(input) => handleChange(input)} style={s.input} />
                 </View>
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="UserData" text="doorgaan" />
+                    <BigButton n={navigation} component="UserData" text="doorgaan" disabled={(confcode.length < 6)}
+                        data={Object.assign(data, { confirmationCode: confcode })} />
                 </View>
             </View>
         </>

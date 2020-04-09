@@ -16,7 +16,7 @@ import Gender from './components/registration/gender';
 import UserProps from './components/registration/userprops';
 import Location from './components/registration/location';
 import PhotoGuidelines from './components/policy/photoGuidelines';
-import ProfileText from './components/policy/profileText';
+import ProfileText from './components/registration/profileText';
 import ProfilePictures from './components/registration/profilePictures';
 
 const Stack = createStackNavigator();

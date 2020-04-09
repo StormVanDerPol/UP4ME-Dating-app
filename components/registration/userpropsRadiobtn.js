@@ -1,31 +1,25 @@
 
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
 import {
-    StyleSheet, TouchableOpacity, Text, View,
+    StyleSheet,
+    TouchableOpacity,
+    Text,
+    View,
 } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
 
 import { pallette } from "../../globals";
 
-class UserPropsRadioButton extends Component {
+const UserPropsRadioButton = (p) => {
 
-    constructor(props) {
-        super(props)
-
-        this.state = {
-            selected: -1
-        }
-
-        this.btnSelect = this.btnSelect.bind(this);
-
-    }
+    const [selected, setSelected] = useState(-1);
 
 
-    btnGrad(id) {
+    const btnGrad = (id) => {
 
-        if (id == this.state.selected) {
+        if (id == selected) {
             return [pallette[0], pallette[1]];
         }
         else {
@@ -33,43 +27,40 @@ class UserPropsRadioButton extends Component {
         }
     }
 
-    btnInnerStyle(id) {
-        if (id == this.state.selected) {
+    const btnInnerStyle = (id) => {
+        if (id == selected) {
             return {
                 color: "white"
             }
         }
     }
 
-    btnSelect(id) {
-        this.setState({
-            selected: id
-        });
+    const btnSelect = (id) => {
+        setSelected(id);
     }
 
-    render() {
-        return (
-            <>
-                <View style={s.container}>
-                    {
-                        this.props.btnText.map((text, id) => {
-                            return (
 
-                                <TouchableOpacity style={s.btn} onPress={() => this.btnSelect(id)} >
+    return (
+        <>
+            <View style={s.container}>
+                {
+                    p.btnText.map((text, id) => {
+                        return (
 
-                                    <LinearGradient style={s.btnGrad} colors={this.btnGrad(id)} >
-                                        <Text style={[s.btnInner, this.btnInnerStyle(id)]}>{text}</Text>
-                                    </LinearGradient>
+                            <TouchableOpacity style={s.btn} onPress={() => btnSelect(id)} >
 
-                                </TouchableOpacity>
+                                <LinearGradient style={s.btnGrad} colors={btnGrad(id)} >
+                                    <Text style={[s.btnInner, btnInnerStyle(id)]}>{text}</Text>
+                                </LinearGradient>
 
-                            )
-                        })
-                    }
-                </View>
-            </>
-        );
-    }
+                            </TouchableOpacity>
+
+                        )
+                    })
+                }
+            </View>
+        </>
+    );
 };
 
 const s = StyleSheet.create({

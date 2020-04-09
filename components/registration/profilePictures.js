@@ -15,11 +15,13 @@ import { gs, deviceWidth, deviceHeight, mx } from '../../globals';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
-const ProfilePictures = ({ navigation }) => {
+const ProfilePictures = ({ route, navigation }) => {
+
+    const [data] = useState(route.params);
 
     const [src, setSrc] = useState([]);
 
-    let pfpArray = [];
+    const [pfpArray, setPfpArray] = useState([]);
 
     const handleChoosePhoto = (id) => {
         const opt = {
@@ -28,11 +30,12 @@ const ProfilePictures = ({ navigation }) => {
 
         ImagePicker.launchImageLibrary(opt, (res) => {
             console.log(res.uri);
-            src[id] = res.uri;
 
+            src[id] = res.uri;
             setSrc([...src]);
 
             pfpArray.push(res.data);
+            setPfpArray([...pfpArray]);
 
             console.log(res);
 
@@ -74,11 +77,14 @@ const ProfilePictures = ({ navigation }) => {
                     </View>
                 </View>
 
-                <View style={{ paddingBottom: 15 }}>
-                    <View style={[gs.bottom]}>
-                        <BigButton n={navigation} component="UserProps" text="doorgaan" />
-                    </View>
+                {/* <View style={{ paddingBottom: 15 }}> */}
+                <View style={[gs.bottom]}>
+                    <BigButton n={navigation} component="ProfileText" text="doorgaan" disabled={!(pfpArray.length > 1)}
+                        data={Object.assign(data, { profilePictures: pfpArray })} />
+
+                    <Text style={[gs.underline, s.guidelines]} onPress={() => navigation.navigate('PhotoGuidelines')}>Lees de richtlijnen</Text>
                 </View>
+                {/* </View> */}
 
             </ScrollView>
         </>
@@ -111,6 +117,10 @@ const s = StyleSheet.create({
     pfpImage: {
         width: '100%',
         height: '100%',
+    },
+
+    guidelines: {
+        textAlign: "center",
     },
 });
 
