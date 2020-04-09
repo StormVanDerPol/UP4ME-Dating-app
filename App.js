@@ -18,6 +18,8 @@ import Location from './components/registration/location';
 import PhotoGuidelines from './components/policy/photoGuidelines';
 import ProfileText from './components/policy/profileText';
 import ProfilePictures from './components/registration/profilePictures';
+import UserSettings from './components/settings/userSettings';
+
 
 const Stack = createStackNavigator();
 
@@ -41,6 +43,8 @@ const App = () => {
 
         <Stack.Screen name="PhotoGuidelines" component={PhotoGuidelines} />
         <Stack.Screen name="ProfileText" component={ProfileText} />
+
+        <Stack.Screen name="UserSettings" component={UserSettings} />
 
 
       </Stack.Navigator>
