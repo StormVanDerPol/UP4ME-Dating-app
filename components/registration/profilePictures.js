@@ -34,13 +34,19 @@ const ProfilePictures = ({ route, navigation }) => {
             src[id] = res.uri;
             setSrc([...src]);
 
-            pfpArray.push(res.data);
+            // pfpArray.push(res.data);
+            pfpArray[id] = res.data;
+
             setPfpArray([...pfpArray]);
 
             console.log(res);
 
             // console.log(src);
         })
+    }
+
+    const validatePictures = () => {
+        return false;
     }
 
     return (
@@ -79,7 +85,7 @@ const ProfilePictures = ({ route, navigation }) => {
 
                 {/* <View style={{ paddingBottom: 15 }}> */}
                 <View style={[gs.bottom]}>
-                    <BigButton n={navigation} component="ProfileText" text="doorgaan" disabled={!(pfpArray.length > 1)}
+                    <BigButton n={navigation} component="ProfileText" text="doorgaan" disabled={validatePictures()}
                         data={Object.assign(data, { profilePictures: pfpArray })} />
 
                     <Text style={[gs.underline, s.guidelines]} onPress={() => navigation.navigate('PhotoGuidelines')}>Lees de richtlijnen</Text>
