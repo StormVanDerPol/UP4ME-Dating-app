@@ -6,6 +6,7 @@ export var deviceWidth = Dimensions.get('window').width;
 export const pallette = ['#FEA15A', '#D100A3'];
 
 export const regexNumerical = new RegExp(/^[0-9]*$/g);
+export const regexEmail = new RegExp(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/);
 
 export const mx = 20;
 

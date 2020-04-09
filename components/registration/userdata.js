@@ -14,9 +14,19 @@ import BigButton from '../bigbutton';
 import thumbSlider from '../../res/sliderThumb.png'
 
 
-const UserData = ({ navigation }) => {
+const UserData = ({ route, navigation }) => {
 
+    const [data] = useState(route.params);
+
+    const [name, setName] = useState('')
     const [height, setHeight] = useState(1.75);
+    const [job, setJob] = useState('');
+
+    const [day, setDay] = useState('');
+    const [month, setMonth] = useState('');
+    const [year, setYear] = useState('');
+
+    const [bday, setBday] = useState(0);
 
     return (
         <>
@@ -28,13 +38,41 @@ const UserData = ({ navigation }) => {
                 </View>
 
                 <Text style={s.subheader}>Mijn naam</Text>
-                <TextInput style={s.input} />
+                <TextInput style={s.input} onChangeText={(input) => setName(input)} />
 
                 <Text style={s.subheader}>Mijn geboortedatum</Text>
                 <View style={s.center}>
-                    <TextInput keyboardType='numeric' style={s.input} placeholder={'DAG'} />
-                    <TextInput keyboardType='numeric' style={s.input} placeholder={'MAAND'} />
-                    <TextInput keyboardType='numeric' style={s.input} placeholder={'JAAR'} />
+
+                    <TextInput keyboardType='numeric'
+                        onChangeText={(input) => {
+                            if (input.length == 2) {
+                                setDay(input);
+                                setBday(year + month + day);
+                            }
+                        }}
+                        maxLength={2} style={s.input} placeholder={'DAG'}
+                    />
+
+                    <TextInput keyboardType='numeric'
+                        onChangeText={(input) => {
+                            if (input.length == 2) {
+                                setMonth(input);
+                                setBday(year + month + day);
+                            }
+                        }}
+                        maxLength={2} style={s.input} placeholder={'MAAND'}
+                    />
+
+                    <TextInput keyboardType='numeric'
+                        onChangeText={(input) => {
+                            if (input.length == 4) {
+                                setYear(input);
+                                setBday(year + month + day);
+                            }
+                        }}
+                        maxLength={4} style={s.input} placeholder={'JAAR'}
+                    />
+
                 </View>
 
 
@@ -53,10 +91,13 @@ const UserData = ({ navigation }) => {
                 />
 
                 <Text style={s.subheader}>Mijn beroep</Text>
-                <TextInput style={s.input} />
+                <TextInput style={s.input} maxLength={100} onChangeText={(input) => { setJob(input) }} />
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="Location" text="doorgaan" />
+                    <BigButton n={navigation} component="Location" text="doorgaan"
+                        disabled={!(name && job && day.length == 2 && month.length == 2 && year.length == 4 && bday != 0)}
+                        data={Object.assign(data, { name, bday, day, month, year, height, job })}
+                    />
                 </View>
             </View>
         </>
