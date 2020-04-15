@@ -13,6 +13,11 @@ import { gs, regexEmail } from '../../globals';
 const Email = ({ navigation }) => {
 
     const [email, setEmail] = useState('')
+    const [isValid, setIsValid] = useState(false);
+
+    const validateEmail = () => {
+        //post request in here
+    };
 
     return (
         <>
@@ -24,7 +29,12 @@ const Email = ({ navigation }) => {
                 </View>
 
                 <View>
-                    <TextInput style={s.input} onChangeText={(input) => setEmail(input)} />
+                    <TextInput style={s.input} onChangeText={(input) => {
+                        setEmail(input);
+                        if (regexEmail.test(email)) {
+                            validateEmail();
+                        }
+                    }} />
                     <Text>We sturen je een email met een verificatiecode.</Text>
                 </View>
 

@@ -10,6 +10,8 @@ export const regexEmail = new RegExp(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w
 
 export const mx = 20;
 
+export const apiUrl = 'http://localhost:5000/api/v1';
+
 export const gs = StyleSheet.create({
 
     screenWrapper: {

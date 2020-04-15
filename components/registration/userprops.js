@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import Axios from 'axios';
 
 import {
     StyleSheet,
@@ -12,11 +13,22 @@ import UserPropsRadioButton from './userpropsRadiobtn';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
-import { gs } from '../../globals';
+import { gs, apiUrl } from '../../globals';
 
 const UserProps = ({ route, navigation }) => {
 
     const [data] = useState(route.params);
+    const [selections, setSelections] = useState({});
+
+    const getSelections = (selection) => {
+
+        setSelections(Object.assign(selections, selection));
+        console.log(selections);
+    }
+
+    const postRegistration = () => {
+        Axios.get(`${apiUrl}/test`)
+    }
 
     return (
         <>
@@ -32,7 +44,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'sport'} getSelections={getSelections} />
                 </View>
 
 
@@ -42,7 +54,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'party'} getSelections={getSelections} />
                 </View>
 
 
@@ -52,7 +64,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'smoking'} getSelections={getSelections} />
                 </View>
 
 
@@ -62,7 +74,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'alcohol'} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -71,7 +83,7 @@ const UserProps = ({ route, navigation }) => {
                         "Links",
                         "Midden",
                         "Rechts"
-                    ]} />
+                    ]} selectKey={'politics'} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -80,7 +92,7 @@ const UserProps = ({ route, navigation }) => {
                         "< 40 uur",
                         "40 uur",
                         "> 40 uur"
-                    ]} />
+                    ]} selectKey={'work'} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -89,7 +101,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'food'} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -97,7 +109,7 @@ const UserProps = ({ route, navigation }) => {
                     <UserPropsRadioButton btnText={[
                         "Ja",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'kids'} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -106,12 +118,14 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Mischien",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'kidWish'} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
-                        <BigButton text="opslaan" />
+                        <BigButton n={navigation} component="back" text="opslaan"
+                            disabled={false}
+                            callBack={postRegistration()} />
                     </View>
                 </View>
 

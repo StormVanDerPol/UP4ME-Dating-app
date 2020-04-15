@@ -16,7 +16,6 @@ const UserPropsRadioButton = (p) => {
 
     const [selected, setSelected] = useState(-1);
 
-
     const btnGrad = (id) => {
 
         if (id == selected) {
@@ -35,8 +34,14 @@ const UserPropsRadioButton = (p) => {
         }
     }
 
+    const sendSelections = () => {
+        p.getSelections({ [p.selectKey]: selected });
+    }
+
     const btnSelect = (id) => {
         setSelected(id);
+        console.log(p)
+        sendSelections();
     }
 
 

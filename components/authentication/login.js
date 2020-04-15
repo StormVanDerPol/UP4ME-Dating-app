@@ -24,7 +24,8 @@ function Login({ navigation }) {
                 <View style={s.wrapper}>
 
                     <View>
-                        <Image style={s.logo} source={require('../../temp/img/mememe.png')} />
+                        <Image style={s.logo} source={require('../../temp/img/mememe.png')
+                        } />
                         <Text style={s.header}>Up4Me</Text>
                     </View>
 

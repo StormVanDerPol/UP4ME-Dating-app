@@ -20,6 +20,12 @@ function gradient(disabled) {
     }
 }
 
+function callBack() {
+    if (p.callBack != undefined) {
+        p.callBack();
+    }
+}
+
 function BigButton(p) {
 
     return (
@@ -37,6 +43,8 @@ function BigButton(p) {
                             p.n.goBack()
                         }
                     }
+
+                    callBack();
                 }}>
                     <Text style={s.buttonText}>{p.text}</Text>
                 </TouchableOpacity>
