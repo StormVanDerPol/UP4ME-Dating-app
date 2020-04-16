@@ -10,7 +10,9 @@ export const regexEmail = new RegExp(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w
 
 export const mx = 20;
 
-export const apiUrl = 'http://192.168.1.13:5000/api/v1';
+//pls dont forget to change this to your local machine's ipv4 address if you wish to test
+export const serverUrl = `192.168.1.13:5000`
+export const apiUrl = `http://${serverUrl}/api/v1`;
 
 export const gs = StyleSheet.create({
 

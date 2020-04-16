@@ -19,7 +19,7 @@ const Email = ({ navigation }) => {
 
     const validateEmail = () => {
 
-        Axios.get(`${apiUrl}/test/checkmail/aa`)
+        Axios.get(`${apiUrl}/test/checkmail/valid`)
             .then((res) => {
                 console.log('success', res)
                 setIsValid(res.data);
