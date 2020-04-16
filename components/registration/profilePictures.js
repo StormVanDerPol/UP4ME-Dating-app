@@ -61,6 +61,7 @@ const ProfilePictures = ({ route, navigation }) => {
                     <View>
                         {
                             [...Array(3)].map((val, id) => <TouchableWithoutFeedback
+                                key={id}
                                 style={[s.pfpItem]}
                                 onPress={() => handleChoosePhoto(id)}>
                                 <Image
@@ -73,6 +74,7 @@ const ProfilePictures = ({ route, navigation }) => {
                     <View >
                         {
                             [...Array(3)].map((val, id) => <TouchableWithoutFeedback
+                                key={id + 3}
                                 style={[s.pfpItem]}
                                 onPress={() => handleChoosePhoto(id + 3)}>
                                 <Image
@@ -81,6 +83,7 @@ const ProfilePictures = ({ route, navigation }) => {
                             </TouchableWithoutFeedback>)
                         }
                     </View>
+
                 </View>
 
                 {/* <View style={{ paddingBottom: 15 }}> */}

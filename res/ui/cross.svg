@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>Group 5</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="15" cy="15" r="15"></circle>
+        <filter x="-18.3%" y="-11.7%" width="136.7%" height="136.7%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.433395607 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Up4me-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="7.-Date-met-wijzigingsmelding" transform="translate(-227.000000, -316.000000)">
+            <g id="Group-5" transform="translate(230.000000, 317.000000)">
+                <g id="Oval-Copy">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+                <path d="M15.375,12.0810167 L12.0718761,8.77784546 C11.3698148,8.07577402 10.228163,8.07308599 9.52567151,8.77558758 C8.82460943,9.47665971 8.82419088,10.6180802 9.52792936,11.3218287 L12.8310532,14.625 L9.52792936,17.9281713 C8.82419088,18.6319198 8.82460943,19.7733403 9.52567151,20.4744124 C10.228163,21.176914 11.3698148,21.174226 12.0718761,20.4721545 L15.375,17.1689833 L18.6781239,20.4721545 C19.3801852,21.174226 20.521837,21.176914 21.2243285,20.4744124 C21.9253906,19.7733403 21.9258091,18.6319198 21.2220706,17.9281713 L17.9189468,14.625 L21.2220706,11.3218287 C21.9258091,10.6180802 21.9253906,9.47665971 21.2243285,8.77558758 C20.521837,8.07308599 19.3801852,8.07577402 18.6781239,8.77784546 L15.375,12.0810167 Z" id="Nope" fill="#D8D8D8"></path>
+            </g>
+        </g>
+    </g>
+</svg>

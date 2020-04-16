@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="11px" viewBox="0 0 12 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>heart copy 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="6.43892168%" y1="49.9605639%" x2="96.9024301%" y2="49.9605639%" id="linearGradient-1">
+            <stop stop-color="#FF0000" offset="0%"></stop>
+            <stop stop-color="#F28D71" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Up4me-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="9.2-Date-plannen---Locaties-West" transform="translate(-278.000000, -240.000000)" fill="url(#linearGradient-1)" stroke="url(#linearGradient-1)">
+            <g id="heart-copy-2" transform="translate(278.000000, 240.000000)">
+                <path d="M8.8125,0.5 C8.27571928,0.5 7.78456044,0.678670702 7.35118707,1.02668728 C6.90823291,1.38239605 6.61580972,1.8371167 6.44233289,2.16628987 L5.99998566,3.00564601 L5.55766088,2.16627804 C5.38418555,1.83708636 5.09176298,1.38239274 4.64881378,1.02668796 C4.21543956,0.678670702 3.72428072,0.5 3.1875,0.5 C2.42798254,0.5 1.76230522,0.823257013 1.28620001,1.35947358 C0.790283049,1.91800327 0.5,2.70134719 0.5,3.58994248 C0.5,5.6860623 2.20208661,7.08189849 4.62904949,9.22942349 C4.99625028,9.55436331 5.40654907,9.91873327 6.16209384,10.3061802 C6.5910428,9.91957479 7.00167818,9.55619429 7.37122575,9.22918545 C9.7979241,7.08188935 11.5,5.68605652 11.5,3.58994248 C11.5,2.70134719 11.209717,1.91800327 10.7138,1.35947358 C10.2376948,0.823257013 9.57201746,0.5 8.8125,0.5 Z" id="Path"></path>
+            </g>
+        </g>
+    </g>
+</svg>
