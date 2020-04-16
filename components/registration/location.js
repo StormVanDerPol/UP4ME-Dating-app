@@ -21,6 +21,8 @@ import Logo from '../logo';
 import BigButton from '../bigbutton';
 
 import { GOOGLE_MAPS_API_KEY } from '../../temp/keys';
+import { TextInput } from 'react-native-gesture-handler';
+import RNSVG_location from '../../res/ui/rnsvg/rnsvg_location';
 
 const Location = ({ route, navigation }) => {
 
@@ -41,6 +43,13 @@ const Location = ({ route, navigation }) => {
                 <View>
                     <Logo />
                     <Text style={[s.header, gs.mainHeader]}>Location</Text>
+                </View>
+
+                <View style={s.locationSearchBar}>
+                    <View style={s.locationIcon}>
+                        <RNSVG_location />
+                    </View>
+                    <TextInput defaultValue="Amsterdam" placeholder="Vul uw locatie in..."></TextInput>
                 </View>
 
                 <View style={gs.bottom}>
@@ -69,6 +78,16 @@ const s = StyleSheet.create({
         marginVertical: 15,
         borderWidth: 2,
     },
+
+    locationSearchBar: {
+        padding: 5,
+        backgroundColor: 'gray'
+    },
+
+    locationIcon: {
+        height: 16,
+        width: 16
+    }
 });
 
 export default Location;

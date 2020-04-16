@@ -1,25 +1,27 @@
 
-import React, { Component } from 'react';
+import React from 'react';
 import {
-    StyleSheet, Text,
+    StyleSheet, View,
 } from 'react-native';
+import RNSVG_up4me_logo_colour from '../res/ui/rnsvg/rnsvg_up4me_logo_colour';
 
 
-class Logo extends Component {
+const Logo = () => {
 
-    render() {
-        return (
-            <>
-                <Text style={s.logo} >Up4Me</Text>
-            </>
-        );
-    }
+    return (
+        <>
+            <View style={s.logo} >
+                <RNSVG_up4me_logo_colour />
+            </View>
+        </>
+    );
 };
 
 const s = StyleSheet.create({
     logo: {
-        fontSize: 20,
-        textAlign: "center"
+        width: 80,
+        height: 32,
+        alignSelf: "center",
     }
 });
 

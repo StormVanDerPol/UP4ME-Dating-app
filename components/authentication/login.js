@@ -4,7 +4,6 @@ import {
     Image,
     View,
     Text,
-    Linking
 } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -15,6 +14,7 @@ import {
     pallette
 } from '../../globals';
 import LoginButton from './loginBtn';
+import RNSVG_up4me_logo_login from '../../res/ui/rnsvg/rnsvg_up4me_logo_login';
 
 function Login({ navigation }) {
 
@@ -23,10 +23,8 @@ function Login({ navigation }) {
             <LinearGradient colors={[pallette[0], pallette[1]]}>
                 <View style={s.wrapper}>
 
-                    <View>
-                        <Image style={s.logo} source={require('../../temp/mememe.png')
-                        } />
-                        <Text style={s.header}>Up4Me</Text>
+                    <View style={s.logo} >
+                        <RNSVG_up4me_logo_login />
                     </View>
 
                     <View>
@@ -51,13 +49,8 @@ const s = StyleSheet.create({
     logo: {
         height: 150,
         width: 150,
-        alignSelf: "center"
-    },
-
-    header: {
-        fontSize: 40,
-        textAlign: "center",
-        color: "white"
+        alignSelf: "center",
+        marginBottom: 40,
     },
 
     wrapper: {
