@@ -14,6 +14,8 @@ export const mx = 20;
 export const serverUrl = `192.168.1.13:5000`
 export const apiUrl = `http://${serverUrl}/api/v1`;
 
+export const MapsApiRootUrl = 'https://maps.googleapis.com/maps/api/staticmap?';
+
 export const gs = StyleSheet.create({
 
     screenWrapper: {

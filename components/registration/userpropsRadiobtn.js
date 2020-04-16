@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
     StyleSheet,
@@ -15,6 +14,7 @@ import { pallette } from "../../globals";
 const UserPropsRadioButton = (p) => {
 
     const [selected, setSelected] = useState(-1);
+    const [hasInitialized, setHasInitialized] = useState(false);
 
     const btnGrad = (id) => {
 
@@ -38,12 +38,23 @@ const UserPropsRadioButton = (p) => {
         p.getSelections({ [p.selectKey]: selected });
     }
 
-    const btnSelect = (id) => {
-        setSelected(id);
-        console.log(p)
-        sendSelections();
-    }
+    useEffect(() => {
 
+        if (!hasInitialized) {
+            if (p.value != undefined) {
+
+                console.log(`stored value for ${p.selectKey} was ${p.value}`)
+
+                setSelected(p.value);
+            }
+            setHasInitialized(true);
+        }
+
+        else {
+            sendSelections();
+        }
+
+    }, [selected])
 
     return (
         <>
@@ -52,7 +63,7 @@ const UserPropsRadioButton = (p) => {
                     p.btnText.map((text, id) => {
                         return (
 
-                            <TouchableOpacity style={s.btn} onPress={() => btnSelect(id)} >
+                            <TouchableOpacity key={id} style={s.btn} onPress={() => setSelected(id)} >
 
                                 <LinearGradient style={s.btnGrad} colors={btnGrad(id)} >
                                     <Text style={[s.btnInner, btnInnerStyle(id)]}>{text}</Text>

@@ -35,16 +35,17 @@ const BigButton = (p) => {
             <LinearGradient style={s.button} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={gradient(p.disabled)}>
                 <TouchableOpacity onPress={() => {
 
-                    callBack();
-
                     if (!p.disabled) {
+
+                        callBack();
 
                         if (p.component != "back") {
                             console.log(p.data);
                             p.n.navigate(p.component, p.data)
                         }
                         else {
-                            p.n.goBack()
+
+                            p.n.goBack();
                         }
                     }
                 }}>

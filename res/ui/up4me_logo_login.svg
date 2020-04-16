@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="92px" height="95px" viewBox="0 0 92 95" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 63.1 (92452) - https://sketch.com -->
+    <title>1.1 logo Inloggen</title>
+    <desc>Created with Sketch.</desc>
+    <g id="1.1-logo-Inloggen" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="AAA" transform="translate(0.000000, 2.000000)">
+            <text id="Up4Me" font-family="Quicksand-Light_Medium, Quicksand" font-size="27.79478" font-weight="400" fill="#FFFFFF">
+                <tspan x="0" y="86">Up</tspan>
+                <tspan x="36.6613148" y="86" letter-spacing="-0.138973902">4Me</tspan>
+            </text>
+            <path d="M63,19.2101517 C63,25.5469512 57.3333333,35.4769006 46,49 C34.6666667,35.4769006 29,25.5469512 29,19.2101517 C29,9.70495243 36.6108679,2 46,2 C55.3891321,2 63,9.70495243 63,19.2101517 Z" id="Stroke-2" stroke="#FFFFFF" stroke-width="2.6"></path>
+            <path d="M46,17.5088348 C46.8529006,15.948931 48.1867748,14 50.0003245,14 C52.5603245,14.2081137 53.8935497,15.6636444 54,18.3659596 C54,21.6926159 51.3335497,24.8415215 46,29 C40.6664503,24.8415215 38,21.6926159 38,18.3659596 C38.1064503,15.6636444 39.4396755,14.2081137 41.9996755,14 C43.8132252,14 45.1470994,15.948931 46,17.5088348 Z" id="Stroke-3" stroke="#FFFFFF" stroke-width="2.6"></path>
+        </g>
+    </g>
+</svg>
