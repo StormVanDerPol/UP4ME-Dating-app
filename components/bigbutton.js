@@ -9,29 +9,33 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { pallette, deviceWidth } from '../globals';
 
+const BigButton = (p) => {
 
-function gradient(disabled) {
+    const gradient = (disabled) => {
 
-    if (!disabled) {
-        return [pallette[0], pallette[1]]
+        if (!disabled) {
+            return [pallette[0], pallette[1]]
+        }
+        else {
+            return ['#DDDDDD', '#DDDDDD']
+        }
     }
-    else {
-        return ['#DDDDDD', '#DDDDDD']
-    }
-}
 
-function callBack() {
-    if (p.callBack != undefined) {
-        p.callBack();
-    }
-}
+    const callBack = () => {
 
-function BigButton(p) {
+        console.log('callback that runs: ', p.callBack);
+
+        if (p.callBack != undefined) {
+            p.callBack();
+        }
+    }
 
     return (
         <>
             <LinearGradient style={s.button} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={gradient(p.disabled)}>
                 <TouchableOpacity onPress={() => {
+
+                    callBack();
 
                     if (!p.disabled) {
 
@@ -43,8 +47,6 @@ function BigButton(p) {
                             p.n.goBack()
                         }
                     }
-
-                    callBack();
                 }}>
                     <Text style={s.buttonText}>{p.text}</Text>
                 </TouchableOpacity>

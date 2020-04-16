@@ -19,15 +19,26 @@ const UserProps = ({ route, navigation }) => {
 
     const [data] = useState(route.params);
     const [selections, setSelections] = useState({});
+    const [formFilled, setFormFilled] = useState(false);
 
     const getSelections = (selection) => {
 
         setSelections(Object.assign(selections, selection));
-        console.log(selections);
+        console.log(selections, 'keys: ', (Object.keys(selections).length));
+
+        if ((Object.keys(selections).length == 9)) {
+            setFormFilled(true);
+        }
     }
 
     const postRegistration = () => {
-        Axios.get(`${apiUrl}/test`)
+        Axios.post(`${apiUrl}/test`)
+            .then((res) => {
+                console.log('success', res);
+            })
+            .catch((err) => {
+                console.log('error', err);
+            })
     }
 
     return (
@@ -124,8 +135,9 @@ const UserProps = ({ route, navigation }) => {
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
                         <BigButton n={navigation} component="back" text="opslaan"
-                            disabled={false}
-                            callBack={postRegistration()} />
+                            disabled={!(formFilled)}
+                            data={Object.assign(data, Object.assign({}, selections))}
+                            callBack={postRegistration} />
                     </View>
                 </View>
 
