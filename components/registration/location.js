@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-import { WebView } from 'react-native-webview';
+import Geolocation from '@react-native-community/geolocation';
 
 import {
     StyleSheet,
     View,
     Text,
     Image,
-    Button,
+    Alert,
+    Button
 } from 'react-native';
 
 import {
@@ -23,23 +24,56 @@ import BigButton from '../bigbutton';
 import { GOOGLE_MAPS_API_KEY } from '../../temp/keys';
 import { TextInput } from 'react-native-gesture-handler';
 import RNSVG_location from '../../res/ui/rnsvg/rnsvg_location';
+import { PermissionsAndroid } from 'react-native';
+import Axios from 'axios';
 
 const Location = ({ route, navigation }) => {
 
     const [data] = useState(route.params);
 
-    const [lat, setLat] = useState(52.3667);
-    const [lon, setLon] = useState(4.8945);
+    const [coords, setCoords] = useState({ lat: 0, lon: 0 });
+
+    async function requestLocationPermission() {
+        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+
+        if (granted) {
+            console.log("You can use the ACCESS_FINE_LOCATION");
+            reverseGeocodeCurrentLocation();
+        }
+        else {
+            console.log("ACCESS_FINE_LOCATION permission denied")
+        }
+    }
 
     const zoom = 10;
     const mapWidth = deviceWidth - mx * 2;
     const mapHeight = deviceHeight / 2;
     const mapType = 'roadmap'
 
+    const reverseGeocodeCurrentLocation = () => {
+
+        Geolocation.getCurrentPosition((pos) => {
+            setCoords({ lat: pos.coords.latitude, lon: pos.coords.longitude });
+
+        })
+    }
+
+    const [init, setInit] = useState(false);
+
+    if (!init) {
+        requestLocationPermission();
+        setInit(true);
+    }
+
+    const [placeNameEdit, setPlaceNameEdit] = useState('Amsterdam');
+
+    const [placeName, setPlaceName] = useState('Amsterdam');
+
     return (
         <>
             <View style={gs.screenWrapper}>
 
+                <Button title="button" onPress={() => { reverseGeocodeCurrentLocation() }}></Button>
                 <View>
                     <Logo />
                     <Text style={[s.header, gs.mainHeader]}>Location</Text>
@@ -49,7 +83,7 @@ const Location = ({ route, navigation }) => {
                     <View style={s.locationIcon}>
                         <RNSVG_location />
                     </View>
-                    <TextInput defaultValue="Amsterdam" placeholder="Vul uw locatie in..."></TextInput>
+                    <TextInput defaultValue="Amsterdam" onChangeText={(input) => setPlaceNameEdit(input)} onEndEditing={() => { setPlaceName(placeNameEdit) }} placeholder="Vul uw locatie in..." />
                 </View>
 
                 <View style={gs.bottom}>
@@ -57,13 +91,13 @@ const Location = ({ route, navigation }) => {
                     <View style={s.map}>
                         <Image style={{ width: '100%', height: '100%' }} source={
                             {
-                                uri: `${MapsApiRootUrl}center=${lat},${lon}&zoom=${zoom}&size=${mapWidth}x${mapHeight}&maptype=${mapType}&key=${GOOGLE_MAPS_API_KEY}`
+                                uri: `${MapsApiRootUrl}center=${placeName}&zoom=${zoom}&size=${mapWidth}x${mapHeight}&maptype=${mapType}&key=${GOOGLE_MAPS_API_KEY}`
                             }
                         } />
                     </View>
 
                     <BigButton n={navigation} component="Gender" text="doorgaan"
-                        data={Object.assign(data, {})}
+                        data={Object.assign(data, { placeName: placeName })}
                     />
                 </View>
             </View>

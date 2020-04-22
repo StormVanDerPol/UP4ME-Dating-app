@@ -19,14 +19,51 @@ const Email = ({ navigation }) => {
 
     const validateEmail = () => {
 
-        Axios.get(`${apiUrl}/test/checkmail/valid`)
+        // Axios.get(`${apiUrl}/test/checkmail/valid`)
+        //     .then((res) => {
+        //         console.log('success', res)
+        //         setIsValid(res.data);
+        //     })
+        //     .catch((err) => {
+        //         console.log('error', err)
+        //         setIsValid('REQ_ERROR');
+        //     });
+
+        Axios.get(`https://block-temporary-email.com/check/email/${email}`)
             .then((res) => {
-                console.log('success', res)
-                setIsValid(res.data);
+                if (!res.data.temporary) {
+
+                    Axios.get(`${apiUrl}/check/email/${email}`)
+                        .then((res) => {
+                            console.log(res);
+
+                            if (res.data.exists == 0) {
+                                setIsValid('VALID');
+                            }
+                            else {
+                                setIsValid('VALID');
+                            }
+
+                        })
+                        .catch((err) => {
+                            console.log('error', err)
+                            setIsValid('REQ_ERROR');
+                        })
+                        .finally(() => {
+                            setFeedback();
+                        })
+
+                }
+                else {
+                    setIsValid('TEMP')
+                }
             })
             .catch((err) => {
                 console.log('error', err)
                 setIsValid('REQ_ERROR');
+            })
+            .finally(() => {
+                setFeedback();
             });
     };
 
@@ -118,7 +155,13 @@ const Email = ({ navigation }) => {
                 </View>
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="ConfirmationCode" text="doorgaan" disabled={!(isValid == 'VALID')} data={{ email: email }} />
+                    <BigButton
+                        n={navigation}
+                        component="ConfirmationCode"
+                        text="doorgaan"
+                        disabled={!(isValid == 'VALID')}
+                        data={{ email: email }}
+                    />
                 </View>
             </View>
         </>

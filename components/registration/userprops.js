@@ -33,8 +33,21 @@ const UserProps = ({ route, navigation }) => {
         }
     }
 
-    const postRegistration = () => {
-        Axios.post(`${apiUrl}/test`)
+    const postData = () => {
+        Axios.post(`${apiUrl}/set/properties`,
+            {
+                userid: data.userid,
+                sport: selections.sport + 1,
+                feesten: selections.party + 1,
+                roken: selections.smoking + 1,
+                alcohol: selections.alcohol + 1,
+                stemmen: selections.politics + 1,
+                werken: selections.work + 1,
+                kinderen: selections.kids + 1,
+                kinderwens: selections.kidWish + 1,
+                eten: selections.food + 1
+
+            })
             .then((res) => {
                 console.log('success', res);
             })
@@ -139,7 +152,7 @@ const UserProps = ({ route, navigation }) => {
                         <BigButton n={navigation} component={"ProfileText"} text="opslaan"
                             disabled={!(formFilled)}
                             data={Object.assign(data, selections)}
-                            callBack={postRegistration} />
+                            callBack={postData} />
                     </View>
                 </View>
 
