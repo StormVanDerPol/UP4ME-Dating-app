@@ -19,6 +19,8 @@ import PhotoGuidelines from './components/policy/photoGuidelines';
 import ProfileText from './components/registration/profileText';
 import ProfilePictures from './components/registration/profilePictures';
 import UserSettings from './components/settings/userSettings';
+import UserProfile from './components/profile/userProfile';
+
 
 
 const Stack = createStackNavigator();
@@ -45,6 +47,7 @@ const App = () => {
         <Stack.Screen name="ProfileText" component={ProfileText} />
 
         <Stack.Screen name="UserSettings" component={UserSettings} />
+        <Stack.Screen name="UserProfile" component={UserProfile} />
 
 
       </Stack.Navigator>
