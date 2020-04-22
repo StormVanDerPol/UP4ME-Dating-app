@@ -9,10 +9,11 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native';
 
-import { gs, deviceWidth, pallette } from '../../globals';
+import { gs, deviceWidth, pallette, apiUrl } from '../../globals';
 import LinearGradient from 'react-native-linear-gradient';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
+import Axios from 'axios';
 
 const Gender = ({ route, navigation }) => {
 
@@ -70,6 +71,13 @@ const Gender = ({ route, navigation }) => {
         }
     };
 
+    const postData = () => {
+        Axios.get(`${apiUrl}/register/2/${data.userid}/${data.name}/${data.bday}/${data.height * 100}/${data.job}/${data.placeName}/${selectedGender}`)
+            .then((res) => {
+                console.log(res)
+            });
+    }
+
     return (
         <>
             <View style={gs.screenWrapper}>
@@ -101,7 +109,7 @@ const Gender = ({ route, navigation }) => {
                 <Text>{genNotif}</Text>
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="ProfilePictures" text="doorgaan" disabled={(selectedGender == 0)}
+                    <BigButton n={navigation} component="ProfilePictures" text="doorgaan" disabled={(selectedGender == 0)} callBack={postData}
                         data={Object.assign(data, { gender: selectedGender })}
                     />
                 </View>

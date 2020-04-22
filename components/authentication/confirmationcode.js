@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
     StyleSheet, View, Text, TextInput,
@@ -30,28 +30,43 @@ const ConfirmationCode = ({ route, navigation }) => {
 
             console.log('code is 6 chars');
 
-            Axios.get(`${apiUrl}/test/checkcode/valid`)
-                .then((res) => {
-                    console.log('response: ', res);
-                    setIsValid(res.data);
-
-                    if (!res.data) {
-                        setValidationFeedback('invalid confirmation code.');
-                        setConfcode('');
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                    setIsValid(false);
-                    setValidationFeedback('Sorry! Something went wrong! Please try again!');
-                    setConfcode('');
-                })
+            if (confcode == targetConfCode) {
+                setIsValid(true);
+            }
+            else {
+                console.log('code is wrong')
+                setIsValid(false);
+            }
         }
         else {
             console.log('code < 6 chars, waiting...');
+            setIsValid(false);
         }
     }
 
+    const [targetConfCode, setTargetConfCode] = useState(999666);
+    const [userid, setUserid] = useState(0);
+
+    async function registerEmail() {
+
+        console.log(`${apiUrl}/register/1/${data.email}`);
+
+        await Axios.get(`${apiUrl}/register/1/${data.email}`)
+            .then((res) => {
+
+                console.log(res);
+
+                setUserid(res.data.userid);
+                setTargetConfCode(res.data.security);
+            })
+    }
+
+    const [init, setInit] = useState(false);
+
+    if (!init) {
+        registerEmail();
+        setInit(true);
+    }
 
     return (
         <>
@@ -68,7 +83,7 @@ const ConfirmationCode = ({ route, navigation }) => {
 
                 <View style={gs.bottom}>
                     <BigButton n={navigation} component="UserData" text="doorgaan" disabled={!(isValid)}
-                        data={Object.assign(data, { confirmationCode: confcode })} />
+                        data={Object.assign(data, { confirmationCode: confcode, userid: userid })} />
                 </View>
             </View>
         </>

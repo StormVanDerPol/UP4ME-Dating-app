@@ -23,6 +23,11 @@ const ProfilePictures = ({ route, navigation }) => {
 
     const [pfpArray, setPfpArray] = useState([]);
 
+    function addMimeType(base64) {
+        var mimeType = fileType(Buffer.from(base64, 'base64')).mime;
+        return `data:${mimeType};base64,${base64}`
+    }
+
     const handleChoosePhoto = (id) => {
         const opt = {
 

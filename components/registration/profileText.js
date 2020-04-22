@@ -10,15 +10,21 @@ import {
 
 import Logo from '../logo';
 
-import { gs } from '../../globals';
+import { gs, apiUrl } from '../../globals';
 
 import BigButton from '../bigbutton';
 import { TextInput } from 'react-native-gesture-handler';
+import Axios from 'axios';
 
 const ProfileText = ({ route, navigation }) => {
 
     const [data] = useState(route.params);
     const [profText, setProfText] = useState('')
+
+
+    const postData = () => {
+        Axios.post(`${apiUrl}/set/profiletext`, { userid: data.userid, profiletext: profText });
+    }
 
     return (
         <>
@@ -37,7 +43,9 @@ const ProfileText = ({ route, navigation }) => {
 
                 <View style={[gs.bottom]}>
                     <BigButton n={navigation} component="UserProps" text="doorgaan" disabled={!(profText)}
-                        data={Object.assign(data, { profileDescription: profText })} />
+                        data={Object.assign(data, { profileDescription: profText })}
+                        callBack={postData}
+                    />
                 </View>
             </View>
         </>

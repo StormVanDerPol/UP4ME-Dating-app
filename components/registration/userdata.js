@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
     StyleSheet, Text, View, TextInput,
@@ -28,6 +28,10 @@ const UserData = ({ route, navigation }) => {
 
     const [bday, setBday] = useState(0);
 
+    const concatBday = () => {
+        setBday(year + month + day);
+    }
+
     return (
         <>
             <View style={gs.screenWrapper}>
@@ -47,7 +51,7 @@ const UserData = ({ route, navigation }) => {
                         onChangeText={(input) => {
                             if (input.length == 2) {
                                 setDay(input);
-                                setBday(year + month + day);
+                                // setBday(year + month + day);
                             }
                         }}
                         maxLength={2} style={s.input} placeholder={'DAG'}
@@ -57,7 +61,7 @@ const UserData = ({ route, navigation }) => {
                         onChangeText={(input) => {
                             if (input.length == 2) {
                                 setMonth(input);
-                                setBday(year + month + day);
+                                // setBday(year + month + day);
                             }
                         }}
                         maxLength={2} style={s.input} placeholder={'MAAND'}
@@ -67,7 +71,7 @@ const UserData = ({ route, navigation }) => {
                         onChangeText={(input) => {
                             if (input.length == 4) {
                                 setYear(input);
-                                setBday(year + month + day);
+                                // setBday(year + month + day);
                             }
                         }}
                         maxLength={4} style={s.input} placeholder={'JAAR'}
@@ -95,7 +99,9 @@ const UserData = ({ route, navigation }) => {
 
                 <View style={gs.bottom}>
                     <BigButton n={navigation} component="Location" text="doorgaan"
-                        disabled={!(name && job && day.length == 2 && month.length == 2 && year.length == 4 && bday != 0)}
+                        disabled={!(name && job && day.length == 2 && month.length == 2 && year.length == 4)}
+
+                        callBack={concatBday}
                         data={Object.assign(data, { name, bday, day, month, year, height, job })}
                     />
                 </View>
