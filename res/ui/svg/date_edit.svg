@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="17px" viewBox="0 0 18 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>Edit icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Button-Copy-3" transform="translate(-65.000000, -16.000000)" fill="#FFFFFF">
+            <g id="Group">
+                <g id="Edit-icon" transform="translate(63.000000, 15.000000)">
+                    <path d="M13.4221008,16.6794656 L13.4221008,18.8970231 C13.4221008,20.1217463 12.4313229,21.1145806 11.2049693,21.1145806 L9.63923243,21.1145806 C8.41474446,21.1145806 7.42210084,20.1302848 7.42210084,18.8970231 L7.42210084,16.6794656 L13.4221008,16.6794656 Z M13.4221008,5.59167808 L13.4221008,15.5706868 L7.42210084,15.5706868 L7.42210084,5.59167808 L13.4221008,5.59167808 Z M10.4221008,-1.06099443 L13.4221008,4.48289933 L7.42210084,4.48289933 L10.4221008,-1.06099443 Z" id="Combined-Shape" transform="translate(10.422101, 10.026793) rotate(-134.000000) translate(-10.422101, -10.026793) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

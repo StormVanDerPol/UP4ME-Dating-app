@@ -8,18 +8,26 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { pallette, deviceWidth } from '../globals';
 
+const BigButton = (p) => {
 
-function gradient(disabled) {
+    const gradient = (disabled) => {
 
-    if (!disabled) {
-        return [pallette[0], pallette[1]]
+        if (!disabled) {
+            return [pallette[0], pallette[1]]
+        }
+        else {
+            return ['#DDDDDD', '#DDDDDD']
+        }
     }
-    else {
-        return ['#DDDDDD', '#DDDDDD']
-    }
-}
 
-function BigButton(p) {
+    const callBack = () => {
+
+        console.log('callback that runs: ', p.callBack);
+
+        if (p.callBack != undefined) {
+            p.callBack();
+        }
+    }
 
     return (
         <>
@@ -28,12 +36,15 @@ function BigButton(p) {
 
                     if (!p.disabled) {
 
+                        callBack();
+
                         if (p.component != "back") {
                             console.log(p.data);
                             p.n.navigate(p.component, p.data)
                         }
                         else {
-                            p.n.goBack()
+
+                            p.n.goBack();
                         }
                     }
                 }}>

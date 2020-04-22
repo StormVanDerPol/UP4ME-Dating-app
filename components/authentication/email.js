@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -8,11 +8,91 @@ import {
 
 import BigButton from '../bigbutton';
 import Logo from '../logo';
-import { gs, regexEmail } from '../../globals';
+import { gs, regexEmail, apiUrl } from '../../globals';
+import Axios from 'axios';
 
 const Email = ({ navigation }) => {
 
-    const [email, setEmail] = useState('')
+    const [email, setEmail] = useState('');
+    const [isValid, setIsValid] = useState('');
+    const [validationFeedback, setValidationFeedback] = useState('');
+
+    const validateEmail = () => {
+
+        Axios.get(`${apiUrl}/test/checkmail/valid`)
+            .then((res) => {
+                console.log('success', res)
+                setIsValid(res.data);
+            })
+            .catch((err) => {
+                console.log('error', err)
+                setIsValid('REQ_ERROR');
+            });
+    };
+
+    const setFeedback = () => {
+
+        switch (isValid) {
+            case 'VALID':
+                setValidationFeedback(
+                    'Good to go!'
+                );
+                break;
+
+            case 'INVALID':
+                setValidationFeedback(
+                    'Invalid E-Mail address.'
+                );
+                break;
+
+            case 'TEMP':
+                setValidationFeedback(
+                    'We do not allow the use of temporary E-Mail providers.'
+                );
+                break;
+
+            case 'EXISTS':
+                setValidationFeedback(
+                    'This E-Mail has already been used.'
+                );
+                break;
+
+            case 'REQ_ERROR':
+                setValidationFeedback(
+                    'Sorry! Something went wrong! please try again later!'
+                );
+                break;
+
+            default:
+                setValidationFeedback(
+                    ''
+                );
+        }
+    }
+
+    const feedbackColor = () => {
+        if (isValid == 'VALID') {
+            return { color: 'green' };
+        }
+        else {
+            return { color: 'red' }
+        }
+    }
+
+    const handleEndEditing = () => {
+
+        if (regexEmail.test(email)) {
+            validateEmail();
+        }
+        else {
+            setIsValid('INVALID');
+            console.log('invalid email', isValid);
+        }
+    }
+
+    useEffect(() => {
+        setFeedback();
+    }, [isValid]);
 
     return (
         <>
@@ -24,12 +104,21 @@ const Email = ({ navigation }) => {
                 </View>
 
                 <View>
-                    <TextInput style={s.input} onChangeText={(input) => setEmail(input)} />
+                    <TextInput style={s.input}
+                        onChangeText={(input) => {
+                            setEmail(input);
+                        }}
+                        onEndEditing={() => {
+                            handleEndEditing();
+                        }} />
+                    <Text style={[s.feedback, feedbackColor()]}>{validationFeedback}</Text>
+
                     <Text>We sturen je een email met een verificatiecode.</Text>
+
                 </View>
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="ConfirmationCode" text="doorgaan" disabled={!regexEmail.test(email)} data={{ email: email }} />
+                    <BigButton n={navigation} component="ConfirmationCode" text="doorgaan" disabled={!(isValid == 'VALID')} data={{ email: email }} />
                 </View>
             </View>
         </>
@@ -40,7 +129,7 @@ const s = StyleSheet.create({
 
     input: {
         marginTop: 50,
-        marginBottom: 50,
+        marginBottom: 5,
         borderBottomColor: "gray",
         borderBottomWidth: 1
     },
@@ -48,6 +137,10 @@ const s = StyleSheet.create({
     header: {
         marginTop: 20
     },
+
+    feedback: {
+        marginBottom: 30,
+    }
 
 });
 

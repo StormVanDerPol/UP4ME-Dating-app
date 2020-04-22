@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="25px" viewBox="0 0 25 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="6.43892168%" y1="49.9605639%" x2="96.9024301%" y2="49.9605639%" id="linearGradient-1">
+            <stop stop-color="#FF0000" offset="0%"></stop>
+            <stop stop-color="#F28D71" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="6.43892168%" y1="49.9605639%" x2="96.9024301%" y2="49.9605639%" id="linearGradient-2">
+            <stop stop-color="#FF0000" offset="0%"></stop>
+            <stop stop-color="#F28D71" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Up4me-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="9.2-Date-plannen---Locatie-zoeken" transform="translate(-276.000000, -76.000000)">
+            <g id="Group-2" transform="translate(277.000000, 77.000000)">
+                <path d="M13.8125,7.5 C13.2757193,7.5 12.7845604,7.6786707 12.3511871,8.02668728 C11.9082329,8.38239605 11.6158097,8.8371167 11.4423329,9.16628987 L10.9999857,10.005646 L10.5576609,9.16627804 C10.3841855,8.83708636 10.091763,8.38239274 9.64881378,8.02668796 C9.21543956,7.6786707 8.72428072,7.5 8.1875,7.5 C7.42798254,7.5 6.76230522,7.82325701 6.28620001,8.35947358 C5.79028305,8.91800327 5.5,9.70134719 5.5,10.5899425 C5.5,12.6860623 7.20208661,14.0818985 9.62904949,16.2294235 C9.99625028,16.5543633 10.4065491,16.9187333 11.1620938,17.3061802 C11.5910428,16.9195748 12.0016782,16.5561943 12.3712257,16.2291854 C14.7979241,14.0818894 16.5,12.6860565 16.5,10.5899425 C16.5,9.70134719 16.209717,8.91800327 15.7138,8.35947358 C15.2376948,7.82325701 14.5720175,7.5 13.8125,7.5 Z" id="Path" stroke="url(#linearGradient-1)"></path>
+                <circle id="Oval" stroke="url(#linearGradient-2)" cx="11.5" cy="11.5" r="11.5"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

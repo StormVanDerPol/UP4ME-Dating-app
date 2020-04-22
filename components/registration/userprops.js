@@ -1,5 +1,6 @@
 
 import React, { useState } from 'react';
+import Axios from 'axios';
 
 import {
     StyleSheet,
@@ -12,11 +13,35 @@ import UserPropsRadioButton from './userpropsRadiobtn';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
-import { gs } from '../../globals';
+import { gs, apiUrl } from '../../globals';
 
 const UserProps = ({ route, navigation }) => {
 
+    // const[prevRoute] = useState(navigation.dangerouslyGetState().routes[navigation.dangerouslyGetState().routes.length].name)
+
     const [data] = useState(route.params);
+    const [selections, setSelections] = useState({});
+    const [formFilled, setFormFilled] = useState(false);
+
+    const getSelections = (selection) => {
+
+        setSelections(Object.assign(selections, selection));
+        console.log(selections, 'keys: ', (Object.keys(selections).length));
+
+        if ((Object.keys(selections).length == 9)) {
+            setFormFilled(true);
+        }
+    }
+
+    const postRegistration = () => {
+        Axios.post(`${apiUrl}/test`)
+            .then((res) => {
+                console.log('success', res);
+            })
+            .catch((err) => {
+                console.log('error', err);
+            })
+    }
 
     return (
         <>
@@ -32,7 +57,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'sport'} value={data.sport} getSelections={getSelections} />
                 </View>
 
 
@@ -42,7 +67,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'party'} value={data.party} getSelections={getSelections} />
                 </View>
 
 
@@ -52,7 +77,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'smoking'} value={data.smoking} getSelections={getSelections} />
                 </View>
 
 
@@ -62,7 +87,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'alcohol'} value={data.alcohol} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -71,7 +96,7 @@ const UserProps = ({ route, navigation }) => {
                         "Links",
                         "Midden",
                         "Rechts"
-                    ]} />
+                    ]} selectKey={'politics'} value={data.politics} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -80,7 +105,7 @@ const UserProps = ({ route, navigation }) => {
                         "< 40 uur",
                         "40 uur",
                         "> 40 uur"
-                    ]} />
+                    ]} selectKey={'work'} value={data.work} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -89,7 +114,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'food'} value={data.food} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -97,7 +122,7 @@ const UserProps = ({ route, navigation }) => {
                     <UserPropsRadioButton btnText={[
                         "Ja",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'kids'} value={data.kids} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -106,12 +131,15 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Mischien",
                         "Nee"
-                    ]} />
+                    ]} selectKey={'kidWish'} value={data.kidWish} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
-                        <BigButton text="opslaan" />
+                        <BigButton n={navigation} component={"ProfileText"} text="opslaan"
+                            disabled={!(formFilled)}
+                            data={Object.assign(data, selections)}
+                            callBack={postRegistration} />
                     </View>
                 </View>
 
