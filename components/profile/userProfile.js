@@ -4,18 +4,138 @@ import { SliderBox } from "react-native-image-slider-box";
 import {
     StyleSheet, Text, View,
 } from 'react-native';
-import { deviceHeight } from '../../globals';
+
+import { deviceHeight, apiUrl, addMimeType } from '../../globals';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
-const UserProfile = ({ navigation }) => {
+import Axios from 'axios';
 
-    const [images, setImages] = useState([
-        require('../../temp/img/mememe.png'),
-        "https://source.unsplash.com/1024x768/?nature",
-        "https://source.unsplash.com/1024x768/?water",
-        "https://source.unsplash.com/1024x768/?girl",
-        "https://source.unsplash.com/1024x768/?tree",
-    ]);
+import moment from 'moment';
+
+const UserProfile = ({ route, navigation }) => {
+
+    const [data] = useState(route.params);
+
+    const [images, setImages] = useState([]);
+    const [name, setName] = useState('Name');
+    const [age, setAge] = useState(0);
+    const [placeName, setPlaceName] = useState('Place');
+    const [height, setHeight] = useState(0);
+    const [job, setJob] = useState('');
+    const [desc, setDesc] = useState('desc')
+    const [profProps, setProfProps] = useState({});
+
+    const retrieveProfileData = (userid) => {
+        Axios.get(`${apiUrl}/retrieve/profile/of/${userid}`)
+            .then((res) => {
+
+                console.log(res.data[0]);
+
+                // if (res.data[0].foto1)
+                //     images.push(res.data[0].foto1);
+                // if (res.data[0].foto2)
+                //     images.push(res.data[0].foto2);
+                // if (res.data[0].foto3)
+                //     images.push(res.data[0].foto3);
+                // if (res.data[0].foto4)
+                //     images.push(res.data[0].foto4);
+                // if (res.data[0].foto5)
+                //     images.push(res.data[0].foto5);
+                // if (res.data[0].foto6)
+                //     images.push(res.data[0].foto6);
+
+
+                let imagesToCheck = [
+                    res.data[0].foto1,
+                    res.data[0].foto2,
+                    res.data[0].foto3,
+                    res.data[0].foto4,
+                    res.data[0].foto5,
+                    res.data[0].foto6,
+                ];
+
+                for (let image of imagesToCheck) {
+
+                    if (image) {
+                        images.push(image);
+                    }
+                }
+
+                setImages([...images]);
+
+                setName(res.data[0].naam);
+
+                setPlaceName(res.data[0].zoektin);
+
+                setHeight(res.data[0].lengte / 100);
+
+                setJob(res.data[0].beroep);
+
+                setDesc(res.data[0].profieltext);
+
+                setProfProps({
+                    sport: res.data[0].sporten,
+                    party: res.data[0].feesten,
+                    smoking: res.data[0].roken,
+                    alcohol: res.data[0].alcohol,
+                    politics: res.data[0].stemmen,
+                    work: res.data[0].uur40,
+                    kids: res.data[0].kids,
+                    kidWish: res.data[0].kidwens,
+                    food: res.data[0].eten
+                });
+
+                setAge(calcAge(res.data[0].geboortedatum));
+
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                console.log('images:', images);
+            })
+    }
+
+    var pp = 'asa'.substr(0, 2)
+
+    const calcAge = (bdateApi) => {
+
+        let now = new Date;
+
+        let bdateApiStr = bdateApi + '';
+
+        let curdate = {
+            year: now.getFullYear(),
+            month: now.getMonth(),
+            day: now.getDate()
+        }
+
+        console.log(curdate);
+
+        let bdate = {
+            year: parseInt(bdateApiStr.substring(0, 4), 10),
+            month: Math.min(bdateApiStr.substring(4, 6), 12),
+            day: Math.min(bdateApiStr.substring(6), 31)
+        }
+
+        console.log(bdate);
+
+        let a = moment(`${bdate.day}/${bdate.month}/${bdate.year}`, 'D/M/YYYY')
+        let b = moment(`${curdate.day}/${curdate.month}/${curdate.year}`, 'D/M/YYYY')
+
+        let dateDiff = b.diff(a, 'years');
+
+        console.log(dateDiff);
+
+        return dateDiff;
+    }
+
+    const [init, setInit] = useState(false);
+
+    if (!init) {
+        retrieveProfileData(100)
+        setInit(true);
+    }
 
 
     return (
@@ -25,12 +145,16 @@ const UserProfile = ({ navigation }) => {
                 <View style={s.container}>
                     <SliderBox
                         sliderBoxHeight={'100%'}
-                        autoplay={'true'}
+                        autoplay={false}
                         dotColor={"#ffd1f3"}
+
                         // dotStyle={{
                         //     width: 15,
                         // }}
-                        paginationBoxVerticalPadding={'85%'}
+
+                        paginationBoxVerticalPadding={deviceHeight - 100}
+
+                        resizeMode={'cover'}
 
                         images={images}
                         onCurrentImagePressed={index =>
@@ -38,31 +162,34 @@ const UserProfile = ({ navigation }) => {
                         }
                     />
                     <View style={s.whiteContainer}>
-                        <Text style={s.redText}>Name, age</Text>
+                        <Text style={s.redText}>{name}, {age}</Text>
 
-                        <Text style={s.whiteText}>icon location</Text>
-                        <Text style={s.whiteText}>icon thing</Text>
+                        <Text style={s.whiteText}>icon {placeName}</Text>
+                        <Text style={s.whiteText}>icon {job}</Text>
                     </View>
 
                 </View>
 
                 <View style={s.flexing}>
-                    <Text>icon height</Text>
+                    <Text>icon {height}</Text>
                     <Text>icon number</Text>
                 </View>
 
                 <View>
-                    <Text style={s.des}>discription------Je kunt mij ’s ochtends wakker maken voor een kop koffie.</Text>
+                    <Text style={s.des}>{desc}</Text>
 
                     <View style={s.filter}>
 
-                        <Text style={s.fillerBorder}>filter</Text>
-                        <Text style={s.fillerBorder}>filter</Text>
-                        <Text style={s.fillerBorder}>filter</Text>
-                        <Text style={s.fillerBorder}>filter</Text>
-                        <Text style={s.fillerBorder}>filter</Text>
+                        <Text style={s.fillerBorder}>{profProps.sport}</Text>
+                        <Text style={s.fillerBorder}>{profProps.party}</Text>
+                        <Text style={s.fillerBorder}>{profProps.smoking}</Text>
+                        <Text style={s.fillerBorder}>{profProps.alcohol}</Text>
 
-
+                        <Text style={s.fillerBorder}>{profProps.politics}</Text>
+                        <Text style={s.fillerBorder}>{profProps.work}</Text>
+                        <Text style={s.fillerBorder}>{profProps.kids}</Text>
+                        <Text style={s.fillerBorder}>{profProps.kidWish}</Text>
+                        <Text style={s.fillerBorder}>{profProps.food}</Text>
 
                     </View>
                 </View>
@@ -88,23 +215,24 @@ const UserProfile = ({ navigation }) => {
 
 const s = StyleSheet.create({
     container: {
-        height: deviceHeight - 300
+
+        height: deviceHeight - 50,
+        // borderWidth: 2,
     },
     whiteContainer: {
         position: 'absolute',
-        left: 20,
-
-        top: '70%',
+        bottom: 20,
+        left: 20
         // color: 'red',
     },
     redText: {
-        color: 'red',
+        color: 'black',
         fontSize: 35,
         // position: 'relative',
     },
     whiteText: {
         fontSize: 18,
-        color: 'red',
+        color: 'black',
     },
     flexing: {
         flexDirection: 'row',

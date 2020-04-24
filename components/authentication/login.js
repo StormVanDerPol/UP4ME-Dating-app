@@ -28,7 +28,7 @@ function Login({ navigation }) {
                     </View>
 
                     <View>
-                        <LoginButton n={navigation} text="Inloggen" component="UserProfile"></LoginButton>
+                        <LoginButton n={navigation} text="Inloggen" component="Email"></LoginButton>
                         <LoginButton n={navigation} text="Maak nieuw account aan" component="Email"></LoginButton>
                     </View>
 

@@ -18,14 +18,15 @@ import {
     MapsApiRootUrl,
     deviceWidth,
 } from '../../globals';
+
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
 import { GOOGLE_MAPS_API_KEY } from '../../temp/keys';
 import { TextInput } from 'react-native-gesture-handler';
 import RNSVG_location from '../../res/ui/rnsvg/rnsvg_location';
+
 import { PermissionsAndroid } from 'react-native';
-import Axios from 'axios';
 
 const Location = ({ route, navigation }) => {
 
@@ -45,18 +46,17 @@ const Location = ({ route, navigation }) => {
         }
     }
 
-    const zoom = 10;
-    const mapWidth = deviceWidth - mx * 2;
-    const mapHeight = deviceHeight / 2;
-    const mapType = 'roadmap'
-
     const reverseGeocodeCurrentLocation = () => {
 
         Geolocation.getCurrentPosition((pos) => {
             setCoords({ lat: pos.coords.latitude, lon: pos.coords.longitude });
-
         })
     }
+
+    const zoom = 10;
+    const mapWidth = deviceWidth - mx * 2;
+    const mapHeight = deviceHeight / 2;
+    const mapType = 'roadmap'
 
     const [init, setInit] = useState(false);
 
@@ -78,6 +78,8 @@ const Location = ({ route, navigation }) => {
                     <Logo />
                     <Text style={[s.header, gs.mainHeader]}>Location</Text>
                 </View>
+
+                <Text>{coords.lat}</Text>
 
                 <View style={s.locationSearchBar}>
                     <View style={s.locationIcon}>

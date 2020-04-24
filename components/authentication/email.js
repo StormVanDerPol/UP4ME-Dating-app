@@ -19,16 +19,6 @@ const Email = ({ navigation }) => {
 
     const validateEmail = () => {
 
-        // Axios.get(`${apiUrl}/test/checkmail/valid`)
-        //     .then((res) => {
-        //         console.log('success', res)
-        //         setIsValid(res.data);
-        //     })
-        //     .catch((err) => {
-        //         console.log('error', err)
-        //         setIsValid('REQ_ERROR');
-        //     });
-
         Axios.get(`https://block-temporary-email.com/check/email/${email}`)
             .then((res) => {
                 if (!res.data.temporary) {

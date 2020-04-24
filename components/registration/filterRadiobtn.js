@@ -11,9 +11,9 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import { pallette } from "../../globals";
 
-const UserPropsRadioButton = (p) => {
+const FilterRadioButton = (p) => {
 
-    const [selected, setSelected] = useState(0);
+    const [selected, setSelected] = useState(p.btnText.length + 1);
     const [hasInitialized, setHasInitialized] = useState(false);
 
     const btnGrad = (id) => {
@@ -62,7 +62,7 @@ const UserPropsRadioButton = (p) => {
             setSelected(id)
         }
         else {
-            setSelected(0);
+            setSelected(p.btnText.length + 1);
         }
     }
 
@@ -111,4 +111,4 @@ const s = StyleSheet.create({
     },
 });
 
-export default UserPropsRadioButton;
+export default FilterRadioButton;
