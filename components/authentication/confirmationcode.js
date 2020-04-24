@@ -17,6 +17,7 @@ const ConfirmationCode = ({ route, navigation }) => {
     const [confcode, setConfcode] = useState('');
     const [isValid, setIsValid] = useState(false);
     const [validationFeedback, setValidationFeedback] = useState('');
+    const [nextRoute, setNextRoute] = useState('');
 
     const handleChange = (input) => {
         setConfcode(input);
@@ -51,22 +52,33 @@ const ConfirmationCode = ({ route, navigation }) => {
     const [targetConfCode, setTargetConfCode] = useState(null);
     const [userid, setUserid] = useState(0);
 
-    async function registerEmail(resend) {
+    async function registerEmail() {
 
-        console.log(`${apiUrl}/register/1/${data.email}`);
+        console.log('Email: ', `${apiUrl}/register/1/${data.email}`);
 
         await Axios.get(`${apiUrl}/register/1/${data.email}`)
             .then((res) => {
 
-                console.log(res);
+                console.log('/register/1/ Response: ', res);
                 setUserid(res.data.userid);
                 setTargetConfCode(res.data.security);
+
+                if (res.data.registered == -1) {
+                    setNextRoute('UserData');
+                }
+                else {
+                    setNextRoute('UserProfile');
+                }
 
                 if (res.data.security == undefined) {
                     setIsValid(false);
                     setValidationFeedback("Something went wrong! Please click 'resend' and try again with a new code!")
                 }
             })
+    }
+
+    const createSession = () => {
+        global.sessionUserId = userid;
     }
 
     const feedbackColor = () => {
@@ -103,8 +115,14 @@ const ConfirmationCode = ({ route, navigation }) => {
                 <View style={gs.bottom}>
                     <Text style={[s.feedback, { opacity: resendFeedbackOpacity, alignSelf: 'center' }]}>code sent!</Text>
                     <Text style={[s.resendbutton, gs.underline]} onPress={() => { registerEmail(); setResendFeedbackOpacity(1) }}>resend code</Text>
-                    <BigButton n={navigation} component="UserData" text="doorgaan" disabled={!(isValid)}
-                        data={Object.assign(data, { confirmationCode: confcode, userid: userid })} />
+                    <BigButton
+                        n={navigation}
+                        component={nextRoute}
+                        text="doorgaan"
+                        disabled={!(isValid)}
+                        data={Object.assign(data, { confirmationCode: confcode, userid: userid })}
+                        callBack={createSession}
+                    />
                 </View>
             </View>
         </>

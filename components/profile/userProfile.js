@@ -5,7 +5,7 @@ import {
     StyleSheet, Text, View,
 } from 'react-native';
 
-import { deviceHeight, apiUrl, addMimeType } from '../../globals';
+import { deviceHeight, apiUrl } from '../../globals';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
 import Axios from 'axios';
@@ -29,21 +29,7 @@ const UserProfile = ({ route, navigation }) => {
         Axios.get(`${apiUrl}/retrieve/profile/of/${userid}`)
             .then((res) => {
 
-                console.log(res.data[0]);
-
-                // if (res.data[0].foto1)
-                //     images.push(res.data[0].foto1);
-                // if (res.data[0].foto2)
-                //     images.push(res.data[0].foto2);
-                // if (res.data[0].foto3)
-                //     images.push(res.data[0].foto3);
-                // if (res.data[0].foto4)
-                //     images.push(res.data[0].foto4);
-                // if (res.data[0].foto5)
-                //     images.push(res.data[0].foto5);
-                // if (res.data[0].foto6)
-                //     images.push(res.data[0].foto6);
-
+                console.log('/retrieve/profile/of/ response: ', res.data[0]);
 
                 let imagesToCheck = [
                     res.data[0].foto1,
@@ -89,28 +75,20 @@ const UserProfile = ({ route, navigation }) => {
 
             })
             .catch((err) => {
-                console.log(err);
+                console.log('Error', err);
             })
             .finally(() => {
-                console.log('images:', images);
+                console.log('images: ', images);
             })
     }
 
-    var pp = 'asa'.substr(0, 2)
-
     const calcAge = (bdateApi) => {
 
-        let now = new Date;
+        let now = moment();
+
+        console.log('Current Moment: ', now);
 
         let bdateApiStr = bdateApi + '';
-
-        let curdate = {
-            year: now.getFullYear(),
-            month: now.getMonth(),
-            day: now.getDate()
-        }
-
-        console.log(curdate);
 
         let bdate = {
             year: parseInt(bdateApiStr.substring(0, 4), 10),
@@ -118,14 +96,13 @@ const UserProfile = ({ route, navigation }) => {
             day: Math.min(bdateApiStr.substring(6), 31)
         }
 
-        console.log(bdate);
+        console.log('Birthdate: ', bdate);
 
-        let a = moment(`${bdate.day}/${bdate.month}/${bdate.year}`, 'D/M/YYYY')
-        let b = moment(`${curdate.day}/${curdate.month}/${curdate.year}`, 'D/M/YYYY')
+        let bdateMoment = moment(`${bdate.day}/${bdate.month}/${bdate.year}`, 'D/M/YYYY');
 
-        let dateDiff = b.diff(a, 'years');
+        let dateDiff = now.diff(bdateMoment, 'years');
 
-        console.log(dateDiff);
+        console.log('Date difference: ', dateDiff);
 
         return dateDiff;
     }
@@ -133,7 +110,7 @@ const UserProfile = ({ route, navigation }) => {
     const [init, setInit] = useState(false);
 
     if (!init) {
-        retrieveProfileData(100)
+        retrieveProfileData(global.sessionUserId)
         setInit(true);
     }
 

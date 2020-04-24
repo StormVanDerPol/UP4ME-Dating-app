@@ -39,7 +39,7 @@ const UserProps = ({ route, navigation }) => {
     const getSelections = (selection) => {
 
         setSelections(Object.assign(selections, selection));
-        console.log(selections, 'keys: ', (Object.keys(selections).length));
+        console.log('Selections', selections, 'Amount of keys', (Object.keys(selections).length));
 
         if ((Object.keys(selections).length == 9)) {
             setFormFilled(true);
