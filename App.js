@@ -66,15 +66,6 @@ const App = () => {
     setInit(true);
   }
 
-  console.log(globalCoords);
-
-  useEffect(() => {
-
-
-
-    Axios.get
-
-  }, [globalCoords])
 
   return (
     <>
