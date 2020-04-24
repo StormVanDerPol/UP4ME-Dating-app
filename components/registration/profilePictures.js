@@ -30,7 +30,7 @@ const ProfilePictures = ({ route, navigation }) => {
         };
 
         ImagePicker.launchImageLibrary(opt, (res) => {
-            console.log(res.uri);
+            console.log('Image URI on device', res.uri);
 
             src[id] = res.uri;
             setSrc([...src]);
@@ -38,9 +38,7 @@ const ProfilePictures = ({ route, navigation }) => {
             pfpArray[id] = `data:${res.type};base64,${res.data}`;
             setPfpArray([...pfpArray]);
 
-            console.log(res);
-
-            // console.log(src);
+            console.log('ImagePicker response', res);
         })
     }
 
@@ -60,11 +58,11 @@ const ProfilePictures = ({ route, navigation }) => {
             photo6: pfpArray[5]
         }
 
-        console.log(toSend);
+        console.log('POST to send', toSend);
 
         Axios.post(`${apiUrl}/set/photos`, toSend)
             .catch((err) => {
-                console.log(err);
+                console.log('Error', err);
             });
     }
 

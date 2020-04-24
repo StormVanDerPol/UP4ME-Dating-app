@@ -1,3 +1,5 @@
+// import "./globalVariables";
+
 import 'react-native-gesture-handler';
 
 import React, { useState, useEffect } from 'react'
@@ -21,47 +23,47 @@ import ProfilePictures from './components/registration/profilePictures';
 import UserSettings from './components/settings/userSettings';
 import UserProfile from './components/profile/userProfile';
 import Filters from './components/registration/filter';
-import Geolocation from '@react-native-community/geolocation';
-import { PermissionsAndroid, Text } from 'react-native';
-import Axios from 'axios';
-
+import { reqLocationPermission, updateGPSData, geoTimer, getTimeSinceLastGPSUpdate } from './updategps';
+import moment from 'moment';
 
 const Stack = createStackNavigator();
 
 const App = () => {
 
-  const [geoTimer] = useState(0.1); //17
-
   const [init, setInit] = useState(false);
 
-  async function reqLocationPermission() {
-    const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
+  let timeSinceGPSUpdate = moment();
 
-    if (granted) {
-      console.log("You can use the ACCESS_FINE_LOCATION");
-    }
-    else {
-      console.log("ACCESS_FINE_LOCATION permission denied");
-    }
-  }
-
-  const getCurrentCoordinates = () => {
-
-    Geolocation.getCurrentPosition((pos) => {
-      // global.
-    })
-  }
+  const updateGPSDataInMinutes = 10;
+  const updateGPSDataCheckIntervalMS = 60000;
 
   if (!init) {
 
-    reqLocationPermission();
+    reqLocationPermission()
+      .then((granted) => {
+        if (granted) {
+          updateGPSData();
+        }
+      })
 
     setInterval(() => {
 
-      getCurrentCoordinates()
+      let now = moment();
+      let then = timeSinceGPSUpdate;
 
+      let diff = now.diff(then, 'minutes', false);
 
-    }, geoTimer * 60000);
+      console.log('Time left till GPS update:', updateGPSDataInMinutes - diff, 'Minutes');
+
+      if (diff > updateGPSDataInMinutes) {
+
+        updateGPSData();
+
+        timeSinceGPSUpdate = now;
+
+      }
+
+    }, updateGPSDataCheckIntervalMS);
 
     setInit(true);
   }
@@ -80,13 +82,10 @@ const App = () => {
           <Stack.Screen name="UserData" component={UserData} />
           <Stack.Screen name="Location" component={Location} />
           <Stack.Screen name="Gender" component={Gender} />
-
           <Stack.Screen name="ProfilePictures" component={ProfilePictures} />
           <Stack.Screen name="UserProps" component={UserProps} />
-
           <Stack.Screen name="PhotoGuidelines" component={PhotoGuidelines} />
           <Stack.Screen name="ProfileText" component={ProfileText} />
-
           <Stack.Screen name="UserSettings" component={UserSettings} />
           <Stack.Screen name="UserProfile" component={UserProfile} />
           <Stack.Screen name="Filter" component={Filters} />

@@ -74,7 +74,7 @@ const Gender = ({ route, navigation }) => {
     const postData = () => {
         Axios.get(`${apiUrl}/register/2/${data.userid}/${data.name}/${data.bday}/${data.height * 100}/${data.job}/${data.placeName}/${selectedGender}`)
             .then((res) => {
-                console.log(res)
+                console.log('/register/2/ response', res)
             });
     }
 
