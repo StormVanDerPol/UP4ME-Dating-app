@@ -67,7 +67,7 @@ const ConfirmationCode = ({ route, navigation }) => {
                     setNextRoute('UserData');
                 }
                 else {
-                    setNextRoute('UserProfile');
+                    setNextRoute('MatchCatalog');
                 }
 
                 if (res.data.security == undefined) {

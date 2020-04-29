@@ -21,9 +21,10 @@ import PhotoGuidelines from './components/policy/photoGuidelines';
 import ProfileText from './components/registration/profileText';
 import ProfilePictures from './components/registration/profilePictures';
 import UserSettings from './components/settings/userSettings';
-import UserProfile from './components/profile/userProfile';
+import MatchCatalog from './components/matching/MatchCatalog';
 import Filters from './components/registration/filter';
-import { reqLocationPermission, updateGPSData, geoTimer, getTimeSinceLastGPSUpdate } from './updategps';
+
+import { reqLocationPermission, updateGPSData } from './updategps';
 import moment from 'moment';
 
 const Stack = createStackNavigator();
@@ -87,7 +88,7 @@ const App = () => {
           <Stack.Screen name="PhotoGuidelines" component={PhotoGuidelines} />
           <Stack.Screen name="ProfileText" component={ProfileText} />
           <Stack.Screen name="UserSettings" component={UserSettings} />
-          <Stack.Screen name="UserProfile" component={UserProfile} />
+          <Stack.Screen name="MatchCatalog" component={MatchCatalog} />
           <Stack.Screen name="Filter" component={Filters} />
         </Stack.Navigator>
       </NavigationContainer>
