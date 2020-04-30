@@ -29,6 +29,9 @@ import Filters from './components/registration/filter';
 import { reqLocationPermission, updateGPSData } from './updategps';
 import moment from 'moment';
 
+//temp
+// import SolidSnek from './temp/gay';
+
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -76,6 +79,10 @@ const App = () => {
     <>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
+
+
+          {/* <Stack.Screen name="SolidSnek" component={SolidSnek} /> */}
+
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Email" component={Email} />
           <Stack.Screen name="ConfirmationCode" component={ConfirmationCode} />

@@ -10,7 +10,7 @@ import {
 import {
     deviceHeight,
     apiUrl,
-    calcAge,
+    calcAgeHet,
 } from '../../globals';
 
 import {
@@ -21,6 +21,11 @@ import {
 } from 'react-native-gesture-handler';
 
 import Axios from 'axios';
+
+import RNSVG_occupation from '../../res/ui/rnsvg/rnsvg_occupation';
+import RNSVG_location_profile from '../../res/ui/rnsvg/rnsvg_location_profile';
+import RNSVG_match_no from '../../res/ui/rnsvg/rnsvg_match_no';
+import RNSVG_match_yes from '../../res/ui/rnsvg/rnsvg_match_yes';
 
 const MatchCatalogItem = (p) => {
 
@@ -100,7 +105,7 @@ const MatchCatalogItem = (p) => {
                     food: res.data[0].eten
                 });
 
-                setAge(calcAge(res.data[0].geboortedatum));
+                setAge(calcAgeHet(res.data[0].geboortedatum));
 
             })
             .catch((err) => {
@@ -247,13 +252,20 @@ const MatchCatalogItem = (p) => {
                         console.warn(`image ${index} pressed`)
                     }
                 />
-                <View style={s.infoBoxContainer}>
+                <View style={s.infoBox}>
                     <Text style={s.infoBoxHeader}>{name}, {age}</Text>
 
-                    <Text style={s.subInfoBoxText}>icon {placeName}</Text>
-                    <Text style={s.subInfoBoxText}>icon {job}</Text>
-                </View>
+                    <View style={s.infoBoxItem}>
+                        <View style={[s.infoBoxIcon]}><RNSVG_location_profile /></View>
+                        <Text style={s.infoBoxText}>{placeName}</Text>
+                    </View>
 
+                    <View style={s.infoBoxItem}>
+                        <View style={[s.infoBoxIcon]}><RNSVG_occupation /></View>
+                        <Text style={s.infoBoxText}>{job}</Text>
+                    </View>
+
+                </View>
             </View>
 
             <FlingGestureHandler
@@ -275,8 +287,14 @@ const MatchCatalogItem = (p) => {
                     <View>
 
                         <View style={s.subInfoBoxContainer}>
-                            <Text>icon {height}</Text>
-                            <Text>icon number</Text>
+                            <View>
+                                <Text>{height}</Text>
+                            </View>
+
+                            <View>
+                                <Text>number</Text>
+                            </View>
+
                         </View>
 
                         <View>
@@ -304,13 +322,13 @@ const MatchCatalogItem = (p) => {
                             <TouchableOpacity style={s.matchButton} onPress={() => {
                                 handleMatch(false)
                             }}>
-                                <Text>NO</Text>
+                                <RNSVG_match_no />
                             </TouchableOpacity>
 
                             <TouchableOpacity style={s.matchButton} onPress={() => {
                                 handleMatch(true)
                             }}>
-                                <Text>OK</Text>
+                                <RNSVG_match_yes />
                             </TouchableOpacity>
 
                         </View>
@@ -325,24 +343,37 @@ const s = StyleSheet.create({
     container: {
         height: deviceHeight - 50,
     },
-    infoBoxContainer: {
+    infoBox: {
         position: 'absolute',
         bottom: 20,
         left: 20
     },
+
+    infoBoxItem: {
+        alignContent: "center",
+        flexDirection: "row",
+        marginTop: 10
+    },
+
     infoBoxHeader: {
-        color: 'black',
+        color: 'white',
         fontSize: 35,
     },
-    subInfoBoxText: {
+    infoBoxText: {
         fontSize: 18,
-        color: 'black',
+        color: 'white',
     },
     subInfoBoxContainer: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: 10,
         marginBottom: 32
+    },
+
+    infoBoxIcon: {
+        width: 24,
+        height: 24,
+        marginRight: 10,
     },
 
     description: {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-    StyleSheet, View,
+    StyleSheet, View, Text,
 } from 'react-native';
 
 import { apiUrl, deviceWidth } from '../../globals';
@@ -69,7 +69,7 @@ const MatchCatalog = ({ route, navigation }) => {
         }
 
         console.log('new match list', matchList);
-        setMatchList(matchList);
+        setMatchList([...matchList]);
     }
 
     useEffect(() => {
@@ -84,36 +84,38 @@ const MatchCatalog = ({ route, navigation }) => {
         console.log('focusedMatch', focusedMatch)
     }, [focusedMatch])
 
+
+    const renderProfiles = () => {
+
+        if (matchList.length != 0) {
+            return matchList.map((matchid, i) => {
+                return (
+                    <MatchCatalogItem
+                        cache={profileCache}
+                        sendCache={sendCache}
+                        userid={matchid}
+                        focusedMatch={focusedMatch}
+                        itemid={i}
+                        key={i}
+                        onFlingMatch={onFlingMatch}
+                        deletePotentialMatch={deletePotentialMatch}
+                    />)
+            })
+        }
+        else {
+            return (
+                <Text>no potential matches bruh</Text>
+            )
+        }
+    }
+
+
     return (
         <>
             <ScrollView>
                 <View style={[s.MatchCatalogItemContainer, { right: deviceWidth * (focusedMatch) }]}>
 
-                    {
-
-                        matchList.map((matchid, i) => {
-
-                            console.log('rendering jsx userid/index', matchid, i)
-
-                            if (focusedMatch == i)
-                                console.log('centerpiece', matchid, '#', focusedMatch)
-
-                            let jsx = (
-                                <MatchCatalogItem
-                                    cache={profileCache}
-                                    sendCache={sendCache}
-                                    userid={matchid}
-                                    focusedMatch={focusedMatch}
-                                    itemid={i}
-                                    key={i}
-                                    onFlingMatch={onFlingMatch}
-                                    deletePotentialMatch={deletePotentialMatch}
-                                />
-                            )
-
-
-                            return jsx;
-                        })}
+                    {renderProfiles()}
 
                 </View>
             </ScrollView>

@@ -13,7 +13,11 @@ import FilterRadioButton from './filterRadiobtn';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
+import MultiSlider from '@ptomasroos/react-native-multi-slider'
+
 import { gs, apiUrl } from '../../globals';
+
+import moment from 'moment';
 
 const Filters = ({ route, navigation }) => {
 
@@ -32,6 +36,10 @@ const Filters = ({ route, navigation }) => {
             preffood: 4
         }
     );
+
+    const [heights, setHeights] = useState([]);
+    const [ages, setAges] = useState([]);
+
     const [formFilled, setFormFilled] = useState(false);
 
     const getSelections = (selection) => {
@@ -67,12 +75,29 @@ const Filters = ({ route, navigation }) => {
             })
     }
 
+
+    // const convertAge = (age) => {
+
+    //     let now = moment();
+
+    //     let then = moment().subtract(18, 'years');
+
+    // }
+
+
+
     return (
         <>
             <ScrollView style={gs.screenWrapperScroll}>
 
                 <Logo />
                 <Text style={[s.header, gs.mainHeader]}>Geïnteresseerd in</Text>
+
+                <MultiSlider values={[150, 250]} min={150} max={250}
+                    onValuesChange={(heights) => { setHeights(heights) }} />
+
+                <MultiSlider values={[18, 120]} min={18} max={120}
+                    onValuesChange={(ages) => { setAges(ages) }} />
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>Sport je?</Text>
