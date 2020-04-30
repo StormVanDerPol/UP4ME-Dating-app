@@ -19,23 +19,17 @@ const Email = ({ navigation }) => {
 
     const validateEmail = () => {
 
-        // Axios.get(`${apiUrl}/test/checkmail/valid`)
-        //     .then((res) => {
-        //         console.log('success', res)
-        //         setIsValid(res.data);
-        //     })
-        //     .catch((err) => {
-        //         console.log('error', err)
-        //         setIsValid('REQ_ERROR');
-        //     });
-
         Axios.get(`https://block-temporary-email.com/check/email/${email}`)
             .then((res) => {
+
+                console.log('check if temp email', res);
+
                 if (!res.data.temporary) {
+
 
                     Axios.get(`${apiUrl}/check/email/${email}`)
                         .then((res) => {
-                            console.log(res);
+                            console.log('/check/email/ response', 'I AM DEFINITELY USEFUL TEEHEE~', res);
 
                             if (res.data.exists == 0) {
                                 setIsValid('VALID');
@@ -46,7 +40,7 @@ const Email = ({ navigation }) => {
 
                         })
                         .catch((err) => {
-                            console.log('error', err)
+                            console.log('Error', err)
                             setIsValid('REQ_ERROR');
                         })
                         .finally(() => {
@@ -59,7 +53,7 @@ const Email = ({ navigation }) => {
                 }
             })
             .catch((err) => {
-                console.log('error', err)
+                console.log('Error', err)
                 setIsValid('REQ_ERROR');
             })
             .finally(() => {
@@ -123,7 +117,7 @@ const Email = ({ navigation }) => {
         }
         else {
             setIsValid('INVALID');
-            console.log('invalid email', isValid);
+            console.log('invalid email ', isValid);
         }
     }
 

@@ -9,29 +9,27 @@ import {
     View,
 } from 'react-native';
 
-import UserPropsRadioButton from './userpropsRadiobtn';
+import FilterRadioButton from './filterRadiobtn';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
 import { gs, apiUrl } from '../../globals';
 
-const UserProps = ({ route, navigation }) => {
-
-    // const[prevRoute] = useState(navigation.dangerouslyGetState().routes[navigation.dangerouslyGetState().routes.length].name)
+const Filters = ({ route, navigation }) => {
 
     const [data] = useState(route.params);
     const [selections, setSelections] = useState(
         {
 
-            sport: 0,
-            party: 0,
-            smoking: 0,
-            alcohol: 0,
-            politics: 0,
-            work: 0,
-            kids: 0,
-            kidWish: 0,
-            food: 0
+            prefsport: 4,
+            prefparty: 4,
+            prefsmoking: 4,
+            prefalcohol: 4,
+            prefpolitics: 4,
+            prefwork: 4,
+            prefkids: 4,
+            prefkidWish: 4,
+            preffood: 4
         }
     );
     const [formFilled, setFormFilled] = useState(false);
@@ -39,7 +37,7 @@ const UserProps = ({ route, navigation }) => {
     const getSelections = (selection) => {
 
         setSelections(Object.assign(selections, selection));
-        console.log('Selections', selections, 'Amount of keys', (Object.keys(selections).length));
+        console.log(selections, 'keys: ', (Object.keys(selections).length));
 
         if ((Object.keys(selections).length == 9)) {
             setFormFilled(true);
@@ -47,18 +45,18 @@ const UserProps = ({ route, navigation }) => {
     }
 
     const postData = () => {
-        Axios.post(`${apiUrl}/set/properties`,
+        Axios.post(`${apiUrl}/set/criteria`,
             {
                 userid: data.userid,
-                sport: selections.sport,
-                feesten: selections.party,
-                roken: selections.smoking,
-                alcohol: selections.alcohol,
-                stemmen: selections.politics,
-                werken: selections.work,
-                kinderen: selections.kids,
-                kinderwens: selections.kidWish,
-                eten: selections.food
+                sport: selections.prefsport,
+                feesten: selections.prefparty,
+                roken: selections.prefsmoking,
+                alcohol: selections.prefalcohol,
+                stemmen: selections.prefpolitics,
+                werken: selections.prefwork,
+                kinderen: selections.prefkids,
+                kinderwens: selections.prefkidWish,
+                eten: selections.preffood
 
             })
             .then((res) => {
@@ -74,96 +72,95 @@ const UserProps = ({ route, navigation }) => {
             <ScrollView style={gs.screenWrapperScroll}>
 
                 <Logo />
-                <Text style={[s.header, gs.mainHeader]}>Eigenschappen</Text>
-                <Text>Hoe meer informatie je invult, hoe groter de kans op een match. Je potentiele matchen kunnen hier op filteren</Text>
+                <Text style={[s.header, gs.mainHeader]}>Geïnteresseerd in</Text>
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>Sport je?</Text>
-                    <UserPropsRadioButton btnText={[
+                    <FilterRadioButton btnText={[
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'sport'} value={data.sport} getSelections={getSelections} />
+                    ]} selectKey={'prefsport'} value={data.prefsport} getSelections={getSelections} />
                 </View>
 
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>Feest je?</Text>
-                    <UserPropsRadioButton btnText={[
+                    <FilterRadioButton btnText={[
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'party'} value={data.party} getSelections={getSelections} />
+                    ]} selectKey={'prefparty'} value={data.prefparty} getSelections={getSelections} />
                 </View>
 
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>Rook je?</Text>
-                    <UserPropsRadioButton btnText={[
+                    <FilterRadioButton btnText={[
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'smoking'} value={data.smoking} getSelections={getSelections} />
+                    ]} selectKey={'prefsmoking'} value={data.prefsmoking} getSelections={getSelections} />
                 </View>
 
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>Drink je alcohol?</Text>
-                    <UserPropsRadioButton btnText={[
+                    <FilterRadioButton btnText={[
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'alcohol'} value={data.alcohol} getSelections={getSelections} />
+                    ]} selectKey={'prefalcohol'} value={data.prefalcohol} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>Wat stem je?</Text>
-                    <UserPropsRadioButton btnText={[
+                    <FilterRadioButton btnText={[
                         "Links",
                         "Midden",
                         "Rechts",
                         "Niet"
-                    ]} selectKey={'politics'} value={data.politics} getSelections={getSelections} />
+                    ]} selectKey={'prefpolitics'} value={data.prefpolitics} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>Hoe veel uur per week werk je?</Text>
-                    <UserPropsRadioButton btnText={[
+                    <FilterRadioButton btnText={[
                         "< 40 uur",
                         "40 uur",
                         "> 40 uur"
-                    ]} selectKey={'work'} value={data.work} getSelections={getSelections} />
+                    ]} selectKey={'prefwork'} value={data.prefwork} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>Eet je gezond?</Text>
-                    <UserPropsRadioButton btnText={[
+                    <FilterRadioButton btnText={[
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'food'} value={data.food} getSelections={getSelections} />
+                    ]} selectKey={'preffood'} value={data.preffood} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>Heb je kinderen?</Text>
-                    <UserPropsRadioButton btnText={[
+                    <FilterRadioButton btnText={[
                         "Ja",
                         "Nee"
-                    ]} selectKey={'kids'} value={data.kids} getSelections={getSelections} />
+                    ]} selectKey={'prefkids'} value={data.prefkids} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>wil je kinderen?</Text>
-                    <UserPropsRadioButton btnText={[
+                    <FilterRadioButton btnText={[
                         "Ja",
                         "Mischien",
                         "Nee"
-                    ]} selectKey={'kidWish'} value={data.kidWish} getSelections={getSelections} />
+                    ]} selectKey={'prefkidWish'} value={data.prefkidWish} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
-                        <BigButton n={navigation} component={"Filter"} text="Doorgaan"
+                        <BigButton n={navigation} component={"UserProfile"} text="opslaan"
                             disabled={!(formFilled)}
                             data={Object.assign(data, selections)}
                             callBack={postData} />
@@ -191,4 +188,4 @@ const s = StyleSheet.create({
 
 });
 
-export default UserProps;
+export default Filters;

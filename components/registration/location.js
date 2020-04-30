@@ -7,8 +7,6 @@ import {
     View,
     Text,
     Image,
-    Alert,
-    Button
 } from 'react-native';
 
 import {
@@ -18,50 +16,33 @@ import {
     MapsApiRootUrl,
     deviceWidth,
 } from '../../globals';
+
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
 import { GOOGLE_MAPS_API_KEY } from '../../temp/keys';
 import { TextInput } from 'react-native-gesture-handler';
 import RNSVG_location from '../../res/ui/rnsvg/rnsvg_location';
-import { PermissionsAndroid } from 'react-native';
-import Axios from 'axios';
+
+import { reqLocationPermission, updateGPSData } from '../../updategps';
 
 const Location = ({ route, navigation }) => {
 
     const [data] = useState(route.params);
-
-    const [coords, setCoords] = useState({ lat: 0, lon: 0 });
-
-    async function requestLocationPermission() {
-        const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
-
-        if (granted) {
-            console.log("You can use the ACCESS_FINE_LOCATION");
-            reverseGeocodeCurrentLocation();
-        }
-        else {
-            console.log("ACCESS_FINE_LOCATION permission denied")
-        }
-    }
 
     const zoom = 10;
     const mapWidth = deviceWidth - mx * 2;
     const mapHeight = deviceHeight / 2;
     const mapType = 'roadmap'
 
-    const reverseGeocodeCurrentLocation = () => {
-
-        Geolocation.getCurrentPosition((pos) => {
-            setCoords({ lat: pos.coords.latitude, lon: pos.coords.longitude });
-
-        })
-    }
-
     const [init, setInit] = useState(false);
 
     if (!init) {
-        requestLocationPermission();
+
+        console.log('got new coords because my man youre kinda gay');
+
+        reqLocationPermission();
+        updateGPSData();
         setInit(true);
     }
 
@@ -73,7 +54,6 @@ const Location = ({ route, navigation }) => {
         <>
             <View style={gs.screenWrapper}>
 
-                <Button title="button" onPress={() => { reverseGeocodeCurrentLocation() }}></Button>
                 <View>
                     <Logo />
                     <Text style={[s.header, gs.mainHeader]}>Location</Text>

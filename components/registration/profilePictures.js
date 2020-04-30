@@ -10,10 +10,11 @@ import {
 
 import { TouchableWithoutFeedback, ScrollView } from 'react-native-gesture-handler';
 
-import { gs, deviceWidth, deviceHeight, mx } from '../../globals';
+import { gs, deviceWidth, deviceHeight, mx, apiUrl } from '../../globals';
 
 import Logo from '../logo';
 import BigButton from '../bigbutton';
+import Axios from 'axios';
 
 const ProfilePictures = ({ route, navigation }) => {
 
@@ -21,12 +22,7 @@ const ProfilePictures = ({ route, navigation }) => {
 
     const [src, setSrc] = useState([]);
 
-    const [pfpArray, setPfpArray] = useState([]);
-
-    function addMimeType(base64) {
-        var mimeType = fileType(Buffer.from(base64, 'base64')).mime;
-        return `data:${mimeType};base64,${base64}`
-    }
+    const [pfpArray, setPfpArray] = useState(new Array(6));
 
     const handleChoosePhoto = (id) => {
         const opt = {
@@ -34,24 +30,40 @@ const ProfilePictures = ({ route, navigation }) => {
         };
 
         ImagePicker.launchImageLibrary(opt, (res) => {
-            console.log(res.uri);
+            console.log('Image URI on device', res.uri);
 
             src[id] = res.uri;
             setSrc([...src]);
 
-            // pfpArray.push(res.data);
-            pfpArray[id] = res.data;
-
+            pfpArray[id] = `data:${res.type};base64,${res.data}`;
             setPfpArray([...pfpArray]);
 
-            console.log(res);
-
-            // console.log(src);
+            console.log('ImagePicker response', res);
         })
     }
 
     const validatePictures = () => {
         return false;
+    }
+
+    const postData = () => {
+
+        let toSend = {
+            userid: data.userid,
+            photo1: pfpArray[0],
+            photo2: pfpArray[1],
+            photo3: pfpArray[2],
+            photo4: pfpArray[3],
+            photo5: pfpArray[4],
+            photo6: pfpArray[5]
+        }
+
+        console.log('POST to send', toSend);
+
+        Axios.post(`${apiUrl}/set/photos`, toSend)
+            .catch((err) => {
+                console.log('Error', err);
+            });
     }
 
     return (
@@ -94,7 +106,9 @@ const ProfilePictures = ({ route, navigation }) => {
                 {/* <View style={{ paddingBottom: 15 }}> */}
                 <View style={[gs.bottom]}>
                     <BigButton n={navigation} component="ProfileText" text="doorgaan" disabled={validatePictures()}
-                        data={Object.assign(data, { profilePictures: pfpArray })} />
+                        data={Object.assign(data, { profilePictures: pfpArray })}
+                        callBack={postData}
+                    />
 
                     <Text style={[gs.underline, s.guidelines]} onPress={() => navigation.navigate('PhotoGuidelines')}>Lees de richtlijnen</Text>
                 </View>

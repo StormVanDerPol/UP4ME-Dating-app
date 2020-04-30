@@ -17,6 +17,7 @@ const ConfirmationCode = ({ route, navigation }) => {
     const [confcode, setConfcode] = useState('');
     const [isValid, setIsValid] = useState(false);
     const [validationFeedback, setValidationFeedback] = useState('');
+    const [nextRoute, setNextRoute] = useState('');
 
     const handleChange = (input) => {
         setConfcode(input);
@@ -32,35 +33,64 @@ const ConfirmationCode = ({ route, navigation }) => {
 
             if (confcode == targetConfCode) {
                 setIsValid(true);
+                setValidationFeedback('gj!')
+
             }
             else {
                 console.log('code is wrong')
                 setIsValid(false);
+                setValidationFeedback('No.')
             }
         }
         else {
             console.log('code < 6 chars, waiting...');
             setIsValid(false);
+            setValidationFeedback('Short code.')
         }
     }
 
-    const [targetConfCode, setTargetConfCode] = useState(999666);
+    const [targetConfCode, setTargetConfCode] = useState(null);
     const [userid, setUserid] = useState(0);
 
     async function registerEmail() {
 
-        console.log(`${apiUrl}/register/1/${data.email}`);
+        console.log('Email: ', `${apiUrl}/register/1/${data.email}`);
 
         await Axios.get(`${apiUrl}/register/1/${data.email}`)
             .then((res) => {
 
-                console.log(res);
-
+                console.log('/register/1/ Response: ', res);
                 setUserid(res.data.userid);
                 setTargetConfCode(res.data.security);
+
+                if (res.data.registered == -1) {
+                    setNextRoute('UserData');
+                }
+                else {
+                    setNextRoute('UserProfile');
+                }
+
+                if (res.data.security == undefined) {
+                    setIsValid(false);
+                    setValidationFeedback("Something went wrong! Please click 'resend' and try again with a new code!")
+                }
             })
     }
 
+    const createSession = () => {
+        global.sessionUserId = userid;
+    }
+
+    const feedbackColor = () => {
+        if (isValid == true) {
+            return { color: 'green' };
+        }
+        else {
+            return { color: 'red' };
+        }
+    }
+
+    const [resendFeedbackOpacity, setResendFeedbackOpacity] = useState(0);
     const [init, setInit] = useState(false);
 
     if (!init) {
@@ -78,12 +108,21 @@ const ConfirmationCode = ({ route, navigation }) => {
 
                 <View style={s.inputWrapper}>
                     <TextInput keyboardType='numeric' maxLength={6} onChangeText={(input) => handleChange(input)} value={confcode} onEndEditing={() => validateCode()} style={s.input} />
-                    <Text style={[s.feedback]}>{validationFeedback}</Text>
+                    <Text style={[s.feedback, feedbackColor()]}>{validationFeedback}</Text>
+
                 </View>
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="UserData" text="doorgaan" disabled={!(isValid)}
-                        data={Object.assign(data, { confirmationCode: confcode, userid: userid })} />
+                    <Text style={[s.feedback, { opacity: resendFeedbackOpacity, alignSelf: 'center' }]}>code sent!</Text>
+                    <Text style={[s.resendbutton, gs.underline]} onPress={() => { registerEmail(); setResendFeedbackOpacity(1) }}>resend code</Text>
+                    <BigButton
+                        n={navigation}
+                        component={nextRoute}
+                        text="doorgaan"
+                        disabled={!(isValid)}
+                        data={Object.assign(data, { confirmationCode: confcode, userid: userid })}
+                        callBack={createSession}
+                    />
                 </View>
             </View>
         </>
@@ -104,8 +143,13 @@ const s = StyleSheet.create({
     },
 
     feedback: {
-        color: 'red'
-    }
+        color: 'green'
+    },
+
+    resendbutton: {
+        alignSelf: "center",
+        marginBottom: 16
+    },
 
 });
 
