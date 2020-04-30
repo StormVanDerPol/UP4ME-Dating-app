@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
+// import { Icon } from 'react-native-elements'
+import { gs } from '../../globals';
+
+
 
 import {
     StyleSheet, Text, View,
 } from 'react-native';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
+import BigButton from '../bigbutton';
+// import Gender from '../registration/gender';
 // import UserData from '../registration/userdata';
 
 const UserSettings = ({ navigation }) => {
@@ -28,22 +34,23 @@ const UserSettings = ({ navigation }) => {
     return (
         <>
             <TouchableWithoutFeedback style={[s.underb]} onPress={() => navigation.goBack()}>
-                <Text>Instellingen</Text>
+                {/* <Icon name='keyboard_arrow_left' /> */}
+                <Text style={[gs.topText]}>Instellingen</Text>
             </TouchableWithoutFeedback>
 
             <View style={[s.underb]}>
                 <TouchableWithoutFeedback onPress={() => {
                     changeDropdown(1, (
                         <>
-                            <Text>This shall be copie pasta</Text>
-                            <Text>This shall be copie pasta</Text>
-                            <Text>This shall be copie pasta</Text>
-                            <Text>This shall be copie pasta</Text>
-                            <Text>This shall be copie pasta</Text>
+                            <TouchableOpacity n={navigation} component="Gender">
+                                <Text>Geslacht________whatever></Text>
+                            </TouchableOpacity>
+
+                            {/* <Gender /> */}
                         </>
                     ));
                 }}>
-                    <Text>Mijn gegevens</Text>
+                    <Text style={[s.fonty]}>Mijn gegevens</Text>
                 </TouchableWithoutFeedback>
                 {dropdownElements[1]}
             </View>
@@ -54,7 +61,7 @@ const UserSettings = ({ navigation }) => {
                         <Text>wowoowow</Text>
                     ));
                 }}>
-                    <Text>Meldingen</Text>
+                    <Text style={[s.fonty]}>Meldingen</Text>
                 </TouchableWithoutFeedback>
                 {dropdownElements[2]}
             </View>
@@ -62,13 +69,75 @@ const UserSettings = ({ navigation }) => {
             <View style={[s.underb]}>
                 <TouchableWithoutFeedback onPress={() => {
                     changeDropdown(3, (
-                        <Text>Voorwaarden</Text>
+                        <>
+                            <Text style={[s.pt]} onPress={() => navigation.navigate('Agreement')}>Voorwaarden</Text>
+                            <Text style={[s.pt]} onPress={() => navigation.navigate('PrivacyPolicy')}>Privacybeleid</Text>
+                            <Text style={[s.pt]} onPress={() => navigation.navigate('CookiePolicy')}>Cookiebeleid</Text>
+                        </>
                     ));
                 }}>
-                    <Text>Voorwaarden en Privacy</Text>
+                    <Text style={[s.fonty]}>Voorwaarden en Privacy</Text>
                 </TouchableWithoutFeedback>
                 {dropdownElements[3]}
             </View>
+
+            <View style={[s.underb]}>
+                <TouchableWithoutFeedback onPress={() => {
+                    changeDropdown(4, (
+                        <Text onPress={() => navigation.navigate('FQA')}>help</Text>
+                    ));
+                }}>
+                    <Text style={[s.fonty]}>Help and FAQ</Text>
+                </TouchableWithoutFeedback>
+                {dropdownElements[4]}
+            </View>
+
+            <View style={[s.underb]}>
+                <TouchableWithoutFeedback onPress={() => {
+                    changeDropdown(5, (
+                        <>
+                            <Text>bro deze shit is leeg in de prototype wtf</Text>
+
+                        </>
+
+                    ));
+                }}>
+                    <Text style={[s.fonty]}>Richtlijnen and veiligheid</Text>
+                </TouchableWithoutFeedback>
+                {dropdownElements[5]}
+            </View>
+
+            <View style={[s.underb]}>
+                <TouchableWithoutFeedback onPress={() => {
+                    changeDropdown(6, (
+                        <Text>fuck deze kk shit</Text>
+                    ));
+                }}>
+                    <Text style={[s.fonty]}>uitloggen</Text>
+                </TouchableWithoutFeedback>
+                {dropdownElements[6]}
+            </View>
+
+            <View style={[s.underb]}>
+                <TouchableWithoutFeedback onPress={() => {
+                    changeDropdown(7, (
+                        <View>
+                            <Text>tuurlijk niet</Text>
+                            <Text>open 3 buttons also make the whole screen gray</Text>
+                        </View>
+
+                    ));
+                }}>
+                    <Text style={[s.fonty]}>Account verwijderen</Text>
+                </TouchableWithoutFeedback>
+                {dropdownElements[7]}
+            </View>
+
+            <BigButton
+                text="opslaan"
+            // component="Pfinstellingen" bestaat nog niet
+
+            />
 
         </>
     );
@@ -76,8 +145,19 @@ const UserSettings = ({ navigation }) => {
 
 const s = StyleSheet.create({
     underb: {
+        padding: 15,
+        paddingLeft: 25,
         borderBottomWidth: 1,
         borderBottomColor: 'gray',
+
+    },
+    fonty: {
+        fontSize: 20,
+    },
+    pt: {
+        textDecorationLine: 'underline',
+        margin: 15,
+        fontSize: 15,
 
     },
 });

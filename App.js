@@ -22,6 +22,8 @@ import ProfileText from './components/registration/profileText';
 import ProfilePictures from './components/registration/profilePictures';
 import UserSettings from './components/settings/userSettings';
 import UserProfile from './components/profile/userProfile';
+import Faq from './components/settings/faq';
+import Nav from './components/nav';
 import Filters from './components/registration/filter';
 import { reqLocationPermission, updateGPSData, geoTimer, getTimeSinceLastGPSUpdate } from './updategps';
 import moment from 'moment';
@@ -89,6 +91,8 @@ const App = () => {
           <Stack.Screen name="UserSettings" component={UserSettings} />
           <Stack.Screen name="UserProfile" component={UserProfile} />
           <Stack.Screen name="Filter" component={Filters} />
+          <Stack.Screen name="FQA" component={Faq} />
+          <Stack.Screen name="NAV" component={Nav} />
         </Stack.Navigator>
       </NavigationContainer>
     </>
