@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions, PermissionsAndroid } from 'react-native';
+import moment from 'moment';
 
 export var deviceHeight = Dimensions.get('window').height;
 export var deviceWidth = Dimensions.get('window').width;
@@ -36,6 +37,31 @@ export const getDistBetweenCoords = (lat1, lon1, lat2, lon2, unit) => {
         if (unit == "N") { dist = dist * 0.8684 }
         return dist;
     }
+}
+
+export const calcAge = (bdateApi) => {
+
+    let now = moment();
+
+    console.log('Current Moment: ', now);
+
+    let bdateApiStr = bdateApi + '';
+
+    let bdate = {
+        year: parseInt(bdateApiStr.substring(0, 4), 10),
+        month: Math.min(bdateApiStr.substring(4, 6), 12),
+        day: Math.min(bdateApiStr.substring(6), 31)
+    }
+
+    console.log('Birthdate: ', bdate);
+
+    let bdateMoment = moment(`${bdate.day}/${bdate.month}/${bdate.year}`, 'D/M/YYYY');
+
+    let dateDiff = now.diff(bdateMoment, 'years');
+
+    console.log('Date difference: ', dateDiff);
+
+    return dateDiff;
 }
 
 export const gs = StyleSheet.create({

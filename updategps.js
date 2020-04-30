@@ -8,10 +8,6 @@ import Axios from 'axios';
 
 import { apiUrl } from './globals';
 
-import moment from "moment";
-
-export const geoTimer = 18; //Minutes
-
 export async function reqLocationPermission() {
     const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
 

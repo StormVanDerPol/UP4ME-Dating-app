@@ -160,7 +160,7 @@ const Filters = ({ route, navigation }) => {
 
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
-                        <BigButton n={navigation} component={"UserProfile"} text="opslaan"
+                        <BigButton n={navigation} component={"MatchCatalog"} text="opslaan"
                             disabled={!(formFilled)}
                             data={Object.assign(data, selections)}
                             callBack={postData} />
