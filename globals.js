@@ -12,7 +12,7 @@ export const regexEmail = new RegExp(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w
 export const mx = 20;
 
 //pls dont forget to change this to your local machine's ipv4 address if you wish to test
-export const serverUrl = `192.168.1.15:5000`
+export const serverUrl = `192.168.1.138:5000`
 export const apiUrl = `http://${serverUrl}/api/v1`;
 
 export const MapsApiRootUrl = 'https://maps.googleapis.com/maps/api/staticmap?';
@@ -39,7 +39,7 @@ export const getDistBetweenCoords = (lat1, lon1, lat2, lon2, unit) => {
     }
 }
 
-export const calcAge = (bdateApi) => {
+export const calcAgeHet = (bdateApi) => {
 
     let now = moment();
 
