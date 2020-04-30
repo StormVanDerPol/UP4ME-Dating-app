@@ -98,5 +98,10 @@ export const gs = StyleSheet.create({
         padding: 20,
         marginHorizontal: mx,
     },
+    topText: {
+        textAlign: 'center',
+        fontSize: 25,
+        color: 'gray',
+    },
 
 });
