@@ -7,6 +7,7 @@ import { PermissionsAndroid } from 'react-native';
 import Axios from 'axios';
 
 import { apiUrl } from './globals';
+import { endpointSetGPS } from "./endpoints";
 
 export async function reqLocationPermission() {
     const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION);
@@ -32,7 +33,12 @@ export const updateGPSData = () => {
             }
             console.log('stored userID', global.sessionUserId, 'GPS Data', global.gpsData);
 
-            Axios.get(`${apiUrl}/set/gps/${global.sessionUserId}/${global.gpsData.lat}/${global.gpsData.lon}`)
+            Axios.post(endpointSetGPS,
+                {
+                    userid: global.sessionUserId,
+                    latitude: global.gpsData.lat,
+                    longitude: global.gpsData.lon
+                })
                 .then((res) => {
                     console.log('gps update', 'data : ', res);
                 })

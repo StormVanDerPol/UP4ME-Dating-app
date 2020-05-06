@@ -14,6 +14,7 @@ import Logo from '../logo';
 import BigButton from '../bigbutton';
 
 import { gs, apiUrl } from '../../globals';
+import { endpointSetProperties } from '../../endpoints';
 
 const UserProps = ({ route, navigation }) => {
 
@@ -47,7 +48,7 @@ const UserProps = ({ route, navigation }) => {
     }
 
     const postData = () => {
-        Axios.post(`${apiUrl}/set/properties`,
+        Axios.post(endpointSetProperties,
             {
                 userid: data.userid,
                 sport: selections.sport,

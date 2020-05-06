@@ -15,6 +15,7 @@ import { gs, deviceWidth, deviceHeight, mx, apiUrl } from '../../globals';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 import Axios from 'axios';
+import { endpointSetPhotos } from '../../endpoints';
 
 const ProfilePictures = ({ route, navigation }) => {
 
@@ -60,7 +61,7 @@ const ProfilePictures = ({ route, navigation }) => {
 
         console.log('POST to send', toSend);
 
-        Axios.post(`${apiUrl}/set/photos`, toSend)
+        Axios.post(endpointSetPhotos, toSend)
             .catch((err) => {
                 console.log('Error', err);
             });

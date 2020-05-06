@@ -10,6 +10,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import Axios from 'axios';
 
 import MatchCatalogItem from './MatchCatalogItem';
+import Nav from '../nav';
+import { endpointGetPotentials } from '../../endpoints';
 
 const MatchCatalog = ({ route, navigation }) => {
 
@@ -20,7 +22,7 @@ const MatchCatalog = ({ route, navigation }) => {
     const [profileCache, setProfileCache] = useState({});
 
     const retrievePotentialMatches = (userid) => {
-        Axios.get(`${apiUrl}/retrieve/potentials/for/${userid}`)
+        Axios.get(`${endpointGetPotentials}${userid}`)
             .then((res) => {
                 console.log(`potential Matches for ${userid}`, res.data);
                 setMatchList(res.data);
@@ -113,6 +115,9 @@ const MatchCatalog = ({ route, navigation }) => {
     return (
         <>
             <ScrollView>
+
+                <Nav currentScreen={route.name} />
+
                 <View style={[s.MatchCatalogItemContainer, { right: deviceWidth * (focusedMatch) }]}>
 
                     {renderProfiles()}

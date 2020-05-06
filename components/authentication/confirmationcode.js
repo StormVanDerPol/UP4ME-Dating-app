@@ -10,6 +10,7 @@ import { gs, apiUrl } from '../../globals';
 import BigButton from '../bigbutton';
 
 import Axios from 'axios';
+import { endpointRegisterEmail } from '../../endpoints';
 
 const ConfirmationCode = ({ route, navigation }) => {
 
@@ -54,9 +55,9 @@ const ConfirmationCode = ({ route, navigation }) => {
 
     async function registerEmail() {
 
-        console.log('Email: ', `${apiUrl}/register/1/${data.email}`);
+        console.log('Email: ', `${endpointRegisterEmail}${data.email}`);
 
-        await Axios.get(`${apiUrl}/register/1/${data.email}`)
+        await Axios.get(`${endpointRegisterEmail}${data.email}`)
             .then((res) => {
 
                 console.log('/register/1/ Response: ', res);
