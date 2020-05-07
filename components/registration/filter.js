@@ -19,6 +19,7 @@ import { gs, apiUrl } from '../../globals';
 
 import moment from 'moment';
 import { endpointSetCriteria } from '../../endpoints';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const Filters = ({ route, navigation }) => {
 
@@ -38,10 +39,12 @@ const Filters = ({ route, navigation }) => {
         }
     );
 
-    const [heights, setHeights] = useState([]);
-    const [ages, setAges] = useState([]);
+    const [heights, setHeights] = useState([150, 250]);
+    const [ages, setAges] = useState([18, 120]);
 
     const [formFilled, setFormFilled] = useState(false);
+
+    const [prefGender, setPrefGender] = useState(4);
 
     const getSelections = (selection) => {
 
@@ -65,7 +68,12 @@ const Filters = ({ route, navigation }) => {
                 werken: selections.prefwork,
                 kinderen: selections.prefkids,
                 kinderwens: selections.prefkidWish,
-                eten: selections.preffood
+                eten: selections.preffood,
+                minlengte: heights[0],
+                maxlengte: heights[1],
+                leeftijdmin: ages[0],
+                leeftijdmax: ages[1],
+                geslacht: prefGender,
 
             })
             .then((res) => {
@@ -83,20 +91,64 @@ const Filters = ({ route, navigation }) => {
 
     //     let then = moment().subtract(18, 'years');
 
+
+
     // }
 
 
+    const handlePrefGenderChange = (id) => {
+        if (prefGender == id) {
+            setPrefGender(4);
+        }
+        else {
+            setPrefGender(id);
+        }
+    }
+
+    const prefGenderStyle = (id) => {
+
+        if (prefGender == id) {
+
+            return {
+                color: 'red',
+            }
+        }
+        else {
+            return {
+                color: 'blue',
+            }
+        }
+    }
 
     return (
         <>
             <ScrollView style={gs.screenWrapperScroll}>
 
                 <Logo />
-                <Text style={[s.header, gs.mainHeader]}>Geïnteresseerd in</Text>
+                <Text style={[s.questionHeader]}>Geïnteresseerd in</Text>
 
+                <Text>{prefGender}</Text>
+
+                {
+                    ['Mannen', 'Vrouwen', 'Iedereen'].map((gender, i) => {
+
+                        return (
+                            <TouchableWithoutFeedback
+                                onPress={() => handlePrefGenderChange(i + 1)}
+                            >
+                                <Text style={[prefGenderStyle(i + 1)]}>{gender}</Text>
+                            </TouchableWithoutFeedback>
+                        )
+
+                    })
+                }
+
+
+                <Text>{heights[0]} - {heights[1]}</Text>
                 <MultiSlider values={[150, 250]} min={150} max={250}
                     onValuesChange={(heights) => { setHeights(heights) }} />
 
+                <Text>{ages[0]} - {ages[1]}</Text>
                 <MultiSlider values={[18, 120]} min={18} max={120}
                     onValuesChange={(ages) => { setAges(ages) }} />
 
