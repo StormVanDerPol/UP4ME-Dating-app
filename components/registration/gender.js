@@ -14,6 +14,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 import Axios from 'axios';
+import { endpointRegisterProfile } from '../../endpoints';
 
 const Gender = ({ route, navigation }) => {
 
@@ -72,9 +73,9 @@ const Gender = ({ route, navigation }) => {
     };
 
     const postData = () => {
-        Axios.get(`${apiUrl}/register/2/${data.userid}/${data.name}/${data.bday}/${data.height * 100}/${data.job}/${data.placeName}/${selectedGender}`)
+        Axios.get(`${endpointRegisterProfile}${data.userid}/${data.name}/${data.bday}/${data.height * 100}/${data.job}/${data.placeName}/${selectedGender}`)
             .then((res) => {
-                console.log('/register/2/ response', res)
+                console.log(`${endpointRegisterProfile} response`, res)
             });
     }
 

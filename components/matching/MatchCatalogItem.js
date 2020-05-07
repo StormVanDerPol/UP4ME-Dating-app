@@ -17,7 +17,8 @@ import {
     TouchableOpacity,
     FlingGestureHandler,
     Directions,
-    State
+    State,
+    TouchableWithoutFeedback
 } from 'react-native-gesture-handler';
 
 import Axios from 'axios';
@@ -26,6 +27,7 @@ import RNSVG_occupation from '../../res/ui/rnsvg/rnsvg_occupation';
 import RNSVG_location_profile from '../../res/ui/rnsvg/rnsvg_location_profile';
 import RNSVG_match_no from '../../res/ui/rnsvg/rnsvg_match_no';
 import RNSVG_match_yes from '../../res/ui/rnsvg/rnsvg_match_yes';
+import { endpointGetProfile, endpointMatchResponses } from '../../endpoints';
 
 const MatchCatalogItem = (p) => {
 
@@ -60,10 +62,10 @@ const MatchCatalogItem = (p) => {
 
 
     const retrieveProfileData = (userid) => {
-        Axios.get(`${apiUrl}/retrieve/profile/of/${userid}`)
+        Axios.get(`${endpointGetProfile}${userid}`)
             .then((res) => {
 
-                console.log('/retrieve/profile/of/ response: ', res.data[0]);
+                console.log(`${endpointGetProfile} response: `, res.data[0]);
 
                 let imagesToCheck = [
                     res.data[0].foto1,
@@ -123,9 +125,9 @@ const MatchCatalogItem = (p) => {
 
         let interest1 = (reply ? 2 : 1);
 
-        console.log('posting to', `${apiUrl}/set/matchresponses`)
+        console.log('posting to')
 
-        Axios.post(`${apiUrl}/set/matchresponses`,
+        Axios.post(endpointMatchResponses,
             {
                 userid1: global.sessionUserId,
                 userid2: p.userid,
@@ -243,7 +245,7 @@ const MatchCatalogItem = (p) => {
                     autoplay={false}
                     dotColor={"#ffd1f3"}
 
-                    paginationBoxVerticalPadding={deviceHeight - 100}
+                    paginationBoxVerticalPadding={deviceHeight - 160}
 
                     resizeMode={'cover'}
 
@@ -319,17 +321,17 @@ const MatchCatalogItem = (p) => {
 
                         <View style={s.matchDecision}>
 
-                            <TouchableOpacity style={s.matchButton} onPress={() => {
+                            <TouchableWithoutFeedback onPress={() => {
                                 handleMatch(false)
                             }}>
                                 <RNSVG_match_no />
-                            </TouchableOpacity>
+                            </TouchableWithoutFeedback>
 
-                            <TouchableOpacity style={s.matchButton} onPress={() => {
+                            <TouchableWithoutFeedback onPress={() => {
                                 handleMatch(true)
                             }}>
                                 <RNSVG_match_yes />
-                            </TouchableOpacity>
+                            </TouchableWithoutFeedback>
 
                         </View>
                     </View>
@@ -341,7 +343,7 @@ const MatchCatalogItem = (p) => {
 
 const s = StyleSheet.create({
     container: {
-        height: deviceHeight - 50,
+        height: deviceHeight - 125,
     },
     infoBox: {
         position: 'absolute',
@@ -404,29 +406,6 @@ const s = StyleSheet.create({
         justifyContent: 'space-around',
         flexDirection: 'row',
     },
-    matchButton: {
-        width: 80,
-        height: 80,
-        borderRadius: 100,
-        borderColor: 'pink',
-        borderWidth: 2,
-        backgroundColor: "white",
-
-        justifyContent: "center",
-        alignItems: 'center',
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-
-        elevation: 5,
-
-    },
-
 });
 
 export default MatchCatalogItem;

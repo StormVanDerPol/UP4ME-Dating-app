@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="29px" height="26px" viewBox="0 0 29 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>heart</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="4.23351533%" y1="49.9605639%" x2="101.246183%" y2="49.9605639%" id="linearGradient-1">
+            <stop stop-color="#D626E7" offset="0%"></stop>
+            <stop stop-color="#FFAC01" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="99.651147%" y1="49.651147%" x2="0.348852962%" y2="49.651147%" id="linearGradient-2">
+            <stop stop-color="#FEA15A" offset="0%"></stop>
+            <stop stop-color="#D100A3" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="heart" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(3.000000, 3.000000)" fill="url(#linearGradient-1)" id="Path">
+            <path d="M16.890625,0 C15.6425605,0 14.4983105,0.389557522 13.4897246,1.15787611 C12.5227813,1.89446903 11.8790059,2.83265487 11.5,3.51486726 C11.1209941,2.83261062 10.4772188,1.89446903 9.51027539,1.15787611 C8.50168945,0.389557522 7.35743945,0 6.109375,0 C2.62649219,0 0,2.80606195 0,6.52716814 C0,10.5472566 3.27673633,13.2977434 8.2372793,17.4615929 C9.0796543,18.1687168 10.0344688,18.9702212 11.0268828,19.8250442 C11.1576953,19.9378761 11.3257031,20 11.5,20 C11.6742969,20 11.8423047,19.9378761 11.9731172,19.8250885 C12.9656211,18.9701327 13.9203906,18.1686726 14.7632598,17.4611504 C19.7232637,13.2977434 23,10.5472566 23,6.52716814 C23,2.80606195 20.3735078,0 16.890625,0 Z"></path>
+        </g>
+        <circle id="Oval" fill="url(#linearGradient-2)" cx="24.5" cy="4.5" r="4.5"></circle>
+    </g>
+</svg>

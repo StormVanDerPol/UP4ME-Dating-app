@@ -18,6 +18,7 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider'
 import { gs, apiUrl } from '../../globals';
 
 import moment from 'moment';
+import { endpointSetCriteria } from '../../endpoints';
 
 const Filters = ({ route, navigation }) => {
 
@@ -53,7 +54,7 @@ const Filters = ({ route, navigation }) => {
     }
 
     const postData = () => {
-        Axios.post(`${apiUrl}/set/criteria`,
+        Axios.post(endpointSetCriteria,
             {
                 userid: data.userid,
                 sport: selections.prefsport,

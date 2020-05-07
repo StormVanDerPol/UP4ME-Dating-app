@@ -10,6 +10,7 @@ import BigButton from '../bigbutton';
 import Logo from '../logo';
 import { gs, regexEmail, apiUrl } from '../../globals';
 import Axios from 'axios';
+import { endpointCheckEmail } from '../../endpoints';
 
 const Email = ({ navigation }) => {
 
@@ -27,9 +28,9 @@ const Email = ({ navigation }) => {
                 if (!res.data.temporary) {
 
 
-                    Axios.get(`${apiUrl}/check/email/${email}`)
+                    Axios.get(`${endpointCheckEmail}${email}`)
                         .then((res) => {
-                            console.log('/check/email/ response', 'I AM DEFINITELY USEFUL TEEHEE~', res);
+                            console.log(`${endpointCheckEmail} response`, 'I AM DEFINITELY USEFUL TEEHEE~', res);
 
                             if (res.data.exists == 0) {
                                 setIsValid('VALID');

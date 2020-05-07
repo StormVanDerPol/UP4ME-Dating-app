@@ -15,6 +15,7 @@ import { gs, apiUrl } from '../../globals';
 import BigButton from '../bigbutton';
 import { TextInput } from 'react-native-gesture-handler';
 import Axios from 'axios';
+import { endpointSetProfileText } from '../../endpoints';
 
 const ProfileText = ({ route, navigation }) => {
 
@@ -23,7 +24,11 @@ const ProfileText = ({ route, navigation }) => {
 
 
     const postData = () => {
-        Axios.post(`${apiUrl}/set/profiletext`, { userid: data.userid, profiletext: profText });
+        Axios.post(endpointSetProfileText,
+            {
+                userid: data.userid,
+                profiletext: profText
+            });
     }
 
     return (
