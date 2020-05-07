@@ -87,27 +87,47 @@ const MatchCatalog = ({ route, navigation }) => {
     }, [focusedMatch])
 
 
+    const noMatches = (
+        <>
+            <Text>no potential matches bruh</Text>
+        </>
+    );
+
     const renderProfiles = () => {
 
-        if (matchList.length != 0) {
-            return matchList.map((matchid, i) => {
+        switch (typeof matchList) {
+
+            case 'array':
+                if (matchList.length > 0) {
+                    return matchList.map((matchid, i) => {
+                        return (
+                            <MatchCatalogItem
+                                cache={profileCache}
+                                sendCache={sendCache}
+                                userid={matchid}
+                                focusedMatch={focusedMatch}
+                                itemid={i}
+                                key={i}
+                                onFlingMatch={onFlingMatch}
+                                deletePotentialMatch={deletePotentialMatch}
+                            />)
+                    })
+                }
+                else {
+                    return noMatches;
+                }
+
+            case 'boolean':
+                if (!matchList) {
+                    return noMatches;
+
+                }
+                break;
+
+            default:
                 return (
-                    <MatchCatalogItem
-                        cache={profileCache}
-                        sendCache={sendCache}
-                        userid={matchid}
-                        focusedMatch={focusedMatch}
-                        itemid={i}
-                        key={i}
-                        onFlingMatch={onFlingMatch}
-                        deletePotentialMatch={deletePotentialMatch}
-                    />)
-            })
-        }
-        else {
-            return (
-                <Text>no potential matches bruh</Text>
-            )
+                    <Text>Weird result</Text>
+                )
         }
     }
 
@@ -116,7 +136,7 @@ const MatchCatalog = ({ route, navigation }) => {
         <>
             <ScrollView>
 
-                <Nav currentScreen={route.name} />
+                <Nav currentScreen={route.name} n={navigation} />
 
                 <View style={[s.MatchCatalogItemContainer, { right: deviceWidth * (focusedMatch) }]}>
 

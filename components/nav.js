@@ -20,6 +20,7 @@ import RNSVG_matches_gray from '../res/ui/rnsvg/nav/rnsvg_matches_gray';
 import RNSVG_profile_colour from '../res/ui/rnsvg/nav/rnsvg_profile_colour';
 import RNSVG_profile_gray from '../res/ui/rnsvg/nav/rnsvg_profile_gray';
 import RNSVG_matches_gray_notif from '../res/ui/rnsvg/nav/rnsvg_matches_gray_notif';
+import RNSVG_matches_colour_notif from '../res/ui/rnsvg/nav/rnsvg_matches_colour_notif';
 
 const Nav = (p) => {
 
@@ -30,24 +31,24 @@ const Nav = (p) => {
     }
 
     const filterButton = () => {
-        return (p.currentScreen == 'MatchCatalog') ? <RNSVG_filter_colour /> : <RNSVG_filter_gray />;
+        return (p.currentScreen == 'FiltersEdit') ? <RNSVG_filter_colour /> : <RNSVG_filter_gray />;
     }
 
     const locationsButton = () => {
-        return (p.currentScreen == 'MatchCatalog') ? <RNSVG_locations_colour /> : <RNSVG_locations_gray />;
+        return (p.currentScreen == 'DateLocations') ? <RNSVG_locations_colour /> : <RNSVG_locations_gray />;
     }
 
     const profileButton = () => {
-        return (p.currentScreen == 'MatchCatalog') ? <RNSVG_profile_colour /> : <RNSVG_profile_gray />;
+        return (p.currentScreen == 'UserProfile') ? <RNSVG_profile_colour /> : <RNSVG_profile_gray />;
     }
 
     const matchesButton = () => {
 
-        if (p.currentScreen == 'MatchCatalog') {
-            return hasNotif ? <RNSVG_matches_gray_notif /> : <RNSVG_matches_colour />;
+        if (p.currentScreen == 'UserMatches') {
+            return hasNotif ? <RNSVG_matches_colour_notif /> : <RNSVG_matches_colour />;
         }
         else {
-            return hasNotif ? <RNSVG_matches_gray /> : <RNSVG_matches_gray />;
+            return hasNotif ? <RNSVG_matches_gray_notif /> : <RNSVG_matches_gray />;
         }
     }
 
@@ -56,25 +57,46 @@ const Nav = (p) => {
         <>
             <View style={[s.navContainer]}>
                 <View style={[s.navItemGroup]}>
-                    <TouchableWithoutFeedback style={[s.navItem]}>
+                    <TouchableWithoutFeedback style={[s.navItem]}
+
+                        onPress={() => {
+                            p.n.navigate('MatchCatalog');
+                        }}
+                    >
                         {profileButton()}
                     </TouchableWithoutFeedback>
 
-                    <TouchableWithoutFeedback style={[s.navItem]}>
+                    <TouchableWithoutFeedback style={[s.navItem]}
+                        onPress={() => {
+                            p.n.navigate('MatchCatalog');
+                        }}
+                    >
                         {filterButton()}
                     </TouchableWithoutFeedback>
                 </View>
 
-                <TouchableWithoutFeedback style={[s.navLogo]}>
+                <TouchableWithoutFeedback style={[s.navLogo]}
+                    onPress={() => {
+                        p.n.navigate('MatchCatalog');
+                    }}
+                >
                     {up4melogo()}
                 </TouchableWithoutFeedback>
 
                 <View style={[s.navItemGroup]}>
-                    <TouchableWithoutFeedback style={[s.navItem]}>
+                    <TouchableWithoutFeedback style={[s.navItem]}
+                        onPress={() => {
+                            p.n.navigate('MatchCatalog');
+                        }}
+                    >
                         {locationsButton()}
                     </TouchableWithoutFeedback>
 
-                    <TouchableWithoutFeedback style={[s.navItem]}>
+                    <TouchableWithoutFeedback style={[s.navItem]}
+                        onPress={() => {
+                            p.n.navigate('Login');
+                        }}
+                    >
                         {matchesButton()}
                     </TouchableWithoutFeedback>
                 </View>
