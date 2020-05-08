@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import Logo from '../logo';
 
-import { gs, apiUrl } from '../../globals';
+import { gs } from '../../globals';
 import BigButton from '../bigbutton';
 
 import Axios from 'axios';
@@ -61,6 +61,7 @@ const ConfirmationCode = ({ route, navigation }) => {
             .then((res) => {
 
                 console.log('/register/1/ Response: ', res);
+                console.log("%c security code: " + `%c ${res.data.security}`, "color: #000; font-size: 1.5rem", "color: #f00; font-size: 2rem")
                 setUserid(res.data.userid);
                 setTargetConfCode(res.data.security);
 
@@ -78,8 +79,11 @@ const ConfirmationCode = ({ route, navigation }) => {
             })
     }
 
+    useEffect(() => { console.log('useffect userid', userid) }, [userid])
+
     const createSession = () => {
-        global.sessionUserId = userid;
+        global.sessionUserId.id = userid;
+        console.log('created session', global.sessionUserId);
     }
 
     const feedbackColor = () => {

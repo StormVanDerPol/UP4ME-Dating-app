@@ -129,7 +129,7 @@ const MatchCatalogItem = (p) => {
 
         Axios.post(endpointMatchResponses,
             {
-                userid1: global.sessionUserId,
+                userid1: global.sessionUserId.id,
                 userid2: p.userid,
                 interesse1: interest1,
             }

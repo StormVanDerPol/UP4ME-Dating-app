@@ -33,7 +33,7 @@ const MatchCatalog = ({ route, navigation }) => {
     }
 
     if (!init) {
-        retrievePotentialMatches(global.sessionUserId)
+        retrievePotentialMatches(global.sessionUserId.id)
         setInit(true);
     }
 
@@ -136,7 +136,7 @@ const MatchCatalog = ({ route, navigation }) => {
         <>
             <ScrollView>
 
-                <Nav currentScreen={route.name} n={navigation} />
+                <Nav currentSection={'Main'} n={navigation} />
 
                 <View style={[s.MatchCatalogItemContainer, { right: deviceWidth * (focusedMatch) }]}>
 

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 
 import {
@@ -13,7 +13,8 @@ import FilterRadioButton from './filterRadiobtn';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
-import MultiSlider from '@ptomasroos/react-native-multi-slider'
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import Slider from '@react-native-community/slider';
 
 import { gs, apiUrl } from '../../globals';
 
@@ -41,19 +42,13 @@ const Filters = ({ route, navigation }) => {
 
     const [heights, setHeights] = useState([150, 250]);
     const [ages, setAges] = useState([18, 120]);
-
-    const [formFilled, setFormFilled] = useState(false);
-
     const [prefGender, setPrefGender] = useState(4);
+    const [distance, setDistance] = useState(1);
 
     const getSelections = (selection) => {
 
         setSelections(Object.assign(selections, selection));
         console.log(selections, 'keys: ', (Object.keys(selections).length));
-
-        if ((Object.keys(selections).length == 9)) {
-            setFormFilled(true);
-        }
     }
 
     const postData = () => {
@@ -66,15 +61,15 @@ const Filters = ({ route, navigation }) => {
                 alcohol: selections.prefalcohol,
                 stemmen: selections.prefpolitics,
                 werken: selections.prefwork,
-                kinderen: selections.prefkids,
                 kinderwens: selections.prefkidWish,
+                kinderen: selections.prefkids,
                 eten: selections.preffood,
                 minlengte: heights[0],
                 maxlengte: heights[1],
                 leeftijdmin: ages[0],
                 leeftijdmax: ages[1],
                 geslacht: prefGender,
-
+                afstand: distance,
             })
             .then((res) => {
                 console.log('success', res);
@@ -107,18 +102,10 @@ const Filters = ({ route, navigation }) => {
 
     const prefGenderStyle = (id) => {
 
-        if (prefGender == id) {
-
-            return {
-                color: 'red',
-            }
-        }
-        else {
-            return {
-                color: 'blue',
-            }
-        }
+        return (prefGender == id) ? { color: "red" } : { color: "blue" };
     }
+
+
 
     return (
         <>
@@ -145,12 +132,17 @@ const Filters = ({ route, navigation }) => {
 
 
                 <Text>{heights[0]} - {heights[1]}</Text>
-                <MultiSlider values={[150, 250]} min={150} max={250}
+                <MultiSlider values={[heights[0], heights[1]]} min={150} max={250}
                     onValuesChange={(heights) => { setHeights(heights) }} />
 
                 <Text>{ages[0]} - {ages[1]}</Text>
-                <MultiSlider values={[18, 120]} min={18} max={120}
+                <MultiSlider values={[ages[0], ages[1]]} min={18} max={120}
                     onValuesChange={(ages) => { setAges(ages) }} />
+
+                <Text>{distance}km</Text>
+                <Slider value={distance} minimumValue={0} maximumValue={250} step={1}
+                    onValueChange={(dist) => { setDistance(dist) }} />
+
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>Sport je?</Text>
@@ -239,14 +231,21 @@ const Filters = ({ route, navigation }) => {
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
                         <BigButton n={navigation} component={"MatchCatalog"} text="opslaan"
-                            disabled={!(formFilled)}
-                            data={Object.assign(data, selections)}
+                            data={Object.assign(data, selections, {
+                                minheight: heights[0],
+                                maxheight: heights[1],
+                                minage: ages[0],
+                                maxage: ages[1],
+                                prefGender: prefGender,
+                                distance: distance,
+                            })}
                             callBack={postData} />
                     </View>
                 </View>
 
             </ScrollView>
         </>
+
     );
 };
 
@@ -263,6 +262,10 @@ const s = StyleSheet.create({
         fontSize: 20,
         marginBottom: 10
     },
+
+    donmai: {
+        textDecorationLine: "underline",
+    }
 
 });
 

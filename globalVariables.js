@@ -1,6 +1,7 @@
-//Actual global variables because apparently native has a global scope
+//Actual global variables because apparently nodejs has a global scope
 global.gpsData = {
     lat: null, lon: null
 };
 
-global.sessionUserId = null;
+global.sessionUserId = { id: null };
+
