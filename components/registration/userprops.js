@@ -18,8 +18,6 @@ import { endpointSetProperties } from '../../endpoints';
 
 const UserProps = ({ route, navigation }) => {
 
-    // const[prevRoute] = useState(navigation.dangerouslyGetState().routes[navigation.dangerouslyGetState().routes.length].name)
-
     const [data] = useState(route.params);
     const [selections, setSelections] = useState(
         {
@@ -35,16 +33,11 @@ const UserProps = ({ route, navigation }) => {
             food: 0
         }
     );
-    const [formFilled, setFormFilled] = useState(false);
 
     const getSelections = (selection) => {
 
         setSelections(Object.assign(selections, selection));
         console.log('Selections', selections, 'Amount of keys', (Object.keys(selections).length));
-
-        if ((Object.keys(selections).length == 9)) {
-            setFormFilled(true);
-        }
     }
 
     const postData = () => {
@@ -165,7 +158,7 @@ const UserProps = ({ route, navigation }) => {
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
                         <BigButton n={navigation} component={"Filter"} text="Doorgaan"
-                            disabled={!(formFilled)}
+                            disabled={!((Object.keys(selections).length == 9))}
                             data={Object.assign(data, selections)}
                             callBack={postData} />
                     </View>

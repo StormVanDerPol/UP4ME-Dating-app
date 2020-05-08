@@ -6,7 +6,6 @@ import { PermissionsAndroid } from 'react-native';
 
 import Axios from 'axios';
 
-import { apiUrl } from './globals';
 import { endpointSetGPS } from "./endpoints";
 
 export async function reqLocationPermission() {
@@ -24,21 +23,22 @@ export async function reqLocationPermission() {
 
 export const updateGPSData = () => {
 
-    if (global.sessionUserId != null) {
+    if (global.sessionUserId.id != null) {
 
         Geolocation.getCurrentPosition((pos) => {
             global.gpsData = {
                 lat: pos.coords.latitude,
                 lon: pos.coords.longitude
             }
-            console.log('stored userID', global.sessionUserId, 'GPS Data', global.gpsData);
+            console.log('stored userID', global.sessionUserId.id, 'GPS Data', global.gpsData);
 
-            Axios.post(endpointSetGPS,
-                {
-                    userid: global.sessionUserId,
-                    latitude: global.gpsData.lat,
-                    longitude: global.gpsData.lon
-                })
+            let toSend = {
+                userid: global.sessionUserId.id,
+                latitude: global.gpsData.lat,
+                longitude: global.gpsData.lon
+            }
+
+            Axios.post(endpointSetGPS, toSend)
                 .then((res) => {
                     console.log('gps update', 'data : ', res);
                 })
@@ -46,6 +46,8 @@ export const updateGPSData = () => {
                     console.log('Error', err);
                 });
 
+        }, (err) => {
+            console.error('Error getting location: ', err)
         });
     }
     else {

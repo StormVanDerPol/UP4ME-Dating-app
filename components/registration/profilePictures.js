@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ImagePicker from 'react-native-image-picker';
 
 import {
@@ -43,8 +43,19 @@ const ProfilePictures = ({ route, navigation }) => {
         })
     }
 
+    useEffect(() => {
+        console.log(pfpArray);
+    }, [pfpArray])
+
     const validatePictures = () => {
-        return false;
+
+        for (let i = 0; i < pfpArray.length; i++) {
+            if (pfpArray[i] != undefined && pfpArray[i] != "data:undefined;base64,undefined") {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     const postData = () => {

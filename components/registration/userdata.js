@@ -51,7 +51,6 @@ const UserData = ({ route, navigation }) => {
                         onChangeText={(input) => {
                             if (input.length == 2) {
                                 setDay(input);
-                                // setBday(year + month + day);
                             }
                         }}
                         maxLength={2} style={s.input} placeholder={'DAG'}
@@ -61,7 +60,6 @@ const UserData = ({ route, navigation }) => {
                         onChangeText={(input) => {
                             if (input.length == 2) {
                                 setMonth(input);
-                                // setBday(year + month + day);
                             }
                         }}
                         maxLength={2} style={s.input} placeholder={'MAAND'}
@@ -71,7 +69,6 @@ const UserData = ({ route, navigation }) => {
                         onChangeText={(input) => {
                             if (input.length == 4) {
                                 setYear(input);
-                                // setBday(year + month + day);
                             }
                         }}
                         maxLength={4} style={s.input} placeholder={'JAAR'}

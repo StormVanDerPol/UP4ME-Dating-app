@@ -27,24 +27,24 @@ const Nav = (p) => {
     const [hasNotif, setHasNotif] = useState(true);
 
     const up4melogo = () => {
-        return (p.currentScreen == 'MatchCatalog') ? <RNSVG_up4me_logo_colour /> : <RNSVG_up4me_logo_gray />;
+        return (p.currentSection == 'Main') ? <RNSVG_up4me_logo_colour /> : <RNSVG_up4me_logo_gray />;
     }
 
     const filterButton = () => {
-        return (p.currentScreen == 'FiltersEdit') ? <RNSVG_filter_colour /> : <RNSVG_filter_gray />;
+        return (p.currentSection == 'Filter') ? <RNSVG_filter_colour /> : <RNSVG_filter_gray />;
     }
 
     const locationsButton = () => {
-        return (p.currentScreen == 'DateLocations') ? <RNSVG_locations_colour /> : <RNSVG_locations_gray />;
+        return (p.currentSection == 'Location') ? <RNSVG_locations_colour /> : <RNSVG_locations_gray />;
     }
 
     const profileButton = () => {
-        return (p.currentScreen == 'UserProfile') ? <RNSVG_profile_colour /> : <RNSVG_profile_gray />;
+        return (p.currentSection == 'Profile') ? <RNSVG_profile_colour /> : <RNSVG_profile_gray />;
     }
 
     const matchesButton = () => {
 
-        if (p.currentScreen == 'UserMatches') {
+        if (p.currentSection == 'Matches') {
             return hasNotif ? <RNSVG_matches_colour_notif /> : <RNSVG_matches_colour />;
         }
         else {
