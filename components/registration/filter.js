@@ -27,15 +27,14 @@ const Filters = ({ route, navigation }) => {
     const [data] = useState(route.params);
     const [selections, setSelections] = useState(
         {
-
             prefsport: 4,
             prefparty: 4,
             prefsmoking: 4,
             prefalcohol: 4,
-            prefpolitics: 4,
+            prefpolitics: 5,
             prefwork: 4,
             prefkids: 4,
-            prefkidWish: 4,
+            prefkidWish: 3,
             preffood: 4
         }
     );
@@ -121,6 +120,7 @@ const Filters = ({ route, navigation }) => {
 
                         return (
                             <TouchableWithoutFeedback
+                                key={i}
                                 onPress={() => handlePrefGenderChange(i + 1)}
                             >
                                 <Text style={[prefGenderStyle(i + 1)]}>{gender}</Text>

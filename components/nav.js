@@ -60,7 +60,7 @@ const Nav = (p) => {
                     <TouchableWithoutFeedback style={[s.navItem]}
 
                         onPress={() => {
-                            p.n.navigate('MatchCatalog');
+                            p.n.navigate('UserProfile');
                         }}
                     >
                         {profileButton()}

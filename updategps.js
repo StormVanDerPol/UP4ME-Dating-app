@@ -23,17 +23,17 @@ export async function reqLocationPermission() {
 
 export const updateGPSData = () => {
 
-    if (global.sessionUserId.id != null) {
+    if (global.sessionUserId != null) {
 
         Geolocation.getCurrentPosition((pos) => {
             global.gpsData = {
                 lat: pos.coords.latitude,
                 lon: pos.coords.longitude
             }
-            console.log('stored userID', global.sessionUserId.id, 'GPS Data', global.gpsData);
+            console.log('stored userID', global.sessionUserId, 'GPS Data', global.gpsData);
 
             let toSend = {
-                userid: global.sessionUserId.id,
+                userid: global.sessionUserId,
                 latitude: global.gpsData.lat,
                 longitude: global.gpsData.lon
             }

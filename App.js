@@ -25,6 +25,7 @@ import MatchCatalog from './components/matching/MatchCatalog';
 import Faq from './components/settings/faq';
 import Nav from './components/nav';
 import Filters from './components/registration/filter';
+import UserProfile from './components/userprofile/userprofile';
 
 import { reqLocationPermission, updateGPSData } from './updategps';
 import moment from 'moment';
@@ -101,6 +102,8 @@ const App = () => {
           <Stack.Screen name="Filter" component={Filters} />
           <Stack.Screen name="FQA" component={Faq} />
           <Stack.Screen name="NAV" component={Nav} />
+          <Stack.Screen name="UserProfile" component={UserProfile} />
+
         </Stack.Navigator>
       </NavigationContainer>
     </>

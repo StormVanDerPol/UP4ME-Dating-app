@@ -33,7 +33,7 @@ const MatchCatalog = ({ route, navigation }) => {
     }
 
     if (!init) {
-        retrievePotentialMatches(global.sessionUserId.id)
+        retrievePotentialMatches(global.sessionUserId)
         setInit(true);
     }
 
@@ -97,7 +97,7 @@ const MatchCatalog = ({ route, navigation }) => {
 
         switch (typeof matchList) {
 
-            case 'array':
+            case 'object':
                 if (matchList.length > 0) {
                     return matchList.map((matchid, i) => {
                         return (
@@ -125,6 +125,9 @@ const MatchCatalog = ({ route, navigation }) => {
                 break;
 
             default:
+
+                console.log('matchlist', matchList, 'of type', typeof matchList)
+
                 return (
                     <Text>Weird result</Text>
                 )

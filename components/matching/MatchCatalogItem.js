@@ -59,21 +59,19 @@ const MatchCatalogItem = (p) => {
         })
     }
 
-
-
     const retrieveProfileData = (userid) => {
         Axios.get(`${endpointGetProfile}${userid}`)
             .then((res) => {
 
-                console.log(`${endpointGetProfile} response: `, res.data[0]);
+                console.log(`${endpointGetProfile} response: `, res.data);
 
                 let imagesToCheck = [
-                    res.data[0].foto1,
-                    res.data[0].foto2,
-                    res.data[0].foto3,
-                    res.data[0].foto4,
-                    res.data[0].foto5,
-                    res.data[0].foto6,
+                    res.data.foto1,
+                    res.data.foto2,
+                    res.data.foto3,
+                    res.data.foto4,
+                    res.data.foto5,
+                    res.data.foto6,
                 ];
 
                 for (let image of imagesToCheck) {
@@ -85,29 +83,29 @@ const MatchCatalogItem = (p) => {
 
                 setImages([...images]);
 
-                setName(res.data[0].naam);
+                setName(res.data.naam);
 
-                setPlaceName(res.data[0].zoektin);
+                setPlaceName(res.data.zoektin);
 
-                setHeight(res.data[0].lengte / 100);
+                setHeight(res.data.lengte / 100);
 
-                setJob(res.data[0].beroep);
+                setJob(res.data.beroep);
 
-                setDesc(res.data[0].profieltext);
+                setDesc(res.data.profieltext);
 
                 setProfProps({
-                    sport: res.data[0].sporten,
-                    party: res.data[0].feesten,
-                    smoking: res.data[0].roken,
-                    alcohol: res.data[0].alcohol,
-                    politics: res.data[0].stemmen,
-                    work: res.data[0].uur40,
-                    kids: res.data[0].kids,
-                    kidWish: res.data[0].kidwens,
-                    food: res.data[0].eten
+                    sport: res.data.sporten,
+                    party: res.data.feesten,
+                    smoking: res.data.roken,
+                    alcohol: res.data.alcohol,
+                    politics: res.data.stemmen,
+                    work: res.data.uur40,
+                    kids: res.data.kids,
+                    kidWish: res.data.kidwens,
+                    food: res.data.eten
                 });
 
-                setAge(calcAgeHet(res.data[0].geboortedatum));
+                setAge(calcAgeHet(res.data.geboortedatum));
 
             })
             .catch((err) => {
@@ -129,7 +127,7 @@ const MatchCatalogItem = (p) => {
 
         Axios.post(endpointMatchResponses,
             {
-                userid1: global.sessionUserId.id,
+                userid1: global.sessionUserId,
                 userid2: p.userid,
                 interesse1: interest1,
             }
