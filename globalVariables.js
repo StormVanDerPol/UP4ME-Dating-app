@@ -3,5 +3,5 @@ global.gpsData = {
     lat: null, lon: null
 };
 
-global.sessionUserId = { id: null };
+global.sessionUserId = null;
 

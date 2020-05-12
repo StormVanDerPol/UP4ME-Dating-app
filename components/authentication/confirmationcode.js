@@ -82,7 +82,7 @@ const ConfirmationCode = ({ route, navigation }) => {
     useEffect(() => { console.log('useffect userid', userid) }, [userid])
 
     const createSession = () => {
-        global.sessionUserId.id = userid;
+        global.sessionUserId = userid;
         console.log('created session', global.sessionUserId);
     }
 

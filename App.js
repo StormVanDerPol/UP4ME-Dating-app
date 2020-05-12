@@ -25,10 +25,13 @@ import MatchCatalog from './components/matching/MatchCatalog';
 import Faq from './components/settings/faq';
 import Nav from './components/nav';
 import Filters from './components/registration/filter';
+import UserProfile from './components/userprofile/userprofile';
 import MatchNoMatch from './components/matching/MatchNoMatch';
+
 
 import { reqLocationPermission, updateGPSData } from './updategps';
 import moment from 'moment';
+import EditFilters from './components/editFilters/editFilters';
 
 //temp
 // import SolidSnek from './temp/gay';
@@ -102,6 +105,8 @@ const App = () => {
           <Stack.Screen name="Filter" component={Filters} />
           <Stack.Screen name="FQA" component={Faq} />
           <Stack.Screen name="NAV" component={Nav} />
+          <Stack.Screen name="UserProfile" component={UserProfile} />
+          <Stack.Screen name="EditFilters" component={EditFilters} />
           <Stack.Screen name="MatchNoMatch" component={MatchNoMatch} />
         </Stack.Navigator>
       </NavigationContainer>
