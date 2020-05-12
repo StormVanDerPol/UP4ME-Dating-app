@@ -94,7 +94,7 @@ const Location = ({ route, navigation }) => {
 
 const s = StyleSheet.create({
     map: {
-        height: deviceHeight / 2,
+        height: deviceHeight / 3,
         marginHorizontal: -mx,
         marginVertical: 15,
         borderWidth: 2,

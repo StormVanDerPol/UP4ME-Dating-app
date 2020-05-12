@@ -17,7 +17,6 @@ const MatchNoMatch = () => {
 
 const s = StyleSheet.create({
     contain: {
-        height: 50,
         width: 350,
         paddingHorizontal: 25,
     },

@@ -124,16 +124,8 @@ const Filters = ({ navigation }) => {
                     {
                         ['Mannen', 'Vrouwen', 'Iedereen'].map((gender, i) => {
 
-                        return (
-                            <TouchableWithoutFeedback
-                                key={i}
-                                onPress={() => handlePrefGenderChange(i + 1)}
-                            >
-                                <Text style={[prefGenderStyle(i + 1)]}>{gender}</Text>
-                            </TouchableWithoutFeedback>
-                        )
-
-                                <TouchableWithoutFeedback
+                            return (
+                                < TouchableWithoutFeedback
                                     onPress={() => handlePrefGenderChange(i + 1)}
                                 >
                                     <LinearGradient style={[s.prefGenderGrad]} colors={prefGenderGrad(i + 1)}>
@@ -141,11 +133,7 @@ const Filters = ({ navigation }) => {
                                     </LinearGradient>
 
                                 </TouchableWithoutFeedback>
-
-
                             )
-
-
                         })
                     }
                 </View>
