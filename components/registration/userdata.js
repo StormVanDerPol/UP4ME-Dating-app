@@ -5,13 +5,16 @@ import {
     StyleSheet, Text, View, TextInput,
 } from 'react-native';
 
-import Slider from '@react-native-community/slider';
+// import Slider from '@react-native-community/slider';
 
-import { gs } from '../../globals';
+import { gs, deviceWidth, mx } from '../../globals';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
 import thumbSlider from '../../res/sliderThumb.png'
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import SliderMarker from '../sliderMarker';
+
 
 
 const UserData = ({ route, navigation }) => {
@@ -19,7 +22,7 @@ const UserData = ({ route, navigation }) => {
     // const [data] = useState(route.params);
 
     const [name, setName] = useState('')
-    const [height, setHeight] = useState(1.75);
+    const [height, setHeight] = useState(175);
     const [job, setJob] = useState('');
 
     const [day, setDay] = useState('');
@@ -39,7 +42,7 @@ const UserData = ({ route, navigation }) => {
     }
 
     return (
-        <>
+        <View style={gs.body}>
             <View style={gs.screenWrapper}>
 
                 <View>
@@ -85,16 +88,25 @@ const UserData = ({ route, navigation }) => {
 
                 <View style={s.spaceBetween}>
                     <Text style={s.subheader}>Mijn lengte</Text>
-                    <Text style={s.heightIndicator}>{height}</Text>
+                    <Text style={s.heightIndicator}>{height}m</Text>
                 </View>
 
-                <Slider style={s.slider}
-                    onValueChange={(height) => setHeight(parseFloat(height.toFixed(2)))}
-                    minimumValue={1.20}
-                    maximumValue={2.50}
-                    minimumTrackTintColor="#888888"
-                    thumbImage={thumbSlider}
-                    value={height}
+                <MultiSlider
+                    customMarker={SliderMarker}
+                    onValuesChange={(height) => setHeight(height[0] / 100)}
+                    min={150}
+                    max={251}
+                    step={1}
+                    sliderLength={deviceWidth - mx * 2}
+
+                    values={[height]}
+
+                    trackStyle={{
+                        backgroundColor: '#d8d8d8',
+                    }}
+                    selectedStyle={{
+                        backgroundColor: '#d8d8d8',
+                    }}
                 />
 
                 <Text style={s.subheader}>Mijn beroep</Text>
@@ -108,16 +120,13 @@ const UserData = ({ route, navigation }) => {
                     />
                 </View>
             </View>
-        </>
+        </View>
     );
 
 }
 
 const s = StyleSheet.create({
 
-    slider: {
-        marginTop: 15
-    },
 
     input: {
         // marginBottom: 25,
