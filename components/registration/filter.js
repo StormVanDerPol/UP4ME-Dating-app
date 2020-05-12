@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Axios from 'axios';
 
 import {
@@ -18,26 +18,29 @@ import Slider from '@react-native-community/slider';
 
 import { gs, apiUrl, pallette, deviceWidth, mx } from '../../globals';
 
-import moment from 'moment';
 import { endpointSetCriteria } from '../../endpoints';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SliderMarker from '../sliderMarker';
 import LinearGradient from 'react-native-linear-gradient';
 
-const Filters = ({ route, navigation }) => {
+const Filters = (p, { route, navigation }) => {
 
-    const [data] = useState(route.params);
+    const [data, setData] = useState({});
+
+    if (!p.fromEdit) {
+        const [data] = useState(route.params);
+    }
+
     const [selections, setSelections] = useState(
         {
-
             prefsport: 4,
             prefparty: 4,
             prefsmoking: 4,
             prefalcohol: 4,
-            prefpolitics: 4,
+            prefpolitics: 5,
             prefwork: 4,
             prefkids: 4,
-            prefkidWish: 4,
+            prefkidWish: 3,
             preffood: 4
         }
     );
@@ -82,17 +85,6 @@ const Filters = ({ route, navigation }) => {
     }
 
 
-    // const convertAge = (age) => {
-
-    //     let now = moment();
-
-    //     let then = moment().subtract(18, 'years');
-
-
-
-    // }
-
-
     const handlePrefGenderChange = (id) => {
         if (prefGender == id) {
             setPrefGender(4);
@@ -125,7 +117,14 @@ const Filters = ({ route, navigation }) => {
                     {
                         ['Mannen', 'Vrouwen', 'Iedereen'].map((gender, i) => {
 
-                            return (
+                        return (
+                            <TouchableWithoutFeedback
+                                key={i}
+                                onPress={() => handlePrefGenderChange(i + 1)}
+                            >
+                                <Text style={[prefGenderStyle(i + 1)]}>{gender}</Text>
+                            </TouchableWithoutFeedback>
+                        )
 
                                 <TouchableWithoutFeedback
                                     onPress={() => handlePrefGenderChange(i + 1)}
