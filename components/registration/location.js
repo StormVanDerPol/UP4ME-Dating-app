@@ -76,7 +76,7 @@ const Location = ({ route, navigation }) => {
                         } />
                     </View>
 
-                    <BigButton n={navigation} component="Gender" text="doorgaan"
+                    <BigButton n={navigation} component="Gender" text="doorgaaan"
                         data={Object.assign(data, { placeName: placeName })}
                     />
                 </View>

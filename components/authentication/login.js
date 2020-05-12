@@ -33,9 +33,8 @@ function Login({ navigation }) {
                     </View>
 
                     <View style={s.bottom}>
-                        <Text style={s.agreement}>Als je inloggen of Maak een account aan tikt, ga je akkoord met onze<Text style={gs.underline} onPress={() => navigation.navigate('Agreement')}> Voorwaarden. </Text>
-                        Lees meer over hoe we je  gegevens verwerken in ons <Text style={gs.underline} onPress={() => navigation.navigate('PrivacyPolicy')}> Privacybeleid </Text>
-                        en<Text style={gs.underline} onPress={() => navigation.navigate('CookiePolicy')}> Cookiebeleid. </Text>
+                        <Text style={s.agreement}>Als je inloggen of Maak een account aan tikt, ga je akkoord met onze <Text style={gs.underline} onPress={() => navigation.navigate('Agreement')}>Voorwaarden</Text>.
+                        Lees meer over hoe we je  gegevens verwerken in ons <Text style={gs.underline} onPress={() => navigation.navigate('PrivacyPolicy')}>Privacybeleid</Text>, en <Text style={gs.underline} onPress={() => navigation.navigate('CookiePolicy')}>Cookiebeleid</Text>.
                         </Text>
                     </View>
 
