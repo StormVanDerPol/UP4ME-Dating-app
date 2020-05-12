@@ -68,6 +68,7 @@ export const calcAgeHet = (bdateApi) => {
 export const gs = StyleSheet.create({
 
     screenWrapper: {
+
         paddingTop: 15,
         height: deviceHeight - 24,
         marginHorizontal: mx

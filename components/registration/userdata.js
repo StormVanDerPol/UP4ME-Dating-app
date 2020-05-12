@@ -26,7 +26,7 @@ const UserData = ({ route, navigation }) => {
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
 
-    const save = () => {
+    const handleData = () => {
 
         global.registData.name = name;
         global.registData.height = height;
@@ -104,7 +104,7 @@ const UserData = ({ route, navigation }) => {
                     <BigButton n={navigation} component="Location" text="doorgaan"
                         disabled={!(name && job && day.length == 2 && month.length == 2 && year.length == 4)}
 
-                        callBack={save}
+                        callBack={handleData}
                     />
                 </View>
             </View>
