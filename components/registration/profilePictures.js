@@ -19,7 +19,7 @@ import { endpointSetPhotos } from '../../endpoints';
 
 const ProfilePictures = ({ route, navigation }) => {
 
-    const [data] = useState(route.params);
+    // const [data] = useState(route.params);
 
     const [src, setSrc] = useState([]);
 
@@ -61,7 +61,7 @@ const ProfilePictures = ({ route, navigation }) => {
     const postData = () => {
 
         let toSend = {
-            userid: data.userid,
+            userid: global.registData.userid,
             photo1: pfpArray[0],
             photo2: pfpArray[1],
             photo3: pfpArray[2],
@@ -76,6 +76,10 @@ const ProfilePictures = ({ route, navigation }) => {
             .catch((err) => {
                 console.log('Error', err);
             });
+
+        global.registData.profilePictures = pfpArray;
+        console.log('saved data: ', global.registData);
+
     }
 
     return (
@@ -118,7 +122,6 @@ const ProfilePictures = ({ route, navigation }) => {
                 {/* <View style={{ paddingBottom: 15 }}> */}
                 <View style={[gs.bottom]}>
                     <BigButton n={navigation} component="ProfileText" text="doorgaan" disabled={validatePictures()}
-                        data={Object.assign(data, { profilePictures: pfpArray })}
                         callBack={postData}
                     />
 

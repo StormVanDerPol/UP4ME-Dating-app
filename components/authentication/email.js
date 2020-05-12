@@ -126,6 +126,11 @@ const Email = ({ navigation }) => {
         setFeedback();
     }, [isValid]);
 
+    const save = () => {
+        global.registData.email = email;
+        console.log('saved data: ', global.registData);
+    }
+
     return (
         <>
             <View style={gs.screenWrapper}>
@@ -155,7 +160,7 @@ const Email = ({ navigation }) => {
                         component="ConfirmationCode"
                         text="doorgaan"
                         disabled={!(isValid == 'VALID')}
-                        data={{ email: email }}
+                        callBack={save}
                     />
                 </View>
             </View>

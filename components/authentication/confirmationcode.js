@@ -14,7 +14,7 @@ import { endpointRegisterEmail } from '../../endpoints';
 
 const ConfirmationCode = ({ route, navigation }) => {
 
-    const [data] = useState(route.params);
+    // const [data] = useState(route.params);
     const [confcode, setConfcode] = useState('');
     const [isValid, setIsValid] = useState(false);
     const [validationFeedback, setValidationFeedback] = useState('');
@@ -55,9 +55,9 @@ const ConfirmationCode = ({ route, navigation }) => {
 
     async function registerEmail() {
 
-        console.log('Email: ', `${endpointRegisterEmail}${data.email}`);
+        console.log('Email: ', `${endpointRegisterEmail}${global.registData.email}`);
 
-        await Axios.get(`${endpointRegisterEmail}${data.email}`)
+        await Axios.get(`${endpointRegisterEmail}${global.registData.email}`)
             .then((res) => {
 
                 console.log('/register/1/ Response: ', res);
@@ -81,9 +81,13 @@ const ConfirmationCode = ({ route, navigation }) => {
 
     useEffect(() => { console.log('useffect userid', userid) }, [userid])
 
-    const createSession = () => {
+    const save = () => {
         global.sessionUserId = userid;
         console.log('created session', global.sessionUserId);
+
+        global.registData.userid = userid;
+        global.registData.confirmationCode = confcode;
+        console.log('saved data: ', global.registData);
     }
 
     const feedbackColor = () => {
@@ -125,8 +129,7 @@ const ConfirmationCode = ({ route, navigation }) => {
                         component={nextRoute}
                         text="doorgaan"
                         disabled={!(isValid)}
-                        data={Object.assign(data, { confirmationCode: confcode, userid: userid })}
-                        callBack={createSession}
+                        callBack={save}
                     />
                 </View>
             </View>

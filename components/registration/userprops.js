@@ -13,15 +13,13 @@ import UserPropsRadioButton from './userpropsRadiobtn';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
-import { gs, apiUrl } from '../../globals';
+import { gs } from '../../globals';
 import { endpointSetProperties } from '../../endpoints';
 
-const UserProps = ({ route, navigation }) => {
+const UserProps = ({ navigation }) => {
 
-    const [data] = useState(route.params);
     const [selections, setSelections] = useState(
         {
-
             sport: 0,
             party: 0,
             smoking: 0,
@@ -34,6 +32,10 @@ const UserProps = ({ route, navigation }) => {
         }
     );
 
+    if (global.registData.userProperties == null) {
+        global.registData.userProperties = selections;
+    }
+
     const getSelections = (selection) => {
 
         setSelections(Object.assign(selections, selection));
@@ -43,7 +45,7 @@ const UserProps = ({ route, navigation }) => {
     const postData = () => {
         Axios.post(endpointSetProperties,
             {
-                userid: data.userid,
+                userid: global.registData.userid,
                 sport: selections.sport,
                 feesten: selections.party,
                 roken: selections.smoking,
@@ -61,6 +63,9 @@ const UserProps = ({ route, navigation }) => {
             .catch((err) => {
                 console.log('error', err);
             })
+
+        global.registData.userProperties = selections;
+        console.log('saved data: ', global.registData);
     }
 
     return (
@@ -77,7 +82,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'sport'} value={data.sport} getSelections={getSelections} />
+                    ]} selectKey={'sport'} value={global.registData.userProperties.sport} getSelections={getSelections} />
                 </View>
 
 
@@ -87,7 +92,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'party'} value={data.party} getSelections={getSelections} />
+                    ]} selectKey={'party'} value={global.registData.userProperties.party} getSelections={getSelections} />
                 </View>
 
 
@@ -97,7 +102,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'smoking'} value={data.smoking} getSelections={getSelections} />
+                    ]} selectKey={'smoking'} value={global.registData.userProperties.smoking} getSelections={getSelections} />
                 </View>
 
 
@@ -107,7 +112,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'alcohol'} value={data.alcohol} getSelections={getSelections} />
+                    ]} selectKey={'alcohol'} value={global.registData.userProperties.alcohol} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -117,7 +122,7 @@ const UserProps = ({ route, navigation }) => {
                         "Midden",
                         "Rechts",
                         "Niet"
-                    ]} selectKey={'politics'} value={data.politics} getSelections={getSelections} />
+                    ]} selectKey={'politics'} value={global.registData.userProperties.politics} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -126,7 +131,7 @@ const UserProps = ({ route, navigation }) => {
                         "< 40 uur",
                         "40 uur",
                         "> 40 uur"
-                    ]} selectKey={'work'} value={data.work} getSelections={getSelections} />
+                    ]} selectKey={'work'} value={global.registData.userProperties.work} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -135,7 +140,7 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'food'} value={data.food} getSelections={getSelections} />
+                    ]} selectKey={'food'} value={global.registData.userProperties.food} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -143,7 +148,7 @@ const UserProps = ({ route, navigation }) => {
                     <UserPropsRadioButton btnText={[
                         "Ja",
                         "Nee"
-                    ]} selectKey={'kids'} value={data.kids} getSelections={getSelections} />
+                    ]} selectKey={'kids'} value={global.registData.userProperties.kids} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -152,14 +157,12 @@ const UserProps = ({ route, navigation }) => {
                         "Ja",
                         "Mischien",
                         "Nee"
-                    ]} selectKey={'kidWish'} value={data.kidWish} getSelections={getSelections} />
+                    ]} selectKey={'kidWish'} value={global.registData.userProperties.kidWish} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
                         <BigButton n={navigation} component={"Filter"} text="Doorgaan"
-                            disabled={!((Object.keys(selections).length == 9))}
-                            data={Object.assign(data, selections)}
                             callBack={postData} />
                     </View>
                 </View>

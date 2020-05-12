@@ -28,7 +28,7 @@ import { reqLocationPermission, updateGPSData } from '../../updategps';
 
 const Location = ({ route, navigation }) => {
 
-    const [data] = useState(route.params);
+    // const [data] = useState(route.params);
 
     const zoom = 10;
     const mapWidth = deviceWidth - mx * 2;
@@ -49,6 +49,11 @@ const Location = ({ route, navigation }) => {
     const [placeNameEdit, setPlaceNameEdit] = useState('Amsterdam');
 
     const [placeName, setPlaceName] = useState('Amsterdam');
+
+    const save = () => {
+        global.registData.placeName = placeName;
+        console.log('saved data: ', global.registData);
+    }
 
     return (
         <>
@@ -77,7 +82,7 @@ const Location = ({ route, navigation }) => {
                     </View>
 
                     <BigButton n={navigation} component="Gender" text="doorgaan"
-                        data={Object.assign(data, { placeName: placeName })}
+                        callBack={save}
                     />
                 </View>
             </View>

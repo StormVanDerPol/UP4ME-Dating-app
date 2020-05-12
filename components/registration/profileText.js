@@ -3,32 +3,32 @@ import React, { useState } from 'react';
 
 import {
     StyleSheet,
-    ScrollView,
     Text,
     View
 } from 'react-native';
 
 import Logo from '../logo';
 
-import { gs, apiUrl } from '../../globals';
+import { gs } from '../../globals';
 
 import BigButton from '../bigbutton';
 import { TextInput } from 'react-native-gesture-handler';
 import Axios from 'axios';
 import { endpointSetProfileText } from '../../endpoints';
 
-const ProfileText = ({ route, navigation }) => {
+const ProfileText = ({ navigation }) => {
 
-    const [data] = useState(route.params);
     const [profText, setProfText] = useState('')
-
 
     const postData = () => {
         Axios.post(endpointSetProfileText,
             {
-                userid: data.userid,
+                userid: global.registData.userid,
                 profiletext: profText
             });
+
+        global.registData.profileDescription = profText;
+        console.log('saved data: ', global.registData);
     }
 
     return (
@@ -48,7 +48,6 @@ const ProfileText = ({ route, navigation }) => {
 
                 <View style={[gs.bottom]}>
                     <BigButton n={navigation} component="UserProps" text="doorgaan" disabled={!(profText)}
-                        data={Object.assign(data, { profileDescription: profText })}
                         callBack={postData}
                     />
                 </View>

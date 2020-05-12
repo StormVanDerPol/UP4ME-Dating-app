@@ -12,7 +12,7 @@ const EditFilters = ({ route, navigation }) => {
         <>
             <Nav currentSection={'Filter'} n={navigation} />
 
-            <Filters fromEdit={true} />
+            <Filters />
         </>
     );
 }

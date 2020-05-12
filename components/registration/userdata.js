@@ -16,7 +16,7 @@ import thumbSlider from '../../res/sliderThumb.png'
 
 const UserData = ({ route, navigation }) => {
 
-    const [data] = useState(route.params);
+    // const [data] = useState(route.params);
 
     const [name, setName] = useState('')
     const [height, setHeight] = useState(1.75);
@@ -26,10 +26,16 @@ const UserData = ({ route, navigation }) => {
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
 
-    const [bday, setBday] = useState(0);
+    const save = () => {
 
-    const concatBday = () => {
-        setBday(year + month + day);
+        global.registData.name = name;
+        global.registData.height = height;
+        global.registData.job = job;
+        global.registData.day = day;
+        global.registData.month = month;
+        global.registData.year = year;
+        global.registData.bday = year + month + day;
+        console.log('saved data: ', global.registData);
     }
 
     return (
@@ -98,8 +104,7 @@ const UserData = ({ route, navigation }) => {
                     <BigButton n={navigation} component="Location" text="doorgaan"
                         disabled={!(name && job && day.length == 2 && month.length == 2 && year.length == 4)}
 
-                        callBack={concatBday}
-                        data={Object.assign(data, { name, bday, day, month, year, height, job })}
+                        callBack={save}
                     />
                 </View>
             </View>

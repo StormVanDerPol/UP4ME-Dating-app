@@ -18,7 +18,7 @@ import { endpointRegisterProfile } from '../../endpoints';
 
 const Gender = ({ route, navigation }) => {
 
-    const [data] = useState(route.params);
+    // const [data] = useState(route.params);
 
     const [selectedGender, setSelectedGender] = useState(0);
     const [genNotif, setGenNotif] = useState('');
@@ -73,10 +73,15 @@ const Gender = ({ route, navigation }) => {
     };
 
     const postData = () => {
-        Axios.get(`${endpointRegisterProfile}${data.userid}/${data.name}/${data.bday}/${data.height * 100}/${data.job}/${data.placeName}/${selectedGender}`)
+        Axios.get(`${endpointRegisterProfile}${global.registData.userid}/${global.registData.name}/${global.registData.bday}/${global.registData.height * 100}/${global.registData.job}/${global.registData.placeName}/${selectedGender}`)
             .then((res) => {
                 console.log(`${endpointRegisterProfile} response`, res)
             });
+    }
+
+    function save() {
+        global.registData.gender = selectedGender;
+        console.log('saved data: ', global.registData);
     }
 
     return (
@@ -111,7 +116,7 @@ const Gender = ({ route, navigation }) => {
 
                 <View style={gs.bottom}>
                     <BigButton n={navigation} component="ProfilePictures" text="doorgaan" disabled={(selectedGender == 0)} callBack={postData}
-                        data={Object.assign(data, { gender: selectedGender })}
+                        callBack={save}
                     />
                 </View>
             </View>
