@@ -12,7 +12,7 @@ export const regexEmail = new RegExp(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w
 export const mx = 20;
 
 //pls dont forget to change this to your local machine's ipv4 address if you wish to test
-export const serverUrl = `192.168.1.13:50000`
+export const serverUrl = `192.168.1.11:50000`
 export const apiUrl = `http://${serverUrl}/api/v1`;
 
 export const MapsApiRootUrl = 'https://maps.googleapis.com/maps/api/staticmap?';
@@ -23,7 +23,8 @@ export const getDistBetweenCoords = (lat1, lon1, lat2, lon2, unit) => {
     }
     else {
         var radlat1 = Math.PI * lat1 / 180;
-        var radlat2 = Math.PI * lat2 / 180;
+        var radlat2 = Math.PI * l
+            .at2 / 180;
         var theta = lon1 - lon2;
         var radtheta = Math.PI * theta / 180;
         var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
@@ -89,6 +90,9 @@ export const gs = StyleSheet.create({
 
     mainHeader: {
         fontSize: 40,
+        marginHorizontal: 25,
+        marginBottom: 45,
+        marginTop: 50
     },
 
     grayTextBox: {
