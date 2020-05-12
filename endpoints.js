@@ -13,4 +13,5 @@ export const endpointMatchResponses = `${apiUrl}/set/matchresponses`;
 export const endpointSetCriteria = `${apiUrl}/set/criteria`;
 export const endpointSetPhotos = `${apiUrl}/set/photos`;
 export const endpointSetProfileText = `${apiUrl}/set/profile/text`;
+export const endpointSetProfile = `${apiUrl}/set/profile`;
 export const endpointSetProperties = `${apiUrl}/set/properties`;

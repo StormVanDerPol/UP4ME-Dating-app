@@ -126,7 +126,7 @@ const Email = ({ navigation }) => {
         setFeedback();
     }, [isValid]);
 
-    const save = () => {
+    const handleData = () => {
         global.registData.email = email;
         console.log('saved data: ', global.registData);
     }
@@ -160,7 +160,7 @@ const Email = ({ navigation }) => {
                         component="ConfirmationCode"
                         text="doorgaan"
                         disabled={!(isValid == 'VALID')}
-                        callBack={save}
+                        callBack={handleData}
                     />
                 </View>
             </View>

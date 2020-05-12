@@ -81,7 +81,7 @@ const ConfirmationCode = ({ route, navigation }) => {
 
     useEffect(() => { console.log('useffect userid', userid) }, [userid])
 
-    const save = () => {
+    const handleData = () => {
         global.sessionUserId = userid;
         console.log('created session', global.sessionUserId);
 
@@ -129,7 +129,7 @@ const ConfirmationCode = ({ route, navigation }) => {
                         component={nextRoute}
                         text="doorgaan"
                         disabled={!(isValid)}
-                        callBack={save}
+                        callBack={handleData}
                     />
                 </View>
             </View>

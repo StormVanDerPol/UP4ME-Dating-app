@@ -50,7 +50,7 @@ const Location = ({ route, navigation }) => {
 
     const [placeName, setPlaceName] = useState('Amsterdam');
 
-    const save = () => {
+    const handleData = () => {
         global.registData.placeName = placeName;
         console.log('saved data: ', global.registData);
     }
@@ -83,7 +83,7 @@ const Location = ({ route, navigation }) => {
 
 
                     <BigButton n={navigation} component="Gender" text="doorgaan"
-                        callBack={save}
+                        callBack={handleData}
 
                     />
                 </View>

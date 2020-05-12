@@ -14,7 +14,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 import Axios from 'axios';
-import { endpointRegisterProfile } from '../../endpoints';
+import { endpointSetProfile } from '../../endpoints';
 
 const Gender = ({ route, navigation }) => {
 
@@ -72,14 +72,12 @@ const Gender = ({ route, navigation }) => {
         }
     };
 
-    const postData = () => {
-        Axios.get(`${endpointRegisterProfile}${global.registData.userid}/${global.registData.name}/${global.registData.bday}/${global.registData.height * 100}/${global.registData.job}/${global.registData.placeName}/${selectedGender}`)
-            .then((res) => {
-                console.log(`${endpointRegisterProfile} response`, res)
-            });
-    }
+    const handleData = () => {
+        // Axios.get(`${endpointRegisterProfile}${global.registData.userid}/${global.registData.name}/${global.registData.bday}/${global.registData.height * 100}/${global.registData.job}/${global.registData.placeName}/${selectedGender}`)
+        //     .then((res) => {
+        //         console.log(`${endpointRegisterProfile} response`, res)
+        //     });
 
-    function save() {
         global.registData.gender = selectedGender;
         console.log('saved data: ', global.registData);
     }
@@ -115,8 +113,8 @@ const Gender = ({ route, navigation }) => {
                 <Text>{genNotif}</Text>
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="ProfilePictures" text="doorgaan" disabled={(selectedGender == 0)} callBack={postData}
-                        callBack={save}
+                    <BigButton n={navigation} component="ProfilePictures" text="doorgaan" disabled={(selectedGender == 0)} callBack={handleData}
+                        callBack={handleData}
                     />
                 </View>
             </View>

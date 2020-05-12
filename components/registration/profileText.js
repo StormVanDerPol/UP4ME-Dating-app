@@ -13,19 +13,19 @@ import { gs } from '../../globals';
 
 import BigButton from '../bigbutton';
 import { TextInput } from 'react-native-gesture-handler';
-import Axios from 'axios';
-import { endpointSetProfileText } from '../../endpoints';
+// import Axios from 'axios';
+// import { endpointSetProfileText } from '../../endpoints';
 
 const ProfileText = ({ navigation }) => {
 
     const [profText, setProfText] = useState('')
 
-    const postData = () => {
-        Axios.post(endpointSetProfileText,
-            {
-                userid: global.registData.userid,
-                profiletext: profText
-            });
+    const handleData = () => {
+        // Axios.post(endpointSetProfileText,
+        //     {
+        //         userid: global.registData.userid,
+        //         profiletext: profText
+        //     });
 
         global.registData.profileDescription = profText;
         console.log('saved data: ', global.registData);
@@ -48,7 +48,7 @@ const ProfileText = ({ navigation }) => {
 
                 <View style={[gs.bottom]}>
                     <BigButton n={navigation} component="UserProps" text="doorgaan" disabled={!(profText)}
-                        callBack={postData}
+                        callBack={handleData}
                     />
                 </View>
             </View>

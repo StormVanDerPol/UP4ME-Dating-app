@@ -18,7 +18,7 @@ import Slider from '@react-native-community/slider';
 
 import { gs, apiUrl, pallette, deviceWidth, mx } from '../../globals';
 
-import { endpointSetCriteria } from '../../endpoints';
+import { endpointSetCriteria, endpointSetProfile } from '../../endpoints';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SliderMarker from '../sliderMarker';
 import LinearGradient from 'react-native-linear-gradient';
@@ -88,6 +88,20 @@ const Filters = ({ navigation }) => {
         global.registData.maxage = ages[1];
         global.registData.prefGender = prefGender;
         global.registData.distance = distance;
+
+        Axios.post(`${endpointSetProfile}`, {
+
+            userid: global.registData.userid,
+            naam: global.registData.name,
+            geboortedatum: global.registData.bday,
+            lengte: global.registData.height * 100,
+            beroep: global.registData.job,
+            woontin: global.registData.placeName,
+            geslacht: global.registData.gender,
+            profiletext: global.registData.profileDescription,
+
+        })
+
         console.log('saved data: ', global.registData);
     }
 
