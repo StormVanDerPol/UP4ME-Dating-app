@@ -29,6 +29,7 @@ import UserProfile from './components/userprofile/userprofile';
 
 import { reqLocationPermission, updateGPSData } from './updategps';
 import moment from 'moment';
+import EditFilters from './components/editFilters/editFilters';
 
 //temp
 // import SolidSnek from './temp/gay';
@@ -103,6 +104,7 @@ const App = () => {
           <Stack.Screen name="FQA" component={Faq} />
           <Stack.Screen name="NAV" component={Nav} />
           <Stack.Screen name="UserProfile" component={UserProfile} />
+          <Stack.Screen name="EditFilters" component={EditFilters} />
 
         </Stack.Navigator>
       </NavigationContainer>

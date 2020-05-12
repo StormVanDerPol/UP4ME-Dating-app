@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Axios from 'axios';
 
 import {
@@ -16,15 +16,19 @@ import BigButton from '../bigbutton';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import Slider from '@react-native-community/slider';
 
-import { gs, apiUrl } from '../../globals';
+import { gs } from '../../globals';
 
-import moment from 'moment';
 import { endpointSetCriteria } from '../../endpoints';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-const Filters = ({ route, navigation }) => {
+const Filters = (p, { route, navigation }) => {
 
-    const [data] = useState(route.params);
+    const [data, setData] = useState({});
+
+    if (!p.fromEdit) {
+        const [data] = useState(route.params);
+    }
+
     const [selections, setSelections] = useState(
         {
             prefsport: 4,
@@ -77,17 +81,6 @@ const Filters = ({ route, navigation }) => {
                 console.log('error', err);
             })
     }
-
-
-    // const convertAge = (age) => {
-
-    //     let now = moment();
-
-    //     let then = moment().subtract(18, 'years');
-
-
-
-    // }
 
 
     const handlePrefGenderChange = (id) => {
