@@ -22,7 +22,7 @@ const Agreement = ({ navigation }) => {
             <ScrollView>
                 <Logo />
 
-                <Text style={[s.header, gs.mainHeader]}>Voorwaarden</Text>
+                <Text style={[gs.mainHeader]}>Voorwaarden</Text>
 
                 <View style={[gs.grayTextBox, s.textContainer]}>
                     <View style={s.section}>
@@ -156,12 +156,6 @@ const Agreement = ({ navigation }) => {
 }
 
 const s = StyleSheet.create({
-
-    header: {
-        marginHorizontal: 25,
-        marginBottom: 100,
-        marginTop: 50
-    },
 
     textContainer: {
         marginBottom: 25

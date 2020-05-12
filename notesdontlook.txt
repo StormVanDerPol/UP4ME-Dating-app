@@ -1,3 +1,5 @@
 npx react-native run-android
 
 ur kinda cute
+
+ur kinda handsome

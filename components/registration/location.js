@@ -81,8 +81,10 @@ const Location = ({ route, navigation }) => {
                         } />
                     </View>
 
+
                     <BigButton n={navigation} component="Gender" text="doorgaan"
                         callBack={save}
+
                     />
                 </View>
             </View>

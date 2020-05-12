@@ -20,38 +20,25 @@ const Email = ({ navigation }) => {
 
     const validateEmail = () => {
 
-        Axios.get(`https://block-temporary-email.com/check/email/${email}`)
+        // Axios.get(`https://block-temporary-email.com/check/email/${email}`)
+        //     .then((res) => {
+
+        //         console.log('check if temp email', res);
+
+        //         if (!res.data.temporary) {
+
+
+        Axios.get(`${endpointCheckEmail}${email}`)
             .then((res) => {
+                console.log(`${endpointCheckEmail} response`, 'I AM DEFINITELY USEFUL TEEHEE~', res);
 
-                console.log('check if temp email', res);
-
-                if (!res.data.temporary) {
-
-
-                    Axios.get(`${endpointCheckEmail}${email}`)
-                        .then((res) => {
-                            console.log(`${endpointCheckEmail} response`, 'I AM DEFINITELY USEFUL TEEHEE~', res);
-
-                            if (res.data.exists == 0) {
-                                setIsValid('VALID');
-                            }
-                            else {
-                                setIsValid('VALID');
-                            }
-
-                        })
-                        .catch((err) => {
-                            console.log('Error', err)
-                            setIsValid('REQ_ERROR');
-                        })
-                        .finally(() => {
-                            setFeedback();
-                        })
-
+                if (res.data.exists == 0) {
+                    setIsValid('VALID');
                 }
                 else {
-                    setIsValid('TEMP')
+                    setIsValid('VALID');
                 }
+
             })
             .catch((err) => {
                 console.log('Error', err)
@@ -59,7 +46,20 @@ const Email = ({ navigation }) => {
             })
             .finally(() => {
                 setFeedback();
-            });
+            })
+
+        //     }
+        //     else {
+        //         setIsValid('TEMP')
+        //     }
+        // })
+        // .catch((err) => {
+        //     console.log('Error', err)
+        //     setIsValid('REQ_ERROR');
+        // })
+        // .finally(() => {
+        //     setFeedback();
+        // });
     };
 
     const setFeedback = () => {

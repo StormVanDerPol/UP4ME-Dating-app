@@ -19,7 +19,7 @@ const CookiePolicy = ({ navigation }) => {
         <>
             <ScrollView>
                 <Logo />
-                <Text style={[s.header, gs.mainHeader]}>Cookiebeleid</Text>
+                <Text style={[gs.mainHeader]}>Cookiebeleid</Text>
 
                 <View style={[gs.grayTextBox, s.textContainer]}>
                     <View style={s.section}>
@@ -52,11 +52,7 @@ const CookiePolicy = ({ navigation }) => {
 }
 
 const s = StyleSheet.create({
-    header: {
-        marginHorizontal: 25,
-        marginBottom: 100,
-        marginTop: 50
-    },
+
 
     textContainer: {
         marginBottom: 25

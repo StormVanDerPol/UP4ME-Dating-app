@@ -22,7 +22,7 @@ const PrivacyPolicy = ({ navigation }) => {
             <ScrollView>
                 <Logo />
 
-                <Text style={[s.header, gs.mainHeader]}>Privacybeleid</Text>
+                <Text style={[gs.mainHeader]}>Privacybeleid</Text>
 
                 <View style={[gs.grayTextBox, s.textContainer]}>
                     <View style={s.section}>
@@ -101,11 +101,6 @@ const PrivacyPolicy = ({ navigation }) => {
 
 const s = StyleSheet.create({
 
-    header: {
-        marginHorizontal: 25,
-        marginBottom: 100,
-        marginTop: 50
-    },
 
     textContainer: {
         marginBottom: 25
