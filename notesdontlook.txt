@@ -2,4 +2,6 @@ npx react-native run-android
 
 ur kinda cute
 
-ur kinda handsome
+open datebase>
+
+git bash bij react juan backend >

@@ -8,8 +8,8 @@ const MatchNoMatch = () => {
     return (
         <>
             <View style={s.contain}>
-                <Text style={s.stuff}>YOU have no matches!</Text>
-                <Text>Ruth please tell me how to make this becuz this is not ok</Text>
+                <Text style={s.main}>Oops..!</Text>
+                <Text style={[s.contain]}>Helaas zijn er geen profielen meer die aan je filters voldoen. Pas je filters aan of wacht op nieuwe profielen.</Text>
             </View>
         </>
     );
@@ -20,8 +20,8 @@ const s = StyleSheet.create({
         width: 350,
         paddingHorizontal: 25,
     },
-    stuff: {
-        color: 'red',
+    main: {
+        color: 'reds',
         fontSize: 50,
     },
 
