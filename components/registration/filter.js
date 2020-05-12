@@ -16,10 +16,12 @@ import BigButton from '../bigbutton';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import Slider from '@react-native-community/slider';
 
-import { gs } from '../../globals';
+import { gs, apiUrl, pallette, deviceWidth, mx } from '../../globals';
 
 import { endpointSetCriteria } from '../../endpoints';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import SliderMarker from '../sliderMarker';
+import LinearGradient from 'react-native-linear-gradient';
 
 const Filters = (p, { route, navigation }) => {
 
@@ -94,9 +96,12 @@ const Filters = (p, { route, navigation }) => {
 
     const prefGenderStyle = (id) => {
 
-        return (prefGender == id) ? { color: "red" } : { color: "blue" };
+        return (prefGender == id) ? { color: "white" } : { color: "gray" };
     }
 
+    function prefGenderGrad(id) {
+        return (prefGender == id) ? [pallette[0], pallette[1]] : ['#fffff000', '#fffff000'];
+    }
 
 
     return (
@@ -106,10 +111,11 @@ const Filters = (p, { route, navigation }) => {
                 <Logo />
                 <Text style={[s.questionHeader]}>Geïnteresseerd in</Text>
 
-                <Text>{prefGender}</Text>
+                {/* <Text>{prefGender}</Text> */}
 
-                {
-                    ['Mannen', 'Vrouwen', 'Iedereen'].map((gender, i) => {
+                <View style={s.prefGenderButtonContainer}>
+                    {
+                        ['Mannen', 'Vrouwen', 'Iedereen'].map((gender, i) => {
 
                         return (
                             <TouchableWithoutFeedback
@@ -120,25 +126,50 @@ const Filters = (p, { route, navigation }) => {
                             </TouchableWithoutFeedback>
                         )
 
-                    })
-                }
+                                <TouchableWithoutFeedback
+                                    onPress={() => handlePrefGenderChange(i + 1)}
+                                >
+                                    <LinearGradient style={[s.prefGenderGrad]} colors={prefGenderGrad(i + 1)}>
+                                        <Text style={[prefGenderStyle(i + 1), s.prefGenderButton]}>{gender}</Text>
+                                    </LinearGradient>
+
+                                </TouchableWithoutFeedback>
+
+
+                            )
+
+
+                        })
+                    }
+                </View>
+
+
+                <Text>{ages[0]} - {ages[1]}</Text>
+                <MultiSlider customMarker={SliderMarker}
+                    values={[ages[0], ages[1]]} min={18} max={120}
+                    onValuesChange={(ages) => { setAges(ages) }} />
+
+                <Text>{distance}km</Text>
+                {/* <Slider value={distance} minimumValue={0} maximumValue={250} step={1}
+                    onValueChange={(dist) => { setDistance(dist) }} /> */}
+
+                <MultiSlider customMarker={SliderMarker}
+                    values={distance[0]} min={0} max={250}
+                    step={1} onValuesChange={(dist) => { setDistance(dist) }} />
+
+
 
 
                 <Text>{heights[0]} - {heights[1]}</Text>
                 <MultiSlider values={[heights[0], heights[1]]} min={150} max={250}
                     onValuesChange={(heights) => { setHeights(heights) }} />
 
-                <Text>{ages[0]} - {ages[1]}</Text>
-                <MultiSlider values={[ages[0], ages[1]]} min={18} max={120}
-                    onValuesChange={(ages) => { setAges(ages) }} />
 
-                <Text>{distance}km</Text>
-                <Slider value={distance} minimumValue={0} maximumValue={250} step={1}
-                    onValueChange={(dist) => { setDistance(dist) }} />
+
 
 
                 <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Sport je?</Text>
+                    <Text style={[s.questionHeader]}>Wil je dat iemand sport?</Text>
                     <FilterRadioButton btnText={[
                         "Ja",
                         "Af en toe",
@@ -148,7 +179,7 @@ const Filters = (p, { route, navigation }) => {
 
 
                 <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Feest je?</Text>
+                    <Text style={[s.questionHeader]}>Wil je dat iemand feest?</Text>
                     <FilterRadioButton btnText={[
                         "Ja",
                         "Af en toe",
@@ -158,7 +189,7 @@ const Filters = (p, { route, navigation }) => {
 
 
                 <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Rook je?</Text>
+                    <Text style={[s.questionHeader]}>Wil je dat iemand rookt?</Text>
                     <FilterRadioButton btnText={[
                         "Ja",
                         "Af en toe",
@@ -168,7 +199,7 @@ const Filters = (p, { route, navigation }) => {
 
 
                 <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Drink je alcohol?</Text>
+                    <Text style={[s.questionHeader]}>Wil je dat iemand alcohol drinkt?</Text>
                     <FilterRadioButton btnText={[
                         "Ja",
                         "Af en toe",
@@ -177,7 +208,7 @@ const Filters = (p, { route, navigation }) => {
                 </View>
 
                 <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Wat stem je?</Text>
+                    <Text style={[s.questionHeader]}> Wat wil je dat iemand stemt?</Text>
                     <FilterRadioButton btnText={[
                         "Links",
                         "Midden",
@@ -187,7 +218,7 @@ const Filters = (p, { route, navigation }) => {
                 </View>
 
                 <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Hoe veel uur per week werk je?</Text>
+                    <Text style={[s.questionHeader]}>Hoeveel wil je dat iemand werkt?</Text>
                     <FilterRadioButton btnText={[
                         "< 40 uur",
                         "40 uur",
@@ -196,7 +227,7 @@ const Filters = (p, { route, navigation }) => {
                 </View>
 
                 <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Eet je gezond?</Text>
+                    <Text style={[s.questionHeader]}>Wil je dat iemand gezond eet?</Text>
                     <FilterRadioButton btnText={[
                         "Ja",
                         "Af en toe",
@@ -205,7 +236,7 @@ const Filters = (p, { route, navigation }) => {
                 </View>
 
                 <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Heb je kinderen?</Text>
+                    <Text style={[s.questionHeader]}>Wil je dat iemand kinderen heeft?</Text>
                     <FilterRadioButton btnText={[
                         "Ja",
                         "Nee"
@@ -213,7 +244,7 @@ const Filters = (p, { route, navigation }) => {
                 </View>
 
                 <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>wil je kinderen?</Text>
+                    <Text style={[s.questionHeader]}>Wil je dat iemand kinderen wilt?</Text>
                     <FilterRadioButton btnText={[
                         "Ja",
                         "Mischien",
@@ -250,6 +281,13 @@ const s = StyleSheet.create({
         borderColor: "gray",
         borderTopWidth: 1,
     },
+    questionContainer1: {
+        marginTop: 15,
+        paddingVertical: 15,
+        borderColor: "gray",
+        borderBottomWidth: 1,
+        marginBottom: 15,
+    },
 
     questionHeader: {
         fontSize: 20,
@@ -258,7 +296,25 @@ const s = StyleSheet.create({
 
     donmai: {
         textDecorationLine: "underline",
-    }
+    },
+
+    prefGenderButton: {
+
+    },
+
+    prefGenderGrad: {
+        borderRadius: 50,
+        paddingVertical: 20,
+        width: ((deviceWidth - (mx * 2)) / 3),
+        alignItems: "center",
+    },
+
+    prefGenderButtonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        backgroundColor: "white",
+        borderRadius: 50,
+    },
 
 });
 
