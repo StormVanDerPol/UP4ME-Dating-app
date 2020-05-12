@@ -12,6 +12,7 @@ import Axios from 'axios';
 import MatchCatalogItem from './MatchCatalogItem';
 import Nav from '../nav';
 import { endpointGetPotentials } from '../../endpoints';
+import MatchNoMatch from './MatchNoMatch';
 
 const MatchCatalog = ({ route, navigation }) => {
 
@@ -114,12 +115,12 @@ const MatchCatalog = ({ route, navigation }) => {
                     })
                 }
                 else {
-                    return noMatches;
+                    return <MatchNoMatch />;
                 }
 
             case 'boolean':
                 if (!matchList) {
-                    return noMatches;
+                    return <MatchNoMatch />;
 
                 }
                 break;
