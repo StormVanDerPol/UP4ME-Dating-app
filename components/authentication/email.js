@@ -132,7 +132,7 @@ const Email = ({ navigation }) => {
     }
 
     return (
-        <>
+        <View style={gs.body}>
             <View style={gs.screenWrapper}>
 
                 <View>
@@ -164,7 +164,7 @@ const Email = ({ navigation }) => {
                     />
                 </View>
             </View>
-        </>
+        </View>
     );
 };
 

@@ -108,7 +108,7 @@ const ConfirmationCode = ({ route, navigation }) => {
     }
 
     return (
-        <>
+        <View style={gs.body}>
             <View style={gs.screenWrapper}>
                 <View>
                     <Logo />
@@ -133,7 +133,7 @@ const ConfirmationCode = ({ route, navigation }) => {
                     />
                 </View>
             </View>
-        </>
+        </View>
     );
 }
 

@@ -21,6 +21,7 @@ const markerDiameter = 20;
 
 const s = StyleSheet.create({
     marker: {
+        borderRadius: 50,
         width: markerDiameter,
         height: markerDiameter
     }

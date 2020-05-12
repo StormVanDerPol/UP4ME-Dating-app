@@ -4,4 +4,13 @@ ur kinda cute
 
 open datebase>
 
-git bash bij react juan backend >
+git bash bij react juan backend > node debugserver.js [if listen then ok]
+
+open mySQL > connect up4me
+
+go to webthing F12
+
+mijn gegevns scherm
+slider verander
+fix meters thing
+fix number input

@@ -107,5 +107,9 @@ export const gs = StyleSheet.create({
         fontSize: 25,
         color: 'gray',
     },
+    body: {
+        //white
+        backgroundColor: '#FFFFFF',
+    },
 
 });
