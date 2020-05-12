@@ -23,13 +23,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SliderMarker from '../sliderMarker';
 import LinearGradient from 'react-native-linear-gradient';
 
-const Filters = (p, { route, navigation }) => {
-
-    const [data, setData] = useState({});
-
-    if (!p.fromEdit) {
-        const [data] = useState(route.params);
-    }
+const Filters = ({ navigation }) => {
 
     const [selections, setSelections] = useState(
         {
@@ -39,11 +33,15 @@ const Filters = (p, { route, navigation }) => {
             prefalcohol: 4,
             prefpolitics: 5,
             prefwork: 4,
-            prefkids: 4,
-            prefkidWish: 3,
+            prefkids: 3,
+            prefkidWish: 4,
             preffood: 4
         }
     );
+
+    if (global.registData.userCriteria == null) {
+        global.registData.userCriteria = selections;
+    }
 
     const [heights, setHeights] = useState([150, 250]);
     const [ages, setAges] = useState([18, 120]);
@@ -59,7 +57,7 @@ const Filters = (p, { route, navigation }) => {
     const postData = () => {
         Axios.post(endpointSetCriteria,
             {
-                userid: data.userid,
+                userid: global.registData.userid,
                 sport: selections.prefsport,
                 feesten: selections.prefparty,
                 roken: selections.prefsmoking,
@@ -82,6 +80,15 @@ const Filters = (p, { route, navigation }) => {
             .catch((err) => {
                 console.log('error', err);
             })
+
+        global.registData.userCriteria = selections;
+        global.registData.minheight = heights[0];
+        global.registData.maxheight = heights[1];
+        global.registData.minage = ages[0];
+        global.registData.maxage = ages[1];
+        global.registData.prefGender = prefGender;
+        global.registData.distance = distance;
+        console.log('saved data: ', global.registData);
     }
 
 
@@ -174,7 +181,7 @@ const Filters = (p, { route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'prefsport'} value={data.prefsport} getSelections={getSelections} />
+                    ]} selectKey={'prefsport'} value={global.registData.userCriteria.prefsport} getSelections={getSelections} />
                 </View>
 
 
@@ -184,7 +191,7 @@ const Filters = (p, { route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'prefparty'} value={data.prefparty} getSelections={getSelections} />
+                    ]} selectKey={'prefparty'} value={global.registData.userCriteria.prefparty} getSelections={getSelections} />
                 </View>
 
 
@@ -194,7 +201,7 @@ const Filters = (p, { route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'prefsmoking'} value={data.prefsmoking} getSelections={getSelections} />
+                    ]} selectKey={'prefsmoking'} value={global.registData.userCriteria.prefsmoking} getSelections={getSelections} />
                 </View>
 
 
@@ -204,7 +211,7 @@ const Filters = (p, { route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'prefalcohol'} value={data.prefalcohol} getSelections={getSelections} />
+                    ]} selectKey={'prefalcohol'} value={global.registData.userCriteria.prefalcohol} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -214,7 +221,7 @@ const Filters = (p, { route, navigation }) => {
                         "Midden",
                         "Rechts",
                         "Niet"
-                    ]} selectKey={'prefpolitics'} value={data.prefpolitics} getSelections={getSelections} />
+                    ]} selectKey={'prefpolitics'} value={global.registData.userCriteria.prefpolitics} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -223,7 +230,7 @@ const Filters = (p, { route, navigation }) => {
                         "< 40 uur",
                         "40 uur",
                         "> 40 uur"
-                    ]} selectKey={'prefwork'} value={data.prefwork} getSelections={getSelections} />
+                    ]} selectKey={'prefwork'} value={global.registData.userCriteria.prefwork} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -232,7 +239,7 @@ const Filters = (p, { route, navigation }) => {
                         "Ja",
                         "Af en toe",
                         "Nee"
-                    ]} selectKey={'preffood'} value={data.preffood} getSelections={getSelections} />
+                    ]} selectKey={'preffood'} value={global.registData.userCriteria.preffood} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -240,7 +247,7 @@ const Filters = (p, { route, navigation }) => {
                     <FilterRadioButton btnText={[
                         "Ja",
                         "Nee"
-                    ]} selectKey={'prefkids'} value={data.prefkids} getSelections={getSelections} />
+                    ]} selectKey={'prefkids'} value={global.registData.userCriteria.prefkids} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
@@ -249,20 +256,12 @@ const Filters = (p, { route, navigation }) => {
                         "Ja",
                         "Mischien",
                         "Nee"
-                    ]} selectKey={'prefkidWish'} value={data.prefkidWish} getSelections={getSelections} />
+                    ]} selectKey={'prefkidWish'} value={global.registData.userCriteria.prefkidWish} getSelections={getSelections} />
                 </View>
 
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
                         <BigButton n={navigation} component={"MatchCatalog"} text="opslaan"
-                            data={Object.assign(data, selections, {
-                                minheight: heights[0],
-                                maxheight: heights[1],
-                                minage: ages[0],
-                                maxage: ages[1],
-                                prefGender: prefGender,
-                                distance: distance,
-                            })}
                             callBack={postData} />
                     </View>
                 </View>

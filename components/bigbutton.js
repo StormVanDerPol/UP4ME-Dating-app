@@ -39,8 +39,8 @@ const BigButton = (p) => {
                         callBack();
 
                         if (p.component != "back") {
-                            console.log('Passed Data: ', p.data);
-                            p.n.navigate(p.component, p.data)
+
+                            p.n.navigate(p.component)
                         }
                         else {
 

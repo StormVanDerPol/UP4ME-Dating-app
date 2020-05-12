@@ -7,7 +7,7 @@ import { gs } from '../../globals';
 import {
     StyleSheet, Text, View,
 } from 'react-native';
-import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableWithoutFeedback, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BigButton from '../bigbutton';
 // import Gender from '../registration/gender';
 // import UserData from '../registration/userdata';
@@ -33,112 +33,113 @@ const UserSettings = ({ navigation }) => {
 
     return (
         <>
-            <TouchableWithoutFeedback style={[s.underb]} onPress={() => navigation.goBack()}>
-                {/* <Icon name='keyboard_arrow_left' /> */}
-                <Text style={[gs.topText]}>Instellingen</Text>
-            </TouchableWithoutFeedback>
-
-            <View style={[s.underb]}>
-                <TouchableWithoutFeedback onPress={() => {
-                    changeDropdown(1, (
-                        <>
-                            <TouchableOpacity n={navigation} component="Gender">
-                                <Text>Geslacht________whatever></Text>
-                            </TouchableOpacity>
-
-                            {/* <Gender /> */}
-                        </>
-                    ));
-                }}>
-                    <Text style={[s.fonty]}>Mijn gegevens</Text>
+            <ScrollView>
+                <TouchableWithoutFeedback style={[s.underb]} onPress={() => navigation.goBack()}>
+                    {/* <Icon name='keyboard_arrow_left' /> */}
+                    <Text style={[gs.topText]}>Instellingen</Text>
                 </TouchableWithoutFeedback>
-                {dropdownElements[1]}
-            </View>
 
-            <View style={[s.underb]}>
-                <TouchableWithoutFeedback onPress={() => {
-                    changeDropdown(2, (
-                        <Text>wowoowow</Text>
-                    ));
-                }}>
-                    <Text style={[s.fonty]}>Meldingen</Text>
-                </TouchableWithoutFeedback>
-                {dropdownElements[2]}
-            </View>
+                <View style={[s.underb]}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        changeDropdown(1, (
+                            <>
+                                <TouchableOpacity n={navigation} component="Gender">
+                                    <Text>Geslacht________whatever></Text>
+                                </TouchableOpacity>
 
-            <View style={[s.underb]}>
-                <TouchableWithoutFeedback onPress={() => {
-                    changeDropdown(3, (
-                        <>
-                            <Text style={[s.pt]} onPress={() => navigation.navigate('Agreement')}>Voorwaarden</Text>
-                            <Text style={[s.pt]} onPress={() => navigation.navigate('PrivacyPolicy')}>Privacybeleid</Text>
-                            <Text style={[s.pt]} onPress={() => navigation.navigate('CookiePolicy')}>Cookiebeleid</Text>
-                        </>
-                    ));
-                }}>
-                    <Text style={[s.fonty]}>Voorwaarden en Privacy</Text>
-                </TouchableWithoutFeedback>
-                {dropdownElements[3]}
-            </View>
+                                {/* <Gender /> */}
+                            </>
+                        ));
+                    }}>
+                        <Text style={[s.fonty]}>Mijn gegevens</Text>
+                    </TouchableWithoutFeedback>
+                    {dropdownElements[1]}
+                </View>
 
-            <View style={[s.underb]}>
-                <TouchableWithoutFeedback onPress={() => {
-                    changeDropdown(4, (
-                        <Text onPress={() => navigation.navigate('FQA')}>help</Text>
-                    ));
-                }}>
-                    <Text style={[s.fonty]}>Help and FAQ</Text>
-                </TouchableWithoutFeedback>
-                {dropdownElements[4]}
-            </View>
+                <View style={[s.underb]}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        changeDropdown(2, (
+                            <Text>wowoowow</Text>
+                        ));
+                    }}>
+                        <Text style={[s.fonty]}>Meldingen</Text>
+                    </TouchableWithoutFeedback>
+                    {dropdownElements[2]}
+                </View>
 
-            <View style={[s.underb]}>
-                <TouchableWithoutFeedback onPress={() => {
-                    changeDropdown(5, (
-                        <>
-                            <Text>bro deze shit is leeg in de prototype wtf</Text>
+                <View style={[s.underb]}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        changeDropdown(3, (
+                            <>
+                                <Text style={[s.pt]} onPress={() => navigation.navigate('Agreement')}>Voorwaarden</Text>
+                                <Text style={[s.pt]} onPress={() => navigation.navigate('PrivacyPolicy')}>Privacybeleid</Text>
+                                <Text style={[s.pt]} onPress={() => navigation.navigate('CookiePolicy')}>Cookiebeleid</Text>
+                            </>
+                        ));
+                    }}>
+                        <Text style={[s.fonty]}>Voorwaarden en Privacy</Text>
+                    </TouchableWithoutFeedback>
+                    {dropdownElements[3]}
+                </View>
 
-                        </>
+                <View style={[s.underb]}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        changeDropdown(4, (
+                            <Text onPress={() => navigation.navigate('FQA')}>help</Text>
+                        ));
+                    }}>
+                        <Text style={[s.fonty]}>Help and FAQ</Text>
+                    </TouchableWithoutFeedback>
+                    {dropdownElements[4]}
+                </View>
 
-                    ));
-                }}>
-                    <Text style={[s.fonty]}>Richtlijnen and veiligheid</Text>
-                </TouchableWithoutFeedback>
-                {dropdownElements[5]}
-            </View>
+                <View style={[s.underb]}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        changeDropdown(5, (
+                            <>
+                                <Text>bro deze shit is leeg in de prototype wtf</Text>
 
-            <View style={[s.underb]}>
-                <TouchableWithoutFeedback onPress={() => {
-                    changeDropdown(6, (
-                        <Text>fuck deze kk shit</Text>
-                    ));
-                }}>
-                    <Text style={[s.fonty]}>uitloggen</Text>
-                </TouchableWithoutFeedback>
-                {dropdownElements[6]}
-            </View>
+                            </>
 
-            <View style={[s.underb]}>
-                <TouchableWithoutFeedback onPress={() => {
-                    changeDropdown(7, (
-                        <View>
-                            <Text>tuurlijk niet</Text>
-                            <Text>open 3 buttons also make the whole screen gray</Text>
-                        </View>
+                        ));
+                    }}>
+                        <Text style={[s.fonty]}>Richtlijnen and veiligheid</Text>
+                    </TouchableWithoutFeedback>
+                    {dropdownElements[5]}
+                </View>
 
-                    ));
-                }}>
-                    <Text style={[s.fonty]}>Account verwijderen</Text>
-                </TouchableWithoutFeedback>
-                {dropdownElements[7]}
-            </View>
+                <View style={[s.underb]}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        changeDropdown(6, (
+                            <Text>fuck deze kk shit</Text>
+                        ));
+                    }}>
+                        <Text style={[s.fonty]}>uitloggen</Text>
+                    </TouchableWithoutFeedback>
+                    {dropdownElements[6]}
+                </View>
 
-            <BigButton
-                text="opslaan"
-            // component="Pfinstellingen" bestaat nog niet
+                <View style={[s.underb]}>
+                    <TouchableWithoutFeedback onPress={() => {
+                        changeDropdown(7, (
+                            <View>
+                                <Text>tuurlijk niet</Text>
+                                <Text>open 3 buttons also make the whole screen gray</Text>
+                            </View>
 
-            />
+                        ));
+                    }}>
+                        <Text style={[s.fonty]}>Account verwijderen</Text>
+                    </TouchableWithoutFeedback>
+                    {dropdownElements[7]}
+                </View>
 
+                <BigButton
+                    text="opslaan"
+                // component="Pfinstellingen" bestaat nog niet
+
+                />
+            </ScrollView>
         </>
     );
 }

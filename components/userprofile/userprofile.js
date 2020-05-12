@@ -12,7 +12,7 @@ import { deviceWidth, pallette } from '../../globals';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 
-const UserProfile = ({ route, navigation }) => {
+const UserProfile = ({ navigation }) => {
 
     const [userProfileData, setUserProfileData] = useState({});
 
@@ -117,7 +117,7 @@ const UserProfile = ({ route, navigation }) => {
             </View>
 
             <SectRouteBtn n={navigation} route={'somewhere'} btnText={'profiel bewerken'} />
-            <SectRouteBtn n={navigation} route={'somewhere'} btnText={'Instellingen'} />
+            <SectRouteBtn n={navigation} route={'UserSettings'} btnText={'Instellingen'} />
             <SectRouteBtn n={navigation} route={'somewhere'} btnText={'Nodig vrienden uit'} />
 
             <View>
