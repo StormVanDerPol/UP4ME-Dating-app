@@ -1,6 +1,8 @@
 import { StyleSheet, Dimensions, PermissionsAndroid } from 'react-native';
 import moment from 'moment';
 
+export const debugMode = true;
+
 export var deviceHeight = Dimensions.get('window').height;
 export var deviceWidth = Dimensions.get('window').width;
 
@@ -20,6 +22,8 @@ export const up4meColours = {
     gradYellow2: '#F5A623',
 
 }
+
+export const editTimerMS = 500;
 
 export const regexNumerical = new RegExp(/^[0-9]*$/g);
 export const regexEmail = new RegExp(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/);
