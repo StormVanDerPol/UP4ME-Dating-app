@@ -9,16 +9,12 @@ import {
     TouchableWithoutFeedback,
 } from 'react-native';
 
-import { gs, deviceWidth, pallette, apiUrl } from '../../globals';
+import { gs, deviceWidth, up4meColours } from '../../globals';
 import LinearGradient from 'react-native-linear-gradient';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
-import Axios from 'axios';
-import { endpointSetProfile } from '../../endpoints';
 
-const Gender = ({ route, navigation }) => {
-
-    // const [data] = useState(route.params);
+const Gender = ({ navigation }) => {
 
     const [selectedGender, setSelectedGender] = useState(0);
     const [genNotif, setGenNotif] = useState('');
@@ -73,10 +69,6 @@ const Gender = ({ route, navigation }) => {
     };
 
     const handleData = () => {
-        // Axios.get(`${endpointRegisterProfile}${global.registData.userid}/${global.registData.name}/${global.registData.bday}/${global.registData.height * 100}/${global.registData.job}/${global.registData.placeName}/${selectedGender}`)
-        //     .then((res) => {
-        //         console.log(`${endpointRegisterProfile} response`, res)
-        //     });
 
         global.registData.gender = selectedGender;
         console.log('saved data: ', global.registData);
@@ -91,20 +83,20 @@ const Gender = ({ route, navigation }) => {
                     <Text style={[s.header, gs.mainHeader]}>Ik ben een</Text>
                 </View>
 
-                <LinearGradient colors={gradient(1, [pallette[0], pallette[1], '#FFFFFF', '#FFFFFF'])} style={[s.radioBtnOuter]}>
+                <LinearGradient colors={gradient(1, [up4meColours.gradPink, up4meColours.gradOrange, '#FFFFFF', '#FFFFFF'])} style={[s.radioBtnOuter]}>
                     <TouchableOpacity style={[s.radioBtnInner]} onPress={() => { onPressSelectGender(1) }}><Text>Man</Text></TouchableOpacity>
                 </LinearGradient>
-                <LinearGradient colors={gradient(2, [pallette[0], pallette[1], '#FFFFFF', '#FFFFFF'])} style={[s.radioBtnOuter]}>
+                <LinearGradient colors={gradient(2, [up4meColours.gradPink, up4meColours.gradOrange, '#FFFFFF', '#FFFFFF'])} style={[s.radioBtnOuter]}>
                     <TouchableOpacity style={[s.radioBtnInner]} onPress={() => { onPressSelectGender(2) }}><Text>Vrouw</Text></TouchableOpacity>
                 </LinearGradient>
-                <LinearGradient colors={gradient(3, [pallette[0], pallette[1], '#FFFFFF', '#FFFFFF'])} style={[s.radioBtnOuter]}>
+                <LinearGradient colors={gradient(3, [up4meColours.gradPink, up4meColours.gradOrange, '#FFFFFF', '#FFFFFF'])} style={[s.radioBtnOuter]}>
                     <TouchableOpacity style={[s.radioBtnInner]} onPress={() => { onPressSelectGender(3) }}><Text>Non-binair</Text></TouchableOpacity>
                 </LinearGradient>
 
                 <View style={{ justifyContent: "space-between", flexDirection: "row" }}>
                     <Text>Ik zeg het liever niet</Text>
                     <TouchableWithoutFeedback onPress={() => { onPressSelectGenderCanReset(4) }}>
-                        <LinearGradient colors={gradient(4, [pallette[0], pallette[1], '#DDDDDD', '#DDDDDD'])} style={[s.slideCheckbox, slideCheckboxStyle(4)]}>
+                        <LinearGradient colors={gradient(4, [up4meColours.gradPink, up4meColours.gradOrange, '#DDDDDD', '#DDDDDD'])} style={[s.slideCheckbox, slideCheckboxStyle(4)]}>
                             <View style={[s.slideCheckboxBall]}></View>
                         </LinearGradient>
                     </TouchableWithoutFeedback>

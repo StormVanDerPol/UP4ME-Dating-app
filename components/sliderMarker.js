@@ -5,14 +5,14 @@ import {
     StyleSheet,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { pallette } from '../globals';
+import { up4meColours } from '../globals';
 
 const SliderMarker = () => {
     return (
         <>
             <LinearGradient
                 style={[s.marker]}
-                colors={[pallette[0], pallette[1]]} />
+                colors={[up4meColours.gradPink, up4meColours.gradOrange]} />
         </>
     );
 }

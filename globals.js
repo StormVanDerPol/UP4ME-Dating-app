@@ -6,6 +6,17 @@ export var deviceWidth = Dimensions.get('window').width;
 
 export const pallette = ['#FEA15A', '#D100A3'];
 
+export const up4meColours = {
+    gradPink: '#FEA15A',
+    gradOrange: '#D100A',
+    darkGray: '#D8D8D8',
+    lightGray: '#F2F2F2',
+    grayPhotos: '#F4F0F0',
+    grayButtons: '#9B9B9B',
+    gradYellow1: '#F5CA23',
+    gradYellow2: '#F5A623',
+}
+
 export const regexNumerical = new RegExp(/^[0-9]*$/g);
 export const regexEmail = new RegExp(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/);
 
