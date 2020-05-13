@@ -2,7 +2,9 @@
 
 import 'react-native-gesture-handler';
 
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
+
+import { debugMode } from './globals';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -32,12 +34,9 @@ import MatchNoMatch from './components/matching/MatchNoMatch';
 import { reqLocationPermission, updateGPSData } from './updategps';
 import moment from 'moment';
 import EditFilters from './components/editFilters/editFilters';
-import { up4meColours } from './globals';
 
-//temp
-// import SolidSnek from './temp/gay';
-
-console.log(up4meColours);
+//debug
+import debugRouter from './components/debug/debugRouter';
 
 const Stack = createStackNavigator();
 
@@ -66,7 +65,8 @@ const App = () => {
 
       let diff = now.diff(then, 'minutes', false);
 
-      console.log('Time left till GPS update:', updateGPSDataInMinutes - diff, 'Minutes');
+      if (debugMode)
+        console.log('Time left till GPS update:', updateGPSDataInMinutes - diff, 'Minutes');
 
       if (diff > updateGPSDataInMinutes) {
 
@@ -82,13 +82,16 @@ const App = () => {
   }
 
 
+  function debugScreen() {
+    return (debugMode) ? <Stack.Screen name="debugRouter" component={debugRouter} /> : <></>;
+  }
+
   return (
     <>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
 
-
-          {/* <Stack.Screen name="SolidSnek" component={SolidSnek} /> */}
+          {debugScreen()}
 
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Email" component={Email} />
