@@ -9,7 +9,7 @@ import {
 
 import LinearGradient from 'react-native-linear-gradient';
 
-import { pallette } from "../../globals";
+import { up4meColours } from "../../globals";
 
 const UserPropsRadioButton = (p) => {
 
@@ -19,7 +19,7 @@ const UserPropsRadioButton = (p) => {
     const btnGrad = (id) => {
 
         if (id == selected) {
-            return [pallette[0], pallette[1]];
+            return [up4meColours.gradPink, up4meColours.gradOrange];
         }
         else {
             return ['#FFFFFF', '#FFFFFF'];

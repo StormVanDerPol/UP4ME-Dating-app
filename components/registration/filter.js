@@ -14,9 +14,8 @@ import Logo from '../logo';
 import BigButton from '../bigbutton';
 
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import Slider from '@react-native-community/slider';
 
-import { gs, apiUrl, pallette, deviceWidth, mx } from '../../globals';
+import { gs, up4meColours, deviceWidth, mx } from '../../globals';
 
 import { endpointSetCriteria, endpointSetProfile } from '../../endpoints';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -121,7 +120,7 @@ const Filters = ({ navigation }) => {
     }
 
     function prefGenderGrad(id) {
-        return (prefGender == id) ? [pallette[0], pallette[1]] : ['#fffff000', '#fffff000'];
+        return (prefGender == id) ? [up4meColours.gradPink, up4meColours.gradOrange] : ['#fffff000', '#fffff000'];
     }
 
 

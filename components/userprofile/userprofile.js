@@ -8,7 +8,7 @@ import Axios from 'axios';
 
 import Nav from '../nav';
 import { endpointGetProfile } from '../../endpoints';
-import { deviceWidth, pallette } from '../../globals';
+import { deviceWidth, up4meColours } from '../../globals';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -161,7 +161,7 @@ const NotifItem = (p) => {
 
                 <LinearGradient
                     style={[NotifItemStyles.gradient]}
-                    colors={[pallette[0], pallette[1]]}
+                    colors={[up4meColours.gradPink, up4meColours.gradOrange]}
                 />
 
                 <View style={[NotifItemStyles.pfpContainer]}>

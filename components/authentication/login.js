@@ -11,7 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {
     deviceHeight,
     gs,
-    pallette
+    up4meColours
 } from '../../globals';
 import LoginButton from './loginBtn';
 import RNSVG_up4me_logo_login from '../../res/ui/rnsvg/rnsvg_up4me_logo_login';
@@ -20,7 +20,7 @@ function Login({ navigation }) {
 
     return (
         <>
-            <LinearGradient colors={[pallette[0], pallette[1]]}>
+            <LinearGradient colors={[up4meColours.gradPink, up4meColours.gradOrange]}>
                 <View style={s.wrapper}>
 
                     <View style={s.logo} >

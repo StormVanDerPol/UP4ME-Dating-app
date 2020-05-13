@@ -6,14 +6,14 @@ import {
 } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
-import { pallette, deviceWidth } from '../globals';
+import { deviceWidth, up4meColours } from '../globals';
 
 const BigButton = (p) => {
 
     const gradient = (disabled) => {
 
         if (!disabled) {
-            return [pallette[0], pallette[1]]
+            return [up4meColours.gradPink, up4meColours.gradOrange]
         }
         else {
             return ['#DDDDDD', '#DDDDDD']

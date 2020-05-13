@@ -32,9 +32,12 @@ import MatchNoMatch from './components/matching/MatchNoMatch';
 import { reqLocationPermission, updateGPSData } from './updategps';
 import moment from 'moment';
 import EditFilters from './components/editFilters/editFilters';
+import { up4meColours } from './globals';
 
 //temp
 // import SolidSnek from './temp/gay';
+
+console.log(up4meColours);
 
 const Stack = createStackNavigator();
 
