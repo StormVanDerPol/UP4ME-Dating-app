@@ -1,3 +1,5 @@
+//DEPRECATED
+
 import React, { useState, useEffect } from 'react';
 
 import {
@@ -140,7 +142,7 @@ const MatchCatalog = ({ route, navigation }) => {
         <>
             <ScrollView>
 
-                <Nav currentSection={'Main'} n={navigation} />
+                <Nav currentSection={'Main'} />
 
                 <View style={[s.MatchCatalogItemContainer, { right: deviceWidth * (focusedMatch) }]}>
 

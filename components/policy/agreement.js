@@ -147,7 +147,7 @@ const Agreement = ({ navigation }) => {
                     <Text>Up4me streeft ernaar binnen 3 werkdagen inhoudelijk op een ingediende klacht te antwoorden.</Text>
 
                 </View>
-                <BigButton n={navigation} component="back" text="akkoord" />
+                <BigButton component="back" text="akkoord" />
                 <View style={{ marginBottom: 24 }} />
             </ScrollView>
         </>

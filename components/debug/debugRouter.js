@@ -29,6 +29,8 @@ const routes = [
     'UserProfile',
     'EditFilters',
     'MatchNoMatch',
+    'MatchScreenInitial',
+    'MatchScreen'
 ]
 
 const debugRouter = ({ navigation }) => {

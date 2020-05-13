@@ -1,12 +1,13 @@
 import React from 'react';
 import { TouchableOpacity, StyleSheet, Text } from 'react-native';
 import { deviceWidth } from '../../globals';
+import { rootNavigation } from '../../rootNavigation';
 
 function LoginButton(p) {
 
     return (
         <TouchableOpacity
-            onPress={() => p.n.navigate(p.component)}
+            onPress={() => rootNavigation.navigate(p.component)}
             style={s.button}>
             <Text style={s.buttonText}>{p.text}</Text>
         </TouchableOpacity>

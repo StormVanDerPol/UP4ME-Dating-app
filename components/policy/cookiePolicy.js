@@ -43,7 +43,7 @@ const CookiePolicy = ({ navigation }) => {
                     <Text>Hopefully that has clarified things for you and as was previously mentioned if there is something that you aren't sure whether you need or not it's usually safer to leave cookies enabled in case it does interact with one of the features you use on our site. This Cookies Policy was created with the help of the Cookie Policy Template Generator. However if you are still looking for more information then you can contact us through one of our preferred contact methods: Email: info@up4me.nl</Text>
 
                 </View>
-                <BigButton n={navigation} component="back" text="terug" />
+                <BigButton component="back" text="terug" />
                 <View style={{ marginBottom: 24 }} />
             </ScrollView>
         </>

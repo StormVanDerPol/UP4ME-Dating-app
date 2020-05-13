@@ -47,7 +47,7 @@ const ProfileText = ({ navigation }) => {
                 </View>
 
                 <View style={[gs.bottom]}>
-                    <BigButton n={navigation} component="UserProps" text="doorgaan" disabled={!(profText)}
+                    <BigButton component="UserProps" text="doorgaan" disabled={!(profText)}
                         callBack={handleData}
                     />
                 </View>

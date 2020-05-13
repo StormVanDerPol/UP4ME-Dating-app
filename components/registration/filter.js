@@ -131,8 +131,6 @@ const Filters = ({ navigation }) => {
                 <Logo />
                 <Text style={[s.questionHeader]}>Geïnteresseerd in</Text>
 
-                {/* <Text>{prefGender}</Text> */}
-
                 <View style={s.prefGenderButtonContainer}>
                     {
                         ['Mannen', 'Vrouwen', 'Iedereen'].map((gender, i) => {
@@ -262,7 +260,7 @@ const Filters = ({ navigation }) => {
 
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
-                        <BigButton n={navigation} component={"MatchCatalog"} text="opslaan"
+                        <BigButton component={"MatchScreenInitial"} text="opslaan"
                             callBack={postData} />
                     </View>
                 </View>

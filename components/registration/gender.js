@@ -105,7 +105,7 @@ const Gender = ({ navigation }) => {
                 <Text>{genNotif}</Text>
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="ProfilePictures" text="doorgaan" disabled={(selectedGender == 0)} callBack={handleData}
+                    <BigButton component="ProfilePictures" text="doorgaan" disabled={(selectedGender == 0)} callBack={handleData}
                         callBack={handleData}
                     />
                 </View>

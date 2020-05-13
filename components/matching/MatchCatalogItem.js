@@ -1,3 +1,5 @@
+//DEPRECATED
+
 import React, { useState, useEffect } from 'react';
 import { SliderBox } from "react-native-image-slider-box";
 
@@ -9,12 +11,10 @@ import {
 
 import {
     deviceHeight,
-    apiUrl,
     calcAgeHet,
 } from '../../globals';
 
 import {
-    TouchableOpacity,
     FlingGestureHandler,
     Directions,
     State,

@@ -21,6 +21,7 @@ import RNSVG_profile_colour from '../res/ui/rnsvg/nav/rnsvg_profile_colour';
 import RNSVG_profile_gray from '../res/ui/rnsvg/nav/rnsvg_profile_gray';
 import RNSVG_matches_gray_notif from '../res/ui/rnsvg/nav/rnsvg_matches_gray_notif';
 import RNSVG_matches_colour_notif from '../res/ui/rnsvg/nav/rnsvg_matches_colour_notif';
+import { rootNavigation } from '../rootNavigation';
 
 const Nav = (p) => {
 
@@ -60,7 +61,7 @@ const Nav = (p) => {
                     <TouchableWithoutFeedback style={[s.navItem]}
 
                         onPress={() => {
-                            p.n.navigate('UserProfile');
+                            rootNavigation.navigate('UserProfile');
                         }}
                     >
                         {profileButton()}
@@ -68,7 +69,7 @@ const Nav = (p) => {
 
                     <TouchableWithoutFeedback style={[s.navItem]}
                         onPress={() => {
-                            p.n.navigate('EditFilters');
+                            rootNavigation.navigate('EditFilters');
                         }}
                     >
                         {filterButton()}
@@ -77,7 +78,7 @@ const Nav = (p) => {
 
                 <TouchableWithoutFeedback style={[s.navLogo]}
                     onPress={() => {
-                        p.n.navigate('MatchCatalog');
+                        rootNavigation.navigate('MatchScreenInitial');
                     }}
                 >
                     {up4melogo()}
@@ -86,7 +87,7 @@ const Nav = (p) => {
                 <View style={[s.navItemGroup]}>
                     <TouchableWithoutFeedback style={[s.navItem]}
                         onPress={() => {
-                            p.n.navigate('MatchCatalog');
+                            rootNavigation.navigate('MatchScreenInitial');
                         }}
                     >
                         {locationsButton()}
@@ -94,7 +95,7 @@ const Nav = (p) => {
 
                     <TouchableWithoutFeedback style={[s.navItem]}
                         onPress={() => {
-                            p.n.navigate('Login');
+                            rootNavigation.navigate('Login');
                         }}
                     >
                         {matchesButton()}
