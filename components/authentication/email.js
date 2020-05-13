@@ -8,9 +8,11 @@ import {
 
 import BigButton from '../bigbutton';
 import Logo from '../logo';
-import { gs, regexEmail, apiUrl } from '../../globals';
+import { gs, regexEmail, apiUrl, editTimerMS, debugMode } from '../../globals';
 import Axios from 'axios';
 import { endpointCheckEmail } from '../../endpoints';
+
+let editTimer = null;
 
 const Email = ({ navigation }) => {
 
@@ -118,13 +120,15 @@ const Email = ({ navigation }) => {
         }
         else {
             setIsValid('INVALID');
-            console.log('invalid email ', isValid);
+            setFeedback();
+            if (debugMode)
+                console.log('%cinvalid email', 'font-style: italic; color: red');
         }
     }
 
-    useEffect(() => {
-        setFeedback();
-    }, [isValid]);
+    // useEffect(() => {
+    //     setFeedback();
+    // }, [isValid]);
 
     const handleData = () => {
         global.registData.email = email;
@@ -144,6 +148,21 @@ const Email = ({ navigation }) => {
                     <TextInput style={s.input}
                         onChangeText={(input) => {
                             setEmail(input);
+
+                            if (editTimer) {
+                                clearTimeout(editTimer);
+                                setIsValid('WORKING');
+                                // console.log('%ccleared edit timer', 'font-size: 0.5rem');
+                            }
+                            else {
+                                // console.log('%ceditTimer was null', 'font-size: 0.5rem');
+                            }
+
+                            // console.log('%cset new edit timer', 'font-size: 0.5rem')
+                            editTimer = setTimeout(() => {
+                                // console.log('%cran handleEndEDiting()', 'font-size: 0.5rem')
+                                handleEndEditing();
+                            }, editTimerMS);
                         }}
                         onEndEditing={() => {
                             handleEndEditing();
