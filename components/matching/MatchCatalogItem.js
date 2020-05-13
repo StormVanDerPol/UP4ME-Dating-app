@@ -28,6 +28,7 @@ import RNSVG_location_profile from '../../res/ui/rnsvg/rnsvg_location_profile';
 import RNSVG_match_no from '../../res/ui/rnsvg/rnsvg_match_no';
 import RNSVG_match_yes from '../../res/ui/rnsvg/rnsvg_match_yes';
 import { endpointGetProfile, endpointMatchResponses } from '../../endpoints';
+import RNSVG_ruler from '../../res/ui/rnsvg/rnsvg_ruler';
 
 const MatchCatalogItem = (p) => {
 
@@ -288,6 +289,7 @@ const MatchCatalogItem = (p) => {
 
                         <View style={s.subInfoBoxContainer}>
                             <View>
+                                <RNSVG_ruler />
                                 <Text>{height}</Text>
                             </View>
 

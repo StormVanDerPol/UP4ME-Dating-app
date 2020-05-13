@@ -97,17 +97,18 @@ const s = StyleSheet.create({
 
     btn: {
         flex: 1,
+
     },
 
     btnGrad: {
         borderRadius: 100,
         paddingVertical: 16,
-        marginHorizontal: 10
+        marginHorizontal: 10,
     },
 
     btnInner: {
         textAlign: "center",
-        color: "gray"
+        // color: "black"
     },
 });
 

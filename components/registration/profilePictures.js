@@ -10,12 +10,13 @@ import {
 
 import { TouchableWithoutFeedback, ScrollView } from 'react-native-gesture-handler';
 
-import { gs, deviceWidth, deviceHeight, mx, apiUrl } from '../../globals';
+import { gs, deviceWidth, deviceHeight, mx, apiUrl, up4meColours } from '../../globals';
 
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 import Axios from 'axios';
 import { endpointSetPhotos } from '../../endpoints';
+import RNSVG_edit from '../../res/ui/rnsvg/rnsvg_edit';
 
 const ProfilePictures = ({ route, navigation }) => {
 
@@ -83,12 +84,12 @@ const ProfilePictures = ({ route, navigation }) => {
     }
 
     return (
-        <>
+        <View style={gs.body}>
             <ScrollView style={gs.screenWrapperScroll}>
 
 
                 <Logo />
-                <Text style={[s.header, gs.mainHeader]}>Foto's toevoegen</Text>
+                <Text style={[gs.mainHeader]}>Foto's toevoegen</Text>
 
                 <View style={[s.pfpContainer]}>
                     <View>
@@ -105,6 +106,9 @@ const ProfilePictures = ({ route, navigation }) => {
                     </View>
 
                     <View >
+                        <View style={[s.iconContainer]}>
+                            <RNSVG_edit />
+                        </View>
                         {
                             [...Array(3)].map((val, id) => <TouchableWithoutFeedback
                                 key={id + 3}
@@ -130,7 +134,7 @@ const ProfilePictures = ({ route, navigation }) => {
                 {/* </View> */}
 
             </ScrollView>
-        </>
+        </View>
     );
 }
 
@@ -152,7 +156,7 @@ const s = StyleSheet.create({
         height: 270,
         marginHorizontal: boxMarginX,
         marginVertical: boxMarginY,
-        backgroundColor: 'gray',
+        backgroundColor: up4meColours.picGray,
         borderRadius: 15,
         overflow: 'hidden',
 
@@ -163,8 +167,14 @@ const s = StyleSheet.create({
     },
 
     guidelines: {
+        marginTop: 5,
         textAlign: "center",
     },
+
+    iconContainer: {
+        width: 50,
+        height: 50,
+    }
 });
 
 export default ProfilePictures;

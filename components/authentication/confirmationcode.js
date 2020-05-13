@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import Logo from '../logo';
 
-import { gs } from '../../globals';
+import { gs, up4meColours } from '../../globals';
 import BigButton from '../bigbutton';
 
 import Axios from 'axios';
@@ -141,7 +141,7 @@ const s = StyleSheet.create({
 
     input: {
         marginBottom: 50,
-        borderBottomColor: "gray",
+        borderBottomColor: up4meColours.lineGray,
         borderBottomWidth: 1,
         fontSize: 100
     },

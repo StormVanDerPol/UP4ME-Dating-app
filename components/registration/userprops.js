@@ -13,7 +13,7 @@ import UserPropsRadioButton from './userpropsRadiobtn';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
-import { gs } from '../../globals';
+import { gs, up4meColours } from '../../globals';
 import { endpointSetProperties } from '../../endpoints';
 
 const UserProps = ({ navigation }) => {
@@ -69,12 +69,12 @@ const UserProps = ({ navigation }) => {
     }
 
     return (
-        <>
+        <View style={[gs.body]}>
             <ScrollView style={gs.screenWrapperScroll}>
 
                 <Logo />
                 <Text style={[s.header, gs.mainHeader]}>Eigenschappen</Text>
-                <Text>Hoe meer informatie je invult, hoe groter de kans op een match. Je potentiele matchen kunnen hier op filteren</Text>
+                <Text style={[s.summary]}>Hoe meer informatie je invult, hoe groter de kans op een match. Je potentiele matchen kunnen hier op filteren.</Text>
 
                 <View style={[s.questionContainer]}>
                     <Text style={[s.questionHeader]}>Sport je?</Text>
@@ -162,13 +162,13 @@ const UserProps = ({ navigation }) => {
 
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
-                        <BigButton n={navigation} component={"Filter"} text="Doorgaan"
+                        <BigButton n={navigation} component={"Filter"} text="Opslaan"
                             callBack={postData} />
                     </View>
                 </View>
 
             </ScrollView>
-        </>
+        </View >
     );
 };
 
@@ -177,14 +177,20 @@ const s = StyleSheet.create({
     questionContainer: {
         marginTop: 15,
         paddingVertical: 15,
-        borderColor: "gray",
+        borderColor: up4meColours.lineGray,
         borderTopWidth: 1,
     },
 
     questionHeader: {
         fontSize: 20,
-        marginBottom: 10
+        marginBottom: 10,
     },
+
+    summary: {
+        color: up4meColours.textGray,
+    },
+
+
 
 });
 

@@ -32,7 +32,7 @@ const ProfileText = ({ navigation }) => {
     }
 
     return (
-        <>
+        <View style={gs.body}>
             <View style={gs.screenWrapper}>
                 <Logo />
                 <Text style={[s.header, gs.mainHeader]}>Profieltekst</Text>
@@ -52,7 +52,7 @@ const ProfileText = ({ navigation }) => {
                     />
                 </View>
             </View>
-        </>
+        </View>
     );
 };
 

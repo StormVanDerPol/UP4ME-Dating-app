@@ -7,7 +7,7 @@ import {
 
 // import Slider from '@react-native-community/slider';
 
-import { gs, deviceWidth, mx } from '../../globals';
+import { gs, deviceWidth, mx, up4meColours } from '../../globals';
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
@@ -47,7 +47,7 @@ const UserData = ({ route, navigation }) => {
 
                 <View>
                     <Logo />
-                    <Text style={[s.header, gs.mainHeader]}>Mijn gegevens</Text>
+                    <Text style={[gs.mainHeader]}>Mijn gegevens</Text>
                 </View>
 
                 <Text style={s.subheader}>Mijn naam</Text>
@@ -130,7 +130,7 @@ const s = StyleSheet.create({
 
     input: {
         // marginBottom: 25,
-        borderBottomColor: "gray",
+        borderBottomColor: up4meColours.lineGray,
         borderBottomWidth: 1
     },
 
@@ -138,9 +138,7 @@ const s = StyleSheet.create({
         alignItems: "center"
     },
 
-    header: {
-        marginTop: 20
-    },
+
 
     subheader: {
         marginTop: 25
