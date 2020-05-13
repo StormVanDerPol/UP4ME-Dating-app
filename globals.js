@@ -9,14 +9,18 @@ export var deviceWidth = Dimensions.get('window').width;
 export const pallette = ['#FEA15A', '#D100A3'];
 
 export const up4meColours = {
-    gradPink: '#FEA15A',
-    gradOrange: '#D100A3',
+    gradOrange: '#FEA15A',
+    gradPink: '#D100A3',
     darkGray: '#D8D8D8',
     lightGray: '#F2F2F2',
+    lineGray: '#9C9C9D',
+    picGray: '#F4F0F0',
+    textGray: '#4A4A4A',
     grayPhotos: '#F4F0F0',
     grayButtons: '#9B9B9B',
     gradYellow1: '#F5CA23',
     gradYellow2: '#F5A623',
+
 }
 
 export const editTimerMS = 500;
@@ -27,7 +31,8 @@ export const regexEmail = new RegExp(/^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w
 export const mx = 20;
 
 //pls dont forget to change this to your local machine's ipv4 address if you wish to test
-export const serverUrl = `192.168.1.13:50000`
+//ok boss
+export const serverUrl = `192.168.1.239:50000`
 export const apiUrl = `http://${serverUrl}/api/v1`;
 
 export const MapsApiRootUrl = 'https://maps.googleapis.com/maps/api/staticmap?';
@@ -88,7 +93,6 @@ export const calcAgeHet = (bdateApi) => {
 export const gs = StyleSheet.create({
 
     screenWrapper: {
-
         paddingTop: 15,
         height: deviceHeight - 24,
         marginHorizontal: mx,
@@ -113,7 +117,7 @@ export const gs = StyleSheet.create({
         fontSize: 40,
         marginHorizontal: 25,
         marginBottom: 45,
-        marginTop: 25
+        marginTop: 15,
     },
 
     grayTextBox: {
@@ -129,8 +133,7 @@ export const gs = StyleSheet.create({
         color: 'gray',
     },
     body: {
-        //white
-        backgroundColor: '#FFFFFF',
-    },
+        backgroundColor: '#fff'
+    }
 
 });

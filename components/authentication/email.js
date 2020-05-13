@@ -8,7 +8,7 @@ import {
 
 import BigButton from '../bigbutton';
 import Logo from '../logo';
-import { gs, regexEmail, editTimerMS } from '../../globals';
+import { gs, regexEmail, editTimerMS, up4meColours, debugMode } from '../../globals';
 import Axios from 'axios';
 import { endpointCheckEmail } from '../../endpoints';
 
@@ -199,7 +199,7 @@ const s = StyleSheet.create({
     input: {
         marginTop: 50,
         marginBottom: 5,
-        borderBottomColor: "gray",
+        borderBottomColor: up4meColours.lineGray,
         borderBottomWidth: 1
     },
 

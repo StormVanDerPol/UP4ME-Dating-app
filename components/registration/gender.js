@@ -75,7 +75,7 @@ const Gender = ({ navigation }) => {
     }
 
     return (
-        <>
+        <View style={gs.body}>
             <View style={gs.screenWrapper}>
 
                 <View>
@@ -111,7 +111,7 @@ const Gender = ({ navigation }) => {
                 </View>
             </View>
 
-        </>
+        </View>
     );
 }
 
@@ -130,6 +130,8 @@ const s = StyleSheet.create({
         borderRadius: 100,
         width: deviceWidth - 40,
         alignSelf: "center",
+        borderColor: up4meColours.darkGray,
+        borderWidth: 1,
     },
 
     slideCheckbox: {
