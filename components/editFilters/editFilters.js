@@ -10,7 +10,7 @@ const EditFilters = ({ route, navigation }) => {
 
     return (
         <>
-            <Nav currentSection={'Filter'} n={navigation} />
+            <Nav currentSection={'Filter'} />
 
             <Filters />
         </>

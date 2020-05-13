@@ -43,7 +43,7 @@ const UserSettings = ({ navigation }) => {
                     <TouchableWithoutFeedback onPress={() => {
                         changeDropdown(1, (
                             <>
-                                <TouchableOpacity n={navigation} component="Gender">
+                                <TouchableOpacity component="Gender">
                                     <Text>Geslacht________whatever></Text>
                                 </TouchableOpacity>
 

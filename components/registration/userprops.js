@@ -162,7 +162,7 @@ const UserProps = ({ navigation }) => {
 
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
-                        <BigButton n={navigation} component={"Filter"} text="Opslaan"
+                        <BigButton component={"Filter"} text="Doorgaan"
                             callBack={postData} />
                     </View>
                 </View>

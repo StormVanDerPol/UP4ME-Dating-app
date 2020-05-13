@@ -1,25 +1,20 @@
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 import {
     StyleSheet, Text, View, TextInput,
 } from 'react-native';
 
-// import Slider from '@react-native-community/slider';
-
 import { gs, deviceWidth, mx, up4meColours } from '../../globals';
+
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
-import thumbSlider from '../../res/sliderThumb.png'
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import SliderMarker from '../sliderMarker';
 
+import { debugMode } from '../../debugmode';
 
-
-const UserData = ({ route, navigation }) => {
-
-    // const [data] = useState(route.params);
+const UserData = () => {
 
     const [name, setName] = useState('')
     const [height, setHeight] = useState(175);
@@ -38,7 +33,9 @@ const UserData = ({ route, navigation }) => {
         global.registData.month = month;
         global.registData.year = year;
         global.registData.bday = year + month + day;
-        console.log('saved data: ', global.registData);
+
+        if (debugMode.general)
+            console.log('saved data: ', global.registData);
     }
 
     return (
@@ -113,7 +110,7 @@ const UserData = ({ route, navigation }) => {
                 <TextInput style={s.input} maxLength={100} onChangeText={(input) => { setJob(input) }} />
 
                 <View style={gs.bottom}>
-                    <BigButton n={navigation} component="Location" text="doorgaan"
+                    <BigButton component="Location" text="doorgaan"
                         disabled={!(name && job && day.length == 2 && month.length == 2 && year.length == 4)}
 
                         callBack={handleData}

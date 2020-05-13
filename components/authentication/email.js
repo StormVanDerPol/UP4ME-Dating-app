@@ -8,13 +8,15 @@ import {
 
 import BigButton from '../bigbutton';
 import Logo from '../logo';
-import { gs, regexEmail, apiUrl, editTimerMS, up4meColours, debugMode } from '../../globals';
+import { gs, regexEmail, editTimerMS, up4meColours, debugMode } from '../../globals';
 import Axios from 'axios';
 import { endpointCheckEmail } from '../../endpoints';
 
+import { debugMode } from '../../debugmode';
+
 let editTimer = null;
 
-const Email = ({ navigation }) => {
+const Email = () => {
 
     const [email, setEmail] = useState('');
     const [isValid, setIsValid] = useState('');
@@ -24,9 +26,7 @@ const Email = ({ navigation }) => {
 
         // Axios.get(`https://block-temporary-email.com/check/email/${email}`)
         //     .then((res) => {
-
         //         console.log('check if temp email', res);
-
         //         if (!res.data.temporary) {
 
 
@@ -121,18 +121,19 @@ const Email = ({ navigation }) => {
         else {
             setIsValid('INVALID');
             setFeedback();
-            if (debugMode)
+            if (debugMode.general)
                 console.log('%cinvalid email', 'font-style: italic; color: red');
         }
     }
 
-    // useEffect(() => {
-    //     setFeedback();
-    // }, [isValid]);
+    useEffect(() => {
+        setFeedback();
+    }, [isValid]);
 
     const handleData = () => {
         global.registData.email = email;
-        console.log('saved data: ', global.registData);
+        if (debugMode.general)
+            console.log('saved data: ', global.registData);
     }
 
     return (
@@ -147,20 +148,27 @@ const Email = ({ navigation }) => {
                 <View>
                     <TextInput style={s.input}
                         onChangeText={(input) => {
+
                             setEmail(input);
 
                             if (editTimer) {
                                 clearTimeout(editTimer);
                                 setIsValid('WORKING');
-                                // console.log('%ccleared edit timer', 'font-size: 0.5rem');
+                                if (debugMode.endEditTimer)
+                                    console.log('%ccleared edit timer', 'font-size: 0.5rem');
                             }
                             else {
-                                // console.log('%ceditTimer was null', 'font-size: 0.5rem');
+                                if (debugMode.endEditTimer)
+                                    console.log('%ceditTimer was null', 'font-size: 0.5rem');
                             }
 
-                            // console.log('%cset new edit timer', 'font-size: 0.5rem')
+                            if (debugMode.endEditTimer)
+                                console.log('%cset new edit timer', 'font-size: 0.5rem');
+
                             editTimer = setTimeout(() => {
-                                // console.log('%cran handleEndEDiting()', 'font-size: 0.5rem')
+                                if (debugMode.endEditTimer)
+                                    console.log('%cran handleEndEDiting()', 'font-size: 0.5rem');
+
                                 handleEndEditing();
                             }, editTimerMS);
                         }}
@@ -175,7 +183,6 @@ const Email = ({ navigation }) => {
 
                 <View style={gs.bottom}>
                     <BigButton
-                        n={navigation}
                         component="ConfirmationCode"
                         text="doorgaan"
                         disabled={!(isValid == 'VALID')}

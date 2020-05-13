@@ -28,8 +28,8 @@ function Login({ navigation }) {
                     </View>
 
                     <View>
-                        <LoginButton n={navigation} text="Inloggen" component="Email"></LoginButton>
-                        <LoginButton n={navigation} text="Maak nieuw account aan" component="Email"></LoginButton>
+                        <LoginButton text="Inloggen" component="Email"></LoginButton>
+                        <LoginButton text="Maak nieuw account aan" component="Email"></LoginButton>
                     </View>
 
                     <View style={s.bottom}>

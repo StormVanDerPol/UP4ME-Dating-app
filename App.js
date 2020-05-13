@@ -4,8 +4,6 @@ import 'react-native-gesture-handler';
 
 import React, { useState } from 'react'
 
-import { debugMode } from './globals';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -29,14 +27,24 @@ import Nav from './components/nav';
 import Filters from './components/registration/filter';
 import UserProfile from './components/userprofile/userprofile';
 import MatchNoMatch from './components/matching/MatchNoMatch';
-
+import MatchScreen from './components/matching/MatchScreen';
+import MatchScreenInitial from './components/matching/MatchScreenInitial';
+import EditFilters from './components/editFilters/editFilters';
 
 import { reqLocationPermission, updateGPSData } from './updategps';
 import moment from 'moment';
-import EditFilters from './components/editFilters/editFilters';
+
 
 //debug
 import debugRouter from './components/debug/debugRouter';
+import { debugMode } from './debugmode';
+
+import { screenTransitions } from './screenTransitions';
+import { navigationRef } from './rootNavigation';
+
+
+
+// import { screenTransitions } from './screenTransitions';
 
 const Stack = createStackNavigator();
 
@@ -65,7 +73,7 @@ const App = () => {
 
       let diff = now.diff(then, 'minutes', false);
 
-      if (debugMode)
+      if (debugMode.gps)
         console.log('Time left till GPS update:', updateGPSDataInMinutes - diff, 'Minutes');
 
       if (diff > updateGPSDataInMinutes) {
@@ -81,15 +89,14 @@ const App = () => {
     setInit(true);
   }
 
-
   function debugScreen() {
-    return (debugMode) ? <Stack.Screen name="debugRouter" component={debugRouter} /> : <></>;
+    return (debugMode.enabled) ? <Stack.Screen name="debugRouter" component={debugRouter} /> : <></>;
   }
 
   return (
     <>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <NavigationContainer ref={navigationRef}>
+        <Stack.Navigator screenOptions={{ headerShown: false }} >
 
           {debugScreen()}
 
@@ -108,6 +115,19 @@ const App = () => {
           <Stack.Screen name="ProfileText" component={ProfileText} />
           <Stack.Screen name="UserSettings" component={UserSettings} />
           <Stack.Screen name="MatchCatalog" component={MatchCatalog} />
+
+          <Stack.Screen name="MatchScreenDefault" component={MatchScreen} />
+
+          <Stack.Screen name="MatchScreenRight" component={MatchScreen}
+            options={{
+              ...screenTransitions.fromRight
+            }} />
+          <Stack.Screen name="MatchScreenLeft" component={MatchScreen}
+            options={{
+              ...screenTransitions.fromLeft
+            }} />
+
+          <Stack.Screen name="MatchScreenInitial" component={MatchScreenInitial} />
           <Stack.Screen name="Filter" component={Filters} />
           <Stack.Screen name="FQA" component={Faq} />
           <Stack.Screen name="NAV" component={Nav} />

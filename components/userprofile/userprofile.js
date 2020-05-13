@@ -11,6 +11,7 @@ import { endpointGetProfile } from '../../endpoints';
 import { deviceWidth, up4meColours } from '../../globals';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
+import { rootNavigation } from '../../rootNavigation';
 
 const UserProfile = ({ navigation }) => {
 
@@ -105,7 +106,7 @@ const UserProfile = ({ navigation }) => {
 
     return (
         <>
-            <Nav currentSection={'Profile'} n={navigation} />
+            <Nav currentSection={'Profile'} />
             <View style={[s.pfpcontainer]}>
                 <Image source={
                     {
@@ -116,9 +117,9 @@ const UserProfile = ({ navigation }) => {
                 } />
             </View>
 
-            <SectRouteBtn n={navigation} route={'somewhere'} btnText={'profiel bewerken'} />
-            <SectRouteBtn n={navigation} route={'UserSettings'} btnText={'Instellingen'} />
-            <SectRouteBtn n={navigation} route={'somewhere'} btnText={'Nodig vrienden uit'} />
+            <SectRouteBtn route={'somewhere'} btnText={'profiel bewerken'} />
+            <SectRouteBtn route={'UserSettings'} btnText={'Instellingen'} />
+            <SectRouteBtn route={'somewhere'} btnText={'Nodig vrienden uit'} />
 
             <View>
                 <Text>Recente notificaties</Text>
@@ -142,7 +143,7 @@ const UserProfile = ({ navigation }) => {
 const SectRouteBtn = (p) => {
 
     return (
-        <TouchableWithoutFeedback onPress={() => p.n.navigate(p.route)}>
+        <TouchableWithoutFeedback onPress={() => rootNavigation.navigate(p.route)}>
             <Text>{p.btnText}</Text>
         </TouchableWithoutFeedback>
     )

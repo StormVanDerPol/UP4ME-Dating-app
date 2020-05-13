@@ -125,7 +125,7 @@ const ProfilePictures = ({ route, navigation }) => {
 
                 {/* <View style={{ paddingBottom: 15 }}> */}
                 <View style={[gs.bottom]}>
-                    <BigButton n={navigation} component="ProfileText" text="doorgaan" disabled={validatePictures()}
+                    <BigButton component="ProfileText" text="doorgaan" disabled={validatePictures()}
                         callBack={postData}
                     />
 

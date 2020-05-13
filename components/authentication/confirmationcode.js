@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 
 import {
@@ -12,25 +11,24 @@ import BigButton from '../bigbutton';
 import Axios from 'axios';
 import { endpointRegisterEmail } from '../../endpoints';
 
-const ConfirmationCode = ({ route, navigation }) => {
+import { debugMode } from '../../debugmode';
 
-    // const [data] = useState(route.params);
+const ConfirmationCode = () => {
+
     const [confcode, setConfcode] = useState('');
     const [isValid, setIsValid] = useState(false);
     const [validationFeedback, setValidationFeedback] = useState('');
     const [nextRoute, setNextRoute] = useState('');
 
-    const handleChange = (input) => {
-        setConfcode(input);
-    }
-
     const validateCode = () => {
 
-        console.log('validating code...');
+        if (debugMode.confCodeValidation)
+            console.log('validating code...');
 
         if (confcode.length == 6) {
 
-            console.log('code is 6 chars');
+            if (debugMode.confCodeValidation)
+                console.log('code is 6 chars');
 
             if (confcode == targetConfCode) {
                 setIsValid(true);
@@ -38,15 +36,17 @@ const ConfirmationCode = ({ route, navigation }) => {
 
             }
             else {
-                console.log('code is wrong')
+                if (debugMode.confCodeValidation)
+                    console.log('code is wrong')
                 setIsValid(false);
                 setValidationFeedback('No.')
             }
         }
         else {
-            console.log('code < 6 chars, waiting...');
+            if (debugMode.confCodeValidation)
+                console.log('code < 6 chars, waiting...');
             setIsValid(false);
-            setValidationFeedback('Short code.')
+            setValidationFeedback('')
         }
     }
 
@@ -55,13 +55,20 @@ const ConfirmationCode = ({ route, navigation }) => {
 
     async function registerEmail() {
 
-        console.log('Email: ', `${endpointRegisterEmail}${global.registData.email}`);
+        if (debugMode.general) {
+            console.log('Email: ', `${endpointRegisterEmail}${global.registData.email}`);
+        }
+
+        setIsValid(false);
+        validateCode();
 
         await Axios.get(`${endpointRegisterEmail}${global.registData.email}`)
             .then((res) => {
 
-                console.log('/register/1/ Response: ', res);
-                console.log("%c security code: " + `%c ${res.data.security}`, "color: #000; font-size: 1.5rem", "color: #f00; font-size: 2rem")
+                if (debugMode.general) {
+                    console.log('/register/1/ Response: ', res);
+                    console.log("%c security code: " + `%c ${res.data.security}`, "color: #000; font-size: 1.5rem", "color: #f00; font-size: 2rem")
+                }
                 setUserid(res.data.userid);
                 setTargetConfCode(res.data.security);
 
@@ -79,15 +86,19 @@ const ConfirmationCode = ({ route, navigation }) => {
             })
     }
 
-    useEffect(() => { console.log('useffect userid', userid) }, [userid])
+    useEffect(() => {
+        validateCode();
+    }, [confcode])
 
     const handleData = () => {
         global.sessionUserId = userid;
-        console.log('created session', global.sessionUserId);
-
         global.registData.userid = userid;
         global.registData.confirmationCode = confcode;
-        console.log('saved data: ', global.registData);
+
+        if (debugMode.general) {
+            console.log('created session', global.sessionUserId);
+            console.log('saved data: ', global.registData);
+        }
     }
 
     const feedbackColor = () => {
@@ -116,7 +127,13 @@ const ConfirmationCode = ({ route, navigation }) => {
                 </View>
 
                 <View style={s.inputWrapper}>
-                    <TextInput keyboardType='numeric' maxLength={6} onChangeText={(input) => handleChange(input)} value={confcode} onEndEditing={() => validateCode()} style={s.input} />
+                    <TextInput keyboardType='numeric' maxLength={6}
+                        onChangeText={(input) => {
+
+                            setConfcode(input)
+                            setIsValid(false);
+
+                        }} value={confcode} onEndEditing={() => validateCode()} style={s.input} />
                     <Text style={[s.feedback, feedbackColor()]}>{validationFeedback}</Text>
 
                 </View>
@@ -125,7 +142,6 @@ const ConfirmationCode = ({ route, navigation }) => {
                     <Text style={[s.feedback, { opacity: resendFeedbackOpacity, alignSelf: 'center' }]}>code sent!</Text>
                     <Text style={[s.resendbutton, gs.underline]} onPress={() => { registerEmail(); setResendFeedbackOpacity(1) }}>resend code</Text>
                     <BigButton
-                        n={navigation}
                         component={nextRoute}
                         text="doorgaan"
                         disabled={!(isValid)}

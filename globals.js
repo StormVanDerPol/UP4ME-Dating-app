@@ -1,7 +1,7 @@
-import { StyleSheet, Dimensions, PermissionsAndroid } from 'react-native';
+import { StyleSheet, Dimensions, } from 'react-native';
 import moment from 'moment';
 
-export const debugMode = true;
+import { debugMode } from './debugmode';
 
 export var deviceHeight = Dimensions.get('window').height;
 export var deviceWidth = Dimensions.get('window').width;
@@ -64,8 +64,6 @@ export const calcAgeHet = (bdateApi) => {
 
     let now = moment();
 
-    console.log('Current Moment: ', now);
-
     let bdateApiStr = bdateApi + '';
 
     let bdate = {
@@ -74,13 +72,20 @@ export const calcAgeHet = (bdateApi) => {
         day: Math.min(bdateApiStr.substring(6), 31)
     }
 
-    console.log('Birthdate: ', bdate);
+
 
     let bdateMoment = moment(`${bdate.day}/${bdate.month}/${bdate.year}`, 'D/M/YYYY');
 
     let dateDiff = now.diff(bdateMoment, 'years');
 
-    console.log('Date difference: ', dateDiff);
+    if (debugMode.calcAge) {
+
+        let consoleStyle = 'font-size: 0.9rem; color: blue';
+
+        console.log('%cMoment(): ', consoleStyle, now);
+        console.log('%cBirthdate: ', consoleStyle, bdate);
+        console.log('%cDate difference: ', consoleStyle, dateDiff);
+    }
 
     return dateDiff;
 }
@@ -90,7 +95,7 @@ export const gs = StyleSheet.create({
     screenWrapper: {
         paddingTop: 15,
         height: deviceHeight - 24,
-        marginHorizontal: mx
+        marginHorizontal: mx,
     },
 
     screenWrapperScroll: {
@@ -101,7 +106,7 @@ export const gs = StyleSheet.create({
     bottom: {
         flex: 1,
         justifyContent: 'flex-end',
-        marginBottom: 24
+        marginBottom: 25
     },
 
     underline: {
