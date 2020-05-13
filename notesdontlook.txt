@@ -10,6 +10,8 @@ open mySQL > connect up4me
 
 go to webthing F12
 
+check ip > cmd > ipconfig > (well check here)IPv4 Address. . . . . . . . . . . : 192.168.1.239 > change the last line on globals.js
+
 mijn gegevns scherm
 slider verander
 fix meters thing
