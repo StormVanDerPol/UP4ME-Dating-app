@@ -125,7 +125,7 @@ const Filters = ({ navigation }) => {
 
 
     return (
-        <>
+        <View style={gs.body}>
             <ScrollView style={gs.screenWrapperScroll}>
 
                 <Logo />
@@ -152,27 +152,26 @@ const Filters = ({ navigation }) => {
                 </View>
 
 
-                <Text>{ages[0]} - {ages[1]}</Text>
-                <MultiSlider customMarker={SliderMarker}
-                    values={[ages[0], ages[1]]} min={18} max={120}
-                    onValuesChange={(ages) => { setAges(ages) }} />
+                <View style={[s.questionContainer, s.fix]}>
 
-                <Text>{distance}km</Text>
-                {/* <Slider value={distance} minimumValue={0} maximumValue={250} step={1}
+                    <Text>{ages[0]} - {ages[1]}</Text>
+                    <MultiSlider customMarker={SliderMarker}
+                        values={[ages[0], ages[1]]} min={18} max={120}
+                        onValuesChange={(ages) => { setAges(ages) }} />
+
+                    <Text>{distance}km</Text>
+                    {/* <Slider value={distance} minimumValue={0} maximumValue={250} step={1}
                     onValueChange={(dist) => { setDistance(dist) }} /> */}
 
-                <MultiSlider customMarker={SliderMarker}
-                    values={distance[0]} min={0} max={250}
-                    step={1} onValuesChange={(dist) => { setDistance(dist) }} />
+                    <MultiSlider customMarker={SliderMarker}
+                        values={distance[0]} min={0} max={250}
+                        step={1} onValuesChange={(dist) => { setDistance(dist) }} />
 
+                    <Text>{heights[0]} - {heights[1]}</Text>
+                    <MultiSlider values={[heights[0], heights[1]]} min={150} max={250}
+                        onValuesChange={(heights) => { setHeights(heights) }} />
 
-
-
-                <Text>{heights[0]} - {heights[1]}</Text>
-                <MultiSlider values={[heights[0], heights[1]]} min={150} max={250}
-                    onValuesChange={(heights) => { setHeights(heights) }} />
-
-
+                </View>
 
 
 
@@ -268,7 +267,7 @@ const Filters = ({ navigation }) => {
                 </View>
 
             </ScrollView>
-        </>
+        </View>
 
     );
 };
@@ -278,16 +277,13 @@ const s = StyleSheet.create({
     questionContainer: {
         marginTop: 15,
         paddingVertical: 15,
-        borderColor: "gray",
+        borderColor: up4meColours.lineGray,
         borderTopWidth: 1,
     },
-    questionContainer1: {
-        marginTop: 15,
-        paddingVertical: 15,
-        borderColor: "gray",
-        borderBottomWidth: 1,
-        marginBottom: 15,
+    fix: {
+        paddingHorizontal: 40,
     },
+
 
     questionHeader: {
         fontSize: 20,
@@ -299,6 +295,7 @@ const s = StyleSheet.create({
     },
 
     prefGenderButton: {
+        // color: 'black',
 
     },
 
@@ -307,12 +304,13 @@ const s = StyleSheet.create({
         paddingVertical: 20,
         width: ((deviceWidth - (mx * 2)) / 3),
         alignItems: "center",
+
     },
 
     prefGenderButtonContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-        backgroundColor: "white",
+        backgroundColor: up4meColours.picGray,
         borderRadius: 50,
     },
 
