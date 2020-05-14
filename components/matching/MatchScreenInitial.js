@@ -36,6 +36,7 @@ const MatchScreenInitial = ({ route, navigation }) => {
                                 params: {
                                     matchList: matchList,
                                     index: 0,
+                                    scrollPosition: 0,
                                 }
                             },
                         ]

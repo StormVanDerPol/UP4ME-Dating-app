@@ -13,7 +13,7 @@ import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handl
 import LinearGradient from 'react-native-linear-gradient';
 import { rootNavigation } from '../../rootNavigation';
 
-const UserProfile = ({ navigation }) => {
+const UserProfile = () => {
 
     const [userProfileData, setUserProfileData] = useState({});
 
@@ -158,7 +158,7 @@ const NotifItem = (p) => {
         <>
             <TouchableWithoutFeedback
                 style={[NotifItemStyles.notifContainer]}
-                onPress={() => p.n.navigate(p.route)}>
+                onPress={() => rootNavigation.navigate(p.route)}>
 
                 <LinearGradient
                     style={[NotifItemStyles.gradient]}
