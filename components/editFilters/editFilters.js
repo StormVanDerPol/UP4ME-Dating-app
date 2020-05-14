@@ -5,14 +5,17 @@ import {
 } from 'react-native'
 import Filters from '../registration/filter';
 import Nav from '../nav';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const EditFilters = ({ route, navigation }) => {
 
     return (
         <>
-            <Nav currentSection={'Filter'} />
+            <ScrollView>
+                <Nav currentSection={'Filter'} />
 
-            <Filters />
+                <Filters />
+            </ScrollView>
         </>
     );
 }

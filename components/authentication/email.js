@@ -8,7 +8,7 @@ import {
 
 import BigButton from '../bigbutton';
 import Logo from '../logo';
-import { gs, regexEmail, editTimerMS, up4meColours, debugMode } from '../../globals';
+import { gs, regexEmail, editTimerMS, up4meColours } from '../../globals';
 import Axios from 'axios';
 import { endpointCheckEmail } from '../../endpoints';
 

@@ -69,7 +69,9 @@ const Nav = (p) => {
 
                     <TouchableWithoutFeedback style={[s.navItem]}
                         onPress={() => {
-                            rootNavigation.navigate('EditFilters');
+                            rootNavigation.navigate('Filter', {
+                                fromNav: true,
+                            });
                         }}
                     >
                         {filterButton()}
@@ -112,7 +114,8 @@ const s = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: "space-around",
         alignItems: "center",
-        paddingVertical: 20
+        // paddingVertical: 20
+        height: 50,
     },
 
     navItem: {

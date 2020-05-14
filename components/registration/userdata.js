@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import {
     StyleSheet, Text, View, TextInput,
@@ -16,8 +16,6 @@ import { debugMode } from '../../debugmode';
 
 const UserData = () => {
 
-    const [name, setName] = useState('')
-    const [height, setHeight] = useState(175);
     const [job, setJob] = useState('');
 
     const [day, setDay] = useState('');
@@ -26,8 +24,8 @@ const UserData = () => {
 
     const handleData = () => {
 
-        global.registData.name = name;
-        global.registData.height = height;
+        global.registData.name = name.current;
+        global.registData.height = height.current;
         global.registData.job = job;
         global.registData.day = day;
         global.registData.month = month;
@@ -36,6 +34,18 @@ const UserData = () => {
 
         if (debugMode.general)
             console.log('saved data: ', global.registData);
+    }
+
+    const name = useRef('');
+
+    const getName = (data) => {
+        name.current = data;
+    }
+
+    const height = useRef(175);
+
+    const getSliderHeight = (data) => {
+        height.current = data;
     }
 
     return (
@@ -47,8 +57,7 @@ const UserData = () => {
                     <Text style={[gs.mainHeader]}>Mijn gegevens</Text>
                 </View>
 
-                <Text style={s.subheader}>Mijn naam</Text>
-                <TextInput style={s.input} onChangeText={(input) => setName(input)} />
+                <NameInput getData={getName} />
 
                 <Text style={s.subheader}>Mijn geboortedatum</Text>
                 <View style={s.center}>
@@ -83,47 +92,84 @@ const UserData = () => {
                 </View>
 
 
-                <View style={s.spaceBetween}>
-                    <Text style={s.subheader}>Mijn lengte</Text>
-                    <Text style={s.heightIndicator}>{height}m</Text>
-                </View>
-
-                <MultiSlider
-                    customMarker={SliderMarker}
-                    onValuesChange={(height) => setHeight(height[0] / 100)}
-                    min={150}
-                    max={251}
-                    step={1}
-                    sliderLength={deviceWidth - mx * 2}
-
-                    values={[height]}
-
-                    trackStyle={{
-                        backgroundColor: '#d8d8d8',
-                    }}
-                    selectedStyle={{
-                        backgroundColor: '#d8d8d8',
-                    }}
-                />
+                <HeightSlider getData={getSliderHeight} />
 
                 <Text style={s.subheader}>Mijn beroep</Text>
                 <TextInput style={s.input} maxLength={100} onChangeText={(input) => { setJob(input) }} />
 
                 <View style={gs.bottom}>
                     <BigButton component="Location" text="doorgaan"
-                        disabled={!(name && job && day.length == 2 && month.length == 2 && year.length == 4)}
-
+                        disabled={!(name.current.length > 0 && job && day.length == 2 && month.length == 2 && year.length == 4)}
                         callBack={handleData}
                     />
                 </View>
             </View>
         </View>
     );
-
 }
 
-const s = StyleSheet.create({
+const NameInput = (p) => {
 
+    const [name, setName] = useState('');
+
+    const sendData = (data) => {
+        p.getData(data);
+    }
+
+    useEffect(() => {
+        sendData(name);
+    }, [name])
+
+    return (
+        <>
+            <Text style={s.subheader}>Mijn naam</Text>
+            <TextInput style={s.input} onChangeText={(input) => setName(input)} />
+        </>
+    )
+}
+
+const HeightSlider = (p) => {
+
+    const [height, setHeight] = useState(175);
+
+    const sendData = (data) => {
+        p.getData(data);
+    }
+
+    useEffect(() => {
+        sendData(height);
+    }, [height])
+
+    return (
+        <>
+            <View style={s.spaceBetween}>
+                <Text style={s.subheader}>Mijn lengte</Text>
+                <Text style={s.heightIndicator}>{height}m</Text>
+            </View>
+
+            <MultiSlider
+                customMarker={SliderMarker}
+                onValuesChange={(height) => setHeight(height[0] / 100)}
+                min={150}
+                max={251}
+                step={1}
+                sliderLength={deviceWidth - mx * 2}
+
+                values={[height]}
+
+                trackStyle={{
+                    backgroundColor: '#d8d8d8',
+                }}
+                selectedStyle={{
+                    backgroundColor: '#d8d8d8',
+                }}
+            />
+        </>
+    );
+}
+
+
+const s = StyleSheet.create({
 
     input: {
         // marginBottom: 25,
@@ -134,8 +180,6 @@ const s = StyleSheet.create({
     inputSlash: {
         alignItems: "center"
     },
-
-
 
     subheader: {
         marginTop: 25

@@ -53,8 +53,10 @@ const PhotoGuidelines = ({ navigation }) => {
                     />
                 </View>
 
-                <BigButton component="back" text="Terug" />
-                <View style={{ marginBottom: 24 }} />
+                <View style={gs.bottom}>
+                    <BigButton component="back" text="Terug" />
+                </View>
+                {/* <View style={{ marginBottom: 24 }} /> */}
 
             </ScrollView>
         </>

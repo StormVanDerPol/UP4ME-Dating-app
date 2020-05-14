@@ -16,15 +16,13 @@ import RNSVG_occupation from '../../res/ui/rnsvg/rnsvg_occupation';
 import RNSVG_location_profile from '../../res/ui/rnsvg/rnsvg_location_profile';
 import Nav from '../nav';
 import MatchNoMatch from './MatchNoMatch';
-import { screenTransitions } from '../../screenTransitions';
+
 import { debugMode } from '../../debugmode';
 
 const MatchScreen = ({ route, navigation }) => {
 
     const [matchList, setMatchList] = useState(route.params.matchList);
     const [PotentialMatchIndex] = useState(route.params.index);
-
-    console.log(navigation)
 
     const [images, setImages] = useState([]);
     const [name, setName] = useState();
@@ -36,6 +34,8 @@ const MatchScreen = ({ route, navigation }) => {
     const [profProps, setProfProps] = useState({});
 
     const [loading, setLoading] = useState(true);
+
+    var scrollPosition = route.params.scrollPosition;
 
     const retrieveProfileData = (userid) => {
         Axios.get(`${endpointGetProfile}${userid}`)
@@ -172,10 +172,12 @@ const MatchScreen = ({ route, navigation }) => {
             if (canChange) {
 
                 console.log(` %cNavigating to index: ${PotentialMatchIndex + dir} which is userid: ${matchList[PotentialMatchIndex + dir]}`, 'font-weight: bold');
+                console.log(`%cScrollposition saved: ${scrollPosition}`, 'font-size: 1rem; color: tomato');
 
                 navigation.push('MatchScreen' + animDir, {
                     matchList: matchList,
                     index: PotentialMatchIndex + dir,
+                    scrollPosition: scrollPosition,
                 });
             }
         }
@@ -227,6 +229,12 @@ const MatchScreen = ({ route, navigation }) => {
                                 paginationBoxVerticalPadding={deviceHeight - 160}
                                 resizeMode={'cover'}
                                 images={images}
+                                dotStyle={{
+                                    width: 17,
+                                    height: 17,
+                                    borderRadius: 100,
+                                }}
+
                             />
                             <View style={s.infoBox}>
                                 <Text style={s.infoBoxHeader}>{name}, {age}</Text>
@@ -331,6 +339,12 @@ const MatchScreen = ({ route, navigation }) => {
             <ScrollView
                 ref={scrollViewRef}
                 waitFor={FlingUpRef}
+
+                contentOffset={{ y: scrollPosition, x: 0 }}
+
+                onScroll={(e) => {
+                    scrollPosition = e.nativeEvent.contentOffset.y;
+                }}
             >
                 {contentToRender()}
             </ScrollView>
