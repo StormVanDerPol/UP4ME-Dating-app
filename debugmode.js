@@ -9,4 +9,5 @@ export const debugMode = {
     swiping: true,
     endEditTimer: true,
     confCodeValidation: false,
+    filterSlider: false,
 };

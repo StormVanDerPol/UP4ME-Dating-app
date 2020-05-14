@@ -13,6 +13,8 @@ import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handl
 import LinearGradient from 'react-native-linear-gradient';
 import { rootNavigation } from '../../rootNavigation';
 
+import ImageResizer from 'react-native-image-resizer';
+
 const UserProfile = () => {
 
     const [userProfileData, setUserProfileData] = useState({});
@@ -53,14 +55,21 @@ const UserProfile = () => {
             let randType = Math.round(Math.random() * 4);
 
             Axios.get(`${endpointGetProfile}${randUser}`)
-                .then((res) => {
-                    fakeNotifications.push(
-                        {
-                            userid: randUser,
-                            type: randType,
-                            pfp: res.data.foto1,
-                            read: false,
-                        });
+                .then(async (res) => {
+
+                    await ImageResizer.createResizedImage(res.data.foto1, 50, 50, 'JPEG', 100)
+                        .then((IRres) => {
+                            fakeNotifications.push(
+                                {
+                                    userid: randUser,
+                                    type: randType,
+                                    pfp: IRres.uri,
+                                    read: false,
+                                });
+                        })
+                        .catch((err) => {
+                            dconsole.log(err);
+                        })
                 })
                 .catch((err) => {
                     console.log(err);

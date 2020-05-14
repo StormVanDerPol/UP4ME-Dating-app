@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Axios from 'axios';
 
 import {
@@ -21,8 +21,10 @@ import { endpointSetCriteria, endpointSetProfile } from '../../endpoints';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SliderMarker from '../sliderMarker';
 import LinearGradient from 'react-native-linear-gradient';
+import { debugMode } from '../../debugmode';
+import Nav from '../nav';
 
-const Filters = ({ navigation }) => {
+const Filters = ({ route }) => {
 
     const [selections, setSelections] = useState(
         {
@@ -41,11 +43,6 @@ const Filters = ({ navigation }) => {
     if (global.registData.userCriteria == null) {
         global.registData.userCriteria = selections;
     }
-
-    const [heights, setHeights] = useState([150, 250]);
-    const [ages, setAges] = useState([18, 120]);
-    const [prefGender, setPrefGender] = useState(4);
-    const [distance, setDistance] = useState(1);
 
     const getSelections = (selection) => {
 
@@ -66,12 +63,12 @@ const Filters = ({ navigation }) => {
                 kinderwens: selections.prefkidWish,
                 kinderen: selections.prefkids,
                 eten: selections.preffood,
-                minlengte: heights[0],
-                maxlengte: heights[1],
-                leeftijdmin: ages[0],
-                leeftijdmax: ages[1],
-                geslacht: prefGender,
-                afstand: distance,
+                minlengte: _sliderData.current.heights[0],
+                maxlengte: _sliderData.current.heights[1],
+                leeftijdmin: _sliderData.current.ages[0],
+                leeftijdmax: _sliderData.current.ages[1],
+                geslacht: _prefGender.current,
+                afstand: _sliderData.current.distance,
             })
             .then((res) => {
                 console.log('success', res);
@@ -81,12 +78,12 @@ const Filters = ({ navigation }) => {
             })
 
         global.registData.userCriteria = selections;
-        global.registData.minheight = heights[0];
-        global.registData.maxheight = heights[1];
-        global.registData.minage = ages[0];
-        global.registData.maxage = ages[1];
-        global.registData.prefGender = prefGender;
-        global.registData.distance = distance;
+        global.registData.minheight = _sliderData.current.heights[0];
+        global.registData.maxheight = _sliderData.current.heights[1];
+        global.registData.minage = _sliderData.current.ages[0];
+        global.registData.maxage = _sliderData.current.ages[1];
+        global.registData.prefGender = _prefGender.current;
+        global.registData.distance = _sliderData.current.distance;
 
         Axios.post(`${endpointSetProfile}`, {
 
@@ -104,71 +101,66 @@ const Filters = ({ navigation }) => {
         console.log('saved data: ', global.registData);
     }
 
+    const _sliderData = useRef({
+        ages: [18, 120],
+        heights: [150, 250],
+        distance: 250,
+    })
 
-    const handlePrefGenderChange = (id) => {
-        if (prefGender == id) {
-            setPrefGender(4);
+    function getSliderData(data) {
+        _sliderData.current = {
+            ..._sliderData.current,
+            ...data
+        };
+    }
+
+    const _prefGender = useRef(4)
+
+    function getPrefGenderData(data) {
+        _prefGender.current = data;
+    }
+
+    console.log(route);
+
+    function displayLogo() {
+
+        if (!route.params)
+            return <Logo />;
+
+        if (route.params.fromNav)
+            return <></>;
+
+    }
+
+    const _navHeight = useRef(0);
+
+    function displayNav() {
+        if (!route.params)
+            return <></>;
+        if (route.params.fromNav) {
+            _navHeight.current = 50;
+            return <Nav currentSection={'Filter'} />;
         }
-        else {
-            setPrefGender(id);
-        }
     }
-
-    const prefGenderStyle = (id) => {
-
-        return (prefGender == id) ? { color: "white" } : { color: "gray" };
-    }
-
-    function prefGenderGrad(id) {
-        return (prefGender == id) ? [up4meColours.gradPink, up4meColours.gradOrange] : ['#fffff000', '#fffff000'];
-    }
-
 
     return (
         <View style={gs.body}>
+
+            {displayNav()}
+
             <ScrollView style={gs.screenWrapperScroll}>
 
-                <Logo />
+                {displayLogo()}
+
                 <Text style={[s.questionHeader]}>Geïnteresseerd in</Text>
 
-                <View style={s.prefGenderButtonContainer}>
-                    {
-                        ['Mannen', 'Vrouwen', 'Iedereen'].map((gender, i) => {
-
-                            return (
-                                < TouchableWithoutFeedback
-                                    onPress={() => handlePrefGenderChange(i + 1)}
-                                >
-                                    <LinearGradient style={[s.prefGenderGrad]} colors={prefGenderGrad(i + 1)}>
-                                        <Text style={[prefGenderStyle(i + 1), s.prefGenderButton]}>{gender}</Text>
-                                    </LinearGradient>
-
-                                </TouchableWithoutFeedback>
-                            )
-                        })
-                    }
-                </View>
+                <GenderSelector getData={getPrefGenderData} />
 
 
-                <View style={[s.questionContainer, s.fix]}>
-
-                    <Text>{ages[0]} - {ages[1]}</Text>
-                    <MultiSlider customMarker={SliderMarker}
-                        values={[ages[0], ages[1]]} min={18} max={120}
-                        onValuesChange={(ages) => { setAges(ages) }} />
-
-                    <Text>{distance}km</Text>
-                    {/* <Slider value={distance} minimumValue={0} maximumValue={250} step={1}
-                    onValueChange={(dist) => { setDistance(dist) }} /> */}
-
-                    <MultiSlider customMarker={SliderMarker}
-                        values={distance[0]} min={0} max={250}
-                        step={1} onValuesChange={(dist) => { setDistance(dist) }} />
-
-                    <Text>{heights[0]} - {heights[1]}</Text>
-                    <MultiSlider values={[heights[0], heights[1]]} min={150} max={250}
-                        onValuesChange={(heights) => { setHeights(heights) }} />
-
+                <View style={[s.questionContainer]}>
+                    <AgeSlider getData={getSliderData} />
+                    <HeightSlider getData={getSliderData} />
+                    <DistanceSlider getData={getSliderData} />
                 </View>
 
 
@@ -257,18 +249,141 @@ const Filters = ({ navigation }) => {
                     ]} selectKey={'prefkidWish'} value={global.registData.userCriteria.prefkidWish} getSelections={getSelections} />
                 </View>
 
-                <View style={[s.questionContainer]}>
+                <View style={[s.questionContainer, { marginBottom: _navHeight.current }]}>
                     <View style={gs.bottom}>
                         <BigButton component={"MatchScreenInitial"} text="opslaan"
                             callBack={postData} />
                     </View>
                 </View>
-
             </ScrollView>
         </View>
-
     );
 };
+
+const GenderSelector = (p) => {
+
+    const [prefGender, setPrefGender] = useState(4);
+
+    const prefGenderStyle = (id) => {
+
+        return (prefGender == id) ? { color: "white" } : { color: "gray" };
+    }
+
+    function prefGenderGrad(id) {
+        return (prefGender == id) ? [up4meColours.gradPink, up4meColours.gradOrange] : ['#fffff000', '#fffff000'];
+    }
+
+    const sendData = (data) => {
+        p.getData(data);
+    }
+
+    useEffect(() => {
+        sendData(prefGender)
+    }, [prefGender]);
+
+    return (
+        <View style={s.prefGenderButtonContainer}>
+            {
+                ['Mannen', 'Vrouwen', 'Iedereen'].map((gender, i) => {
+
+                    return (
+                        < TouchableWithoutFeedback
+                            onPress={() => setPrefGender(i + 1)}
+                        >
+                            <LinearGradient style={[s.prefGenderGrad]} colors={prefGenderGrad(i + 1)}>
+                                <Text style={[prefGenderStyle(i + 1), s.prefGenderButton]}>{gender}</Text>
+                            </LinearGradient>
+                        </TouchableWithoutFeedback>
+                    )
+                })
+            }
+        </View>
+    );
+}
+
+const AgeSlider = (p) => {
+
+    const [ages, setAges] = useState([18, 120]);
+
+    const sendData = (data) => {
+        p.getData(data);
+    }
+
+    useEffect(() => {
+        sendData({ ages: ages })
+    }, [ages]);
+
+    return (
+        <>
+            <View style={s.sliderHeader}>
+                <Text>Leeftijd</Text>
+                <Text>{ages[0]} - {ages[1]}</Text>
+            </View>
+            <View style={s.sliderWrapper}>
+                <MultiSlider
+                    sliderLength={deviceWidth - mx * 2 - 20}
+                    values={[ages[0], ages[1]]} min={18} max={120}
+                    onValuesChange={(output) => { setAges(output) }} />
+            </View>
+        </>
+    )
+}
+
+const HeightSlider = (p) => {
+
+    const [heights, setHeights] = useState([150, 250]);
+
+    const sendData = (data) => {
+        p.getData(data);
+    }
+
+    useEffect(() => {
+        sendData({ heights: heights })
+    }, [heights]);
+
+    return (
+        <>
+            <View style={s.sliderHeader}>
+                <Text>Lengte</Text>
+                <Text>{heights[0]} - {heights[1]}</Text>
+            </View>
+            <View style={s.sliderWrapper}>
+                <MultiSlider
+                    sliderLength={deviceWidth - mx * 2 - 20}
+                    values={[heights[0], heights[1]]} min={150} max={250}
+                    onValuesChange={(output) => { setHeights(output) }} />
+            </View>
+        </>
+    )
+}
+
+const DistanceSlider = (p) => {
+
+    const [distance, setDistance] = useState(250);
+
+    const sendData = (data) => {
+        p.getData(data);
+    }
+
+    useEffect(() => {
+        sendData({ distance: distance })
+    }, [distance]);
+
+    return (
+        <>
+            <View style={s.sliderHeader}>
+                <Text>Afstand</Text>
+                <Text>{distance}km</Text>
+            </View>
+            <View style={s.sliderWrapper}>
+                <MultiSlider
+                    sliderLength={deviceWidth - mx * 2 - 20}
+                    values={distance[0]} min={0} max={250}
+                    step={1} onValuesChange={(output) => { setDistance(output) }} />
+            </View>
+        </>
+    )
+}
 
 const s = StyleSheet.create({
 
@@ -277,9 +392,6 @@ const s = StyleSheet.create({
         paddingVertical: 15,
         borderColor: up4meColours.lineGray,
         borderTopWidth: 1,
-    },
-    fix: {
-        paddingHorizontal: 40,
     },
 
 
@@ -311,6 +423,15 @@ const s = StyleSheet.create({
         backgroundColor: up4meColours.picGray,
         borderRadius: 50,
     },
+
+    sliderWrapper: {
+        alignItems: "center"
+    },
+
+    sliderHeader: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+    }
 
 });
 
