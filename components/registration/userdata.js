@@ -24,8 +24,8 @@ const UserData = () => {
 
     const handleData = () => {
 
-        global.registData.name = name.current;
-        global.registData.height = height.current;
+        global.registData.name = _name.current;
+        global.registData.height = _height.current;
         global.registData.job = job;
         global.registData.day = day;
         global.registData.month = month;
@@ -36,16 +36,16 @@ const UserData = () => {
             console.log('saved data: ', global.registData);
     }
 
-    const name = useRef('');
+    const _name = useRef('');
 
     const getName = (data) => {
-        name.current = data;
+        _name.current = data;
     }
 
-    const height = useRef(175);
+    const _height = useRef(175);
 
     const getSliderHeight = (data) => {
-        height.current = data;
+        _height.current = data;
     }
 
     return (
@@ -99,7 +99,7 @@ const UserData = () => {
 
                 <View style={gs.bottom}>
                     <BigButton component="Location" text="doorgaan"
-                        disabled={!(name.current.length > 0 && job && day.length == 2 && month.length == 2 && year.length == 4)}
+                        disabled={!(_name.current.length > 0 && job && day.length == 2 && month.length == 2 && year.length == 4)}
                         callBack={handleData}
                     />
                 </View>

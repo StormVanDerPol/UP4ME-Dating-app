@@ -1,87 +1,103 @@
-import React, { useState, useEffect } from 'react';
-import ImagePicker from 'react-native-image-picker';
+import React, { useState, useRef, useEffect } from 'react';
 
 import {
     StyleSheet,
     View,
     Text,
-    Image,
 } from 'react-native';
 
-import { TouchableWithoutFeedback, ScrollView } from 'react-native-gesture-handler';
+import { ScrollView } from 'react-native-gesture-handler';
 
-import { gs, deviceWidth, deviceHeight, mx, apiUrl, up4meColours } from '../../globals';
+import { gs } from '../../globals';
 
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 import Axios from 'axios';
-import { endpointSetPhotos } from '../../endpoints';
-import RNSVG_edit from '../../res/ui/rnsvg/rnsvg_edit';
+import { endpointSetPhotos, endpointGetProfile } from '../../endpoints';
 
-const ProfilePictures = ({ route, navigation }) => {
+import ProfilePictureUpload from './profilePictureUpload';
 
-    // const [data] = useState(route.params);
+const ProfilePictures = ({ navigation }) => {
 
-    const [src, setSrc] = useState([]);
+    const _pfpArray = useRef(new Array(6));
+    const [isValid, setIsValid] = useState(false);
 
-    const [pfpArray, setPfpArray] = useState(new Array(6));
+    const _init = useRef(false);
 
-    const handleChoosePhoto = (id) => {
-        const opt = {
+    const [imgFetched, setImgFetched] = useState(false);
 
-        };
+    if (!_init.current) {
+        Axios.get(`${endpointGetProfile}${sessionUserId}`)
+            .then((res) => {
 
-        ImagePicker.launchImageLibrary(opt, (res) => {
-            console.log('Image URI on device', res.uri);
+                let imagesToCheck = [
+                    res.data.foto1,
+                    res.data.foto2,
+                    res.data.foto3,
+                    res.data.foto4,
+                    res.data.foto5,
+                    res.data.foto6,
+                ];
 
-            src[id] = res.uri;
-            setSrc([...src]);
+                imagesToCheck.map((image, id) => {
+                    if (image) {
+                        _pfpArray.current[id] = image;
+                    }
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+            .finally(() => {
+                setImgFetched(true);
+            })
 
-            pfpArray[id] = `data:${res.type};base64,${res.data}`;
-            setPfpArray([...pfpArray]);
-
-            console.log('ImagePicker response', res);
-        })
+        _init.current = true;
     }
 
-    useEffect(() => {
-        console.log(pfpArray);
-    }, [pfpArray])
+    const getPictures = (data) => {
+        _pfpArray.current = data.pfpArray;
+        setIsValid(data.isValid);
+    }
 
-    const validatePictures = () => {
-
-        for (let i = 0; i < pfpArray.length; i++) {
-            if (pfpArray[i] != undefined && pfpArray[i] != "data:undefined;base64,undefined") {
-                return false;
-            }
-        }
-
-        return true;
+    const checkValid = (data) => {
+        console.log('isvalid', data)
+        setIsValid(data)
     }
 
     const postData = () => {
 
         let toSend = {
-            userid: global.registData.userid,
-            photo1: pfpArray[0],
-            photo2: pfpArray[1],
-            photo3: pfpArray[2],
-            photo4: pfpArray[3],
-            photo5: pfpArray[4],
-            photo6: pfpArray[5]
+            userid: global.sessionUserId,
+            photo1: _pfpArray.current[0],
+            photo2: _pfpArray.current[1],
+            photo3: _pfpArray.current[2],
+            photo4: _pfpArray.current[3],
+            photo5: _pfpArray.current[4],
+            photo6: _pfpArray.current[5]
         }
 
         console.log('POST to send', toSend);
 
         Axios.post(endpointSetPhotos, toSend)
+            .then((res) => {
+                console.log('POST response', res);
+            })
             .catch((err) => {
                 console.log('Error', err);
             });
 
-        global.registData.profilePictures = pfpArray;
+        global.registData.profilePictures = _pfpArray.current;
         console.log('saved data: ', global.registData);
-
     }
+
+    const _pfpUploadComponent = useRef(<></>);
+
+    useEffect(() => {
+
+        _pfpUploadComponent.current = <ProfilePictureUpload getPictures={getPictures} checkValid={checkValid} initPics={_pfpArray.current} />;
+
+    }, [imgFetched])
 
     return (
         <View style={gs.body}>
@@ -91,80 +107,23 @@ const ProfilePictures = ({ route, navigation }) => {
                 <Logo />
                 <Text style={[gs.mainHeader]}>Foto's toevoegen</Text>
 
-                <View style={[s.pfpContainer]}>
-                    <View>
-                        {
-                            [...Array(3)].map((val, id) => <TouchableWithoutFeedback
-                                key={id}
-                                style={[s.pfpItem]}
-                                onPress={() => handleChoosePhoto(id)}>
-                                <Image
-                                    style={[s.pfpImage]}
-                                    source={{ uri: src[id] }} />
-                            </TouchableWithoutFeedback>)
-                        }
-                    </View>
+                {_pfpUploadComponent.current}
+                {/* <ProfilePictureUpload getPictures={getPictures} initPics={pfpArray.current} /> */}
 
-                    <View >
-                        <View style={[s.iconContainer]}>
-                            <RNSVG_edit />
-                        </View>
-                        {
-                            [...Array(3)].map((val, id) => <TouchableWithoutFeedback
-                                key={id + 3}
-                                style={[s.pfpItem]}
-                                onPress={() => handleChoosePhoto(id + 3)}>
-                                <Image
-                                    style={[s.pfpImage]}
-                                    source={{ uri: src[id + 3] }} />
-                            </TouchableWithoutFeedback>)
-                        }
-                    </View>
-
-                </View>
-
-                {/* <View style={{ paddingBottom: 15 }}> */}
                 <View style={[gs.bottom]}>
-                    <BigButton component="ProfileText" text="doorgaan" disabled={validatePictures()}
+                    <BigButton component="ProfileText" text="doorgaan" disabled={!isValid}
                         callBack={postData}
                     />
 
                     <Text style={[gs.underline, s.guidelines]} onPress={() => navigation.navigate('PhotoGuidelines')}>Lees de richtlijnen</Text>
                 </View>
-                {/* </View> */}
 
             </ScrollView>
         </View>
     );
 }
 
-
-const boxMarginX = 10;
-const boxMarginY = 10;
-const cols = 2
-
 const s = StyleSheet.create({
-    pfpContainer: {
-
-        flexDirection: "row",
-        marginBottom: 24,
-
-    },
-    pfpItem: {
-
-        width: ((deviceWidth - (mx * 2)) / cols) - (boxMarginX * 2),
-        height: 270,
-        marginHorizontal: boxMarginX,
-        marginVertical: boxMarginY,
-        backgroundColor: up4meColours.picGray,
-        borderRadius: 15,
-        overflow: 'hidden',
-
-    },
-    pfpImage: {
-        width: '100%',
-        height: '100%',
-    },
 
     guidelines: {
         marginTop: 5,

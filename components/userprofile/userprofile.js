@@ -27,6 +27,9 @@ const UserProfile = () => {
                     profilePicture: res.data.foto1,
                 });
 
+
+                getFakeNotifs();
+
             })
             .catch((err) => {
                 console.warn(`${endpointGetProfile}${global.sessionUserId} NETWORK ERROR`, err);
@@ -80,19 +83,6 @@ const UserProfile = () => {
         }
     }
 
-    useEffect(() => {
-        console.log('fake notifs :', fakeNotifications)
-    }
-        , [fakeNotifications])
-
-    const [fakeNotifInit, setFakeNotifInit] = useState(false)
-
-    if (!fakeNotifInit) {
-
-        getFakeNotifs();
-        setFakeNotifInit(true);
-    }
-
     const notifMessage = (n) => {
         switch (n) {
             case 0:
@@ -108,7 +98,7 @@ const UserProfile = () => {
                 return 'notif message 3';
 
             default:
-                break;
+                return 'my boi'
         }
     }
 
@@ -126,7 +116,7 @@ const UserProfile = () => {
                 } />
             </View>
 
-            <SectRouteBtn route={'somewhere'} btnText={'profiel bewerken'} />
+            <SectRouteBtn route={'EditProfile'} btnText={'profiel bewerken'} />
             <SectRouteBtn route={'UserSettings'} btnText={'Instellingen'} />
             <SectRouteBtn route={'somewhere'} btnText={'Nodig vrienden uit'} />
 

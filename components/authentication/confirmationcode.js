@@ -81,7 +81,7 @@ const ConfirmationCode = () => {
 
                 if (res.data.security == undefined) {
                     setIsValid(false);
-                    setValidationFeedback("Something went wrong! Please click 'resend' and try again with a new code!")
+                    setValidationFeedback("Something went wrong! Please click 'resend' and try again with a new code!");
                 }
             })
     }
@@ -92,7 +92,6 @@ const ConfirmationCode = () => {
 
     const handleData = () => {
         global.sessionUserId = userid;
-        global.registData.userid = userid;
         global.registData.confirmationCode = confcode;
 
         if (debugMode.general) {

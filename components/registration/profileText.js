@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
     StyleSheet,
@@ -12,24 +12,32 @@ import Logo from '../logo';
 import { gs } from '../../globals';
 
 import BigButton from '../bigbutton';
-import { TextInput } from 'react-native-gesture-handler';
-// import Axios from 'axios';
-// import { endpointSetProfileText } from '../../endpoints';
+import ProfileTextField from './profileTextField';
+import Axios from 'axios';
+import { endpointSetProfileText } from '../../endpoints';
 
-const ProfileText = ({ navigation }) => {
-
-    const [profText, setProfText] = useState('')
+const ProfileText = () => {
 
     const handleData = () => {
-        // Axios.post(endpointSetProfileText,
-        //     {
-        //         userid: global.registData.userid,
-        //         profiletext: profText
-        //     });
-
         global.registData.profileDescription = profText;
+
+        Axios.post(`${endpointSetProfileText}`, {
+            userid: global.sessionUserId,
+            profiletext: profText,
+        })
+
         console.log('saved data: ', global.registData);
     }
+
+    const [profText, setProfText] = useState('');
+
+    const getProfText = (data) => {
+        setProfText(data);
+    }
+
+    useEffect(() => {
+        console.log(profText);
+    }, [profText])
 
     return (
         <View style={gs.body}>
@@ -37,14 +45,7 @@ const ProfileText = ({ navigation }) => {
                 <Logo />
                 <Text style={[s.header, gs.mainHeader]}>Profieltekst</Text>
 
-                <View style={[s.grayTextBox]}>
-                    <TextInput
-                        multiline={true}
-                        maxLength={500}
-                        placeholder="Vertel hier wat jouw date over je moet weten. Heb jij een bijzondere of tijdrovende hobby? Een speciale wens, een niet alledaags beroep? Een handicap of een speciale levensstijl? Bij Up4me mag je direct jezelf zijn. Zo laat jij alles van je echte kan zien."
-                        onChangeText={(input) => setProfText(input)}
-                    />
-                </View>
+                <ProfileTextField getProfText={getProfText} />
 
                 <View style={[gs.bottom]}>
                     <BigButton component="UserProps" text="doorgaan" disabled={!(profText)}
@@ -56,18 +57,11 @@ const ProfileText = ({ navigation }) => {
     );
 };
 
+
 const s = StyleSheet.create({
 
     header: {
         marginBottom: 25,
-    },
-
-    grayTextBox: {
-        borderRadius: 25,
-        borderColor: "gray",
-        borderWidth: 1,
-        padding: 20,
-        marginBottom: 25
     },
 });
 
