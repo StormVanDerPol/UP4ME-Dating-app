@@ -23,6 +23,7 @@ import SliderMarker from '../sliderMarker';
 import LinearGradient from 'react-native-linear-gradient';
 import { debugMode } from '../../debugmode';
 import Nav from '../nav';
+import SliderMarkerWhite from '../sliderMarkerWhite';
 
 const Filters = ({ route }) => {
 
@@ -321,7 +322,9 @@ const AgeSlider = (p) => {
             </View>
             <View style={s.sliderWrapper}>
                 <MultiSlider
-                    sliderLength={deviceWidth - mx * 2 - 20}
+                    customMarker={SliderMarkerWhite}
+                    selectedStyle={s.track}
+                    sliderLength={deviceWidth - mx * 2 - 30}
                     values={[ages[0], ages[1]]} min={18} max={120}
                     onValuesChange={(output) => { setAges(output) }} />
             </View>
@@ -349,7 +352,10 @@ const HeightSlider = (p) => {
             </View>
             <View style={s.sliderWrapper}>
                 <MultiSlider
-                    sliderLength={deviceWidth - mx * 2 - 20}
+                    customMarker={SliderMarkerWhite}
+                    selectedStyle={s.track}
+
+                    sliderLength={deviceWidth - mx * 2 - 30}
                     values={[heights[0], heights[1]]} min={150} max={250}
                     onValuesChange={(output) => { setHeights(output) }} />
             </View>
@@ -377,7 +383,10 @@ const DistanceSlider = (p) => {
             </View>
             <View style={s.sliderWrapper}>
                 <MultiSlider
-                    sliderLength={deviceWidth - mx * 2 - 20}
+                    customMarker={SliderMarkerWhite}
+                    selectedStyle={s.track}
+
+                    sliderLength={deviceWidth - mx * 2 - 30}
                     values={distance[0]} min={0} max={250}
                     step={1} onValuesChange={(output) => { setDistance(output) }} />
             </View>
@@ -431,6 +440,9 @@ const s = StyleSheet.create({
     sliderHeader: {
         flexDirection: "row",
         justifyContent: "space-between",
+    },
+    track: {
+        backgroundColor: up4meColours.gradPink,
     }
 
 });

@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import Axios from 'axios';
 import { endpointGetProfile, endpointMatchResponses } from '../../endpoints';
-import { calcAgeHet, up4meColours, deviceHeight } from '../../globals';
+import { calcAgeHet, up4meColours, deviceHeight, gs } from '../../globals';
 
 import { SliderBox } from 'react-native-image-slider-box';
 import { FlingGestureHandler, TouchableWithoutFeedback, Directions, State, ScrollView } from 'react-native-gesture-handler';
@@ -337,6 +337,7 @@ const MatchScreen = ({ route, navigation }) => {
         <>
             <Nav currentSection={'Main'} />
             <ScrollView
+                style={gs.body}
                 ref={scrollViewRef}
                 waitFor={FlingUpRef}
 

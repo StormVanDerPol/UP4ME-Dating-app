@@ -18,7 +18,7 @@ import ListItem from '../listItem';
 const Agreement = ({ navigation }) => {
 
     return (
-        <>
+        <View style={gs.body}>
             <ScrollView>
                 <Logo />
 
@@ -150,7 +150,7 @@ const Agreement = ({ navigation }) => {
                 <BigButton component="back" text="akkoord" />
                 <View style={{ marginBottom: 24 }} />
             </ScrollView>
-        </>
+        </View>
 
     );
 }
