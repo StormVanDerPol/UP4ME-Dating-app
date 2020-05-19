@@ -6,6 +6,7 @@ export const endpointCheckEmail = `${apiUrl}/get/profile/checkmail/`;
 export const endpointGetPotentials = `${apiUrl}/get/potentials/`;
 export const endpointGetProfile = `${apiUrl}/get/profile/`;
 export const endpointRegisterProfile = `${apiUrl}/register/2/`;
+export const endpointGetCriteria = `${apiUrl}/get/criteria/`;
 
 //post
 export const endpointSetGPS = `${apiUrl}/set/gps`;

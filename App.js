@@ -30,6 +30,7 @@ import MatchNoMatch from './components/matching/MatchNoMatch';
 import MatchScreen from './components/matching/MatchScreen';
 import MatchScreenInitial from './components/matching/MatchScreenInitial';
 import EditFilters from './components/editFilters/editFilters';
+import EditProfile from './components/userprofile/editprofile';
 
 import { reqLocationPermission, updateGPSData } from './updategps';
 import moment from 'moment';
@@ -41,6 +42,7 @@ import { debugMode } from './debugmode';
 
 import { screenTransitions } from './screenTransitions';
 import { navigationRef } from './rootNavigation';
+
 
 
 
@@ -134,6 +136,9 @@ const App = () => {
           <Stack.Screen name="UserProfile" component={UserProfile} />
           <Stack.Screen name="EditFilters" component={EditFilters} />
           <Stack.Screen name="MatchNoMatch" component={MatchNoMatch} />
+          <Stack.Screen name="EditProfile" component={EditProfile} />
+
+
         </Stack.Navigator>
       </NavigationContainer>
     </>

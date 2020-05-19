@@ -45,7 +45,7 @@ const UserProps = ({ navigation }) => {
     const postData = () => {
         Axios.post(endpointSetProperties,
             {
-                userid: global.registData.userid,
+                userid: global.sessionUserId,
                 sport: selections.sport,
                 feesten: selections.party,
                 roken: selections.smoking,

@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import Axios from 'axios';
 import { endpointGetProfile, endpointMatchResponses } from '../../endpoints';
-import { calcAgeHet, up4meColours, deviceHeight, gs } from '../../globals';
+import { calcAgeHet, up4meColours, deviceHeight, getDistBetweenCoords } from '../../globals';
 
 import { SliderBox } from 'react-native-image-slider-box';
 import { FlingGestureHandler, TouchableWithoutFeedback, Directions, State, ScrollView } from 'react-native-gesture-handler';
@@ -14,10 +14,14 @@ import RNSVG_match_yes from '../../res/ui/rnsvg/rnsvg_match_yes';
 import RNSVG_match_no from '../../res/ui/rnsvg/rnsvg_match_no';
 import RNSVG_occupation from '../../res/ui/rnsvg/rnsvg_occupation';
 import RNSVG_location_profile from '../../res/ui/rnsvg/rnsvg_location_profile';
+
 import Nav from '../nav';
 import MatchNoMatch from './MatchNoMatch';
 
 import { debugMode } from '../../debugmode';
+import RNSVG_ruler from '../../res/ui/rnsvg/rnsvg_ruler';
+import RNSVG_paperPlane from '../../res/ui/rnsvg/nav/rnsvg_paperPlane';
+import { updateGPSData } from '../../updategps';
 
 const MatchScreen = ({ route, navigation }) => {
 
@@ -30,8 +34,10 @@ const MatchScreen = ({ route, navigation }) => {
     const [placeName, setPlaceName] = useState();
     const [height, setHeight] = useState();
     const [job, setJob] = useState();
-    const [desc, setDesc] = useState()
-    const [profProps, setProfProps] = useState({});
+    const [desc, setDesc] = useState();
+    const [profProps, setProfProps] = useState([]);
+
+    const [dist, setDist] = useState(0);
 
     const [loading, setLoading] = useState(true);
 
@@ -65,18 +71,93 @@ const MatchScreen = ({ route, navigation }) => {
                 setHeight(res.data.lengte / 100);
                 setJob(res.data.beroep);
                 setDesc(res.data.profieltext);
-                setProfProps({
-                    sport: res.data.sporten,
-                    party: res.data.feesten,
-                    smoking: res.data.roken,
-                    alcohol: res.data.alcohol,
-                    politics: res.data.stemmen,
-                    work: res.data.uur40,
-                    kids: res.data.kids,
-                    kidWish: res.data.kidwens,
-                    food: res.data.eten
-                });
                 setAge(calcAgeHet(res.data.geboortedatum));
+
+                setDist(
+                    Math.round(
+                        getDistBetweenCoords(
+                            global.gpsData.lat,
+                            global.gpsData.lon,
+                            res.data.latitude,
+                            res.data.longitude,
+                            'K')
+                    )
+                );
+
+                switch (res.data.sporten) {
+                    case 1:
+                        profProps.push('Sport');
+                        break;
+                }
+
+                switch (res.data.party) {
+                    case 1:
+                        profProps.push('Feest');
+                        break;
+                }
+
+                switch (res.data.roken) {
+                    case 1:
+                        profProps.push('Rookt');
+                        break;
+                    case 3:
+                        profProps.push('Rookt niet');
+                        break;
+                }
+
+                switch (res.data.alcohol) {
+                    case 1:
+                        profProps.push('Drinkt alcohol')
+                        break;
+                    case 3:
+                        profProps.push('Drinkt geen alcohol')
+                        break;
+                }
+
+                switch (res.data.stemmen) {
+                    case 1:
+                        profProps.push('Stemt links')
+                        break;
+                    case 2:
+                        profProps.push('Stemt rechts')
+                        break;
+                    case 3:
+                        profProps.push('Stemt rechts')
+                        break;
+                    case 4:
+                        profProps.push('Stemt niet')
+                        break;
+                }
+
+                switch (res.data.uur40) {
+                    case 1:
+                        profProps.push('Werkt minder dan 40 uur p/w')
+                        break;
+                    case 3:
+                        profProps.push('Werkt meer dan 40 uur p/w')
+                        break;
+                }
+
+                switch (res.data.kids) {
+                    case 1:
+                        profProps.push('Heeft kind(eren)');
+                        break;
+                    case 2:
+                        profProps.push('Heeft geen kinderen');
+                        break;
+                }
+
+                switch (res.data.kidwens) {
+                    case 1:
+                        profProps.push('Wil kinderen')
+                        break;
+                    case 3:
+                        profProps.push('Wil geen kinderen');
+                        break;
+                }
+
+                setProfProps([...profProps]);
+
             })
             .catch((err) => {
                 console.log('Error', err);
@@ -190,7 +271,15 @@ const MatchScreen = ({ route, navigation }) => {
 
     if (!init) {
 
-        retrieveProfileData(matchList[PotentialMatchIndex]);
+        updateGPSData();
+
+        if (matchList) {
+            retrieveProfileData(matchList[PotentialMatchIndex]);
+        }
+        else {
+            setLoading(false);
+        }
+
         setInit(true);
     }
 
@@ -279,26 +368,35 @@ const MatchScreen = ({ route, navigation }) => {
                                     }}>
                                     <View>
                                         <View style={s.subInfoBoxContainer}>
-                                            <View>
-                                                <Text>{height}</Text>
+                                            <View style={s.subInfoBoxWrapper}>
+                                                <View style={s.subInfoIconWrapper}>
+                                                    <RNSVG_ruler />
+                                                </View>
+                                                <Text>{height}m</Text>
                                             </View>
-                                            <View>
-                                                <Text>number</Text>
+                                            <View style={s.subInfoBoxWrapper}>
+                                                <View style={s.subInfoIconWrapper}>
+                                                    <RNSVG_paperPlane />
+                                                </View>
+                                                <Text>{dist}km</Text>
                                             </View>
                                         </View>
 
                                         <View>
                                             <Text style={s.description}>{desc}</Text>
                                             <View style={s.matchProperties}>
-                                                <Text style={s.matchProperty}>{profProps.sport}</Text>
-                                                <Text style={s.matchProperty}>{profProps.party}</Text>
-                                                <Text style={s.matchProperty}>{profProps.smoking}</Text>
-                                                <Text style={s.matchProperty}>{profProps.alcohol}</Text>
-                                                <Text style={s.matchProperty}>{profProps.politics}</Text>
-                                                <Text style={s.matchProperty}>{profProps.work}</Text>
-                                                <Text style={s.matchProperty}>{profProps.kids}</Text>
-                                                <Text style={s.matchProperty}>{profProps.kidWish}</Text>
-                                                <Text style={s.matchProperty}>{profProps.food}</Text>
+                                                {
+                                                    profProps.map((prop, i) => {
+                                                        return (
+                                                            <View key={i}>
+                                                                <Text style={s.matchProperty}>
+                                                                    {prop}
+                                                                </Text>
+                                                            </View>
+                                                        )
+                                                    })
+                                                }
+
                                             </View>
                                         </View>
 
@@ -384,6 +482,17 @@ const s = StyleSheet.create({
         marginBottom: 32
     },
 
+    subInfoBoxWrapper: {
+        flexDirection: "row",
+        alignItems: "center"
+    },
+
+    subInfoIconWrapper: {
+        width: 17,
+        height: 17,
+        marginHorizontal: 8
+    },
+
     infoBoxIcon: {
         width: 24,
         height: 24,
@@ -397,20 +506,21 @@ const s = StyleSheet.create({
         paddingTop: 0,
     },
     matchProperties: {
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         flexDirection: 'row',
         marginBottom: 25,
         flexWrap: "wrap",
+        marginHorizontal: 10,
     },
     matchProperty: {
-        fontSize: 17,
-        borderWidth: 2,
-        borderColor: 'red',
+        fontSize: 12,
+        borderWidth: 1,
+        borderColor: 'black',
         borderRadius: 20,
-        paddingHorizontal: 33,
+        paddingHorizontal: 10,
         paddingVertical: 10,
-        marginHorizontal: 12,
-        marginVertical: 10
+        marginHorizontal: 5,
+        marginVertical: 5,
     },
 
     matchDecision: {
