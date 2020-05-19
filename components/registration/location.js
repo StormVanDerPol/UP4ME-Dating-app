@@ -5,6 +5,7 @@ import {
     View,
     Text,
     Image,
+    Dimensions,
 } from 'react-native';
 
 import {
@@ -26,11 +27,12 @@ import RNSVG_location from '../../res/ui/rnsvg/rnsvg_location';
 
 import { reqLocationPermission, updateGPSData } from '../../updategps';
 import { debugMode } from '../../debugmode';
+import Axios from 'axios';
 
 const Location = () => {
 
     const zoom = 13;
-    const mapWidth = deviceWidth - mx * 2;
+    const mapWidth = Math.round(deviceWidth - mx * 2);
     // const mapHeight = deviceHeight / 2;
     const [mapHeight, setMapHeight] = useState();
     const mapType = 'roadmap'
@@ -56,6 +58,19 @@ const Location = () => {
         if (debugMode.general)
             console.log('saved data: ', global.registData);
     }
+
+    Axios.get(`${MapsApiRootUrl}center=${placeName}&scale=2&zoom=${zoom}&size=${mapWidth}x${mapHeight}&maptype=${mapType}&key=${GOOGLE_MAPS_API_KEY}`)
+        .then((res) => {
+
+            console.log(res);
+        })
+        .catch((pp) => {
+            console.log(`${MapsApiRootUrl}center=${placeName}&scale=2&zoom=${zoom}&size=${mapWidth}x${mapHeight}&maptype=${mapType}&key=${GOOGLE_MAPS_API_KEY}`);
+            console.log(pp);
+        })
+        .finally(() => {
+
+        })
 
     return (
         <ScrollView>
@@ -83,7 +98,7 @@ const Location = () => {
                     </View>
 
                     <View onLayout={(e) => {
-                        setMapHeight(e.nativeEvent.layout.height);
+                        setMapHeight(Math.round(e.nativeEvent.layout.height));
                     }} style={s.map}>
                         <Image style={{ width: '100%', height: '100%' }} source={
                             {
@@ -106,7 +121,7 @@ const Location = () => {
 const s = StyleSheet.create({
     map: {
         flex: 2,
-        width: deviceHeight,
+        width: Dimensions.get('window').width,
         marginVertical: 15,
     },
 

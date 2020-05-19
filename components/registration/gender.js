@@ -75,7 +75,7 @@ const Gender = ({ navigation }) => {
     }
 
     return (
-        <View style={gs.body}>
+        <View style={[gs.body,]}>
             <View style={gs.screenWrapper}>
 
                 <View>

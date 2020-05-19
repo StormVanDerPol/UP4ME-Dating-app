@@ -18,7 +18,7 @@ import { gs } from '../../globals';
 const PrivacyPolicy = ({ navigation }) => {
 
     return (
-        <>
+        <View style={gs.body}>
             <ScrollView>
                 <Logo />
 
@@ -94,7 +94,7 @@ const PrivacyPolicy = ({ navigation }) => {
                 <View style={{ marginBottom: 24 }} />
             </ScrollView>
 
-        </>
+        </View>
 
     );
 }

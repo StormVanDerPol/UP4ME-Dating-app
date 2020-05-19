@@ -16,7 +16,7 @@ import { gs } from '../../globals';
 const CookiePolicy = ({ navigation }) => {
 
     return (
-        <>
+        <View style={gs.body}>
             <ScrollView>
                 <Logo />
                 <Text style={[gs.mainHeader]}>Cookiebeleid</Text>
@@ -46,7 +46,7 @@ const CookiePolicy = ({ navigation }) => {
                 <BigButton component="back" text="terug" />
                 <View style={{ marginBottom: 24 }} />
             </ScrollView>
-        </>
+        </View>
 
     );
 }

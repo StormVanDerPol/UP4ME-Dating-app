@@ -22,6 +22,7 @@ import RNSVG_profile_gray from '../res/ui/rnsvg/nav/rnsvg_profile_gray';
 import RNSVG_matches_gray_notif from '../res/ui/rnsvg/nav/rnsvg_matches_gray_notif';
 import RNSVG_matches_colour_notif from '../res/ui/rnsvg/nav/rnsvg_matches_colour_notif';
 import { rootNavigation } from '../rootNavigation';
+import { gs } from '../globals';
 
 const Nav = (p) => {
 
@@ -55,7 +56,7 @@ const Nav = (p) => {
 
 
     return (
-        <>
+        <View style={gs.body}>
             <View style={[s.navContainer]}>
                 <View style={[s.navItemGroup]}>
                     <TouchableWithoutFeedback style={[s.navItem]}
@@ -104,7 +105,7 @@ const Nav = (p) => {
                     </TouchableWithoutFeedback>
                 </View>
             </View>
-        </>
+        </View>
     );
 }
 

@@ -31,7 +31,7 @@ const Faq = ({ navigation }) => {
     }
 
     return (
-        <>
+        <View style={gs.body}>
 
             <TouchableWithoutFeedback style={[s.underb]} onPress={() => navigation.goBack()}>
                 {/* <Icon name='keyboard_arrow_left' /> */}
@@ -42,13 +42,26 @@ const Faq = ({ navigation }) => {
                 <TouchableWithoutFeedback onPress={() => {
                     changeDropdown(1, (
                         <>
-                            <Text>Antwoord op vraag vraag. Wanneer je op het antwoord of op een andere vraag klikt, klapt het antwoord van deze vraag weer in zodat je scherm niet te vol met tekst wordt.</Text>
+                            <Text>Up4me is een datingapp voor singles die opzoek zijn naar iets serieus. Dat vind je door op een leuke maar efficiënte manier op date te gaan en mensen te leren kennen. Bij Up4me kun je daarom niet chatten maar plan je na de match meteen een date in bij een van de aangesloten locaties. </Text>
+                        </>
+                    ));
+                }}>
+                    <Text>Wat is Up4me?</Text>
+                </TouchableWithoutFeedback>
+                {dropdownElements[1]}
+            </View>
+
+            <View style={[s.underb]}>
+                <TouchableWithoutFeedback onPress={() => {
+                    changeDropdown(2, (
+                        <>
+                            <Text>Up4me is voor singles die opzoek zijn naar een vaste partner, omdat ze er aan toe zijn om te settelen en een toekomst met iemand op te bouwen, en voor mensen die op een leuke en efficiënte manier willen daten. Up4me is niet bedoeld voor mensen die opzoek zijn naar iets casuals.</Text>
                         </>
                     ));
                 }}>
                     <Text>Voor wie is Up4me?</Text>
                 </TouchableWithoutFeedback>
-                {dropdownElements[1]}
+                {dropdownElements[2]}
             </View>
 
             <View style={s.end}>
@@ -60,7 +73,7 @@ const Faq = ({ navigation }) => {
                 <Text>icoon 0653118231</Text>
             </View>
 
-        </>
+        </View>
     );
 }
 

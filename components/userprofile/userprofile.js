@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-    StyleSheet, Image, View, Text,
+    StyleSheet, Image, View, Text, ImageBackground,
 } from 'react-native';
 
 import Axios from 'axios';
 
 import Nav from '../nav';
 import { endpointGetProfile } from '../../endpoints';
-import { deviceWidth, up4meColours } from '../../globals';
+import { deviceWidth, up4meColours, gs } from '../../globals';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { rootNavigation } from '../../rootNavigation';
 
 import ImageResizer from 'react-native-image-resizer';
+import RNSVG_edit from '../../res/ui/rnsvg/rnsvg_edit';
 
 const UserProfile = () => {
 
@@ -104,25 +105,36 @@ const UserProfile = () => {
 
 
     return (
-        <>
+        <View style={[gs.body]}>
             <Nav currentSection={'Profile'} />
             <View style={[s.pfpcontainer]}>
+
                 <Image source={
                     {
                         uri: userProfileData.profilePicture,
                         width: '100%',
                         height: '100%',
+                        // resizeMode="cover",
                     }
                 } />
+
+                <TouchableWithoutFeedback style={[gs.iconwrap, s.sss]}>
+                    <RNSVG_edit />
+                </TouchableWithoutFeedback>
+
             </View>
 
             <SectRouteBtn route={'EditProfile'} btnText={'profiel bewerken'} />
             <SectRouteBtn route={'UserSettings'} btnText={'Instellingen'} />
             <SectRouteBtn route={'somewhere'} btnText={'Nodig vrienden uit'} />
 
-            <View>
-                <Text>Recente notificaties</Text>
+
+            <View style={[s.noteYellow]}>
+                <Text style={s.noteText}>Recente notificaties</Text>
             </View>
+
+
+
 
             <ScrollView horizontal={true}>
 
@@ -135,20 +147,27 @@ const UserProfile = () => {
                 })}
 
             </ScrollView>
-        </>
+        </View>
     );
 }
 
 const SectRouteBtn = (p) => {
 
     return (
-        <TouchableWithoutFeedback onPress={() => rootNavigation.navigate(p.route)}>
+        <TouchableWithoutFeedback style={sectRouteBtnStyles.btnSelect} onPress={() => rootNavigation.navigate(p.route)}>
             <Text>{p.btnText}</Text>
         </TouchableWithoutFeedback>
     )
 }
 
 const sectRouteBtnStyles = StyleSheet.create({
+
+    btnSelect: {
+        // backgroundColor: "red",
+        padding: 10,
+        paddingLeft: 25,
+
+    },
 
 });
 
@@ -178,6 +197,8 @@ const NotifItem = (p) => {
                     {p.notifText}
                 </Text>
 
+
+
             </TouchableWithoutFeedback>
         </>
     )
@@ -193,6 +214,8 @@ const NotifItemStyles = StyleSheet.create({
     },
 
     pfpContainer: {
+        // borderRadius: 100,
+
         width: notifSize,
         height: notifSize,
     },
@@ -210,10 +233,37 @@ const NotifItemStyles = StyleSheet.create({
 });
 
 const s = StyleSheet.create({
+
+    noteYellow: {
+        // height: 60,
+        width: deviceWidth,
+        backgroundColor: up4meColours.gradYellow1,
+        // paddingVertical: 5,
+        paddingLeft: 25,
+    },
+
+
+    noteText: {
+        color: 'white',
+        lineHeight: 60,
+        fontWeight: 'bold',
+    },
     pfpcontainer: {
         width: deviceWidth,
         height: 300,
     },
+    sss: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        borderWidth: 2,
+        margin: 5,
+    },
+    //man im gonna do this at home RIGHT ITS LIKE HURR DUUR BTW  how do i know what is what icon? can i open? tx
+    //love you
+    //meeting im like 15 min i cry
+
+
 });
 
 export default UserProfile;
