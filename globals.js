@@ -92,7 +92,7 @@ export const gs = StyleSheet.create({
 
     screenWrapper: {
         paddingTop: 15,
-        height: deviceHeight - 24,
+        height: Dimensions.get('window').height - 24,
         marginHorizontal: mx,
     },
 
