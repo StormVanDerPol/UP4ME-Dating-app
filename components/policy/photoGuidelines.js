@@ -18,7 +18,7 @@ import BigButton from '../bigbutton';
 const PhotoGuidelines = ({ navigation }) => {
 
     return (
-        <>
+        <View style={gs.body}>
             <ScrollView>
                 <Logo />
                 <Text style={[s.header, gs.mainHeader]}>Richtlijnen foto's</Text>
@@ -59,7 +59,7 @@ const PhotoGuidelines = ({ navigation }) => {
                 {/* <View style={{ marginBottom: 24 }} /> */}
 
             </ScrollView>
-        </>
+        </View>
     );
 };
 

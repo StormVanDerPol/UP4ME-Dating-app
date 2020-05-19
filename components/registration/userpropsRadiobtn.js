@@ -106,7 +106,8 @@ const s = StyleSheet.create({
         borderRadius: 100,
         paddingVertical: 16,
         marginHorizontal: 10,
-
+        borderWidth: 1,
+        borderColor: up4meColours.darkGray,
     },
 
     btnInner: {
