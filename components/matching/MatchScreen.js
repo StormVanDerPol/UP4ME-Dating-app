@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-    StyleSheet, View, Text, BackHandler,
+    StyleSheet, View, Text, BackHandler, Dimensions,
 } from 'react-native';
 import Axios from 'axios';
 import { endpointGetProfile, endpointMatchResponses } from '../../endpoints';
@@ -226,7 +226,7 @@ const MatchScreen = ({ route, navigation }) => {
                                 sliderBoxHeight={'100%'}
                                 autoplay={false}
                                 dotColor={up4meColours.gradOrange}
-                                paginationBoxVerticalPadding={deviceHeight - 160}
+                                paginationBoxVerticalPadding={Dimensions.get('window').height - 160}
                                 resizeMode={'cover'}
                                 images={images}
                                 dotStyle={{
@@ -354,7 +354,7 @@ const MatchScreen = ({ route, navigation }) => {
 
 const s = StyleSheet.create({
     container: {
-        height: deviceHeight - 125,
+        height: Dimensions.get('window').height - 125,
     },
     infoBox: {
         position: 'absolute',

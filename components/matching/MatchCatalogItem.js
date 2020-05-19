@@ -7,6 +7,7 @@ import {
     StyleSheet,
     Text,
     View,
+    Dimensions,
 } from 'react-native';
 
 import {
@@ -244,7 +245,7 @@ const MatchCatalogItem = (p) => {
                     autoplay={false}
                     dotColor={"#ffd1f3"}
 
-                    paginationBoxVerticalPadding={deviceHeight - 160}
+                    paginationBoxVerticalPadding={Dimensions.get('window').height - 160}
 
                     resizeMode={'cover'}
 

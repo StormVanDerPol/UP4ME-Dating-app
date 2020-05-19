@@ -4,6 +4,7 @@ import {
     Image,
     View,
     Text,
+    Dimensions,
 } from 'react-native';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -54,7 +55,7 @@ const s = StyleSheet.create({
 
     wrapper: {
         paddingTop: 100,
-        height: deviceHeight - 24,
+        height: Dimensions.get('window').height - 24,
         marginHorizontal: 10
     },
 

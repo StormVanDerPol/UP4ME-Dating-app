@@ -5,6 +5,7 @@ import {
     View,
     Text,
     Image,
+    Dimensions,
 } from 'react-native';
 
 import {
@@ -106,7 +107,7 @@ const Location = () => {
 const s = StyleSheet.create({
     map: {
         flex: 2,
-        width: deviceHeight,
+        width: Dimensions.get('window').width,
         marginVertical: 15,
     },
 
