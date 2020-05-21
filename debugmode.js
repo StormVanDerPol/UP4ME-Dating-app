@@ -7,7 +7,7 @@ export const debugMode = {
     gps: true,
     calcAge: true,
     swiping: true,
-    endEditTimer: true,
+    endEditTimer: false,
     confCodeValidation: false,
     filterSlider: false,
 };

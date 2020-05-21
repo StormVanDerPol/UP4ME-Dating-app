@@ -129,9 +129,11 @@ const UserProfile = () => {
             <SectRouteBtn route={'somewhere'} btnText={'Nodig vrienden uit'} />
 
 
-            <View style={[s.noteYellow]}>
+            <LinearGradient
+                start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+                style={[s.noteYellow]} colors={[up4meColours.gradYellow1, up4meColours.gradYellow2]} >
                 <Text style={s.noteText}>Recente notificaties</Text>
-            </View>
+            </LinearGradient>
 
 
 
@@ -235,10 +237,7 @@ const NotifItemStyles = StyleSheet.create({
 const s = StyleSheet.create({
 
     noteYellow: {
-        // height: 60,
         width: deviceWidth,
-        backgroundColor: up4meColours.gradYellow1,
-        // paddingVertical: 5,
         paddingLeft: 25,
     },
 

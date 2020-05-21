@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import Axios from 'axios';
-import { endpointGetProfile } from '../../endpoints';
 
 const ProfileTextField = (p) => {
 
-    const [profText, setProfText] = useState('')
+    const [profText, setProfText] = useState(p.initProfText);
 
     const sendProfText = (data) => {
         p.getProfText(data);
@@ -15,23 +13,6 @@ const ProfileTextField = (p) => {
     useEffect(() => {
         sendProfText(profText);
     }, [profText])
-
-
-    const _init = useRef(false);
-
-    if (!_init.current) {
-        Axios.get(`${endpointGetProfile}${global.sessionUserId}`)
-            .then((res) => {
-
-                if (res.data.profieltext)
-                    setProfText(res.data.profieltext)
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-
-        _init.current = true;
-    }
 
     return (
         <View style={[s.textFieldContainer]}>
