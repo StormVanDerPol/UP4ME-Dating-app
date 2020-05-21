@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
-    View
+    View,
+    Keyboard
 } from 'react-native';
 
 import Logo from '../logo';
@@ -15,6 +16,7 @@ import BigButton from '../bigbutton';
 import ProfileTextField from './profileTextField';
 import Axios from 'axios';
 import { endpointSetProfileText } from '../../endpoints';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const ProfileText = () => {
 
@@ -40,20 +42,23 @@ const ProfileText = () => {
     }, [profText])
 
     return (
-        <View style={gs.body}>
-            <View style={gs.screenWrapper}>
-                <Logo />
-                <Text style={[s.header, gs.mainHeader]}>Profieltekst</Text>
+        <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss(); }}>
+            <View style={gs.body}>
+                <View style={gs.screenWrapper}>
+                    <Logo />
+                    <Text style={[s.header, gs.mainHeader]}>Profieltekst</Text>
 
-                <ProfileTextField getProfText={getProfText} />
+                    <ProfileTextField getProfText={getProfText} />
 
-                <View style={[gs.bottom]}>
-                    <BigButton component="UserProps" text="doorgaan" disabled={!(profText)}
-                        callBack={handleData}
-                    />
+                    <View style={[gs.bottom]}>
+                        <BigButton component="UserProps" text="doorgaan" disabled={!(profText)}
+                            W callBack={handleData}
+                        />
+                    </View>
                 </View>
             </View>
-        </View>
+        </TouchableWithoutFeedback>
+
     );
 };
 
