@@ -129,6 +129,18 @@ const Agreement = ({ navigation }) => {
                     </View>
 
                     <View style={s.section}>
+                        <Text style={s.section}>ARTIKEL 6 - Aansprakelijkheid</Text>
+
+                        <FlatList
+                            data={[
+                                { key: '1.  Je gebruikt onze dienst voor eigen risico. Wij zijn niet aansprakelijk voor schade die je als gevolg van het gebruik van onze dienst mocht lijden.' },
+
+                            ]}
+                            renderItem={({ item }) => <Text style={s.items}>{item.key}</Text>}
+                        />
+                    </View>
+
+                    <View style={s.section}>
                         <Text style={s.section}>ARTIKEL 7 - Opzegging Consument</Text>
 
                         <FlatList

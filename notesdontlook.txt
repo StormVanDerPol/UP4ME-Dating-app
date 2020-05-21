@@ -31,3 +31,19 @@ check ip > cmd > ipconfig > (well check here)IPv4 Address. . . . . . . . . . . :
 
 TO DO:
 flip the directions on the linar gradiant buttons ALL OF THEM
+
+ios notes
+
+- grijze balk beneden
+
+- alles overlapt boven [tijd overlappen]
+
+- agreement artiekel 6 [kijken of alles niet over de border gaat] - ok :3 (test iOS)
+
+- Profieltext na text schrijven kan je er niet uit? ok :3 (test iOS)
+
+- filter on bad words
+
+- bruh
+
+- REEEEEEEEEEEact native
