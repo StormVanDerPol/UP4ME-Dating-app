@@ -99,6 +99,7 @@ const Location = () => {
 
                     <View onLayout={(e) => {
                         setMapHeight(Math.round(e.nativeEvent.layout.height));
+                        console.log('peeenis', e.nativeEvent.layout.height);
                     }} style={s.map}>
                         <Image style={{ width: '100%', height: '100%' }} source={
                             {
