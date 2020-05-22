@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import Axios from 'axios';
 import { endpointGetProfile, endpointMatchResponses } from '../../endpoints';
-import { calcAgeHet, up4meColours, deviceHeight, getDistBetweenCoords } from '../../globals';
+import { calcAgeHet, up4meColours, gs, getDistBetweenCoords } from '../../globals';
 
 import { SliderBox } from 'react-native-image-slider-box';
 import { FlingGestureHandler, TouchableWithoutFeedback, Directions, State, ScrollView } from 'react-native-gesture-handler';
