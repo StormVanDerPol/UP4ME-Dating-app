@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Axios from 'axios';
 
 import {
@@ -9,54 +9,104 @@ import {
     View,
 } from 'react-native';
 
-import UserPropsRadioButton from './userpropsRadiobtn';
+`import UserPropsRadioButton from './userpropsRadiobtn';`
 import Logo from '../logo';
 import BigButton from '../bigbutton';
 
 import { gs, up4meColours } from '../../globals';
-import { endpointSetProperties } from '../../endpoints';
+import { endpointSetProperties, endpointGetProfile } from '../../endpoints';
+import UserPropsSelections from './userpropsSelections';
 
-const UserProps = ({ navigation }) => {
+const UserProps = () => {
 
-    const [selections, setSelections] = useState(
-        {
-            sport: 0,
-            party: 0,
-            smoking: 0,
-            alcohol: 0,
-            politics: 0,
-            work: 0,
-            kids: 0,
-            kidWish: 0,
-            food: 0
-        }
-    );
+    const _userProperties = useRef({
+        sport: 0,
+        party: 0,
+        smoking: 0,
+        alcohol: 0,
+        politics: 0,
+        work: 0,
+        kids: 0,
+        kidWish: 0,
+        food: 0,
+    });
 
-    if (global.registData.userProperties == null) {
-        global.registData.userProperties = selections;
+    const [hasLoaded, setHasLoaded] = useState(false);
+
+    const _init = useRef(false);
+
+    if (!_init.current) {
+
+        console.log(`${endpointGetProfile}${global.sessionUserId}`);
+
+        Axios.get(`${endpointGetProfile}${global.sessionUserId}`)
+            .then((res) => {
+
+                const propsExist = (res.data.alcohol != undefined);
+
+                if (propsExist) {
+                    _userProperties.current = {
+                        sport: res.data.sporten,
+                        party: res.data.feesten,
+                        smoking: res.data.roken,
+                        alcohol: res.data.alcohol,
+                        politics: res.data.stemmen,
+                        work: res.data.uur40,
+                        kids: res.data.kids,
+                        kidWish: res.data.kidwens,
+                        food: res.data.eten,
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+            .finally(() => {
+                setHasLoaded(true);
+            })
+
+        _init.current = true;
     }
 
-    const getSelections = (selection) => {
+    const [renderUserPropsSelections, setRenderUserPropsSelections] = useState(<Text>Loading properties</Text>)
 
-        setSelections(Object.assign(selections, selection));
-        console.log('Selections', selections, 'Amount of keys', (Object.keys(selections).length));
+    useEffect(() => {
+        if (hasLoaded) {
+
+            console.log('filling in props like this: ', _userProperties.current);
+
+            setRenderUserPropsSelections(
+                <>
+                    <Text>I need to nut</Text>
+                    <UserPropsSelections initSelections={_userProperties.current} getSelections={getSelections} />
+                </>
+            )
+        }
+    }, [hasLoaded])
+
+    const getSelections = (data) => {
+        _userProperties.current = data;
     }
 
     const postData = () => {
-        Axios.post(endpointSetProperties,
-            {
-                userid: global.sessionUserId,
-                sport: selections.sport,
-                feesten: selections.party,
-                roken: selections.smoking,
-                alcohol: selections.alcohol,
-                stemmen: selections.politics,
-                werken: selections.work,
-                kinderen: selections.kids,
-                kinderwens: selections.kidWish,
-                eten: selections.food
 
-            })
+        let toSend = {
+            userid: global.sessionUserId,
+            sport: _userProperties.current.sport,
+            feesten: _userProperties.current.party,
+            roken: _userProperties.current.smoking,
+            alcohol: _userProperties.current.alcohol,
+            stemmen: _userProperties.current.politics,
+            werken: _userProperties.current.work,
+            kinderen: _userProperties.current.kids,
+            kinderwens: _userProperties.current.kidWish,
+            eten: _userProperties.current.food
+        }
+
+        console.log(toSend);
+
+        Axios.post(endpointSetProperties, toSend
+        )
             .then((res) => {
                 console.log('success', res);
             })
@@ -64,7 +114,6 @@ const UserProps = ({ navigation }) => {
                 console.log('error', err);
             })
 
-        global.registData.userProperties = selections;
         console.log('saved data: ', global.registData);
     }
 
@@ -76,89 +125,7 @@ const UserProps = ({ navigation }) => {
                 <Text style={[s.header, gs.mainHeader]}>Eigenschappen</Text>
                 <Text style={[s.summary]}>Hoe meer informatie je invult, hoe groter de kans op een match. Je potentiele matchen kunnen hier op filteren.</Text>
 
-                <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Sport je?</Text>
-                    <UserPropsRadioButton btnText={[
-                        "Ja",
-                        "Af en toe",
-                        "Nee"
-                    ]} selectKey={'sport'} value={global.registData.userProperties.sport} getSelections={getSelections} />
-                </View>
-
-
-                <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Feest je?</Text>
-                    <UserPropsRadioButton btnText={[
-                        "Ja",
-                        "Af en toe",
-                        "Nee"
-                    ]} selectKey={'party'} value={global.registData.userProperties.party} getSelections={getSelections} />
-                </View>
-
-
-                <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Rook je?</Text>
-                    <UserPropsRadioButton btnText={[
-                        "Ja",
-                        "Af en toe",
-                        "Nee"
-                    ]} selectKey={'smoking'} value={global.registData.userProperties.smoking} getSelections={getSelections} />
-                </View>
-
-
-                <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Drink je alcohol?</Text>
-                    <UserPropsRadioButton btnText={[
-                        "Ja",
-                        "Af en toe",
-                        "Nee"
-                    ]} selectKey={'alcohol'} value={global.registData.userProperties.alcohol} getSelections={getSelections} />
-                </View>
-
-                <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Wat stem je?</Text>
-                    <UserPropsRadioButton btnText={[
-                        "Links",
-                        "Midden",
-                        "Rechts",
-                        "Niet"
-                    ]} selectKey={'politics'} value={global.registData.userProperties.politics} getSelections={getSelections} />
-                </View>
-
-                <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Hoe veel uur per week werk je?</Text>
-                    <UserPropsRadioButton btnText={[
-                        "< 40 uur",
-                        "40 uur",
-                        "> 40 uur"
-                    ]} selectKey={'work'} value={global.registData.userProperties.work} getSelections={getSelections} />
-                </View>
-
-                <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Eet je gezond?</Text>
-                    <UserPropsRadioButton btnText={[
-                        "Ja",
-                        "Af en toe",
-                        "Nee"
-                    ]} selectKey={'food'} value={global.registData.userProperties.food} getSelections={getSelections} />
-                </View>
-
-                <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>Heb je kinderen?</Text>
-                    <UserPropsRadioButton btnText={[
-                        "Ja",
-                        "Nee"
-                    ]} selectKey={'kids'} value={global.registData.userProperties.kids} getSelections={getSelections} />
-                </View>
-
-                <View style={[s.questionContainer]}>
-                    <Text style={[s.questionHeader]}>wil je kinderen?</Text>
-                    <UserPropsRadioButton btnText={[
-                        "Ja",
-                        "Mischien",
-                        "Nee"
-                    ]} selectKey={'kidWish'} value={global.registData.userProperties.kidWish} getSelections={getSelections} />
-                </View>
+                {renderUserPropsSelections}
 
                 <View style={[s.questionContainer]}>
                     <View style={gs.bottom}>
@@ -181,10 +148,10 @@ const s = StyleSheet.create({
         borderTopWidth: 1,
     },
 
-    questionHeader: {
-        fontSize: 20,
-        marginBottom: 10,
-    },
+    // questionHeader: {
+    //     fontSize: 20,
+    //     marginBottom: 10,
+    // },
 
     summary: {
         color: up4meColours.textGray,
