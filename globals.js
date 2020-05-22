@@ -32,7 +32,7 @@ export const mx = 20;
 
 //pls dont forget to change this to your local machine's ipv4 address if you wish to test
 //ok boss
-export const serverUrl = `192.168.43.158:50000`
+export const serverUrl = `192.168.1.239:50000`
 export const apiUrl = `http://${serverUrl}/api/v1`;
 
 export const MapsApiRootUrl = 'https://maps.googleapis.com/maps/api/staticmap?';
