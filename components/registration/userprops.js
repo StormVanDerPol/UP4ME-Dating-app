@@ -77,7 +77,7 @@ const UserProps = () => {
 
             setRenderUserPropsSelections(
                 <>
-                    <Text>I need to nut</Text>
+                    {/* <Text>I need to nut</Text> */}
                     <UserPropsSelections initSelections={_userProperties.current} getSelections={getSelections} />
                 </>
             )
