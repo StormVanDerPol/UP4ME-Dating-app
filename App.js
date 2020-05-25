@@ -42,6 +42,7 @@ import { debugMode } from './debugmode';
 
 import { screenTransitions } from './screenTransitions';
 import { navigationRef } from './rootNavigation';
+import overview from './components/dating/overview';
 
 
 
@@ -137,6 +138,7 @@ const App = () => {
           <Stack.Screen name="EditFilters" component={EditFilters} />
           <Stack.Screen name="MatchNoMatch" component={MatchNoMatch} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
+          <Stack.Screen name="Overview" component={overview} />
 
 
         </Stack.Navigator>

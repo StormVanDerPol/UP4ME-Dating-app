@@ -31,7 +31,8 @@ const routes = [
     'MatchNoMatch',
     'MatchScreenInitial',
     'MatchScreen',
-    'EditProfile'
+    'EditProfile',
+    'Overview'
 ]
 
 const debugRouter = ({ navigation }) => {
