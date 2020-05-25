@@ -9,9 +9,49 @@ import LinearGradient from 'react-native-linear-gradient';
 import { rootNavigation } from '../rootNavigation';
 
 const BlepButton = (p) => {
+
+
+
     return (
         <View style={editButtonStyles.editButtonContainer}>
-            <TouchableWithoutFeedback
+
+            {[0, 1].map((val, i) => {
+
+                let button = (i == p.active) ?
+                    (
+                        <LinearGradient colors={[up4meColours.gradPink, up4meColours.gradOrange]} style={[editButtonStyles.editButton]} >
+                            <Text style={[editButtonStyles.editButtonText, editButtonStyles.editButtonText_active]}>
+                                {p.title[i]}
+                            </Text>
+                        </LinearGradient>
+                    )
+                    :
+                    (
+                        <View style={[editButtonStyles.editButton]}>
+                            <Text style={[editButtonStyles.editButtonText, editButtonStyles.editButtonText_inactive]}>
+                                {p.title[i]}
+                            </Text>
+                        </View>
+                    );
+
+                let input = (
+                    <TouchableWithoutFeedback
+                        onPress={() => {
+                            rootNavigation.navigate(p.route[i]);
+                        }}
+
+                    >
+                        {button}
+                    </TouchableWithoutFeedback>
+                );
+
+                console.log('input', input)
+
+                return input;
+
+            })}
+
+            {/* <TouchableWithoutFeedback
                 onPress={() => {
                     if (p.route[0]) {
                         rootNavigation.navigate(p.route[0]);
@@ -39,7 +79,7 @@ const BlepButton = (p) => {
                         {p.title[1]}
                     </Text>
                 </View>
-            </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback> */}
 
         </View>
     )

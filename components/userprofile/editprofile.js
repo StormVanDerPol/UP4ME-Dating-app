@@ -27,57 +27,78 @@ const EditProfile = () => {
 
         console.log(`${endpointGetProfile}${global.sessionUserId}`)
 
-        Axios.get(`${endpointGetProfile}${global.sessionUserId}`)
-            .then((res) => {
+        if (global.sessionUserData.editFetched == false) {
 
-                if (debugMode.networkRequests)
-                    console.log(`%cGET REQUEST FROM: ${endpointGetProfile}${global.sessionUserId}`, 'font-size: 1rem; color: red', res.data);
+            Axios.get(`${endpointGetProfile}${global.sessionUserId}`)
+                .then((res) => {
 
-                _userData.current = {
-                    profileText: res.data.profieltext,
-                    profilePictures: [
-                        res.data.foto1,
-                        res.data.foto2,
-                        res.data.foto3,
-                        res.data.foto4,
-                        res.data.foto5,
-                        res.data.foto6,
-                    ],
+                    if (debugMode.networkRequests)
+                        console.log(`%cGET REQUEST FROM: ${endpointGetProfile}${global.sessionUserId}`, 'font-size: 1rem; color: red', res.data);
 
-                    userProperties: {
-                        sport: res.data.sporten,
-                        party: res.data.feesten,
-                        smoking: res.data.roken,
-                        alcohol: res.data.alcohol,
-                        politics: res.data.stemmen,
-                        work: res.data.uur40,
-                        kids: res.data.kids,
-                        kidWish: res.data.kidwens,
-                        food: res.data.eten,
-                    },
-                };
+                    _userData.current = {
+                        profileText: res.data.profieltext,
+                        profilePictures: [
+                            res.data.foto1,
+                            res.data.foto2,
+                            res.data.foto3,
+                            res.data.foto4,
+                            res.data.foto5,
+                            res.data.foto6,
+                        ],
 
-                _oldData.current = {
-                    profilePictures: [
-                        res.data.foto1,
-                        res.data.foto2,
-                        res.data.foto3,
-                        res.data.foto4,
-                        res.data.foto5,
-                        res.data.foto6,
-                    ],
-                }
+                        userProperties: {
+                            sport: res.data.sporten,
+                            party: res.data.feesten,
+                            smoking: res.data.roken,
+                            alcohol: res.data.alcohol,
+                            politics: res.data.stemmen,
+                            work: res.data.uur40,
+                            kids: res.data.kids,
+                            kidWish: res.data.kidwens,
+                            food: res.data.eten,
+                        },
+                    };
 
-            }, (res) => { console.log('why bro', res) })
-            .catch((err) => {
+                    _oldData.current = {
+                        profilePictures: [
+                            res.data.foto1,
+                            res.data.foto2,
+                            res.data.foto3,
+                            res.data.foto4,
+                            res.data.foto5,
+                            res.data.foto6,
+                        ],
+                    }
 
-            })
-            .finally(() => {
-                setHasFetched(true);
-            })
+                }, (res) => { console.log('why bro', res) })
+                .catch((err) => {
+
+                })
+                .finally(() => {
+                    global.sessionUserData = {
+                        ...global.sessionUserData,
+                        ..._userData.current,
+                        editFetched: true,
+                    }
+
+                    setHasFetched(true);
+                })
+
+        }
+        else {
+            _userData.current = {
+                profilePictures: global.sessionUserData.profilePictures,
+                profileText: global.sessionUserData.profileText,
+                userProperties: global.sessionUserData.userProperties,
+            }
+
+            setHasFetched(true)
+        }
 
         _init.current = true;
     }
+
+
 
     const [toRender, setToRender] = useState(<Text> still loading </Text>);
 
@@ -176,11 +197,10 @@ const EditProfile = () => {
         }
     }
 
-
     return (
         <ScrollView style={gs.body}>
 
-            <BlepButton title={['Bewerken', 'Voorbeeld']} route={[undefined, 'ExampleProfile']} />
+            <BlepButton active={0} title={['Bewerken', 'Voorbeeld']} route={[undefined, 'ExampleProfile']} />
 
             {toRender}
 

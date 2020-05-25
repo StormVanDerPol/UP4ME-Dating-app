@@ -12,4 +12,5 @@ export const debugMode = {
     filterSlider: false,
 
     networkRequests: true,
+    perfomance: true,
 };

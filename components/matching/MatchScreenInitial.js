@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import {
     StyleSheet, Text,
@@ -6,10 +6,15 @@ import {
 
 import { CommonActions } from '@react-navigation/native';
 
-import { endpointGetPotentials } from '../../endpoints';
+import { endpointGetPotentials, endpointGetProfile } from '../../endpoints';
+import { feedProfileData } from './feedProfileData';
+
 import Axios from 'axios';
 
 const MatchScreenInitial = ({ route, navigation }) => {
+
+    const [loadPercent, setLoadPercent] = useState(0);
+    const _requestsDone = useRef(0);
 
     const [init, setInit] = useState(false);
     const retrievePotentialMatches = (userid) => {
@@ -17,9 +22,30 @@ const MatchScreenInitial = ({ route, navigation }) => {
         let matchList = [];
 
         Axios.get(`${endpointGetPotentials}${userid}`)
-            .then((res) => {
+            .then(async (res) => {
                 console.log(`potential Matches for ${userid}`, res.data);
                 matchList = res.data;
+
+                for (match of matchList) {
+
+                    if (global.storedProfiles[match] == null) {
+
+                        await Axios.get(`${endpointGetProfile}${match}`)
+                            .then((matchRes) => {
+
+                                global.storedProfiles[match] = feedProfileData(matchRes.data);
+
+                            })
+                            .catch((err) => {
+                                console.log(err);
+                            })
+                            .finally(() => {
+                                _requestsDone.current++;
+                                setLoadPercent((_requestsDone.current / matchList.length) * 100)
+                            })
+                    }
+                }
+
             })
             .catch((err) => {
                 console.log('Error fetching potential matches', err)
@@ -51,9 +77,14 @@ const MatchScreenInitial = ({ route, navigation }) => {
     }
 
 
+    useEffect(() => {
+        console.log(`%cLoading... ${loadPercent}%`, 'font-size: 3rem; color: red;');
+    }, [loadPercent])
+
     return (
         <>
             <Text>Please wait warmly</Text>
+            <Text>{loadPercent}%</Text>
         </>
     );
 }

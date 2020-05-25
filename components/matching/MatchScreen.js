@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import {
     StyleSheet, View, Text, BackHandler, Dimensions,
@@ -22,149 +22,56 @@ import { debugMode } from '../../debugmode';
 import RNSVG_ruler from '../../res/ui/rnsvg/rnsvg_ruler';
 import RNSVG_paperPlane from '../../res/ui/rnsvg/nav/rnsvg_paperPlane';
 import { updateGPSData } from '../../updategps';
+import { MatchScreenUserProfileStyles } from './MatchScreenUserProfileStyles';
+import { userPropStringSelector } from './MatchScreenUserPropStringSelector';
+import { rootNavigation } from '../../rootNavigation';
+import { feedProfileData } from './feedProfileData';
 
 const MatchScreen = ({ route, navigation }) => {
 
     const [matchList, setMatchList] = useState(route.params.matchList);
     const [PotentialMatchIndex] = useState(route.params.index);
 
-    const [images, setImages] = useState([]);
-    const [name, setName] = useState();
-    const [age, setAge] = useState();
-    const [placeName, setPlaceName] = useState();
-    const [height, setHeight] = useState();
-    const [job, setJob] = useState();
-    const [desc, setDesc] = useState();
-    const [profProps, setProfProps] = useState([]);
-
-    const [dist, setDist] = useState(0);
+    const _userData = useRef({
+        profilePictures: [],
+        userPropertiesDesc: [],
+        dist: 0,
+    })
 
     const [loading, setLoading] = useState(true);
 
     var scrollPosition = route.params.scrollPosition;
 
     const retrieveProfileData = (userid) => {
-        Axios.get(`${endpointGetProfile}${userid}`)
-            .then((res) => {
 
-                console.log(`${endpointGetProfile} response: `, res.data);
+        if (global.storedProfiles[userid] == null) {
 
-                let imagesToCheck = [
-                    res.data.foto1,
-                    res.data.foto2,
-                    res.data.foto3,
-                    res.data.foto4,
-                    res.data.foto5,
-                    res.data.foto6,
-                ];
+            Axios.get(`${endpointGetProfile}${userid}`)
+                .then((res) => {
 
-                for (let image of imagesToCheck) {
+                    _userData.current = feedProfileData(res.data);
 
-                    if (image) {
-                        images.push(image);
+                })
+                .catch((err) => {
+                    console.log('Error', err);
+                })
+                .finally(() => {
+                    global.storedProfiles[userid] = {
+                        ..._userData.current,
                     }
-                }
+                    setLoading(false);
+                })
+        }
+        else {
 
-                setImages([...images]);
-                setName(res.data.naam);
-                setPlaceName(res.data.zoektin);
-                setHeight(res.data.lengte / 100);
-                setJob(res.data.beroep);
-                setDesc(res.data.profieltext);
-                setAge(calcAgeHet(res.data.geboortedatum));
+            _userData.current = {
+                ...global.storedProfiles[userid],
+            }
 
-                setDist(
-                    Math.round(
-                        getDistBetweenCoords(
-                            global.gpsData.lat,
-                            global.gpsData.lon,
-                            res.data.latitude,
-                            res.data.longitude,
-                            'K')
-                    )
-                );
+            console.log(_userData.current);
+            setLoading(false);
 
-                switch (res.data.sporten) {
-                    case 1:
-                        profProps.push('Sport');
-                        break;
-                }
-
-                switch (res.data.party) {
-                    case 1:
-                        profProps.push('Feest');
-                        break;
-                }
-
-                switch (res.data.roken) {
-                    case 1:
-                        profProps.push('Rookt');
-                        break;
-                    case 3:
-                        profProps.push('Rookt niet');
-                        break;
-                }
-
-                switch (res.data.alcohol) {
-                    case 1:
-                        profProps.push('Drinkt alcohol')
-                        break;
-                    case 3:
-                        profProps.push('Drinkt geen alcohol')
-                        break;
-                }
-
-                switch (res.data.stemmen) {
-                    case 1:
-                        profProps.push('Stemt links')
-                        break;
-                    case 2:
-                        profProps.push('Stemt rechts')
-                        break;
-                    case 3:
-                        profProps.push('Stemt rechts')
-                        break;
-                    case 4:
-                        profProps.push('Stemt niet')
-                        break;
-                }
-
-                switch (res.data.uur40) {
-                    case 1:
-                        profProps.push('Werkt minder dan 40 uur p/w')
-                        break;
-                    case 3:
-                        profProps.push('Werkt meer dan 40 uur p/w')
-                        break;
-                }
-
-                switch (res.data.kids) {
-                    case 1:
-                        profProps.push('Heeft kind(eren)');
-                        break;
-                    case 2:
-                        profProps.push('Heeft geen kinderen');
-                        break;
-                }
-
-                switch (res.data.kidwens) {
-                    case 1:
-                        profProps.push('Wil kinderen')
-                        break;
-                    case 3:
-                        profProps.push('Wil geen kinderen');
-                        break;
-                }
-
-                setProfProps([...profProps]);
-
-            })
-            .catch((err) => {
-                console.log('Error', err);
-            })
-            .finally(() => {
-                setLoading(false);
-            })
+        }
     }
 
     const handleMatch = (reply) => {
@@ -262,14 +169,11 @@ const MatchScreen = ({ route, navigation }) => {
                 });
             }
         }
-        else {
-            // navigation.navigate('MatchNoMatch');
-        }
     }
 
-    const [init, setInit] = useState(false);
+    const _init = useRef(false);
 
-    if (!init) {
+    if (!_init.current) {
 
         updateGPSData();
 
@@ -280,13 +184,13 @@ const MatchScreen = ({ route, navigation }) => {
             setLoading(false);
         }
 
-        setInit(true);
+        _init.current = true;
     }
 
     useEffect(() => {
 
         function onPressBackButton() {
-            navigation.navigate('MatchScreenInitial');
+            rootNavigation.navigate('MatchScreenInitial');
         };
 
         const backhandler = BackHandler.addEventListener(
@@ -310,14 +214,14 @@ const MatchScreen = ({ route, navigation }) => {
             if (matchList.length > 0) {
                 return (
                     <>
-                        <View style={[s.container]}>
+                        <View style={[MatchScreenUserProfileStyles.container]}>
                             <SliderBox
                                 sliderBoxHeight={'100%'}
                                 autoplay={false}
                                 dotColor={up4meColours.gradOrange}
                                 paginationBoxVerticalPadding={Dimensions.get('window').height - 160}
                                 resizeMode={'cover'}
-                                images={images}
+                                images={_userData.current.profilePictures}
                                 dotStyle={{
                                     width: 17,
                                     height: 17,
@@ -325,15 +229,15 @@ const MatchScreen = ({ route, navigation }) => {
                                 }}
 
                             />
-                            <View style={s.infoBox}>
-                                <Text style={s.infoBoxHeader}>{name}, {age}</Text>
-                                <View style={s.infoBoxItem}>
-                                    <View style={[s.infoBoxIcon]}><RNSVG_location_profile /></View>
-                                    <Text style={s.infoBoxText}>{placeName}</Text>
+                            <View style={MatchScreenUserProfileStyles.infoBox}>
+                                <Text style={MatchScreenUserProfileStyles.infoBoxHeader}>{_userData.current.name}, {_userData.current.age}</Text>
+                                <View style={MatchScreenUserProfileStyles.infoBoxItem}>
+                                    <View style={[MatchScreenUserProfileStyles.infoBoxIcon]}><RNSVG_location_profile /></View>
+                                    <Text style={MatchScreenUserProfileStyles.infoBoxText}>{_userData.current.placeName}</Text>
                                 </View>
-                                <View style={s.infoBoxItem}>
-                                    <View style={[s.infoBoxIcon]}><RNSVG_occupation /></View>
-                                    <Text style={s.infoBoxText}>{job}</Text>
+                                <View style={MatchScreenUserProfileStyles.infoBoxItem}>
+                                    <View style={[MatchScreenUserProfileStyles.infoBoxIcon]}><RNSVG_occupation /></View>
+                                    <Text style={MatchScreenUserProfileStyles.infoBoxText}>{_userData.current.job}</Text>
                                 </View>
                             </View>
                         </View>
@@ -367,29 +271,29 @@ const MatchScreen = ({ route, navigation }) => {
                                         }
                                     }}>
                                     <View>
-                                        <View style={s.subInfoBoxContainer}>
-                                            <View style={s.subInfoBoxWrapper}>
-                                                <View style={s.subInfoIconWrapper}>
+                                        <View style={MatchScreenUserProfileStyles.subInfoBoxContainer}>
+                                            <View style={MatchScreenUserProfileStyles.subInfoBoxWrapper}>
+                                                <View style={MatchScreenUserProfileStyles.subInfoIconWrapper}>
                                                     <RNSVG_ruler />
                                                 </View>
-                                                <Text>{height}m</Text>
+                                                <Text>{_userData.current.height}m</Text>
                                             </View>
-                                            <View style={s.subInfoBoxWrapper}>
-                                                <View style={s.subInfoIconWrapper}>
+                                            <View style={MatchScreenUserProfileStyles.subInfoBoxWrapper}>
+                                                <View style={MatchScreenUserProfileStyles.subInfoIconWrapper}>
                                                     <RNSVG_paperPlane />
                                                 </View>
-                                                <Text>{dist}km</Text>
+                                                <Text>{_userData.current.dist}km</Text>
                                             </View>
                                         </View>
 
                                         <View>
-                                            <Text style={s.description}>{desc}</Text>
-                                            <View style={s.matchProperties}>
+                                            <Text style={MatchScreenUserProfileStyles.description}>{_userData.current.desc}</Text>
+                                            <View style={MatchScreenUserProfileStyles.matchProperties}>
                                                 {
-                                                    profProps.map((prop, i) => {
+                                                    _userData.current.userPropertiesDesc.map((prop, i) => {
                                                         return (
                                                             <View key={i}>
-                                                                <Text style={s.matchProperty}>
+                                                                <Text style={MatchScreenUserProfileStyles.matchProperty}>
                                                                     {prop}
                                                                 </Text>
                                                             </View>
@@ -400,7 +304,7 @@ const MatchScreen = ({ route, navigation }) => {
                                             </View>
                                         </View>
 
-                                        <View style={s.matchDecision}>
+                                        <View style={MatchScreenUserProfileStyles.matchDecision}>
                                             <TouchableWithoutFeedback onPress={() => {
                                                 handleMatch(false);
                                             }}>
@@ -450,84 +354,5 @@ const MatchScreen = ({ route, navigation }) => {
         </>
     );
 }
-
-const s = StyleSheet.create({
-    container: {
-        height: Dimensions.get('window').height - 125,
-    },
-    infoBox: {
-        position: 'absolute',
-        bottom: 20,
-        left: 20
-    },
-
-    infoBoxItem: {
-        alignContent: "center",
-        flexDirection: "row",
-        marginTop: 10
-    },
-
-    infoBoxHeader: {
-        color: 'white',
-        fontSize: 35,
-    },
-    infoBoxText: {
-        fontSize: 18,
-        color: 'white',
-    },
-    subInfoBoxContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginTop: 10,
-        marginBottom: 32
-    },
-
-    subInfoBoxWrapper: {
-        flexDirection: "row",
-        alignItems: "center"
-    },
-
-    subInfoIconWrapper: {
-        width: 17,
-        height: 17,
-        marginHorizontal: 8
-    },
-
-    infoBoxIcon: {
-        width: 24,
-        height: 24,
-        marginRight: 10,
-    },
-
-    description: {
-        fontSize: 16,
-        alignItems: 'center',
-        padding: 25,
-        paddingTop: 0,
-    },
-    matchProperties: {
-        justifyContent: 'center',
-        flexDirection: 'row',
-        marginBottom: 25,
-        flexWrap: "wrap",
-        marginHorizontal: 10,
-    },
-    matchProperty: {
-        fontSize: 12,
-        borderWidth: 1,
-        borderColor: 'black',
-        borderRadius: 20,
-        paddingHorizontal: 10,
-        paddingVertical: 10,
-        marginHorizontal: 5,
-        marginVertical: 5,
-    },
-
-    matchDecision: {
-        marginHorizontal: 50,
-        justifyContent: 'space-around',
-        flexDirection: 'row',
-    },
-});
 
 export default MatchScreen;

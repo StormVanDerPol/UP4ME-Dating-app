@@ -15,14 +15,15 @@ import { rootNavigation } from '../../rootNavigation';
 
 import ImageResizer from 'react-native-image-resizer';
 import RNSVG_edit from '../../res/ui/rnsvg/rnsvg_edit';
+import { debugMode } from '../../debugmode';
 
 const UserProfile = () => {
 
     const [userProfileData, setUserProfileData] = useState({});
 
-    const getUserData = () => {
+    const getUserData = async () => {
         Axios.get(`${endpointGetProfile}${global.sessionUserId}`)
-            .then((res) => {
+            .then(async (res) => {
 
                 setUserProfileData({
                     profilePicture: res.data.foto1,
@@ -49,7 +50,7 @@ const UserProfile = () => {
 
         ]);
 
-    function getFakeNotifs() {
+    async function getFakeNotifs() {
 
         const randUserCount = Math.ceil(Math.random() * 9);
 
@@ -60,6 +61,9 @@ const UserProfile = () => {
 
             Axios.get(`${endpointGetProfile}${randUser}`)
                 .then(async (res) => {
+
+                    if (debugMode.perfomance)
+                        console.log('Resize image start...', performance.now());
 
                     await ImageResizer.createResizedImage(res.data.foto1, 50, 50, 'JPEG', 100)
                         .then((IRres) => {
@@ -72,7 +76,11 @@ const UserProfile = () => {
                                 });
                         })
                         .catch((err) => {
-                            dconsole.log(err);
+                            console.log(err);
+                        })
+                        .finally(() => {
+                            if (debugMode.perfomance)
+                                console.log('Resize image end...', performance.now());
                         })
                 })
                 .catch((err) => {
