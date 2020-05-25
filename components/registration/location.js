@@ -59,19 +59,6 @@ const Location = () => {
             console.log('saved data: ', global.registData);
     }
 
-    Axios.get(`${MapsApiRootUrl}center=${placeName}&scale=2&zoom=${zoom}&size=${mapWidth}x${mapHeight}&maptype=${mapType}&key=${GOOGLE_MAPS_API_KEY}`)
-        .then((res) => {
-
-            console.log(res);
-        })
-        .catch((pp) => {
-            console.log(`${MapsApiRootUrl}center=${placeName}&scale=2&zoom=${zoom}&size=${mapWidth}x${mapHeight}&maptype=${mapType}&key=${GOOGLE_MAPS_API_KEY}`);
-            console.log(pp);
-        })
-        .finally(() => {
-
-        })
-
     return (
         <ScrollView>
             <View style={gs.screenWrapper}>

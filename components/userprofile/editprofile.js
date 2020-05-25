@@ -1,16 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 import {
-    StyleSheet, View, Text, Alert,
+    StyleSheet, Text,
 } from 'react-native';
-import { TouchableWithoutFeedback, ScrollView } from 'react-native-gesture-handler';
-import { up4meColours, deviceWidth, mx, gs } from '../../globals';
-import LinearGradient from 'react-native-linear-gradient';
+import { ScrollView } from 'react-native-gesture-handler';
+import { up4meColours, gs } from '../../globals';
 import ProfileTextField from '../registration/profileTextField';
 import ProfilePictureUpload from '../registration/profilePictureUpload';
 import Axios from 'axios';
-import { endpointGetProfile, endpointSetProfile, endpointSetProfileText, endpointSetPhotos } from '../../endpoints';
+import { endpointGetProfile, endpointSetProfileText, endpointSetPhotos } from '../../endpoints';
 import BigButton from '../bigbutton';
+import UserPropsSelections from '../registration/userpropsSelections';
+import { debugMode } from '../../debugmode';
+import BlepButton from '../blepButton';
 
 const EditProfile = () => {
 
@@ -23,12 +25,13 @@ const EditProfile = () => {
 
     if (!_init.current) {
 
-        console.log(`${endpointGetProfile}${global.sessionUserId}`);
+        console.log(`${endpointGetProfile}${global.sessionUserId}`)
 
         Axios.get(`${endpointGetProfile}${global.sessionUserId}`)
             .then((res) => {
 
-                console.log('%cPenis', 'font-size: 2rem; color: red', res.data);
+                if (debugMode.networkRequests)
+                    console.log(`%cGET REQUEST FROM: ${endpointGetProfile}${global.sessionUserId}`, 'font-size: 1rem; color: red', res.data);
 
                 _userData.current = {
                     profileText: res.data.profieltext,
@@ -40,6 +43,18 @@ const EditProfile = () => {
                         res.data.foto5,
                         res.data.foto6,
                     ],
+
+                    userProperties: {
+                        sport: res.data.sporten,
+                        party: res.data.feesten,
+                        smoking: res.data.roken,
+                        alcohol: res.data.alcohol,
+                        politics: res.data.stemmen,
+                        work: res.data.uur40,
+                        kids: res.data.kids,
+                        kidWish: res.data.kidwens,
+                        food: res.data.eten,
+                    },
                 };
 
                 _oldData.current = {
@@ -53,7 +68,7 @@ const EditProfile = () => {
                     ],
                 }
 
-            })
+            }, (res) => { console.log('why bro', res) })
             .catch((err) => {
 
             })
@@ -73,34 +88,52 @@ const EditProfile = () => {
 
             setToRender(
                 <>
-                    <EditProfileButton />
-
                     <Text>Profiel tekst</Text>
                     <ProfileTextField initProfText={_userData.current.profileText} getProfText={getProfText} />
 
                     <Text>Profiel foto's</Text>
                     <ProfilePictureUpload initPics={_userData.current.profilePictures} getPictures={getPictures} checkValid={checkValid} />
+
+                    <Text>Eigenschappen</Text>
+                    <Text style={[s.summary]}>Hoe meer informatie je invult, hoe groter de kans op een match. Je potentiele matchen kunnen hier op filteren.</Text>
+                    <UserPropsSelections initSelections={_userData.current.userProperties} getSelections={getSelections} />
                 </>
             );
         }
     }, [hasFetched]);
 
     const getProfText = (data) => {
-
-        _userData.current = {
-            ..._userData.current,
-            profieltext: data,
-        }
+        _userData.current.profileText = data;
     }
+
+    const _isValid = useRef(false);
 
     const getPictures = (data) => {
         _userData.current.profilePictures = data.pfpArray;
-        // setIsValid(data.isValid);
+
+        compareValid(data.isValid)
     }
 
     const checkValid = (data) => {
-        console.log('isvalid', data)
-        // setIsValid(data)
+        compareValid(data);
+    }
+
+    const compareValid = (isValid) => {
+        let wasValid = _isValid.current;
+
+        console.log('isValid', isValid);
+
+
+        if (wasValid != _isValid.current) {
+            _isValid.current = isValid;
+
+            console.log('changeed isValid value to: ', _isValid.current);
+        }
+    }
+
+
+    const getSelections = (data) => {
+        _userData.current.userProperties = data;
     }
 
     function postData() {
@@ -110,7 +143,7 @@ const EditProfile = () => {
                 userid: global.sessionUserId,
             })
             .catch((err) => {
-                console.log(err);
+                console.log('Network Error', err);
             });
 
 
@@ -123,9 +156,6 @@ const EditProfile = () => {
                 return;
             }
         })
-
-        console.log('must update', mustUpdatePhotos)
-
 
         if (mustUpdatePhotos) {
 
@@ -141,11 +171,8 @@ const EditProfile = () => {
 
             Axios.post(`${endpointSetPhotos}`, profilePicturesPost)
                 .catch((err) => {
-                    console.log(err);
+                    console.log('Network Error', err);
                 });
-        }
-        else {
-            console.log('no update needed');
         }
     }
 
@@ -153,9 +180,11 @@ const EditProfile = () => {
     return (
         <ScrollView style={gs.body}>
 
+            <BlepButton title={['Bewerken', 'Voorbeeld']} route={[undefined, 'ExampleProfile']} />
+
             {toRender}
 
-            <BigButton component="UserProfile" text="opslaan" disabled={false}
+            <BigButton component="UserProfile" text="opslaan" disabled={_isValid.current}
                 callBack={postData}
             />
 
@@ -165,70 +194,10 @@ const EditProfile = () => {
 
 const s = StyleSheet.create({
 
-});
-
-const EditProfileButton = (p) => {
-    return (
-        <View style={editButtonStyles.editButtonContainer}>
-            <TouchableWithoutFeedback
-                onPress={() => {
-
-                }}
-            >
-
-                <LinearGradient colors={[up4meColours.gradPink, up4meColours.gradOrange]} style={[editButtonStyles.editButton]} >
-                    <Text style={[editButtonStyles.editButtonText, editButtonStyles.editButtonText_active]}>
-                        Bewerken
-                    </Text>
-                </LinearGradient>
-
-            </TouchableWithoutFeedback>
-
-            <TouchableWithoutFeedback
-                onPress={() => {
-
-                }}
-            >
-
-                <View style={[editButtonStyles.editButton]}>
-                    <Text style={[editButtonStyles.editButtonText, editButtonStyles.editButtonText_inactive]}>
-                        Voorbeeld
-                    </Text>
-                </View>
-
-            </TouchableWithoutFeedback>
-
-        </View>
-    )
-}
-
-const editButtonStyles = StyleSheet.create({
-
-    editButtonContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        backgroundColor: up4meColours.picGray,
-        borderRadius: 50,
+    summary: {
+        color: up4meColours.textGray,
     },
 
-    editButton: {
-        borderRadius: 50,
-        paddingVertical: 20,
-        width: ((deviceWidth - (mx * 2)) / 2),
-        alignItems: "center",
-    },
-
-    editButtonText: {
-
-    },
-
-    editButtonText_active: {
-        color: "white"
-    },
-
-    editButtonText_inactive: {
-        color: "black"
-    }
 });
 
 export default EditProfile;

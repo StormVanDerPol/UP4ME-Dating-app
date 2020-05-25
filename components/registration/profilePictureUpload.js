@@ -70,7 +70,6 @@ const ProfilePictureUpload = (p) => {
         catch (err) {
             console.log(err);
         }
-
     }
 
     useEffect(() => {
