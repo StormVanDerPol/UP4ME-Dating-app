@@ -10,4 +10,6 @@ export const debugMode = {
     endEditTimer: false,
     confCodeValidation: false,
     filterSlider: false,
+
+    networkRequests: true,
 };

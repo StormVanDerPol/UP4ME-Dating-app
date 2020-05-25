@@ -24,17 +24,23 @@ const ProfilePictureUpload = (p) => {
 
     const handleChoosePhoto = (id) => {
         const opt = {
-
+            quality: 6,
+            noData: true
         };
 
-        ImagePicker.launchImageLibrary(opt, (res) => {
-            console.log('Image URI on device', res.uri);
+        try {
+            ImagePicker.showImagePicker(opt, (res) => {
+                console.log('Image URI on device', res.uri);
 
-            pfpArray[id] = `data:${res.type};base64,${res.data}`;
-            setPfpArray([...pfpArray]);
+                pfpArray[id] = `data:${res.type};base64,${res.data}`;
+                setPfpArray([...pfpArray]);
 
-            console.log('ImagePicker response', res);
-        })
+                console.log('ImagePicker response', res);
+            })
+        }
+        catch (err) {
+            console.log(err);
+        }
     }
 
 
