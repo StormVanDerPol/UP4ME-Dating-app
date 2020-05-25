@@ -1,9 +1,13 @@
 import React, { useState, useRef, useEffect } from "react";
 
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, ImagePickerIOS } from "react-native";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
-import ImagePicker from 'react-native-image-picker';
+// import ImagePicker from 'react-native-image-picker';
+
+import * as ImagePicker from 'expo-image-picker';
+// import Constants from 'expo-constants';
+// import * as permissions from 'expo-permissions';
 
 import { deviceWidth, mx, up4meColours } from "../../globals";
 
@@ -22,20 +26,56 @@ const ProfilePictureUpload = (p) => {
         sendPictures(pfpArray);
     }, [pfpArray])
 
-    const handleChoosePhoto = (id) => {
-        const opt = {
+    const handleChoosePhoto = async (id) => {
+        // const opt = {
 
-        };
+        // };
 
-        ImagePicker.launchImageLibrary(opt, (res) => {
-            console.log('Image URI on device', res.uri);
+        // ImagePicker.launchImageLibrary(opt, (res) => {
+        //     console.log('Image URI on device', res.uri);
 
-            pfpArray[id] = `data:${res.type};base64,${res.data}`;
-            setPfpArray([...pfpArray]);
+        //     pfpArray[id] = `data:${res.type};base64,${res.data}`;
+        //     setPfpArray([...pfpArray]);
 
-            console.log('ImagePicker response', res);
-        })
+        //     console.log('ImagePicker response', res);
+        // })
+
+        try {
+
+            let res = await ImagePicker.launchImageLibraryAsync(
+                {
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    allowsEditing: true,
+                    aspect: [1, 1],
+                    quality: 0.5,
+                    base64: true,
+                }
+            );
+
+            if (!res.cancelled) {
+                console.log('res expo image picker', res);
+
+                let fileExtension = res.uri.substr(res.uri.lastIndexOf('.') + 1);
+
+                if (fileExtension == 'jpg') {
+                    fileExtension = 'jpeg';
+                }
+
+                console.log(fileExtension);
+                pfpArray[id] = `data:${res.type}/${fileExtension};base64,${res.base64}`;
+                setPfpArray([...pfpArray]);
+            }
+
+        }
+        catch (err) {
+            console.log(err);
+        }
+
     }
+
+    useEffect(() => {
+        console.log(pfpArray);
+    }, [pfpArray])
 
 
     const validatePictures = () => {
