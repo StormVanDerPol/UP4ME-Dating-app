@@ -26,6 +26,7 @@ import { MatchScreenUserProfileStyles } from './MatchScreenUserProfileStyles';
 import { userPropStringSelector } from './MatchScreenUserPropStringSelector';
 import { rootNavigation } from '../../rootNavigation';
 import { feedProfileData } from './feedProfileData';
+import { CommonActions } from '@react-navigation/native';
 
 const MatchScreen = ({ route, navigation }) => {
 
@@ -46,6 +47,9 @@ const MatchScreen = ({ route, navigation }) => {
 
         if (global.storedProfiles[userid] == null) {
 
+            if (debugMode.perfomance)
+                console.log(`%cFetching profile ${userid} from %cAPI`, 'font-size: 2rem; color: tomato;', 'font-size: 2rem; color: red');
+
             Axios.get(`${endpointGetProfile}${userid}`)
                 .then((res) => {
 
@@ -63,6 +67,9 @@ const MatchScreen = ({ route, navigation }) => {
                 })
         }
         else {
+
+            if (debugMode.perfomance)
+                console.log(`%cFetching profile ${userid} from %cCACHE`, 'font-size: 2rem; color: tomato;', 'font-size: 2rem; color: blue');
 
             _userData.current = {
                 ...global.storedProfiles[userid],
@@ -162,13 +169,44 @@ const MatchScreen = ({ route, navigation }) => {
                 console.log(` %cNavigating to index: ${PotentialMatchIndex + dir} which is userid: ${matchList[PotentialMatchIndex + dir]}`, 'font-weight: bold');
                 console.log(`%cScrollposition saved: ${scrollPosition}`, 'font-size: 1rem; color: tomato');
 
-                navigation.push('MatchScreen' + animDir, {
-                    matchList: matchList,
-                    index: PotentialMatchIndex + dir,
-                    scrollPosition: scrollPosition,
-                });
+                // navigation.push('MatchScreen' + animDir, {
+                //     matchList: matchList,
+                //     index: PotentialMatchIndex + dir,
+                //     scrollPosition: scrollPosition,
+                // });
+
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 1,
+                        routes: [
+                            {
+                                name: 'MatchScreen' + animDir,
+                                params: {
+                                    matchList: matchList,
+                                    index: PotentialMatchIndex + dir,
+                                    scrollPosition: scrollPosition,
+                                }
+                            },
+                        ]
+                    })
+                );
             }
         }
+    }
+
+
+    const refreshMatchScreen = () => {
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 1,
+                routes: [
+                    {
+                        name: 'MatchScreenInitial',
+                        params: {},
+                    },
+                ]
+            })
+        );
     }
 
     const _init = useRef(false);
@@ -249,7 +287,9 @@ const MatchScreen = ({ route, navigation }) => {
                             onHandlerStateChange={({ nativeEvent }) => {
                                 if (nativeEvent.state === State.ACTIVE) {
                                     console.log('fling up');
-                                    navigation.navigate('MatchScreenInitial');
+
+                                    refreshMatchScreen();
+
                                 }
                             }}
                         >

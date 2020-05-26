@@ -10,8 +10,9 @@ import { endpointGetPotentials, endpointGetProfile } from '../../endpoints';
 import { feedProfileData } from './feedProfileData';
 
 import Axios from 'axios';
+import { rootNavigation } from '../../rootNavigation';
 
-const MatchScreenInitial = ({ route, navigation }) => {
+const MatchScreenInitial = ({ navigation }) => {
 
     const [loadPercent, setLoadPercent] = useState(0);
     const _requestsDone = useRef(0);
@@ -56,7 +57,6 @@ const MatchScreenInitial = ({ route, navigation }) => {
                     CommonActions.reset({
                         index: 1,
                         routes: [
-
                             {
                                 name: 'MatchScreenDefault',
                                 params: {
