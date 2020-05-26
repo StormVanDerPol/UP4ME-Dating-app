@@ -32,12 +32,14 @@ const routes = [
     'MatchScreenInitial',
     'MatchScreen',
     'EditProfile',
-    'Overview'
+    'ExampleProfile',
+    'Overview',
+    
 ]
 
 const debugRouter = ({ navigation }) => {
 
-    const [debugUserID, setDebugUserID] = useState(1);
+    const [debugUserID, setDebugUserID] = useState(38);
 
     return (
         <>

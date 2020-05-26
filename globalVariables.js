@@ -5,6 +5,15 @@ global.gpsData = {
 
 global.sessionUserId = null;
 
+global.sessionUserData = {
+    editFetched: false,
+    exampleFetched: false,
+};
+
+global.storedProfiles = {
+
+}
+
 global.registData = {
     email: null,
     confirmationCode: null,

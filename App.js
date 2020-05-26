@@ -43,6 +43,7 @@ import { debugMode } from './debugmode';
 import { screenTransitions } from './screenTransitions';
 import { navigationRef } from './rootNavigation';
 import overview from './components/dating/overview';
+import ExampleProfile from './components/userprofile/examplepofile';
 
 
 
@@ -139,6 +140,7 @@ const App = () => {
           <Stack.Screen name="MatchNoMatch" component={MatchNoMatch} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
           <Stack.Screen name="Overview" component={overview} />
+          <Stack.Screen name="ExampleProfile" component={ExampleProfile} />
 
 
         </Stack.Navigator>
