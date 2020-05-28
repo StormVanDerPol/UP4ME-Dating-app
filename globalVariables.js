@@ -6,8 +6,7 @@ global.gpsData = {
 global.sessionUserId = null;
 
 global.sessionUserData = {
-    editFetched: false,
-    exampleFetched: false,
+    fetched: false,
 };
 
 global.storedProfiles = {

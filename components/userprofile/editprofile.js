@@ -4,7 +4,7 @@ import {
     StyleSheet, Text,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
-import { up4meColours, gs } from '../../globals';
+import { up4meColours, gs, calcAgeHet } from '../../globals';
 import ProfileTextField from '../registration/profileTextField';
 import ProfilePictureUpload from '../registration/profilePictureUpload';
 import Axios from 'axios';
@@ -13,6 +13,7 @@ import BigButton from '../bigbutton';
 import UserPropsSelections from '../registration/userpropsSelections';
 import { debugMode } from '../../debugmode';
 import BlepButton from '../blepButton';
+import { userPropStringSelector } from '../matching/MatchScreenUserPropStringSelector';
 
 const EditProfile = () => {
 
@@ -27,7 +28,7 @@ const EditProfile = () => {
 
         console.log(`${endpointGetProfile}${global.sessionUserId}`)
 
-        if (global.sessionUserData.editFetched == false) {
+        if (global.sessionUserData.fetched == false) {
 
             Axios.get(`${endpointGetProfile}${global.sessionUserId}`)
                 .then((res) => {
@@ -35,50 +36,61 @@ const EditProfile = () => {
                     if (debugMode.networkRequests)
                         console.log(`%cGET REQUEST FROM: ${endpointGetProfile}${global.sessionUserId}`, 'font-size: 1rem; color: red', res.data);
 
-                    _userData.current = {
-                        profileText: res.data.profieltext,
-                        profilePictures: [
-                            res.data.foto1,
-                            res.data.foto2,
-                            res.data.foto3,
-                            res.data.foto4,
-                            res.data.foto5,
-                            res.data.foto6,
-                        ],
+                    let fetchedData = {};
 
-                        userProperties: {
-                            sport: res.data.sporten,
-                            party: res.data.feesten,
-                            smoking: res.data.roken,
-                            alcohol: res.data.alcohol,
-                            politics: res.data.stemmen,
-                            work: res.data.uur40,
-                            kids: res.data.kids,
-                            kidWish: res.data.kidwens,
-                            food: res.data.eten,
-                        },
+                    let fetchedImages = [
+                        res.data.foto1,
+                        res.data.foto2,
+                        res.data.foto3,
+                        res.data.foto4,
+                        res.data.foto5,
+                        res.data.foto6,
+                    ];
+
+                    let fetchedUserProps = {
+                        sport: res.data.sporten,
+                        party: res.data.feesten,
+                        smoking: res.data.roken,
+                        alcohol: res.data.alcohol,
+                        politics: res.data.stemmen,
+                        work: res.data.uur40,
+                        kids: res.data.kids,
+                        kidWish: res.data.kidwens
                     };
 
-                    _oldData.current = {
-                        profilePictures: [
-                            res.data.foto1,
-                            res.data.foto2,
-                            res.data.foto3,
-                            res.data.foto4,
-                            res.data.foto5,
-                            res.data.foto6,
-                        ],
+                    console.log(userPropStringSelector(fetchedUserProps));
+
+                    fetchedData = {
+                        profilePictures: fetchedImages,
+                        name: res.data.naam,
+                        placeName: res.data.zoektin,
+                        height: res.data.lengte / 100,
+                        job: res.data.beroep,
+                        desc: res.data.profieltext,
+                        age: calcAgeHet(res.data.geboortedatum),
+                        dist: Math.round(
+                            Math.random() * 100
+                        ),
+                        userProperties: fetchedUserProps,
+                        userPropertiesDesc: userPropStringSelector(fetchedUserProps),
                     }
+
+                    _userData.current = { ...fetchedData };
+
+                    _oldData.current = { profilePictures: fetchedData.profilePictures };
+
+                    console.log('WHY ARE YOU GAAAAAAAY', _userData.current);
+                    console.log('Olddata', _oldData.current);
 
                 }, (res) => { console.log('why bro', res) })
                 .catch((err) => {
-
+                    console.log('I want to die', err)
                 })
                 .finally(() => {
                     global.sessionUserData = {
                         ...global.sessionUserData,
                         ..._userData.current,
-                        editFetched: true,
+                        fetched: true,
                     }
 
                     setHasFetched(true);
@@ -90,6 +102,10 @@ const EditProfile = () => {
                 profilePictures: global.sessionUserData.profilePictures,
                 profileText: global.sessionUserData.profileText,
                 userProperties: global.sessionUserData.userProperties,
+            }
+
+            _oldData.current = {
+                profilePictures: global.sessionUserData.profilePictures,
             }
 
             setHasFetched(true)
@@ -158,6 +174,9 @@ const EditProfile = () => {
     }
 
     function postData() {
+
+        console.log('brooooooo', _oldData.current.profilePictures);
+
         Axios.post(`${endpointSetProfileText}`,
             {
                 profiletext: _userData.current.profieltext,

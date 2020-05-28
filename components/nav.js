@@ -98,7 +98,7 @@ const Nav = (p) => {
 
                     <TouchableWithoutFeedback style={[s.navItem]}
                         onPress={() => {
-                            rootNavigation.navigate('Login');
+                            rootNavigation.navigate('Overview');
                         }}
                     >
                         {matchesButton()}
