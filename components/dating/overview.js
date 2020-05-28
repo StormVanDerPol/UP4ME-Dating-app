@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { gs } from '../../globals';
+import { gs, up4meColours } from '../../globals';
 
 import Nav from '../nav';
 
@@ -87,7 +87,7 @@ const Overview = () => {
 function MatchItem(p) {
 
     return (
-        <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1 }} >
+        <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: up4meColours.lineGray }} >
             <View style={[s.container]}>
                 <View style={{ flexDirection: 'row', }}>
                     <Image
@@ -127,7 +127,12 @@ const s = StyleSheet.create({
         // alignSelf: 'flex-end',
         height: 50,
         width: 50,
-    }
+    },
+    underline: {
+        borderBottomWidth: 1,
+        borderBottomColor: up4meColours.lineGray,
+        paddingBottom: 15,
+    },
 
 });
 

@@ -27,7 +27,19 @@ const Agreement = ({ navigation }) => {
                 <View style={[gs.grayTextBox, s.textContainer]}>
                     <View style={s.section}>
                         <Text>Algemene voorwaarden Up4me</Text>
-                        <Text>Versie: 3-3-2020</Text>
+                        <Text>Versie: 26-05–2020</Text>
+                    </View>
+
+                    <View style={s.alinea}>
+                        <Text>Welkom bij Up4me. Deze gebruikersovereenkomst wordt afgesloten tussen u; de consument, en de onderneming: Up4me, onderdeel van UpToDates, Amstel 50-2, 1017 AB Amsterdam, Nederland </Text>
+                    </View>
+
+                    <View style={s.alinea}>
+                        <Text>Door een Up4me account aan te maken, hetzij via een mobiel apparaat, een mobiele applicatie of een computer (gezamenlijk, de ‘Dienstverlening’), gaat u akkoord met (i) deze Gebruiksvoorwaarden, (ii) ons <Text style={[gs.underline, s.bold,]} onPress={() => navigation.navigate('PrivacyPolicy')}>Privacybeleid</Text> en onze <Text style={[gs.underline, s.bold, s.bold2]} onPress={() => navigation.navigate('PrivacyPolicy')}>Veiligheidsrichtlijnen</Text>, waarvan elk door verwijzing is opgenomen in deze Overeenkomst, en (iii) enige voorwaarden bekendgemaakt aan en overeengekomen met u als u aanvullende functies, producten of diensten aanschaft die wij bieden op de Dienst verlening (gezamenlijk deze ‘Overeenkomst’). Indien u de voorwaarden van deze Overeenkomst niet accepteert en er niet mee akkoord gaat door de voorwaarden van deze Overeenkomst gebonden te zijn, dient u de Dienstverlening niet te gebruiken.</Text>
+                    </View>
+
+                    <View style={s.section}>
+                        <Text>Wij kunnen van tijd tot tijd wijzigingen aanbrengen aan deze Overeenkomst en de Dienstverlening. We kunnen dit doen om diverse redenen, onder andere om wijzigingen in of vereisten van de wet, nieuwe functies of wijzigingen in bedrijfspraktijken te weerspiegelen. De meest recente versie van deze Overeenkomst zal op de app worden geplaatst onder Instellingen en ook op www.uptodates.nl, en u dient regelmatig de meest recente versie te raadplegen. De meest recente versie is de versie die geldt. Indien de wijzigingen wezenlijke veranderingen zijn die van invloed zijn op uw rechten en verplichtingen, zullen wij u via redelijke middelen van tevoren in kennis stellen van de wijzigingen, waaronder een kennisgeving via de App of via e-mail. Indien u gebruik blijft maken van de Dienstverlening nadat de wijzigingen in werking zijn getreden, gaat u akkoord met de herziene Overeenkomst.</Text>
                     </View>
 
 
@@ -37,13 +49,13 @@ const Agreement = ({ navigation }) => {
                         <Text>In deze voorwaarden wordt verstaan onder:</Text>
                         <FlatList
                             data={[
-                                { key: '1.  Up4me: de ondernemer die de in artikel 2.1 omschreven dienstverlening aanbiedt.' },
+                                { key: '1.  Up4me, we, ons, het bedrijf: de onderneming die de in artikel 2.1 omschreven dienstverlening aanbiedt.' },
                                 { key: '2.  Consument: de natuurlijke persoon die niet handelt in de uitoefening van een beroep of bedrijf en een overeenkomst voor een betaald of onbetaald Lidmaatschap aangaat met Up4me.' },
-                                { key: '3.  Deelnemers: de andere Consumenten die een overeenkomst hebben gesloten met Up4me.' },
+                                { key: '3.  Gebruikers: de andere Consumenten die een overeenkomst hebben gesloten met Up4me.' },
                                 { key: '4.  App: het online smartphone platform waar de in artikel 2.1 omschreven dienstverlening plaatsvindt.' },
-                                { key: '5.  Lidmaatschap: de overeenkomst tussen Up4me en een Consument die strekt tot het afnemen van de in artikel 2.1 omschreven dienstverlening, al dan niet tegen betaling van Lidmaatschapsgeld.' },
+                                { key: '5.  Lidmaatschap: de overeenkomst tussen Up4me en een Consument die strekt tot het afnemen van de in artikel 2.1 omschreven dienstverlening, al dan niet tegen betaling van Lidmaatschapsgeld' },
                                 { key: '6.  Privacybeleid: het beleid van Up4me met betrekking tot de verwerking van persoonsgegevens.' },
-                                { key: '7.  Content: het geplaatse meteriaal in de App door een Consument, zoals foto’s, interesses en profielbeschrijving.' },
+                                { key: '7.  Content: het geplaatste materiaal in de App door een Consument, zoals foto’s, interesses en profielbeschrijving' },
                             ]}
                             renderItem={({ item }) => <Text style={s.items}>{item.key}</Text>}
                         />
@@ -54,16 +66,16 @@ const Agreement = ({ navigation }) => {
                     <View style={s.section}>
                         <FlatList
                             data={[
-                                { key: '1.   De dienstverlening van Up4me bestaat uit het bieden van een online mogelijkheid om met andere Deelnemers, met (zelfgekozen) interesses en eigenschappen, op een date te gaan.' },
+                                { key: '1.   De dienstverlening van Up4me bestaat uit het bieden van een online mogelijkheid (mobiele applicatie) om met andere Gebruikers, met (zelfgekozen) overeenkomstige interesses en eigenschappen, op een date te gaan' },
                                 { key: '2.   Up4me geeft geen garantie op succes of op een relatie.' },
                                 { key: '3.   Up4me is transparant over de dienstverlening die ze aanbiedt. Ze geeft vóór het aangaan van het Lidmaatschap duidelijke voorlichting over de tarieven, de automatische verlenging van het lidmaatschap, de voorwaarden en de mogelijkheden van de App zodat de Consument een goede inschatting kan maken van het aanbod.' },
                                 { key: '4.   Om de doelgroep af te bakenen en de kans op succes, een date of een match te vergroten, stelt Up4me de volgende eisen aan Consumenten die van de dienstverlening gebruik willen maken:' },
                                 { key: '5.   Minimale leeftijd 18 jaar.' },
                                 { key: '6.   Nederlandssprekend en/of woonachtig in Nederland.' },
-                                { key: '7.   De mogelijkheid tot het matchen en/of op date gaan met Deelnemers kan aan voorwaarden zijn gebonden, bijvoorbeeld de voorwaarde van het afnemen van een betaald Lidmaatschap.' },
+                                { key: '7.   De mogelijkheid tot het matchen en/of op date gaan met Gebruikers kan aan voorwaarden zijn gebonden, bijvoorbeeld de voorwaarde van het afnemen van een betaald Lidmaatschap.' },
                                 { key: '8.   Indien de dienstverlening plaatsvindt tegen betaling van Lidmaatschapsgeld, is dit gebaseerd op een vast bedrag voor een bepaalde periode of op een bedrag per handeling of een combinatie hiervan. Up4me geeft hierover heldere informatie op haar App vóór het aangaan van het Lidmaatschap.' },
-                                { key: '9.   Up4me kan niet instaan voor de juistheid en volledigheid van de informatie zoals beschikbaar gesteld door de Deelnemers. Deelnemers zijn zelf verantwoordelijk voor de informatie die ze via de App beschikbaar stellen.' },
-                                { key: '10.   Up4me is niet verantwoordelijk voor de gedragingen van Deelnemers tijdens bijvoorbeeld een persoonlijke afspraak in aansluiting op het matchen via de App.' },
+                                { key: '9.   Up4me kan niet instaan voor de juistheid en volledigheid van de informatie zoals beschikbaar gesteld door de Gebruikers. Gebruikers zijn zelf verantwoordelijk voor de informatie die ze via de App beschikbaar stellen.' },
+                                { key: '10.   Up4me is niet verantwoordelijk voor de gedragingen van Gebruikers tijdens bijvoorbeeld een persoonlijke afspraak in aansluiting op het matchen via de App.' },
                                 { key: '11.   Up4me spant zich in om de dienstverlening aan Consumenten zonder storingen te laten verlopen. Up4me kan niet instaan voor continue beschikbaarheid van de diensten.' },
                                 { key: '12.   Als er onderhoud aan de App wordt verricht, dan zal Up4me dit zoveel mogelijk vooraf aankondigen en de overlast hiervan zoveel mogelijk beperken.' },
                             ]}
@@ -99,12 +111,13 @@ const Agreement = ({ navigation }) => {
                     </View>
 
                     <View style={s.section}>
-                        <Text style={s.section}>ARTIKEL 4 - Klachten over Deelnemers en Content</Text>
+                        <Text style={s.section}>ARTIKEL 4 - Klachten over Gebruikers en Content</Text>
 
                         <FlatList
                             data={[
-                                { key: '1.  Een Deelnemer heeft de mogelijkheid om Content of een andere Deelnemer te rapporteren als zijnde ongepast. Indien de gerapporteerde gegevens in strijd zijn met de in in artikel 3 genoemde voorwaarden zal Up4me binnen 24 uur het materiaal verwijderen.' },
-                                { key: '2.  Als Up4me een klacht ontvangt over een Deelnemer of Content, zoals het niet komen opdagen bij een date, onderzoekt zij deze klacht en neemt zij zonodig gepaste maatregelen. Up4me spant zich in om profielen van Consumenten die onwaarheden bevatten, misleidend zijn of waarvan anderszins duidelijk is dat ze schade of hinder kunnen toebrengen aan andere Deelnemers te 		verwijderen, aan te passen of te blokkeren.' },
+                                { key: '1.  Een Deelnemer heeft de mogelijkheid om Content of een andere Deelnemer te rapporteren als zijnde ongepast. Indien de gerapporteerde gegevens in strijd zijn met de in in artikel 3 genoemde voorwaarden zal Up4me het materiaal na review verwijderen.' },
+                                { key: '2.  Als Up4me een klacht ontvangt over een Deelnemer of Content, zoals het niet komen opdagen bij een date, onderzoekt zij deze klacht en neemt zij zonodig gepaste maatregelen. Up4me spant zich in om profielen van Consumenten die onwaarheden bevatten, misleidend zijn of waarvan anderszins duidelijk is dat ze schade of hinder kunnen toebrengen aan andere Gebruikers te verwijderen, aan te passen of te blokkeren.' },
+                                { key: '3.  Up4me geeft geen garantie op het gedrag en/of Content van Gebruikers. U begrijpt dat Up4me geen criminele achtergrondonderzoeken uitvoert op haar Gebruikers of anderszins onderzoek instelt naar de achtergrond.' }
                             ]}
                             renderItem={({ item }) => <Text style={s.items}>{item.key}</Text>}
                         />
@@ -125,15 +138,11 @@ const Agreement = ({ navigation }) => {
 
                     <View style={s.section}>
                         <Text style={s.section}>ARTIKEL 6 - Aansprakelijkheid</Text>
-                        <ListItem symbol={"1."} text={"Je gebruikt onze dienst voor eigen risico. Wij zijn niet aansprakelijk voor schade die je als gevolg van het gebruik van onze dienst mocht lijden."} />
-                    </View>
-
-                    <View style={s.section}>
-                        <Text style={s.section}>ARTIKEL 6 - Aansprakelijkheid</Text>
 
                         <FlatList
                             data={[
-                                { key: '1.  Je gebruikt onze dienst voor eigen risico. Wij zijn niet aansprakelijk voor schade die je als gevolg van het gebruik van onze dienst mocht lijden.' },
+                                { key: '1.  Je gebruikt onze dienst voor eigen risico. Up4me is niet aansprakelijk voor schade die je als gevolg van het gebruik van onze dienst mocht lijden.' },
+                                { key: '2.  Up4me, haar partners, werknemers, licentiegevers of dienstverleners zijn voor zover toegestaan door het toepasselijk recht in geen geval aansprakelijk zijn voor enige indirecte, gevolg exemplaire, incidentele, bijzondere of punitieve schade, zonder beperking, winstderving, hetzij direct opgelopen, of enig verlies van gegevens, gebruik, goodwill of andere materieel verliezen als gevolg van uw toegang tot of gebruik van of onmogelijkheid om toegang te krijgen tot of gebruik te maken van de service van Up4me.' }
 
                             ]}
                             renderItem={({ item }) => <Text style={s.items}>{item.key}</Text>}
@@ -155,8 +164,34 @@ const Agreement = ({ navigation }) => {
                         />
                     </View>
 
-                    <Text style={s.section}>ARTIKEL 8 - Klachtenregeling</Text>
-                    <Text>Up4me streeft ernaar binnen 3 werkdagen inhoudelijk op een ingediende klacht te antwoorden.</Text>
+                    <View style={s.section}>
+
+                        <Text style={s.alinea}>ARTIKEL 8 - Klachtenregeling</Text>
+                        <Text>Up4me streeft ernaar binnen 3 werkdagen inhoudelijk op een ingediende klacht te antwoorden.</Text>
+
+                    </View>
+
+                    <View style={s.section}>
+                        <Text style={s.alinea}>ARTIKEL 9 - Diensten van derden </Text>
+
+                        <FlatList
+                            data={[
+                                { key: 'De App kan advertenties of promoties bevatten die worden aangeboden door derden en links naar andere websites of hulpbronnen. Up4me is niet verantwoordelijk voor de beschikbaarheid (of het gebrek aan beschikbaarheid) van dergelijke externe websites of hulpmiddelen. Indien u ervoor kiest om te communiceren met derden via onze App, zullen de voorwaarden van een dergelijke partij hun relatie met u beheersen. Up4me is niet verantwoordelijk of aansprakelijk voor de voorwaarden of handelingen van dergelijke partijen.' },
+                            ]}
+                            renderItem={({ item }) => <Text s={s.items}>{item.key}</Text>}
+                        />
+                    </View>
+
+                    <View style={s.section}>
+                        <Text style={s.alinea}>ARTIKEL 10 - Vrijwaring </Text>
+
+                        <FlatList
+                            data={[
+                                { key: 'U gaat ermee akkoord om, voor zover toegestaan op grond van het toepasselijke recht, Up4me, onze partners, en hun en onze respectieve functionarissen, bestuurders, vertegenwoordigers en werknemers te vrijwaren en verdedigen tegen en schadeloos te stellen voor enige en alle klachten, eisen, claims, schade, verliezen, kosten, aansprakelijkheden en uitgaven, waaronder advocatenhonoraria, als gevolg van of voortvloeiend uit, of verband houdend met uw toegang tot of gebruik van de Dienstverlening/App, uw Inhoud of uw schending van deze Overeenkomst.' },
+                            ]}
+                            renderItem={({ item }) => <Text s={s.items}>{item.key}</Text>}
+                        />
+                    </View>
 
                 </View>
                 <BigButton component="back" text="akkoord" />
@@ -176,10 +211,19 @@ const s = StyleSheet.create({
     section: {
         marginBottom: 25
     },
+    alinea: {
+        marginBottom: 15
+    },
 
     listContainer: {
         flex: 1,
         paddingTop: 10
+    },
+    bold: {
+        fontWeight: "bold"
+    },
+    bold2: {
+        color: 'red',
     },
 
     item: {

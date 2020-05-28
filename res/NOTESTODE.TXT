@@ -1,0 +1,13 @@
+1. verivication code [spatie ertussen? kijk invision]
+2. locate scherm stylen, [achtergrond, icoon vergrootglas, balk in het midden met text]
+3. fotostoevoegen [2 icoons op de ding]
+4. matching screen [ruth wants maby, voordat je op de foto's scrolled dat je eerst op het profiel tap, maby foto's full screen?(look at tinder?)]
+5. delte refresh
+6. report button
+7. oops screen to do
+8. i need to nut needs to go
+9. profiel bewerken stylen + voorbeeld
+10. let op nog niet opgeslagen
+11. woonplaats veranderen ? [locatie verandern]
+12. Mijn locatie moet regel bij met mijn woonplaats
+13. overview [naar recht icon]
