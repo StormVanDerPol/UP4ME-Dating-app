@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { gs } from '../../globals';
 
 import Nav from '../nav';
@@ -10,9 +10,66 @@ import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
 import RNSVG_ruler from '../../res/ui/rnsvg/rnsvg_ruler';
 import BlepButton from '../blepButton';
+import Axios from 'axios';
+import { debugMode } from '../../debugmode';
+import { endpointGetProfile, endpointGetMatches } from '../../endpoints';
 
 
 const Overview = () => {
+
+    const [loaded, setLoaded] = useState(false);
+    const _init = useRef(false);
+
+    const _matches = useRef([]);
+
+    if (!_init.current) {
+
+        Axios.get(`${endpointGetMatches}${global.sessionUserId}`)
+            .then((res) => {
+
+                if (debugMode.networkRequests)
+                    console.log('Matches', res.data);
+
+
+                _matches.current = res.data;
+
+            })
+            .catch((err) => {
+
+                if (debugMode.networkRequests)
+                    console.log('Error getting matches', err);
+
+            })
+            .finally(() => {
+                setLoaded(true);
+            })
+
+        _init.current = true;
+    }
+
+    const [renderMatchItems, setMatchItemsToRender] = useState(<Text>I'm loading u piece of trash</Text>);
+
+    useEffect(() => {
+        if (loaded) {
+
+            if (_matches.current) {
+
+                setMatchItemsToRender(
+                    _matches.current.map((match, i) => {
+                        return (
+                            <MatchItem name={match.naam} age={match.leeftijd} city={match.woonplaats} key={i} />
+                        )
+                    })
+                )
+            }
+            else {
+                setMatchItemsToRender(
+                    <Text>Honk honk no matches motherfucker</Text>
+                )
+            }
+        }
+    }, [loaded])
+
     return (
 
         <ScrollView style={[gs.body]}>
@@ -21,11 +78,7 @@ const Overview = () => {
 
             <BlepButton active={0} title={['Matches', 'Dates']} route={[undefined, 'DatesOverview']} />
 
-
-            <MatchItem name={'Roeland'} age={'72'} city={'Berlin'} />
-            <MatchItem name={'My neck'} age={'10'} city={'Berlin'} />
-            <MatchItem name={'My pussy'} age={'43'} city={'Berlin'} />
-            <MatchItem name={'My crack'} age={'49'} city={'Berlin'} />
+            {renderMatchItems}
 
         </ScrollView >
     );
@@ -47,7 +100,6 @@ function MatchItem(p) {
                         <Text>{p.city}</Text>
                     </View>
                 </View>
-
 
                 <View style={s.imgEnd}>
                     <RNSVG_ruler />

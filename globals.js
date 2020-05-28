@@ -59,6 +59,75 @@ export const getDistBetweenCoords = (lat1, lon1, lat2, lon2, unit) => {
     }
 }
 
+export const toNonRetardDate = (bdateApi) => {
+
+    let bdateApiStr = bdateApi + '';
+
+    let bdate = {
+        year: bdateApiStr.substring(0, 4),
+        month: Math.min(bdateApiStr.substring(4, 6), 12) + '',
+        day: Math.min(bdateApiStr.substring(6), 31) + '',
+    }
+
+    if (bdate.month.length == 1) {
+        bdate.month = '0' + bdate.month;
+    }
+
+
+    if (bdate.day.length == 1) {
+        bdate.day = '0' + bdate.day;
+    }
+
+    return bdate;
+
+}
+
+export function toNonRetardTime(retardTime) {
+
+    let nonRetardTime;
+
+    retardTime = retardTime + '';
+
+    if (retardTime < 1000) {
+        nonRetardTime = '0' + retardTime.substring(0, 1) + ':' + retardTime.substring(1, 3);
+    }
+
+    else {
+        nonRetardTime = retardTime.substring(0, 2) + ':' + retardTime.substring(2, 4);
+    }
+
+    return nonRetardTime;
+}
+
+export const getMonthName = (month) => {
+    switch (month) {
+        case '01':
+            return 'Januari';
+        case '02':
+            return 'Februari';
+        case '03':
+            return 'Maart';
+        case '04':
+            return 'April';
+        case '05':
+            return 'Mei';
+        case '06':
+            return 'Juni';
+        case '07':
+            return 'Juli';
+        case '08':
+            return 'Augustus';
+        case '09':
+            return 'September';
+        case '10':
+            return 'October';
+        case '11':
+            return 'November';
+        case '12':
+            return 'December';
+    }
+}
+
 export const calcAgeHet = (bdateApi) => {
 
     let now = moment();
