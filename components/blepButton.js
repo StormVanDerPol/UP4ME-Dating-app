@@ -92,6 +92,8 @@ const editButtonStyles = StyleSheet.create({
         justifyContent: "space-between",
         backgroundColor: up4meColours.picGray,
         borderRadius: 50,
+        marginVertical: 10,
+        marginHorizontal: 11,
     },
 
     editButton: {

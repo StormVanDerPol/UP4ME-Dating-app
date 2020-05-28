@@ -1,5 +1,5 @@
 import React from 'react';
-import { gs } from '../../globals';
+import { gs, up4meColours } from '../../globals';
 
 import Nav from '../nav';
 
@@ -19,8 +19,9 @@ const Overview = () => {
 
             <Nav currentSection={'Matches'} />
 
-            <BlepButton active={0} title={['Matches', 'Dates']} route={[undefined, 'DatesOverview']} />
-
+            <View style={s.underline}>
+                <BlepButton active={0} title={['Matches', 'Dates']} route={[null, 'DatesOverview']} />
+            </View>
 
             <MatchItem name={'Roeland'} age={'72'} city={'Berlin'} />
             <MatchItem name={'My neck'} age={'10'} city={'Berlin'} />
@@ -34,7 +35,7 @@ const Overview = () => {
 function MatchItem(p) {
 
     return (
-        <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1 }} >
+        <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: up4meColours.lineGray }} >
             <View style={[s.container]}>
                 <View style={{ flexDirection: 'row', }}>
                     <Image
@@ -75,7 +76,12 @@ const s = StyleSheet.create({
         // alignSelf: 'flex-end',
         height: 50,
         width: 50,
-    }
+    },
+    underline: {
+        borderBottomWidth: 1,
+        borderBottomColor: up4meColours.lineGray,
+        paddingBottom: 15,
+    },
 
 });
 
