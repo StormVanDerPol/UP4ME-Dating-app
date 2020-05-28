@@ -30,10 +30,7 @@ const PrivacyPolicy = ({ navigation }) => {
                         <Text>Versie: 3-3-2020</Text>
                     </View>
 
-                    <Text style={s.section}>Up4me, gevestigd aan Amstel 50-2, 1017AB, Amsterdam, Nederland,
-                    is verantwoordelijk voor de verwerking van persoonsgegevens zoals
-                    weergegeven in deze privacyverklaring.
-                        Contactgegevens: www.upforme.nl +31653118231</Text>
+                    <Text style={s.section}>Up4me, onderdeel van UpToDates, gevestigd aan Amstel 50-2, 1017AB, Amsterdam, Nederland, is verantwoordelijk voor de verzameling en verwerking van persoonsgegevens zoals weergegeven in dit privacybeleid. www.upforme.nl +31653118231</Text>
 
                     <Text style={s.section}>Persoonsgegevens die wij verwerken
                     Up4me verwerkt je persoonsgegevens doordat je
