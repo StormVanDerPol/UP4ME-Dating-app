@@ -6,20 +6,28 @@ import Nav from '../nav';
 import {
     StyleSheet, View, Image, Text,
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
-const overview = () => {
+import RNSVG_ruler from '../../res/ui/rnsvg/rnsvg_ruler';
+import BlepButton from '../blepButton';
+
+
+const Overview = () => {
     return (
-        <View style={[gs.body]}>
+
+        <ScrollView style={[gs.body]}>
 
             <Nav currentSection={'Matches'} />
+
+            <BlepButton active={0} title={['Matches', 'Dates']} route={[undefined, 'DatesOverview']} />
+
 
             <MatchItem name={'Roeland'} age={'72'} city={'Berlin'} />
             <MatchItem name={'My neck'} age={'10'} city={'Berlin'} />
             <MatchItem name={'My pussy'} age={'43'} city={'Berlin'} />
             <MatchItem name={'My crack'} age={'49'} city={'Berlin'} />
 
-        </View >
+        </ScrollView >
     );
 }
 
@@ -31,7 +39,7 @@ function MatchItem(p) {
                 <View style={{ flexDirection: 'row', }}>
                     <Image
                         style={[s.img]}
-                        source={{ uri: '../../res/pepe.jpg' }}
+                        source={require('../../res/pepe.jpg')}
                     />
 
                     <View style={{ marginLeft: 10, width: 100 }}>
@@ -42,8 +50,7 @@ function MatchItem(p) {
 
 
                 <View style={s.imgEnd}>
-                    <Image
-                        source={{ source: '../../res/pepe.jpg' }} />
+                    <RNSVG_ruler />
                 </View>
             </View>
         </TouchableOpacity>
@@ -68,9 +75,8 @@ const s = StyleSheet.create({
         // alignSelf: 'flex-end',
         height: 50,
         width: 50,
-        backgroundColor: 'blue',
     }
 
 });
 
-export default overview;
+export default Overview;

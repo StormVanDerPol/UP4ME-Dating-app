@@ -19,6 +19,7 @@ import { debugMode } from '../../debugmode';
 import { userPropStringSelector } from '../matching/MatchScreenUserPropStringSelector';
 import { ScrollView } from 'react-native-gesture-handler';
 import BlepButton from '../blepButton';
+import { getUserData } from './getSessionUserData';
 
 const ExampleProfile = () => {
 
@@ -31,16 +32,14 @@ const ExampleProfile = () => {
 
     if (!_init.current) {
 
-        if (global.sessionUserData.exampleFetched == false) {
+        if (global.sessionUserData.fetched == false) {
 
             Axios.get(
                 `${endpointGetProfile}${global.sessionUserId}`
             )
                 .then((res) => {
 
-                    let fetchedData = {
-                        profilePictures: [],
-                    };
+                    let fetchedData = {};
 
                     let fetchedImages = [
                         res.data.foto1,
@@ -50,13 +49,6 @@ const ExampleProfile = () => {
                         res.data.foto5,
                         res.data.foto6,
                     ];
-
-                    for (let image of fetchedImages) {
-
-                        if (image) {
-                            fetchedData.profilePictures.push(image);
-                        }
-                    };
 
                     let fetchedUserProps = {
                         sport: res.data.sporten,
@@ -72,8 +64,7 @@ const ExampleProfile = () => {
                     console.log(userPropStringSelector(fetchedUserProps));
 
                     fetchedData = {
-                        ...fetchedData,
-
+                        profilePictures: fetchedImages,
                         name: res.data.naam,
                         placeName: res.data.zoektin,
                         height: res.data.lengte / 100,
@@ -83,6 +74,7 @@ const ExampleProfile = () => {
                         dist: Math.round(
                             Math.random() * 100
                         ),
+                        userProperties: fetchedUserProps,
                         userPropertiesDesc: userPropStringSelector(fetchedUserProps),
                     }
 
@@ -100,7 +92,7 @@ const ExampleProfile = () => {
                     global.sessionUserData = {
                         ...global.sessionUserData,
                         ..._userData.current,
-                        exampleFetched: true,
+                        fetched: true,
                     }
 
                     setLoaded(true);

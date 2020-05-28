@@ -31,10 +31,11 @@ import MatchScreen from './components/matching/MatchScreen';
 import MatchScreenInitial from './components/matching/MatchScreenInitial';
 import EditFilters from './components/editFilters/editFilters';
 import EditProfile from './components/userprofile/editprofile';
+import Overview from './components/dating/overview';
+import ExampleProfile from './components/userprofile/examplepofile';
 
 import { reqLocationPermission, updateGPSData } from './updategps';
 import moment from 'moment';
-
 
 //debug
 import debugRouter from './components/debug/debugRouter';
@@ -42,9 +43,7 @@ import { debugMode } from './debugmode';
 
 import { screenTransitions } from './screenTransitions';
 import { navigationRef } from './rootNavigation';
-import overview from './components/dating/overview';
-import ExampleProfile from './components/userprofile/examplepofile';
-
+import DatesOverview from './components/dating/datesOverview';
 
 
 
@@ -139,7 +138,8 @@ const App = () => {
           <Stack.Screen name="EditFilters" component={EditFilters} />
           <Stack.Screen name="MatchNoMatch" component={MatchNoMatch} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
-          <Stack.Screen name="Overview" component={overview} />
+          <Stack.Screen name="Overview" component={Overview} />
+          <Stack.Screen name="DatesOverview" component={DatesOverview} />
           <Stack.Screen name="ExampleProfile" component={ExampleProfile} />
 
 

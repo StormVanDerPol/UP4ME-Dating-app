@@ -8,7 +8,7 @@ import Axios from 'axios';
 
 import Nav from '../nav';
 import { endpointGetProfile } from '../../endpoints';
-import { deviceWidth, up4meColours, gs } from '../../globals';
+import { deviceWidth, up4meColours, gs, calcAgeHet } from '../../globals';
 import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { rootNavigation } from '../../rootNavigation';
@@ -16,26 +16,96 @@ import { rootNavigation } from '../../rootNavigation';
 import ImageResizer from 'react-native-image-resizer';
 import RNSVG_edit from '../../res/ui/rnsvg/rnsvg_edit';
 import { debugMode } from '../../debugmode';
+import { userPropStringSelector } from '../matching/MatchScreenUserPropStringSelector';
 
 const UserProfile = () => {
 
     const [userProfileData, setUserProfileData] = useState({});
 
+    const [loaded, setLoaded] = useState(false);
+
     const getUserData = async () => {
-        Axios.get(`${endpointGetProfile}${global.sessionUserId}`)
-            .then(async (res) => {
 
-                setUserProfileData({
-                    profilePicture: res.data.foto1,
-                });
+        let userData = {};
 
+        if (global.sessionUserData.fetched == false) {
 
-                getFakeNotifs();
+            Axios.get(
+                `${endpointGetProfile}${global.sessionUserId}`
+            )
+                .then((res) => {
 
+                    let fetchedData = {};
+
+                    let fetchedImages = [
+                        res.data.foto1,
+                        res.data.foto2,
+                        res.data.foto3,
+                        res.data.foto4,
+                        res.data.foto5,
+                        res.data.foto6,
+                    ];
+
+                    let fetchedUserProps = {
+                        sport: res.data.sporten,
+                        party: res.data.feesten,
+                        smoking: res.data.roken,
+                        alcohol: res.data.alcohol,
+                        politics: res.data.stemmen,
+                        work: res.data.uur40,
+                        kids: res.data.kids,
+                        kidWish: res.data.kidwens
+                    };
+
+                    fetchedData = {
+                        profilePictures: fetchedImages,
+                        name: res.data.naam,
+                        placeName: res.data.zoektin,
+                        height: res.data.lengte / 100,
+                        job: res.data.beroep,
+                        desc: res.data.profieltext,
+                        age: calcAgeHet(res.data.geboortedatum),
+                        dist: Math.round(
+                            Math.random() * 100
+                        ),
+                        userProperties: fetchedUserProps,
+                        userPropertiesDesc: userPropStringSelector(fetchedUserProps),
+                    }
+
+                    userData = { ...fetchedData };
+
+                    getFakeNotifs();
+                })
+                .catch((err) => {
+                    if (debugMode.networkRequests) {
+                        console.log('Network Error', err)
+                    }
+                })
+                .finally(() => {
+
+                    global.sessionUserData = {
+                        ...global.sessionUserData,
+                        ...userData,
+                        fetched: true,
+                    }
+
+                    setUserProfileData({
+                        profilePicture: userData.profilePictures[0],
+                    });
+
+                    setLoaded(true);
+                })
+        }
+        else {
+
+            setUserProfileData({
+                profilePicture: global.sessionUserData.profilePictures[0],
             })
-            .catch((err) => {
-                console.warn(`${endpointGetProfile}${global.sessionUserId} NETWORK ERROR`, err);
-            })
+
+            getFakeNotifs();
+
+            setLoaded(true);
+        }
     }
 
     const [init, setInit] = useState(false);
@@ -59,13 +129,13 @@ const UserProfile = () => {
             let randUser = Math.round(Math.random() * 100);
             let randType = Math.round(Math.random() * 4);
 
+            if (debugMode.perfomance)
+                console.log('Resize image start...', performance.now());
+
             Axios.get(`${endpointGetProfile}${randUser}`)
                 .then(async (res) => {
 
-                    if (debugMode.perfomance)
-                        console.log('Resize image start...', performance.now());
-
-                    await ImageResizer.createResizedImage(res.data.foto1, 50, 50, 'JPEG', 100)
+                    ImageResizer.createResizedImage(res.data.foto1, 50, 50, 'JPEG', 100)
                         .then((IRres) => {
                             fakeNotifications.push(
                                 {
@@ -91,6 +161,7 @@ const UserProfile = () => {
                 })
         }
     }
+
 
     const notifMessage = (n) => {
         switch (n) {
