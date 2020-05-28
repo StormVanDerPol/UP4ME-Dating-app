@@ -45,8 +45,6 @@ const BlepButton = (p) => {
                     </TouchableWithoutFeedback>
                 );
 
-                console.log('input', input)
-
                 return input;
 
             })}
