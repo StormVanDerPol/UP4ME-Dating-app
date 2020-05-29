@@ -9,6 +9,7 @@ import {
 
 } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import TopButton from '../topButton';
 
 
 const Faq = ({ navigation }) => {
@@ -33,10 +34,7 @@ const Faq = ({ navigation }) => {
     return (
         <View style={gs.body}>
 
-            <TouchableWithoutFeedback style={[s.underb]} onPress={() => navigation.goBack()}>
-                {/* <Icon name='keyboard_arrow_left' /> */}
-                <Text style={[gs.topText]}>FAQ</Text>
-            </TouchableWithoutFeedback>
+            <TopButton header={'FAQ'} route={'UserSettings'} />
 
             <View style={[s.underb]}>
                 <TouchableWithoutFeedback onPress={() => {
