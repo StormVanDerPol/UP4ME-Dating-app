@@ -9,6 +9,12 @@ import { gs } from "../../globals";
 import TopButton from "../topButton";
 import RNSVG_ruler from "../../res/ui/rnsvg/rnsvg_ruler";
 
+import {
+    WheelPicker,
+    TimePicker,
+    DatePicker
+} from "react-native-wheel-picker-android";
+
 function PickRestaurant() {
 
     return (
@@ -24,6 +30,23 @@ function PickRestaurant() {
                 </View>
             </View>
 
+            <WheelPicker
+                data={['niggy', 'ww', 'allah']}
+                onItemSelected={(res) => { }}
+            />
+
+            <DatePicker
+                format24={true}
+                hideAM={true}
+                hideHours={true}
+                hideMinutes={true}
+                onDateSelected={(res) => { }}
+            />
+
+            <TimePicker
+                format24={true}
+                onTimeSelected={(res) => { }}
+            />
 
 
         </ScrollView>
