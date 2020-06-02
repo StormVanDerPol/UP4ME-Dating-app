@@ -4,6 +4,7 @@ import { StyleSheet, View, Text } from "react-native";
 import { rootNavigation } from '../rootNavigation';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import RNSVG_edit from '../res/ui/rnsvg/rnsvg_edit';
+import RNSVG_arrow_back from '../res/ui/rnsvg/rnsvg_arrow_back';
 
 
 function TopButton(p) {
@@ -21,7 +22,7 @@ function TopButton(p) {
 
             <TouchableWithoutFeedback style={[s.topButtonWrapper]} onPress={() => rootNavigation.navigate(p.route)}>
                 <View style={[s.iconWrapper, { top: topBtnHeight / 2 - 10 }]}>
-                    <RNSVG_edit />
+                    <RNSVG_arrow_back />
                 </View>
                 <Text style={[s.topText]}>{p.header}</Text>
             </TouchableWithoutFeedback>

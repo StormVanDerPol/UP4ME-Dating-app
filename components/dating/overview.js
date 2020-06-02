@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { gs, up4meColours } from '../../globals';
+import { gs, up4meColours, calcAgeHet } from '../../globals';
 
 import Nav from '../nav';
 
@@ -8,11 +8,11 @@ import {
 } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
-import RNSVG_ruler from '../../res/ui/rnsvg/rnsvg_ruler';
 import BlepButton from '../blepButton';
 import Axios from 'axios';
 import { debugMode } from '../../debugmode';
-import { endpointGetProfile, endpointGetMatches } from '../../endpoints';
+import { endpointGetMatches } from '../../endpoints';
+import RNSVG_arrow_right from '../../res/ui/rnsvg/rnsvg_arrow_right';
 
 
 const Overview = () => {
@@ -86,6 +86,9 @@ const Overview = () => {
 
 function MatchItem(p) {
 
+
+    const _age = useRef(calcAgeHet(p.age));
+
     return (
         <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: up4meColours.lineGray }} >
             <View style={[s.container]}>
@@ -96,13 +99,13 @@ function MatchItem(p) {
                     />
 
                     <View style={{ marginLeft: 10, width: 100 }}>
-                        <Text>{p.name}, {p.age}</Text>
+                        <Text>{p.name}, {_age.current}</Text>
                         <Text>{p.city}</Text>
                     </View>
                 </View>
 
                 <View style={s.imgEnd}>
-                    <RNSVG_ruler />
+                    <RNSVG_arrow_right />
                 </View>
             </View>
         </TouchableOpacity>
@@ -114,6 +117,7 @@ const s = StyleSheet.create({
         // backgroundColor: 'red',
         flexDirection: 'row',
         justifyContent: 'space-around',
+        alignItems: "center",
         // height: 50,
     },
     img: {
@@ -124,9 +128,8 @@ const s = StyleSheet.create({
 
     },
     imgEnd: {
-        // alignSelf: 'flex-end',
-        height: 50,
-        width: 50,
+        height: 25,
+        width: 25,
     },
     underline: {
         borderBottomWidth: 1,
