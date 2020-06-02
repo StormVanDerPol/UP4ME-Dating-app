@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { TouchableWithoutFeedback, TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import BigButton from '../bigbutton';
+import RNSVG_filter_colour from '../../res/ui/rnsvg/nav/rnsvg_filter_colour';
+import TopButton from '../topButton';
 // import Gender from '../registration/gender';
 // import UserData from '../registration/userdata';
 
@@ -34,10 +36,8 @@ const UserSettings = ({ navigation }) => {
     return (
         <>
             <ScrollView>
-                <TouchableWithoutFeedback style={[s.underb]} onPress={() => navigation.goBack()}>
-                    {/* <Icon name='keyboard_arrow_left' /> */}
-                    <Text style={[gs.topText]}>Instellingen</Text>
-                </TouchableWithoutFeedback>
+
+                <TopButton header={'Instellingen'} route={'UserProfile'} />
 
                 <View style={[s.underb]}>
                     <TouchableWithoutFeedback onPress={() => {
@@ -150,7 +150,6 @@ const s = StyleSheet.create({
         paddingLeft: 25,
         borderBottomWidth: 1,
         borderBottomColor: 'gray',
-
     },
     fonty: {
         fontSize: 20,

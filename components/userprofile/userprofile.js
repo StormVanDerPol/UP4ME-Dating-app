@@ -135,7 +135,7 @@ const UserProfile = () => {
             Axios.get(`${endpointGetProfile}${randUser}`)
                 .then(async (res) => {
 
-                    ImageResizer.createResizedImage(res.data.foto1, 50, 50, 'JPEG', 100)
+                    await ImageResizer.createResizedImage(res.data.foto1, 50, 50, 'JPEG', 100)
                         .then((IRres) => {
                             fakeNotifications.push(
                                 {

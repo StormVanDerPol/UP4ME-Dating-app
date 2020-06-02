@@ -44,6 +44,7 @@ import { debugMode } from './debugmode';
 import { screenTransitions } from './screenTransitions';
 import { navigationRef } from './rootNavigation';
 import DatesOverview from './components/dating/datesOverview';
+import PickRestaurant from './components/dating/pickRestaurant';
 
 
 
@@ -141,6 +142,7 @@ const App = () => {
           <Stack.Screen name="Overview" component={Overview} />
           <Stack.Screen name="DatesOverview" component={DatesOverview} />
           <Stack.Screen name="ExampleProfile" component={ExampleProfile} />
+          <Stack.Screen name="PickRestaurant" component={PickRestaurant} />
 
 
         </Stack.Navigator>
