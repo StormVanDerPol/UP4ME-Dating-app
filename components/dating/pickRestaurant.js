@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 
@@ -20,6 +20,7 @@ import { endpointGetRestaurantList } from '../../endpoints';
 
 function PickRestaurant() {
 
+    const [fu, forceUpdate] = useState(0);
 
     const [currentPlace, setCurrentPlace] = useState();
     const _selectedPlaceID = useRef(0);
@@ -36,6 +37,8 @@ function PickRestaurant() {
     const _restaurantData = useRef({});
     const _places = useRef([]);
     const _placeParts = useRef([]);
+
+    const _imageHeight = useRef(0);
 
     if (!_init.current) {
 
@@ -126,7 +129,6 @@ function PickRestaurant() {
         }
     }
 
-
     function renderPartPicker() {
 
 
@@ -155,9 +157,9 @@ function PickRestaurant() {
 
         console.log('should render part dropdown', (dropdownActive == -1 || dropdownActive == 1 && _placeParts.current[currentPlace][0]));
 
-        console.log('bro what', _placeParts.current[currentPlace]);
+        console.log('bro what', _placeParts.current[currentPlace][0]);
 
-        if (dropdownActive == -1 || dropdownActive == 1 && _placeParts.current[currentPlace]) {
+        if ((dropdownActive == -1 || dropdownActive == 1) && _placeParts.current[currentPlace][0]) {
             return (
                 <TouchableWithoutFeedback
                     style={s.dropdown}
@@ -195,32 +197,57 @@ function PickRestaurant() {
                             <>
                                 {_restaurantData.current[currentPlace][currentPlacePart].map((restaurant, i) => {
                                     return (
-                                        <View style={s.restaurantItem}>
-                                            <Text style={s.restaurantItemName}>{restaurant.name}</Text>
-                                            <Text>{restaurant.address}</Text>
-                                            <Text>{restaurant.postalcode} {currentPlace}</Text>
+                                        <View key={i} style={s.restaurantItem}>
 
-                                            <View style={s.restaurantItemRatingContainer}>
+                                            <View style={s.restaurantItemImageSection}
+                                                onLayout={(e) => {
 
-                                                {[1, 2, 3, 4, 5].map((i) => {
+                                                    if (_imageHeight.current != e.nativeEvent.layout.height) {
+                                                        _imageHeight.current = e.nativeEvent.layout.height;
 
-                                                    if (i <= restaurant.rating) {
-
-                                                        return (
-                                                            <View style={s.restaurantItemStarIconWrapper}>
-                                                                <RNSVG_ruler />
-                                                            </View>
-                                                        );
+                                                        forceUpdate(fu + 1);
                                                     }
-                                                    else {
-                                                        return (
-                                                            <View style={s.restaurantItemStarIconWrapper}>
-                                                                <RNSVG_edit />
-                                                            </View>
-                                                        );
+                                                }}>
+                                                <Image
+                                                    source={
+                                                        {
+                                                            uri: restaurant.image,
+                                                            width: '100%',
+                                                            height: _imageHeight.current,
+                                                        }
                                                     }
-                                                })}
+                                                />
 
+                                            </View>
+
+                                            <View style={s.restaurantItemInfoSection}>
+
+                                                <Text style={s.restaurantItemName}>{restaurant.name}</Text>
+                                                <Text>{restaurant.address}</Text>
+                                                <Text>{restaurant.postalcode} {currentPlace}</Text>
+
+                                                <View style={s.restaurantItemRatingContainer}>
+
+                                                    {[1, 2, 3, 4, 5].map((i) => {
+
+                                                        if (i <= restaurant.rating) {
+
+                                                            return (
+                                                                <View key={i} style={s.restaurantItemStarIconWrapper}>
+                                                                    <RNSVG_ruler />
+                                                                </View>
+                                                            );
+                                                        }
+                                                        else {
+                                                            return (
+                                                                <View key={i} style={s.restaurantItemStarIconWrapper}>
+                                                                    <RNSVG_edit />
+                                                                </View>
+                                                            );
+                                                        }
+                                                    })}
+
+                                                </View>
                                             </View>
 
                                             <View style={s.restaurantItemFavIconWrapper}>
@@ -273,7 +300,9 @@ function PickRestaurant() {
 
                         {renderPartPicker()}
                     </View>
-                    {renderRestaurantItems()}
+                    <View style={s.restaurantItemContainer}>
+                        {renderRestaurantItems()}
+                    </View>
                 </>
             );
         }
@@ -360,19 +389,22 @@ const s = StyleSheet.create({
 
     restaurantItemFavIconWrapper: {
         position: "absolute",
-        right: 20,
-        top: 20,
+        right: 10,
+        top: 10,
         width: 20,
         height: 20,
     },
 
     restaurantItemStarIconWrapper: {
+        marginTop: 25,
         width: 25,
         height: 25,
     },
 
     restaurantItemName: {
-        fontSize: 30,
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 10,
     },
 
     restaurantItem: {
@@ -380,17 +412,29 @@ const s = StyleSheet.create({
         backgroundColor: "white",
         overflow: "hidden",
 
+        flexDirection: "row",
+
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.6,
         shadowRadius: 2,
         elevation: 5,
 
+        marginHorizontal: 25,
+        marginVertical: 12.5,
+    },
+
+    restaurantItemContainer: {
+        marginTop: 12.5,
+    },
+
+    restaurantItemInfoSection: {
         padding: 25,
-        margin: 25,
+        flex: 1,
+    },
 
-        width: 250,
-
+    restaurantItemImageSection: {
+        flex: 1,
     },
 });
 
