@@ -9,6 +9,7 @@ export const endpointRegisterProfile = `${apiUrl}/register/2/`;
 export const endpointGetCriteria = `${apiUrl}/get/criteria/`;
 export const endpointGetMatches = `${apiUrl}/get/matches/`
 export const endpointGetDates = `${apiUrl}/get/dates/`
+export const endpointGetRestaurantList = `${apiUrl}/get/restaurant/list`
 
 //post
 export const endpointSetGPS = `${apiUrl}/set/gps`;
