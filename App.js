@@ -45,6 +45,7 @@ import { screenTransitions } from './screenTransitions';
 import { navigationRef } from './rootNavigation';
 import DatesOverview from './components/dating/datesOverview';
 import PickRestaurant from './components/dating/pickRestaurant';
+import Guidelines from './components/settings/guidelines';
 
 
 
@@ -110,6 +111,7 @@ const App = () => {
           <Stack.Screen name="Agreement" component={Agreement} />
           <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
           <Stack.Screen name="CookiePolicy" component={CookiePolicy} />
+          <Stack.Screen name="Guidelines" component={Guidelines} />
           <Stack.Screen name="UserData" component={UserData} />
           <Stack.Screen name="Location" component={Location} />
           <Stack.Screen name="Gender" component={Gender} />
