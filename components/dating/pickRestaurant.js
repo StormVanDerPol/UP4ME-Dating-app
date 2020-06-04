@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Image } from "react-native";
 
 import { ScrollView, TouchableWithoutFeedback } from "react-native-gesture-handler";
 
@@ -14,65 +14,87 @@ import {
     TimePicker,
     DatePicker
 } from "react-native-wheel-picker-android";
-
-const tempPlaces = [
-    'Amsterdam',
-    'pp'
-]
-
-
-const tempPlaceParts = {
-    Amsterdam: [
-        'West',
-        'Centrum',
-        'Noord',
-        'Zuid',
-        'Oost',
-    ],
-
-    pp: [
-        '1',
-        '2',
-        '3',
-        '4',
-    ]
-}
-
-const tempRestaurantList = {
-    Amsterdam: {
-        West: [
-            {
-                name: 'Abbey',
-                address: 'Admiraal de Ruijterweg 404',
-                postalcode: '1055 ND',
-                rating: 5,
-                favourite: true,
-            },
-
-            {
-                name: "Fred's kitchen",
-                address: 'Kraanspoor 5',
-                postalcode: '1033 SC',
-                rating: 3,
-                favourite: false,
-            }
-        ],
-
-        Noord: [
-
-        ],
-    }
-}
+import RNSVG_edit from '../../res/ui/rnsvg/rnsvg_edit';
+import Axios from 'axios';
+import { endpointGetRestaurantList } from '../../endpoints';
 
 function PickRestaurant() {
 
-    const [currentPlace, setCurrentPlace] = useState(tempPlaces[0]);
+    const [fu, forceUpdate] = useState(0);
+
+    const [currentPlace, setCurrentPlace] = useState();
     const _selectedPlaceID = useRef(0);
 
-    const [currentPlacePart, setCurrentPlacePart] = useState(tempPlaceParts[tempPlaces[0]][0]);
+    const [currentPlacePart, setCurrentPlacePart] = useState();
     const _selectedPlacePartID = useRef(0);
 
     const [dropdownActive, setDropdownActive] = useState(-1);
+
+    const _init = useRef(false);
+
+    const [loaded, setLoaded] = useState(false);
+
+    const _restaurantData = useRef({});
+    const _places = useRef([]);
+    const _placeParts = useRef([]);
+
+    const _imageHeight = useRef(0);
+
+    if (!_init.current) {
+
+        Axios.get(`${endpointGetRestaurantList}`)
+            .then((res) => {
+
+                for (restaurant of res.data) {
+
+
+                    if (!_restaurantData.current[restaurant.stad]) {
+                        _restaurantData.current[restaurant.stad] = {}
+                    }
+
+                    if (!_restaurantData.current[restaurant.stad][restaurant.stadsdeel]) {
+                        _restaurantData.current[restaurant.stad][restaurant.stadsdeel] = [];
+                    }
+
+
+                    _restaurantData.current[restaurant.stad][restaurant.stadsdeel].push(
+                        {
+                            name: restaurant.naam,
+                            address: restaurant.straat + ' ' + restaurant.huisnummer,
+                            postalcode: restaurant.Postcode,
+                            rating: 3,
+                            favourite: true,
+                            image: restaurant.foto1,
+                        }
+                    )
+
+                    if (!_places.current.includes(restaurant.stad)) {
+                        _places.current.push(restaurant.stad)
+
+                        _placeParts.current[restaurant.stad] = [];
+                    }
+
+                    if (!_placeParts.current[restaurant.stad].includes(restaurant.stadsdeel)) {
+                        _placeParts.current[restaurant.stad].push(restaurant.stadsdeel)
+                    }
+
+                }
+            })
+            .catch((err) => {
+                console.log('error getting restaurant', err);
+            })
+            .finally(() => {
+
+                setCurrentPlace(_places.current[0])
+                setCurrentPlacePart(_placeParts.current[_places.current[0]][0]);
+
+                console.log(_placeParts.current, _places.current, _restaurantData.current);
+
+                setLoaded(true);
+            });
+
+        _init.current = true;
+    }
 
     function toggleDropdown(id) {
 
@@ -90,10 +112,10 @@ function PickRestaurant() {
                 <View style={s.pickerContainer} >
                     <WheelPicker
                         selectedItem={_selectedPlaceID.current}
-                        data={tempPlaces}
+                        data={_places.current}
                         onItemSelected={(res) => {
-                            setCurrentPlace(tempPlaces[res]);
-                            setCurrentPlacePart(tempPlaceParts[tempPlaces[res]][0]);
+                            setCurrentPlace(_places.current[res]);
+                            setCurrentPlacePart(_placeParts.current[_places.current[res]][0]);
                             _selectedPlaceID.current = res;
                         }}
                     />
@@ -107,16 +129,17 @@ function PickRestaurant() {
         }
     }
 
-
     function renderPartPicker() {
+
+
         if (dropdownActive == 1) {
             return (
                 <View style={s.pickerContainer} >
                     <WheelPicker
                         selectedItem={_selectedPlacePartID.current}
-                        data={tempPlaceParts[currentPlace]}
+                        data={_placeParts.current[currentPlace]}
                         onItemSelected={(res) => {
-                            setCurrentPlacePart(tempPlaceParts[currentPlace][res])
+                            setCurrentPlacePart(_placeParts.current[currentPlace][res])
                             _selectedPlacePartID.current = res;
                         }}
                     />
@@ -131,7 +154,12 @@ function PickRestaurant() {
     }
 
     function renderPartDropdown() {
-        if (dropdownActive == -1 || dropdownActive == 1) {
+
+        console.log('should render part dropdown', (dropdownActive == -1 || dropdownActive == 1 && _placeParts.current[currentPlace][0]));
+
+        console.log('bro what', _placeParts.current[currentPlace][0]);
+
+        if ((dropdownActive == -1 || dropdownActive == 1) && _placeParts.current[currentPlace][0]) {
             return (
                 <TouchableWithoutFeedback
                     style={s.dropdown}
@@ -155,9 +183,11 @@ function PickRestaurant() {
     function renderRestaurantItems() {
         if (dropdownActive == -1) {
 
-            if (tempRestaurantList[currentPlace]) {
+            if (_restaurantData.current[currentPlace]) {
 
-                let currentList = tempRestaurantList[currentPlace][currentPlacePart];
+                let currentList = _restaurantData.current[currentPlace][currentPlacePart];
+
+                console.log('currentList', currentList);
 
                 if (currentList) {
 
@@ -165,12 +195,64 @@ function PickRestaurant() {
 
                         return (
                             <>
-                                {tempRestaurantList[currentPlace][currentPlacePart].map((restaurant, i) => {
+                                {_restaurantData.current[currentPlace][currentPlacePart].map((restaurant, i) => {
                                     return (
-                                        <View>
-                                            <Text>{restaurant.name}</Text>
-                                            <Text>{restaurant.address}</Text>
-                                            <Text>{restaurant.postalcode} {currentPlace}</Text>
+                                        <View key={i} style={s.restaurantItem}>
+
+                                            <View style={s.restaurantItemImageSection}
+                                                onLayout={(e) => {
+
+                                                    if (_imageHeight.current != e.nativeEvent.layout.height) {
+                                                        _imageHeight.current = e.nativeEvent.layout.height;
+
+                                                        forceUpdate(fu + 1);
+                                                    }
+                                                }}>
+                                                <Image
+                                                    source={
+                                                        {
+                                                            uri: restaurant.image,
+                                                            width: '100%',
+                                                            height: _imageHeight.current,
+                                                        }
+                                                    }
+                                                />
+
+                                            </View>
+
+                                            <View style={s.restaurantItemInfoSection}>
+
+                                                <Text style={s.restaurantItemName}>{restaurant.name}</Text>
+                                                <Text>{restaurant.address}</Text>
+                                                <Text>{restaurant.postalcode} {currentPlace}</Text>
+
+                                                <View style={s.restaurantItemRatingContainer}>
+
+                                                    {[1, 2, 3, 4, 5].map((i) => {
+
+                                                        if (i <= restaurant.rating) {
+
+                                                            return (
+                                                                <View key={i} style={s.restaurantItemStarIconWrapper}>
+                                                                    <RNSVG_ruler />
+                                                                </View>
+                                                            );
+                                                        }
+                                                        else {
+                                                            return (
+                                                                <View key={i} style={s.restaurantItemStarIconWrapper}>
+                                                                    <RNSVG_edit />
+                                                                </View>
+                                                            );
+                                                        }
+                                                    })}
+
+                                                </View>
+                                            </View>
+
+                                            <View style={s.restaurantItemFavIconWrapper}>
+                                                <RNSVG_ruler />
+                                            </View>
 
                                         </View>
                                     )
@@ -195,6 +277,37 @@ function PickRestaurant() {
         }
     }
 
+    function renderContent() {
+        if (loaded) {
+            return (
+                <>
+                    <View style={s.dropdownWrapper}>
+                        <TouchableWithoutFeedback
+                            style={s.dropdown}
+                            onPress={() => {
+                                toggleDropdown(0)
+                            }}>
+                            <Text>{currentPlace}</Text>
+                            <View style={s.dropwdownIconWrapper}>
+                                <RNSVG_ruler />
+                            </View>
+                        </TouchableWithoutFeedback>
+                        {renderPlacePicker()}
+                    </View>
+
+                    <View style={s.dropdownWrapper}>
+                        {renderPartDropdown()}
+
+                        {renderPartPicker()}
+                    </View>
+                    <View style={s.restaurantItemContainer}>
+                        {renderRestaurantItems()}
+                    </View>
+                </>
+            );
+        }
+    }
+
     return (
 
         <ScrollView style={gs.body}>
@@ -208,28 +321,7 @@ function PickRestaurant() {
                 </View>
             </View>
 
-            <View style={s.dropdownWrapper}>
-                <TouchableWithoutFeedback
-                    style={s.dropdown}
-                    onPress={() => {
-                        toggleDropdown(0)
-                    }}>
-                    <Text>{currentPlace}</Text>
-                    <View style={s.dropwdownIconWrapper}>
-                        <RNSVG_ruler />
-                    </View>
-                </TouchableWithoutFeedback>
-
-                {renderPlacePicker()}
-            </View>
-
-            <View style={s.dropdownWrapper}>
-                {renderPartDropdown()}
-
-                {renderPartPicker()}
-            </View>
-
-            {renderRestaurantItems()}
+            {renderContent()}
 
             {/* <View style={s.pickerContainer} >
                 <DatePicker
@@ -288,7 +380,62 @@ const s = StyleSheet.create({
     dropwdownIconWrapper: {
         width: 25,
         height: 25,
-    }
+    },
+
+    restaurantItemRatingContainer: {
+        justifyContent: "space-between",
+        flexDirection: "row",
+    },
+
+    restaurantItemFavIconWrapper: {
+        position: "absolute",
+        right: 10,
+        top: 10,
+        width: 20,
+        height: 20,
+    },
+
+    restaurantItemStarIconWrapper: {
+        marginTop: 25,
+        width: 25,
+        height: 25,
+    },
+
+    restaurantItemName: {
+        fontSize: 20,
+        fontWeight: "bold",
+        marginBottom: 10,
+    },
+
+    restaurantItem: {
+        borderRadius: 25,
+        backgroundColor: "white",
+        overflow: "hidden",
+
+        flexDirection: "row",
+
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.6,
+        shadowRadius: 2,
+        elevation: 5,
+
+        marginHorizontal: 25,
+        marginVertical: 12.5,
+    },
+
+    restaurantItemContainer: {
+        marginTop: 12.5,
+    },
+
+    restaurantItemInfoSection: {
+        padding: 25,
+        flex: 1,
+    },
+
+    restaurantItemImageSection: {
+        flex: 1,
+    },
 });
 
 export default PickRestaurant;
