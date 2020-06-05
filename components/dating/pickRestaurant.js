@@ -17,6 +17,11 @@ import {
 import RNSVG_edit from '../../res/ui/rnsvg/rnsvg_edit';
 import Axios from 'axios';
 import { endpointGetRestaurantList } from '../../endpoints';
+import RNSVG_restaurant_fav_filter from '../../res/ui/rnsvg/rnsvg_restaurant_fav_filter';
+import RNSVG_restaurant_star from '../../res/ui/rnsvg/rnsvg_restaurantStar';
+import RNSVG_restaurant_star_gray from '../../res/ui/rnsvg/rnsvg_restaurantStar_gray';
+import RNSVG_arrow_down from '../../res/ui/rnsvg/rnsvg_arrow_down';
+import RNSVG_restaurant_fav_heart from '../../res/ui/rnsvg/rnsvg_restaurant_fav_heart';
 
 function PickRestaurant() {
 
@@ -33,6 +38,8 @@ function PickRestaurant() {
     const _init = useRef(false);
 
     const [loaded, setLoaded] = useState(false);
+
+    const [filterOnFav, setFilterOnFav] = useState(false);
 
     const _restaurantData = useRef({});
     const _places = useRef([]);
@@ -56,14 +63,17 @@ function PickRestaurant() {
                         _restaurantData.current[restaurant.stad][restaurant.stadsdeel] = [];
                     }
 
+                    let tempFav = (Math.random() > 0.5) ? true : false;
+
+                    let tempRating = (Math.round(Math.random() * 5));
 
                     _restaurantData.current[restaurant.stad][restaurant.stadsdeel].push(
                         {
                             name: restaurant.naam,
                             address: restaurant.straat + ' ' + restaurant.huisnummer,
                             postalcode: restaurant.Postcode,
-                            rating: 3,
-                            favourite: true,
+                            rating: tempRating,
+                            favourite: tempFav,
                             image: restaurant.foto1,
                         }
                     )
@@ -168,7 +178,7 @@ function PickRestaurant() {
                     }}>
                     <Text>{currentPlacePart}</Text>
                     <View style={s.dropwdownIconWrapper}>
-                        <RNSVG_ruler />
+                        <RNSVG_arrow_down />
                     </View>
                 </TouchableWithoutFeedback>
             );
@@ -196,6 +206,21 @@ function PickRestaurant() {
                         return (
                             <>
                                 {_restaurantData.current[currentPlace][currentPlacePart].map((restaurant, i) => {
+
+                                    if (filterOnFav == true && restaurant.favourite == false) {
+                                        return (<></>);
+                                    }
+
+                                    let favIcon = <></>;
+
+                                    if (restaurant.favourite) {
+                                        favIcon = (
+                                            <View style={s.restaurantItemFavIconWrapper}>
+                                                <RNSVG_restaurant_fav_heart />
+                                            </View>
+                                        );
+                                    }
+
                                     return (
                                         <View key={i} style={s.restaurantItem}>
 
@@ -234,14 +259,14 @@ function PickRestaurant() {
 
                                                             return (
                                                                 <View key={i} style={s.restaurantItemStarIconWrapper}>
-                                                                    <RNSVG_ruler />
+                                                                    <RNSVG_restaurant_star />
                                                                 </View>
                                                             );
                                                         }
                                                         else {
                                                             return (
                                                                 <View key={i} style={s.restaurantItemStarIconWrapper}>
-                                                                    <RNSVG_edit />
+                                                                    <RNSVG_restaurant_star_gray />
                                                                 </View>
                                                             );
                                                         }
@@ -250,9 +275,9 @@ function PickRestaurant() {
                                                 </View>
                                             </View>
 
-                                            <View style={s.restaurantItemFavIconWrapper}>
-                                                <RNSVG_ruler />
-                                            </View>
+
+
+                                            {favIcon}
 
                                         </View>
                                     )
@@ -289,7 +314,7 @@ function PickRestaurant() {
                             }}>
                             <Text>{currentPlace}</Text>
                             <View style={s.dropwdownIconWrapper}>
-                                <RNSVG_ruler />
+                                <RNSVG_arrow_down />
                             </View>
                         </TouchableWithoutFeedback>
                         {renderPlacePicker()}
@@ -316,9 +341,14 @@ function PickRestaurant() {
 
             <View style={s.headerContainer} >
                 <Text style={s.header}>Restaurants</Text>
-                <View style={s.headerIconWrapper}>
-                    <RNSVG_ruler />
-                </View>
+                <TouchableWithoutFeedback
+                    style={s.headerIconWrapper}
+                    onPress={() => {
+                        setFilterOnFav((filterOnFav) ? false : true);
+                    }}
+                >
+                    <RNSVG_restaurant_fav_filter />
+                </TouchableWithoutFeedback>
             </View>
 
             {renderContent()}
