@@ -11,6 +11,7 @@ import { TouchableWithoutFeedback, TouchableOpacity, ScrollView } from 'react-na
 import BigButton from '../bigbutton';
 import RNSVG_filter_colour from '../../res/ui/rnsvg/nav/rnsvg_filter_colour';
 import TopButton from '../topButton';
+import { rootNavigation } from '../../rootNavigation';
 // import Gender from '../registration/gender';
 // import UserData from '../registration/userdata';
 
@@ -95,13 +96,7 @@ const UserSettings = ({ navigation }) => {
 
                 <View style={[s.underb]}>
                     <TouchableWithoutFeedback onPress={() => {
-                        changeDropdown(5, (
-                            <>
-                                <Text>bro deze shit is leeg in de prototype wtf</Text>
-
-                            </>
-
-                        ));
+                        rootNavigation.navigate('Guidelines');
                     }}>
                         <Text style={[s.fonty]}>Richtlijnen and veiligheid</Text>
                     </TouchableWithoutFeedback>

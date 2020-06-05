@@ -14,6 +14,7 @@ const routes = [
     'Agreement',
     'PrivacyPolicy',
     'CookiePolicy',
+    'Guidelines',
     'UserData',
     'Location',
     'Gender',
@@ -34,7 +35,7 @@ const routes = [
     'EditProfile',
     'ExampleProfile',
     'Overview',
-    'PickRestaurant'
+    'PickRestaurant',
 ]
 
 const debugRouter = ({ navigation }) => {
