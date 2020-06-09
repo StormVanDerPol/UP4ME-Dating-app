@@ -17,15 +17,17 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import { gs, up4meColours, deviceWidth, mx } from '../../globals';
 
-import { endpointSetCriteria, endpointSetProfile } from '../../endpoints';
+import { endpointSetCriteria, endpointSetProfile, endpointGetCriteria } from '../../endpoints';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import SliderMarker from '../sliderMarker';
 import LinearGradient from 'react-native-linear-gradient';
 import { debugMode } from '../../debugmode';
 import Nav from '../nav';
 import SliderMarkerWhite from '../sliderMarkerWhite';
+import BigButtonRedux from '../bigbuttonRedux';
 
 const Filters = ({ route }) => {
+
+    const [fu, forceUpdate] = useState(0);
 
     const [selections, setSelections] = useState(
         {
@@ -121,8 +123,6 @@ const Filters = ({ route }) => {
         _prefGender.current = data;
     }
 
-    console.log(route);
-
     function displayLogo() {
 
         if (!route.params)
@@ -143,6 +143,54 @@ const Filters = ({ route }) => {
             return <Nav currentSection={'Filter'} />;
         }
     }
+
+    const [loaded, setLoaded] = useState(false);
+
+    const _init = useRef(false);
+
+    if (!_init.current) {
+
+        Axios.get(`${endpointGetCriteria}${global.sessionUserId}`)
+            .then((res) => {
+
+                console.log(res.data[0]);
+
+                setSelections({
+                    prefsport: res.data[0].sport,
+                    prefparty: res.data[0].feesten,
+                    prefsmoking: res.data[0].roken,
+                    prefalcohol: res.data[0].alcohol,
+                    prefpolitics: res.data[0].stemmen,
+                    prefwork: res.data[0].uur40,
+                    prefkids: res.data[0].kids,
+                    prefkidWish: res.data[0].kidwens,
+                    preffood: res.data[0].eten,
+                });
+
+                _sliderData.current = {
+                    ages: [res.data[0].leeftijdmin, res.data[0].leeftijdmax],
+                    heights: [res.data[0].minlengte, res.data[0].maxlengte],
+                    distance: res.data[0].afstand,
+                }
+
+                _prefGender.current = res.data[0].geslacht;
+            })
+            .catch((err) => {
+                if (debugMode.networkRequests)
+                    console.log('Network error getting user criteria', err);
+            })
+            .finally(() => {
+                setLoaded(true);
+            })
+
+        _init.current = true;
+    }
+
+    useEffect(() => {
+
+        forceUpdate(fu + 1);
+
+    }, [loaded])
 
     return (
         <View style={gs.body}>
@@ -252,8 +300,11 @@ const Filters = ({ route }) => {
 
                 <View style={[s.questionContainer, { marginBottom: _navHeight.current }]}>
                     <View style={gs.bottom}>
-                        <BigButton component={"MatchScreenInitial"} text="opslaan"
-                            callBack={postData} />
+                        {/* <BigButton component={"MatchScreenInitial"} text="opslaan"
+                            callBack={postData} /> */}
+
+                        <BigButtonRedux title={'opslaan'} onPress={() => { postData() }} />
+
                     </View>
                 </View>
             </ScrollView>

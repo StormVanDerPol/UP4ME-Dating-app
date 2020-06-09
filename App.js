@@ -46,6 +46,8 @@ import { navigationRef } from './rootNavigation';
 import DatesOverview from './components/dating/datesOverview';
 import PickRestaurant from './components/dating/pickRestaurant';
 import Guidelines from './components/settings/guidelines';
+import Hell from './components/debug/hell';
+import FilterRedux from './components/registration/filterRedux';
 
 
 
@@ -135,6 +137,7 @@ const App = () => {
 
           <Stack.Screen name="MatchScreenInitial" component={MatchScreenInitial} />
           <Stack.Screen name="Filter" component={Filters} />
+          <Stack.Screen name="FilterRedux" component={FilterRedux} />
           <Stack.Screen name="FQA" component={Faq} />
           <Stack.Screen name="NAV" component={Nav} />
           <Stack.Screen name="UserProfile" component={UserProfile} />
@@ -145,6 +148,7 @@ const App = () => {
           <Stack.Screen name="DatesOverview" component={DatesOverview} />
           <Stack.Screen name="ExampleProfile" component={ExampleProfile} />
           <Stack.Screen name="PickRestaurant" component={PickRestaurant} />
+          <Stack.Screen name="Hell" component={Hell} />
 
 
         </Stack.Navigator>

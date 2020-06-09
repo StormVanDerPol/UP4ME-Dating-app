@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 
 import {
-    StyleSheet, View, Text, BackHandler, Dimensions,
+    StyleSheet, View, Text, BackHandler, Dimensions, Image,
 } from 'react-native';
 import Axios from 'axios';
 import { endpointGetProfile, endpointMatchResponses } from '../../endpoints';
-import { calcAgeHet, up4meColours, gs, getDistBetweenCoords } from '../../globals';
+import { calcAgeHet, up4meColours, gs, getDistBetweenCoords, mx } from '../../globals';
 
 import { SliderBox } from 'react-native-image-slider-box';
-import { FlingGestureHandler, TouchableWithoutFeedback, Directions, State, ScrollView } from 'react-native-gesture-handler';
+import { FlingGestureHandler, TouchableWithoutFeedback, Directions, State, ScrollView, TapGestureHandler, TouchableOpacity } from 'react-native-gesture-handler';
 
 import RNSVG_match_yes from '../../res/ui/rnsvg/rnsvg_match_yes';
 import RNSVG_match_no from '../../res/ui/rnsvg/rnsvg_match_no';
@@ -28,7 +28,17 @@ import { rootNavigation } from '../../rootNavigation';
 import { feedProfileData } from './feedProfileData';
 import { CommonActions } from '@react-navigation/native';
 
+import Carousel, { Pagination } from "react-native-snap-carousel";
+
+import FastImage from 'react-native-fast-image';
+import RNSVG_report from '../../res/ui/rnsvg/rnsvg_report';
+
+import ModalUp4me from '../modalup4me';
+import BigButtonRedux, { ButtonTypes } from '../bigbuttonRedux';
+
 const MatchScreen = ({ route, navigation }) => {
+
+    const [fu, forceUpdate] = useState(0);
 
     const [matchList, setMatchList] = useState(route.params.matchList);
     const [PotentialMatchIndex] = useState(route.params.index);
@@ -195,19 +205,19 @@ const MatchScreen = ({ route, navigation }) => {
     }
 
 
-    const refreshMatchScreen = () => {
-        navigation.dispatch(
-            CommonActions.reset({
-                index: 1,
-                routes: [
-                    {
-                        name: 'MatchScreenInitial',
-                        params: {},
-                    },
-                ]
-            })
-        );
-    }
+    // const refreshMatchScreen = () => {
+    //     navigation.dispatch(
+    //         CommonActions.reset({
+    //             index: 1,
+    //             routes: [
+    //                 {
+    //                     name: 'MatchScreenInitial',
+    //                     params: {},
+    //                 },
+    //             ]
+    //         })
+    //     );
+    // }
 
     const _init = useRef(false);
 
@@ -239,6 +249,55 @@ const MatchScreen = ({ route, navigation }) => {
         return () => backhandler.remove();
     }, []);
 
+    const [carouselIndex, setCarouselIndex] = useState(0)
+
+    const _carouselRef = useRef();
+
+    function carouselItem({ item, index }) {
+        return (
+
+            <FastImage
+                key={index}
+                style={{
+                    width: Dimensions.get('window').width,
+                    height: '100%',
+                }}
+                source={{
+                    uri: item,
+                }}
+                width={'100%'}
+                height={'100%'}
+            />
+        )
+    }
+
+    const [reportModalActive, setReportModalActive] = useState(false);
+
+    const [reportModal, setReportModal] = useState(<></>)
+
+    useEffect(() => {
+
+        setReportModal(
+
+            (reportModalActive) ? <ModalUp4me
+
+                duration={300}
+
+                style={{
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    paddingBottom: 50,
+                }}>
+                <BigButtonRedux onPress={() => { }} title={'catfish'} style={{ marginTop: 12 }} />
+                <BigButtonRedux onPress={() => { }} title={"ongepaste foto's"} style={{ marginTop: 12 }} />
+                <BigButtonRedux onPress={() => { }} title={'lijkt op spam'} style={{ marginTop: 12 }} />
+                <BigButtonRedux onPress={() => { setReportModalActive(false) }} title={'annuleren'} style={{ marginTop: 12 }} buttonType={ButtonTypes.cancel} />
+            </ModalUp4me> : <></>
+        )
+
+    }, [reportModalActive])
+
+
     function contentToRender() {
 
         if (loading) {
@@ -252,64 +311,91 @@ const MatchScreen = ({ route, navigation }) => {
             if (matchList.length > 0) {
                 return (
                     <>
-                        <View style={[MatchScreenUserProfileStyles.container]}>
-                            <SliderBox
-                                sliderBoxHeight={'100%'}
-                                autoplay={false}
-                                dotColor={up4meColours.gradOrange}
-                                paginationBoxVerticalPadding={Dimensions.get('window').height - 160}
-                                resizeMode={'cover'}
-                                images={_userData.current.profilePictures}
-                                dotStyle={{
-                                    width: 17,
-                                    height: 17,
-                                    borderRadius: 100,
-                                }}
-
-                            />
-                            <View style={MatchScreenUserProfileStyles.infoBox}>
-                                <Text style={MatchScreenUserProfileStyles.infoBoxHeader}>{_userData.current.name}, {_userData.current.age}</Text>
-                                <View style={MatchScreenUserProfileStyles.infoBoxItem}>
-                                    <View style={[MatchScreenUserProfileStyles.infoBoxIcon]}><RNSVG_location_profile /></View>
-                                    <Text style={MatchScreenUserProfileStyles.infoBoxText}>{_userData.current.placeName}</Text>
-                                </View>
-                                <View style={MatchScreenUserProfileStyles.infoBoxItem}>
-                                    <View style={[MatchScreenUserProfileStyles.infoBoxIcon]}><RNSVG_occupation /></View>
-                                    <Text style={MatchScreenUserProfileStyles.infoBoxText}>{_userData.current.job}</Text>
-                                </View>
-                            </View>
-                        </View>
 
                         <FlingGestureHandler
-                            ref={FlingUpRef}
-                            simultaneousHandlers={scrollViewRef}
-                            direction={Directions.UP}
+                            direction={Directions.RIGHT}
                             onHandlerStateChange={({ nativeEvent }) => {
                                 if (nativeEvent.state === State.ACTIVE) {
-                                    console.log('fling up');
-
-                                    refreshMatchScreen();
-
+                                    console.log('fling right');
+                                    changeMatchScreen('right')
                                 }
-                            }}
-                        >
-
+                            }}>
                             <FlingGestureHandler
-                                direction={Directions.RIGHT}
+                                direction={Directions.LEFT}
                                 onHandlerStateChange={({ nativeEvent }) => {
                                     if (nativeEvent.state === State.ACTIVE) {
-                                        console.log('fling right');
-                                        changeMatchScreen('right')
+                                        console.log('fling left');
+                                        changeMatchScreen('left');
                                     }
                                 }}>
-                                <FlingGestureHandler
-                                    direction={Directions.LEFT}
-                                    onHandlerStateChange={({ nativeEvent }) => {
-                                        if (nativeEvent.state === State.ACTIVE) {
-                                            console.log('fling left');
-                                            changeMatchScreen('left');
-                                        }
-                                    }}>
+
+                                <View>
+                                    <View style={[MatchScreenUserProfileStyles.container]}>
+                                        <Carousel
+                                            data={_userData.current.profilePictures}
+                                            renderItem={carouselItem}
+                                            ref={(c) => { _carouselRef.current = c; }}
+                                            layout={'stack'}
+                                            layoutCardOffset={18}
+                                            sliderWidth={Dimensions.get('window').width}
+                                            itemWidth={Dimensions.get('window').width}
+                                            scrollEnabled={false}
+                                            onSnapToItem={(index) => setCarouselIndex(index)}
+                                            loop={true}
+                                            useScrollView={true}
+                                        />
+                                        <View
+                                            style={{
+                                                position: "absolute",
+                                                left: 0,
+                                                right: 0,
+                                            }}>
+                                            <Pagination
+                                                tappableDots={true}
+                                                inactiveDotOpacity={1}
+                                                dotStyle={PagDotStyles.dot}
+                                                dotColor={'#fff'}
+                                                inactiveDotColor={'#fff'}
+                                                carouselRef={_carouselRef.current}
+                                                dotsLength={_userData.current.profilePictures.length}
+                                                activeDotIndex={carouselIndex}
+                                            />
+                                        </View>
+                                        <View
+                                            onLayout={() => {
+                                                forceUpdate(fu + 1);
+                                            }}
+
+                                            style={{
+                                                position: "absolute",
+                                                right: 20,
+                                                top: 20,
+                                                width: 30,
+                                                height: 30,
+                                                opacity: 0.7,
+                                            }}>
+                                            <TouchableOpacity
+                                                onPress={() => {
+                                                    setReportModalActive(true);
+                                                }}
+                                            >
+                                                <RNSVG_report />
+                                            </TouchableOpacity>
+                                        </View>
+
+                                        <View style={MatchScreenUserProfileStyles.infoBox}>
+                                            <Text style={MatchScreenUserProfileStyles.infoBoxHeader}>{_userData.current.name}, {_userData.current.age}</Text>
+                                            <View style={MatchScreenUserProfileStyles.infoBoxItem}>
+                                                <View style={[MatchScreenUserProfileStyles.infoBoxIcon]}><RNSVG_location_profile /></View>
+                                                <Text style={MatchScreenUserProfileStyles.infoBoxText}>{_userData.current.placeName}</Text>
+                                            </View>
+                                            <View style={MatchScreenUserProfileStyles.infoBoxItem}>
+                                                <View style={[MatchScreenUserProfileStyles.infoBoxIcon]}><RNSVG_occupation /></View>
+                                                <Text style={MatchScreenUserProfileStyles.infoBoxText}>{_userData.current.job}</Text>
+                                            </View>
+                                        </View>
+                                    </View>
+
                                     <View>
                                         <View style={MatchScreenUserProfileStyles.subInfoBoxContainer}>
                                             <View style={MatchScreenUserProfileStyles.subInfoBoxWrapper}>
@@ -358,7 +444,8 @@ const MatchScreen = ({ route, navigation }) => {
                                             </TouchableWithoutFeedback>
                                         </View>
                                     </View>
-                                </FlingGestureHandler>
+
+                                </View>
                             </FlingGestureHandler>
                         </FlingGestureHandler>
                     </>
@@ -391,8 +478,35 @@ const MatchScreen = ({ route, navigation }) => {
             >
                 {contentToRender()}
             </ScrollView>
+
+            {reportModal}
+
         </>
     );
 }
+
+const PagDotStyles = StyleSheet.create({
+    dot: {
+        margin: -2.5,
+        padding: 0,
+
+        width: 20,
+        height: 20,
+
+        borderRadius: 100,
+
+        backgroundColor: '#fff',
+
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.8,
+        shadowRadius: 3.84,
+
+        elevation: 5,
+    },
+})
 
 export default MatchScreen;

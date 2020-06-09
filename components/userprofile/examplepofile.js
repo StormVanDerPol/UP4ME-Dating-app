@@ -1,10 +1,10 @@
 import React, { useRef, useState, useEffect } from 'react';
 
 import {
-    StyleSheet, View, Text, Dimensions,
+    View, Text, Dimensions, StyleSheet,
 } from 'react-native';
-import { SliderBox } from 'react-native-image-slider-box';
-import { up4meColours, calcAgeHet } from '../../globals';
+
+import { calcAgeHet } from '../../globals';
 import { MatchScreenUserProfileStyles } from '../matching/MatchScreenUserProfileStyles';
 
 import RNSVG_match_no from '../../res/ui/rnsvg/rnsvg_match_no';
@@ -13,13 +13,18 @@ import RNSVG_paperPlane from '../../res/ui/rnsvg/nav/rnsvg_paperPlane';
 import RNSVG_ruler from '../../res/ui/rnsvg/rnsvg_ruler';
 import RNSVG_occupation from '../../res/ui/rnsvg/rnsvg_occupation';
 import RNSVG_location_profile from '../../res/ui/rnsvg/rnsvg_location_profile';
+import RNSVG_report from '../../res/ui/rnsvg/rnsvg_report';
 import Axios from 'axios';
 import { endpointGetProfile } from '../../endpoints';
 import { debugMode } from '../../debugmode';
 import { userPropStringSelector } from '../matching/MatchScreenUserPropStringSelector';
 import { ScrollView } from 'react-native-gesture-handler';
 import BlepButton from '../blepButton';
-import { getUserData } from './getSessionUserData';
+
+import Carousel, { Pagination } from "react-native-snap-carousel";
+
+import FastImage from 'react-native-fast-image';
+
 
 const ExampleProfile = () => {
 
@@ -106,27 +111,82 @@ const ExampleProfile = () => {
         _init.current = true;
     }
 
-    const _toRender = useRef(<Text>I need to nut</Text>);
+    const [carouselIndex, setCarouselIndex] = useState(0)
 
-    useEffect(() => {
+    const _carouselRef = useRef();
+
+    function carouselItem({ item, index }) {
+        return (
+
+            <FastImage
+                key={index}
+                style={{
+                    width: Dimensions.get('window').width,
+                    height: '100%',
+                }}
+                source={{
+                    uri: item,
+                }}
+                width={'100%'}
+                height={'100%'}
+            />
+        )
+    }
+
+    // const _toRender = useRef(<Text>I need to nut</Text>);
+
+    const toRender = () => {
         if (loaded) {
-            _toRender.current = (
+            return (
                 <>
                     <View style={[MatchScreenUserProfileStyles.container]}>
-                        <SliderBox
-                            sliderBoxHeight={'100%'}
-                            autoplay={false}
-                            dotColor={up4meColours.gradOrange}
-                            paginationBoxVerticalPadding={Dimensions.get('window').height - 160}
-                            resizeMode={'cover'}
-                            images={_userData.current.profilePictures}
-                            dotStyle={{
-                                width: 17,
-                                height: 17,
-                                borderRadius: 100,
+
+                        <Carousel
+                            data={_userData.current.profilePictures}
+                            renderItem={carouselItem}
+                            ref={(c) => { _carouselRef.current = c; }}
+                            layout={'stack'}
+                            layoutCardOffset={18}
+                            sliderWidth={Dimensions.get('window').width}
+                            itemWidth={Dimensions.get('window').width}
+                            scrollEnabled={false}
+                            onSnapToItem={(index) => setCarouselIndex(index)}
+                            loop={true}
+                            useScrollView={true}
+                        />
+                        <View
+                            style={{
+                                position: "absolute",
+                                left: 0,
+                                right: 0,
+                            }}>
+                            <Pagination
+                                tappableDots={true}
+                                inactiveDotOpacity={1}
+                                dotStyle={PagDotStyles.dot}
+                                dotColor={'#fff'}
+                                inactiveDotColor={'#fff'}
+                                carouselRef={_carouselRef.current}
+                                dotsLength={_userData.current.profilePictures.length}
+                                activeDotIndex={carouselIndex}
+                            />
+                        </View>
+                        <View
+                            onLayout={() => {
+                                forceUpdate(fu + 1);
                             }}
 
-                        />
+                            style={{
+                                position: "absolute",
+                                right: 20,
+                                top: 20,
+                                width: 30,
+                                height: 30,
+                                opacity: 0.7,
+                            }}>
+                            <RNSVG_report />
+                        </View>
+
                         <View style={MatchScreenUserProfileStyles.infoBox}>
                             <Text style={MatchScreenUserProfileStyles.infoBoxHeader}>{_userData.current.name}, {_userData.current.age}</Text>
                             <View style={MatchScreenUserProfileStyles.infoBoxItem}>
@@ -180,14 +240,15 @@ const ExampleProfile = () => {
                             <RNSVG_match_yes />
                         </View>
                     </View>
-
                 </>
             )
         }
+        else {
+            return <Text>I need to nut</Text>;
+        }
 
-        forceUpdate(fu + 1);
-
-    }, [loaded])
+        // forceUpdate(fu + 1);
+    }
 
     return (
         <>
@@ -195,11 +256,35 @@ const ExampleProfile = () => {
 
                 <BlepButton active={1} title={['Bewerken', 'Voorbeeld']} route={['EditProfile', undefined]} />
 
-                {_toRender.current}
+                {toRender()}
 
             </ScrollView>
         </>
     );
 }
+
+const PagDotStyles = StyleSheet.create({
+    dot: {
+        margin: -2.5,
+        padding: 0,
+
+        width: 20,
+        height: 20,
+
+        borderRadius: 100,
+
+        backgroundColor: '#fff',
+
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.8,
+        shadowRadius: 3.84,
+
+        elevation: 5,
+    },
+})
 
 export default ExampleProfile;
