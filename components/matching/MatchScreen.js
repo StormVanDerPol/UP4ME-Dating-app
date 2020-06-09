@@ -369,7 +369,7 @@ const MatchScreen = ({ route, navigation }) => {
                                             style={{
                                                 position: "absolute",
                                                 right: 20,
-                                                top: 20,
+                                                bottom: 20,
                                                 width: 30,
                                                 height: 30,
                                                 opacity: 0.7,
