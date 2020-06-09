@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="36px" viewBox="0 0 36 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>Group 7</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="15" cy="15" r="15"></circle>
+        <filter x="-18.3%" y="-11.7%" width="136.7%" height="136.7%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.433395607 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="Up4me-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="3.-Home" transform="translate(-260.000000, -473.000000)">
+            <g id="Group-7" transform="translate(263.000000, 474.000000)">
+                <g id="Group-5">
+                    <g id="Oval-Copy">
+                        <g>
+                            <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                            <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                        </g>
+                    </g>
+                </g>
+                <text id="!" font-family="Quicksand-Light_Bold, Quicksand" font-size="18" font-weight="bold" fill="#D8D8D8">
+                    <tspan x="12.597" y="18">!</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
