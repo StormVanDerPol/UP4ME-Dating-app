@@ -25,6 +25,7 @@ const routes = [
     'UserSettings',
     'MatchCatalog',
     'Filter',
+    'FilterRedux',
     'FQA',
     'NAV',
     'UserProfile',
@@ -36,7 +37,11 @@ const routes = [
     'ExampleProfile',
     'Overview',
     'PickRestaurant',
+
+    'Hell',
+
     'Death',
+
 ]
 
 const debugRouter = ({ navigation }) => {

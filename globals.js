@@ -3,8 +3,8 @@ import moment from 'moment';
 
 import { debugMode } from './debugmode';
 
-export var deviceHeight = Dimensions.get('window').height;
-export var deviceWidth = Dimensions.get('window').width;
+export const deviceHeight = Dimensions.get('window').height;
+export const deviceWidth = Dimensions.get('window').width;
 
 export const pallette = ['#FEA15A', '#D100A3'];
 
