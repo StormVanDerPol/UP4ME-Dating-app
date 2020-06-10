@@ -36,6 +36,7 @@ const routes = [
     'ExampleProfile',
     'Overview',
     'PickRestaurant',
+    'Death',
 ]
 
 const debugRouter = ({ navigation }) => {
