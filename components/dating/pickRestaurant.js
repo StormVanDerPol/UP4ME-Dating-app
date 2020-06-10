@@ -9,11 +9,11 @@ import { gs, mx, up4meColours } from "../../globals";
 import TopButton from "../topButton";
 import RNSVG_ruler from "../../res/ui/rnsvg/rnsvg_ruler";
 
-import {
-    WheelPicker,
-    TimePicker,
-    DatePicker
-} from "react-native-wheel-picker-android";
+// import {
+//     WheelPicker,
+//     TimePicker,
+//     DatePicker
+// } from "react-native-wheel-picker-android";
 import RNSVG_edit from '../../res/ui/rnsvg/rnsvg_edit';
 import Axios from 'axios';
 import { endpointGetRestaurantList } from '../../endpoints';
@@ -120,7 +120,7 @@ function PickRestaurant() {
         if (dropdownActive == 0) {
             return (
                 <View style={s.pickerContainer} >
-                    <WheelPicker
+                    {/* <WheelPicker
                         selectedItem={_selectedPlaceID.current}
                         data={_places.current}
                         onItemSelected={(res) => {
@@ -128,7 +128,7 @@ function PickRestaurant() {
                             setCurrentPlacePart(_placeParts.current[_places.current[res]][0]);
                             _selectedPlaceID.current = res;
                         }}
-                    />
+                    /> */}
                 </View>
             );
         }
@@ -145,14 +145,14 @@ function PickRestaurant() {
         if (dropdownActive == 1) {
             return (
                 <View style={s.pickerContainer} >
-                    <WheelPicker
+                    {/* <WheelPicker
                         selectedItem={_selectedPlacePartID.current}
                         data={_placeParts.current[currentPlace]}
                         onItemSelected={(res) => {
                             setCurrentPlacePart(_placeParts.current[currentPlace][res])
                             _selectedPlacePartID.current = res;
                         }}
-                    />
+                    /> */}
                 </View>
             );
         }

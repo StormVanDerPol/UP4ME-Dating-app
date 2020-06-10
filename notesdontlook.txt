@@ -4,9 +4,7 @@ ur kinda cute
 
 open datebase>
 
-git bash bij react juan backend > node debugserver.js [if listen then ok]
-
-open mySQL > connect up4me
+git bash bij react juan backend > server.js
 
 go to webthing F12
 
