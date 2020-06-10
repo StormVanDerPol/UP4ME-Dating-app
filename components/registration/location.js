@@ -39,7 +39,7 @@ const Location = () => {
     const zoom = 13;
     const mapWidth = Math.round(deviceWidth - mx * 2);
     // const mapHeight = deviceHeight / 2;
-    const [mapHeight, setMapHeight] = useState();
+    const [mapHeight, setMapHeight] = useState(0);
     const mapType = 'roadmap'
 
     const [init, setInit] = useState(false);
