@@ -19,3 +19,4 @@ export const endpointSetPhotos = `${apiUrl}/set/photos`;
 export const endpointSetProfileText = `${apiUrl}/set/profile/text`;
 export const endpointSetProfile = `${apiUrl}/set/profile`;
 export const endpointSetProperties = `${apiUrl}/set/properties`;
+export const endpointSetReport = `${apiUrl}/set/report`;

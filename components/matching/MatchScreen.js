@@ -4,8 +4,8 @@ import {
     StyleSheet, View, Text, BackHandler, Dimensions, Image,
 } from 'react-native';
 import Axios from 'axios';
-import { endpointGetProfile, endpointMatchResponses } from '../../endpoints';
-import { calcAgeHet, up4meColours, gs, getDistBetweenCoords, mx } from '../../globals';
+import { endpointGetProfile, endpointMatchResponses, endpointSetReport } from '../../endpoints';
+import { calcAgeHet, up4meColours, gs, getDistBetweenCoords, mx, apiUrl } from '../../globals';
 
 import { SliderBox } from 'react-native-image-slider-box';
 import { FlingGestureHandler, TouchableWithoutFeedback, Directions, State, ScrollView, TapGestureHandler, TouchableOpacity } from 'react-native-gesture-handler';
@@ -275,6 +275,28 @@ const MatchScreen = ({ route, navigation }) => {
 
     const [reportModal, setReportModal] = useState(<></>)
 
+    function report(status) {
+        Axios.post(`${endpointSetReport}`, {
+            userid1: global.sessionUserId,
+            userid2: matchList[PotentialMatchIndex],
+            status: status,
+        })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
+
+
+    // IP/api/v1/set/report/
+    // post request
+
+    // { userid1, userid2, status }
+
+    //2 == bad photo, dick pic meme
+    //3 == spam
+    //4 == catfish
+
+
     useEffect(() => {
 
         setReportModal(
@@ -288,9 +310,9 @@ const MatchScreen = ({ route, navigation }) => {
                     justifyContent: 'flex-end',
                     paddingBottom: 50,
                 }}>
-                <BigButtonRedux onPress={() => { }} title={'catfish'} style={{ marginTop: 12 }} />
-                <BigButtonRedux onPress={() => { }} title={"ongepaste foto's"} style={{ marginTop: 12 }} />
-                <BigButtonRedux onPress={() => { }} title={'lijkt op spam'} style={{ marginTop: 12 }} />
+                <BigButtonRedux onPress={() => { report(2) }} title={"ongepaste foto's"} style={{ marginTop: 12 }} />
+                <BigButtonRedux onPress={() => { report(3) }} title={'catfish'} style={{ marginTop: 12 }} />
+                <BigButtonRedux onPress={() => { report(4) }} title={'lijkt op spam'} style={{ marginTop: 12 }} />
                 <BigButtonRedux onPress={() => { setReportModalActive(false) }} title={'annuleren'} style={{ marginTop: 12 }} buttonType={ButtonTypes.cancel} />
             </ModalUp4me> : <></>
         )

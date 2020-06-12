@@ -7,6 +7,7 @@ import {
     ScrollView,
     Text,
     View,
+    Alert,
 } from 'react-native';
 
 import FilterRadioButton from './filterRadiobtn';
@@ -17,13 +18,14 @@ import MultiSlider from '@ptomasroos/react-native-multi-slider';
 
 import { gs, up4meColours, deviceWidth, mx } from '../../globals';
 
-import { endpointSetCriteria, endpointSetProfile, endpointGetCriteria } from '../../endpoints';
+import { endpointSetCriteria, endpointSetProfile, endpointGetCriteria, endpointGetMatches, endpointGetPotentials } from '../../endpoints';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { debugMode } from '../../debugmode';
 import Nav from '../nav';
 import SliderMarkerWhite from '../sliderMarkerWhite';
 import BigButtonRedux from '../bigbuttonRedux';
+import { rootNavigation } from '../../rootNavigation';
 
 const Filters = ({ route }) => {
 
@@ -53,10 +55,13 @@ const Filters = ({ route }) => {
         console.log(selections, 'keys: ', (Object.keys(selections).length));
     }
 
-    const postData = () => {
-        Axios.post(endpointSetCriteria,
+    const postData = async () => {
+
+        console.log(selections)
+
+        await Axios.post(endpointSetCriteria,
             {
-                userid: global.registData.userid,
+                userid: global.sessionUserId,
                 sport: selections.prefsport,
                 feesten: selections.prefparty,
                 roken: selections.prefsmoking,
@@ -88,9 +93,9 @@ const Filters = ({ route }) => {
         global.registData.prefGender = _prefGender.current;
         global.registData.distance = _sliderData.current.distance;
 
-        Axios.post(`${endpointSetProfile}`, {
+        await Axios.post(`${endpointSetProfile}`, {
 
-            userid: global.registData.userid,
+            userid: global.sessionUserId,
             naam: global.registData.name,
             geboortedatum: global.registData.bday,
             lengte: global.registData.height * 100,
@@ -102,6 +107,31 @@ const Filters = ({ route }) => {
         })
 
         console.log('saved data: ', global.registData);
+
+        await Axios.get(`${endpointGetPotentials}${global.sessionUserId}`)
+            .then((res) => {
+                console.log(res.data)
+
+                if (!res.data) {
+                    Alert.alert(
+                        "Geen potential matches",
+                        "Versoepel je criteria!",
+                        [
+                            {
+                                text: "Terug",
+                                style: "cancel",
+                            },
+                            { text: "Alsong doorgaan", onPress: () => rootNavigation.navigate('MatchScreenInitial') }
+                        ],
+                        { cancelable: false }
+                    );
+                }
+
+            })
+
+
+
+        // rootNavigation.navigate('MatchScreenInitial');
     }
 
     const _sliderData = useRef({
@@ -146,45 +176,45 @@ const Filters = ({ route }) => {
 
     const [loaded, setLoaded] = useState(false);
 
-    const _init = useRef(false);
+    // const _init = useRef(false);
 
-    if (!_init.current) {
+    // if (!_init.current) {
 
-        Axios.get(`${endpointGetCriteria}${global.sessionUserId}`)
-            .then((res) => {
+    //     Axios.get(`${endpointGetCriteria}${global.sessionUserId}`)
+    //         .then((res) => {
 
-                console.log(res.data[0]);
+    //             console.log(res.data[0]);
 
-                setSelections({
-                    prefsport: res.data[0].sport,
-                    prefparty: res.data[0].feesten,
-                    prefsmoking: res.data[0].roken,
-                    prefalcohol: res.data[0].alcohol,
-                    prefpolitics: res.data[0].stemmen,
-                    prefwork: res.data[0].uur40,
-                    prefkids: res.data[0].kids,
-                    prefkidWish: res.data[0].kidwens,
-                    preffood: res.data[0].eten,
-                });
+    //             setSelections({
+    //                 prefsport: res.data[0].sporten,
+    //                 prefparty: res.data[0].feesten,
+    //                 prefsmoking: res.data[0].roken,
+    //                 prefalcohol: res.data[0].alcohol,
+    //                 prefpolitics: res.data[0].stemmen,
+    //                 prefwork: res.data[0].uur40,
+    //                 prefkids: res.data[0].kids,
+    //                 prefkidWish: res.data[0].kidwens,
+    //                 preffood: res.data[0].eten,
+    //             });
 
-                _sliderData.current = {
-                    ages: [res.data[0].leeftijdmin, res.data[0].leeftijdmax],
-                    heights: [res.data[0].minlengte, res.data[0].maxlengte],
-                    distance: res.data[0].afstand,
-                }
+    //             _sliderData.current = {
+    //                 ages: [res.data[0].leeftijdmin, res.data[0].leeftijdmax],
+    //                 heights: [res.data[0].minlengte, res.data[0].maxlengte],
+    //                 distance: res.data[0].afstand,
+    //             }
 
-                _prefGender.current = res.data[0].geslacht;
-            })
-            .catch((err) => {
-                if (debugMode.networkRequests)
-                    console.log('Network error getting user criteria', err);
-            })
-            .finally(() => {
-                setLoaded(true);
-            })
+    //             _prefGender.current = res.data[0].geslacht;
+    //         })
+    //         .catch((err) => {
+    //             if (debugMode.networkRequests)
+    //                 console.log('Network error getting user criteria', err);
+    //         })
+    //         .finally(() => {
+    //             setLoaded(true);
+    //         })
 
-        _init.current = true;
-    }
+    //     _init.current = true;
+    // }
 
     useEffect(() => {
 
