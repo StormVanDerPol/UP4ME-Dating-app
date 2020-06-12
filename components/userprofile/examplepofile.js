@@ -24,6 +24,8 @@ import BlepButton from '../blepButton';
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
 import FastImage from 'react-native-fast-image';
+import ProfileLayout from './profilelayout';
+import Nav from '../nav';
 
 
 const ExampleProfile = () => {
@@ -109,135 +111,13 @@ const ExampleProfile = () => {
         _init.current = true;
     }
 
-    const [carouselIndex, setCarouselIndex] = useState(0)
-
-    const _carouselRef = useRef();
-
-    function carouselItem({ item, index }) {
-        return (
-
-            <FastImage
-                key={index}
-                style={{
-                    width: Dimensions.get('window').width,
-                    height: '100%',
-                }}
-                source={{
-                    uri: item,
-                }}
-                width={'100%'}
-                height={'100%'}
-            />
-        )
-    }
-
     // const _toRender = useRef(<Text>I need to nut</Text>);
 
     const toRender = () => {
         if (loaded) {
             return (
                 <>
-                    <View style={[MatchScreenUserProfileStyles.container]}>
-
-                        <Carousel
-                            data={_userData.current.profilePictures}
-                            renderItem={carouselItem}
-                            ref={(c) => { _carouselRef.current = c; }}
-                            layout={'stack'}
-                            layoutCardOffset={18}
-                            sliderWidth={Dimensions.get('window').width}
-                            itemWidth={Dimensions.get('window').width}
-                            scrollEnabled={false}
-                            onSnapToItem={(index) => setCarouselIndex(index)}
-                            loop={true}
-                            useScrollView={true}
-                        />
-                        <View
-                            style={{
-                                position: "absolute",
-                                left: 0,
-                                right: 0,
-                            }}>
-                            <Pagination
-                                tappableDots={true}
-                                inactiveDotOpacity={1}
-                                dotStyle={PagDotStyles.dot}
-                                dotColor={'#fff'}
-                                inactiveDotColor={'#fff'}
-                                carouselRef={_carouselRef.current}
-                                dotsLength={_userData.current.profilePictures.length}
-                                activeDotIndex={carouselIndex}
-                            />
-                        </View>
-                        <View
-                            onLayout={() => {
-                                forceUpdate(fu + 1);
-                            }}
-
-                            style={{
-                                position: "absolute",
-                                right: 20,
-                                top: 20,
-                                width: 30,
-                                height: 30,
-                                opacity: 0.7,
-                            }}>
-                            <RNSVG_report />
-                        </View>
-
-                        <View style={MatchScreenUserProfileStyles.infoBox}>
-                            <Text style={MatchScreenUserProfileStyles.infoBoxHeader}>{_userData.current.name}, {_userData.current.age}</Text>
-                            <View style={MatchScreenUserProfileStyles.infoBoxItem}>
-                                <View style={[MatchScreenUserProfileStyles.infoBoxIcon]}><RNSVG_location_profile /></View>
-                                <Text style={MatchScreenUserProfileStyles.infoBoxText}>{_userData.current.placeName}</Text>
-                            </View>
-                            <View style={MatchScreenUserProfileStyles.infoBoxItem}>
-                                <View style={[MatchScreenUserProfileStyles.infoBoxIcon]}><RNSVG_occupation /></View>
-                                <Text style={MatchScreenUserProfileStyles.infoBoxText}>{_userData.current.job}</Text>
-                            </View>
-                        </View>
-                    </View>
-
-
-                    <View>
-                        <View style={MatchScreenUserProfileStyles.subInfoBoxContainer}>
-                            <View style={MatchScreenUserProfileStyles.subInfoBoxWrapper}>
-                                <View style={MatchScreenUserProfileStyles.subInfoIconWrapper}>
-                                    <RNSVG_ruler />
-                                </View>
-                                <Text>{_userData.current.height}m</Text>
-                            </View>
-                            <View style={MatchScreenUserProfileStyles.subInfoBoxWrapper}>
-                                <View style={MatchScreenUserProfileStyles.subInfoIconWrapper}>
-                                    <RNSVG_paperPlane />
-                                </View>
-                                <Text>{_userData.current.dist}km</Text>
-                            </View>
-                        </View>
-
-                        <View>
-                            <Text style={MatchScreenUserProfileStyles.description}>{_userData.current.desc}</Text>
-                            <View style={MatchScreenUserProfileStyles.matchProperties}>
-                                {
-                                    _userData.current.userPropertiesDesc.map((prop, i) => {
-                                        return (
-                                            <View key={i}>
-                                                <Text style={MatchScreenUserProfileStyles.matchProperty}>
-                                                    {prop}
-                                                </Text>
-                                            </View>
-                                        )
-                                    })
-                                }
-
-                            </View>
-                        </View>
-
-                        <View style={MatchScreenUserProfileStyles.matchDecision}>
-                            <RNSVG_match_no />
-                            <RNSVG_match_yes />
-                        </View>
-                    </View>
+                    <ProfileLayout userData={_userData.current} />
                 </>
             )
         }
@@ -250,6 +130,8 @@ const ExampleProfile = () => {
 
     return (
         <>
+            <Nav currentSection={'Profile'} />
+
             <ScrollView>
 
                 <BlepButton active={1} title={['Bewerken', 'Voorbeeld']} route={['EditProfile', undefined]} />
@@ -284,5 +166,7 @@ const PagDotStyles = StyleSheet.create({
         elevation: 5,
     },
 })
+
+
 
 export default ExampleProfile;

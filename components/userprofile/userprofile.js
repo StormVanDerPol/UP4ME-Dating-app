@@ -17,6 +17,7 @@ import ImageResizer from 'react-native-image-resizer';
 import RNSVG_edit from '../../res/ui/rnsvg/rnsvg_edit';
 import { debugMode } from '../../debugmode';
 import { userPropStringSelector } from '../matching/MatchScreenUserPropStringSelector';
+import RNSVG_arrow_right from '../../res/ui/rnsvg/rnsvg_arrow_right';
 
 const UserProfile = () => {
 
@@ -205,9 +206,12 @@ const UserProfile = () => {
 
             </View>
 
-            <SectRouteBtn route={'EditProfile'} btnText={'profiel bewerken'} style={{ backgroundColor: 'red', }} />
+            <SectRouteBtn route={'EditProfile'} btnText={'profiel bewerken'} />
             <SectRouteBtn route={'UserSettings'} btnText={'Instellingen'} />
+            {/* <View style={s.picwrap}> */}
             <SectRouteBtn route={'somewhere'} btnText={'Nodig vrienden uit'} />
+            {/* <View style={{ width: 50, height: 50, }}><RNSVG_edit /></View> */}
+            {/* </View> */}
 
 
             <LinearGradient
@@ -237,20 +241,38 @@ const UserProfile = () => {
 const SectRouteBtn = (p) => {
 
     return (
-        <TouchableWithoutFeedback style={sectRouteBtnStyles.btnSelect} onPress={() => rootNavigation.navigate(p.route)}>
-            <Text>{p.btnText}</Text>
+
+        <TouchableWithoutFeedback style={[sectRouteBtnStyles.btnSelect]} onPress={() => rootNavigation.navigate(p.route)}>
+            <Text style={sectRouteBtnStyles.btnText}>{p.btnText}</Text>
+            <View style={{ width: 25, height: 25, }}>
+                <RNSVG_arrow_right></RNSVG_arrow_right>
+            </View>
         </TouchableWithoutFeedback>
+
     )
+
+
 }
 
 const sectRouteBtnStyles = StyleSheet.create({
 
     btnSelect: {
         // backgroundColor: "red",
-        padding: 10,
+        flexDirection: 'row',
+        padding: 15,
         paddingLeft: 25,
+        borderBottomColor: up4meColours.lineGray,
+        borderBottomWidth: 2,
+        alignContent: 'space-around',
+        justifyContent: 'space-between',
+    },
+    btnText: {
+        fontSize: 15,
 
     },
+
+
+
 
 });
 
@@ -341,6 +363,10 @@ const s = StyleSheet.create({
     //man im gonna do this at home RIGHT ITS LIKE HURR DUUR BTW  how do i know what is what icon? can i open? tx
     //love you
     //meeting im like 15 min i cry
+
+    picwrap: {
+        backgroundColor: "red",
+    },
 
 
 });
