@@ -4,7 +4,7 @@ import {
     View, Text, Dimensions, StyleSheet,
 } from 'react-native';
 
-import { calcAgeHet } from '../../globals';
+import { calcAgeHet, getDistBetweenCoords } from '../../globals';
 import { MatchScreenUserProfileStyles } from '../matching/MatchScreenUserProfileStyles';
 
 import RNSVG_match_no from '../../res/ui/rnsvg/rnsvg_match_no';
@@ -76,9 +76,7 @@ const ExampleProfile = () => {
                         job: res.data.beroep,
                         desc: res.data.profieltext,
                         age: calcAgeHet(res.data.geboortedatum),
-                        dist: Math.round(
-                            Math.random() * 100
-                        ),
+                        dist: 0,
                         userProperties: fetchedUserProps,
                         userPropertiesDesc: userPropStringSelector(fetchedUserProps),
                     }

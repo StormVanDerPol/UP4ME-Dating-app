@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="131px" height="38px" viewBox="0 0 131 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="100%" y1="50%" x2="-2.22044605e-14%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#F5CA23" offset="0%"></stop>
+            <stop stop-color="#F5C423" offset="23.3245093%"></stop>
+            <stop stop-color="#F5A623" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Up4me-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="2.3-Gegevens---Locatie-selecteren" transform="translate(-94.000000, -305.000000)" fill="url(#linearGradient-1)">
+            <g id="Group-3" transform="translate(0.000000, 240.000000)">
+                <g id="Group-2" transform="translate(94.000000, 65.000000)">
+                    <g id="Group">
+                        <path d="M116.653061,0 C124.576657,-6.7846114e-15 131,6.42334328 131,14.3469388 C131,22.2705343 124.576657,28.6938776 116.653061,28.6938776 L74.27,28.693 L65.5,38 L56.73,28.693 L14.3469388,28.6938776 C6.42334328,28.6938776 9.70360586e-16,22.2705343 0,14.3469388 C-9.70360586e-16,6.42334328 6.42334328,1.45554088e-15 14.3469388,0 L116.653061,0 Z" id="Combined-Shape"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
