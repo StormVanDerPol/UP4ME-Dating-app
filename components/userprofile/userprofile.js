@@ -9,7 +9,7 @@ import Axios from 'axios';
 import Nav from '../nav';
 import { endpointGetProfile } from '../../endpoints';
 import { deviceWidth, up4meColours, gs, calcAgeHet } from '../../globals';
-import { ScrollView, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { ScrollView, TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 import { rootNavigation } from '../../rootNavigation';
 
@@ -197,13 +197,15 @@ const UserProfile = () => {
                     }
                 } />
 
-                <TouchableWithoutFeedback style={[gs.iconwrap, s.sss]}>
-                    <RNSVG_edit />
-                </TouchableWithoutFeedback>
+                <View style={[gs.iconwrap, s.sss]}>
+                    <TouchableOpacity onPress={() => { rootNavigation.navigate('EditProfile') }}>
+                        <RNSVG_edit />
+                    </TouchableOpacity>
+                </View>
 
             </View>
 
-            <SectRouteBtn route={'EditProfile'} btnText={'profiel bewerken'} />
+            <SectRouteBtn route={'EditProfile'} btnText={'profiel bewerken'} style={{ backgroundColor: 'red', }} />
             <SectRouteBtn route={'UserSettings'} btnText={'Instellingen'} />
             <SectRouteBtn route={'somewhere'} btnText={'Nodig vrienden uit'} />
 
@@ -332,9 +334,8 @@ const s = StyleSheet.create({
     },
     sss: {
         position: "absolute",
-        top: 0,
-        left: 0,
-        borderWidth: 2,
+        bottom: 10,
+        right: 10,
         margin: 5,
     },
     //man im gonna do this at home RIGHT ITS LIKE HURR DUUR BTW  how do i know what is what icon? can i open? tx
