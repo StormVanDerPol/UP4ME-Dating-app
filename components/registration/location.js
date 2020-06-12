@@ -33,6 +33,7 @@ import RNSVG_vergroot from '../../res/ui/rnsvg/rnsvg_vergrottglas';
 // import LinearGradient from 'react-native-linear-gradient';
 import Svg, { Defs, Stop, Path, LinearGradient } from "react-native-svg"
 import RNSVG_locatieding from '../../res/ui/rnsvg/rnsvg_locatieding';
+import RNSVG_LocationPin from '../../res/ui/rnsvg/rnsvg_LocationPin';
 
 const Location = () => {
 
@@ -120,15 +121,16 @@ const Location = () => {
 
                         <View style={{
                             // borderWidth: 2,
-                            width: 200,
-                            height: 100,
+                            width: 50,
+                            height: 50,
                             position: "absolute",
-                            top: mapHeight / 2 - 100,
+                            top: mapHeight / 2 - 50,
                             // bottom: 10,
-                            left: mapWidth / 2 - 100,
+                            left: mapWidth / 2 - 25,
                             // right: 10
                         }}>
-                            <RNSVG_locatieding></RNSVG_locatieding>
+                            {/* <RNSVG_locatieding></RNSVG_locatieding> */}
+                            <RNSVG_LocationPin />
 
                             <View
                                 style={{

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="22px" viewBox="0 0 17 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>Location</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="99.651147%" y1="49.651147%" x2="0.348852962%" y2="49.651147%" id="linearGradient-1">
+            <stop stop-color="#FEA15A" offset="0%"></stop>
+            <stop stop-color="#D100A3" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Location" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-5">
+            <g id="Group-4">
+                <path d="M16.610471,7.89470229 C16.610471,10.8015745 13.8991284,15.356728 8.47644319,21.5601627 C3.05375801,15.356728 0.342415417,10.8015745 0.342415417,7.89470229 C0.342415417,3.53439396 3.98400431,-8.9375e-05 8.47644319,-8.9375e-05 C12.9688821,-8.9375e-05 16.610471,3.53439396 16.610471,7.89470229 Z" id="Stroke-2" fill="url(#linearGradient-1)"></path>
+                <ellipse id="Oval" fill="#FFFFFF" cx="8.5" cy="7.33333333" rx="3.77777778" ry="3.66666667"></ellipse>
+            </g>
+        </g>
+    </g>
+</svg>

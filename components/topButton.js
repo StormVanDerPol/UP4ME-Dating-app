@@ -7,10 +7,9 @@ import RNSVG_edit from '../res/ui/rnsvg/rnsvg_edit';
 import RNSVG_arrow_back from '../res/ui/rnsvg/rnsvg_arrow_back';
 
 
-function TopButton(p) {
+function TopButton({ header, route }) {
 
     const [topBtnHeight, setTopBtnHeight] = useState(0);
-
 
     return (
 
@@ -19,14 +18,12 @@ function TopButton(p) {
             setTopBtnHeight(e.nativeEvent.layout.height);
 
         }}>
-
-            <TouchableWithoutFeedback style={[s.topButtonWrapper]} onPress={() => rootNavigation.navigate(p.route)}>
+            <TouchableWithoutFeedback style={[s.topButtonWrapper]} onPress={() => rootNavigation.navigate(route)}>
                 <View style={[s.iconWrapper, { top: topBtnHeight / 2 - 10 }]}>
                     <RNSVG_arrow_back />
                 </View>
-                <Text style={[s.topText]}>{p.header}</Text>
+                <Text style={[s.topText]}>{header}</Text>
             </TouchableWithoutFeedback>
-
         </View>
     );
 

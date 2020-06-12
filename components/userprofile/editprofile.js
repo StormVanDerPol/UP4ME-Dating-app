@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 import {
-    StyleSheet, Text,
+    StyleSheet, Text, View,
 } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { up4meColours, gs, calcAgeHet } from '../../globals';
@@ -14,6 +14,8 @@ import UserPropsSelections from '../registration/userpropsSelections';
 import { debugMode } from '../../debugmode';
 import BlepButton from '../blepButton';
 import { userPropStringSelector } from '../matching/MatchScreenUserPropStringSelector';
+import Nav from '../nav';
+import { rootNavigation } from '../../rootNavigation';
 
 const EditProfile = () => {
 
@@ -78,9 +80,10 @@ const EditProfile = () => {
                     _userData.current = { ...fetchedData };
 
                     _oldData.current = { profilePictures: fetchedData.profilePictures };
-
-                    console.log('WHY ARE YOU GAAAAAAAY', _userData.current);
-                    console.log('Olddata', _oldData.current);
+                    if (debugMode.general) {
+                        console.log('WHY ARE YOU GAAAAAAAY', _userData.current);
+                        console.log('Olddata', _oldData.current);
+                    }
 
                 }, (res) => { console.log('why bro', res) })
                 .catch((err) => {
@@ -125,15 +128,29 @@ const EditProfile = () => {
 
             setToRender(
                 <>
-                    <Text>Profiel tekst</Text>
-                    <ProfileTextField initProfText={_userData.current.profileText} getProfText={getProfText} />
 
-                    <Text>Profiel foto's</Text>
-                    <ProfilePictureUpload initPics={_userData.current.profilePictures} getPictures={getPictures} checkValid={checkValid} />
+                    <View style={s.thing}>
+                        <Text style={s.textb}>Profiel tekst</Text>
+                        <ProfileTextField initProfText={_userData.current.profileText} getProfText={getProfText} />
+                    </View>
 
-                    <Text>Eigenschappen</Text>
-                    <Text style={[s.summary]}>Hoe meer informatie je invult, hoe groter de kans op een match. Je potentiele matchen kunnen hier op filteren.</Text>
+                    <View style={[s.thing, s.things]}>
+                        <Text style={s.textb}>Profiel foto's</Text>
+                        <ProfilePictureUpload initPics={_userData.current.profilePictures} getPictures={getPictures} checkValid={checkValid} />
+                        <Text style={[gs.underline, s.textu]} onPress={() => rootNavigation.navigate('PhotoGuidelines')}>Lees hier de richtlijnen</Text>
+                    </View>
+
+
+                    <View style={s.eigen}>
+                        <View style={{ marginHorizontal: 15, }}>
+                            <Text style={s.textb}>Eigenschappen</Text>
+
+                            <Text style={[s.summary]}>Hoe meer informatie je invult, hoe groter de kans op een match. Je potentiele matchen kunnen hier op filteren.</Text>
+                        </View>
+                    </View>
+
                     <UserPropsSelections initSelections={_userData.current.userProperties} getSelections={getSelections} />
+
                 </>
             );
         }
@@ -174,8 +191,8 @@ const EditProfile = () => {
     }
 
     function postData() {
-
-        console.log('brooooooo', _oldData.current.profilePictures);
+        if (debugMode.general)
+            console.log('brooooooo', _oldData.current.profilePictures);
 
         Axios.post(`${endpointSetProfileText}`,
             {
@@ -217,17 +234,25 @@ const EditProfile = () => {
     }
 
     return (
-        <ScrollView style={gs.body}>
 
-            <BlepButton active={0} title={['Bewerken', 'Voorbeeld']} route={[undefined, 'ExampleProfile']} />
+        <>
+            <Nav currentSection={'Profile'} />
 
-            {toRender}
+            <ScrollView style={gs.body}>
 
-            <BigButton component="UserProfile" text="opslaan" disabled={_isValid.current}
-                callBack={postData}
-            />
+                <View style={{ borderBottomWidth: 1, borderBottomColor: up4meColours.lineGray, paddingBottom: 10, }}>
+                    <BlepButton active={0} title={['Bewerken', 'Voorbeeld']} route={[undefined, 'ExampleProfile']} />
+                </View>
 
-        </ScrollView >
+                {toRender}
+
+                <BigButton component="UserProfile" text="opslaan" disabled={_isValid.current}
+                    callBack={postData}
+                />
+
+            </ScrollView >
+
+        </>
     );
 }
 
@@ -235,6 +260,29 @@ const s = StyleSheet.create({
 
     summary: {
         color: up4meColours.textGray,
+        // marginHorizontal: 15,
+    },
+    textb: {
+        paddingBottom: 10,
+        fontSize: 20,
+    },
+    thing: {
+        marginVertical: 15,
+        marginHorizontal: 15,
+        // borderBottomColor: up4meColours.lineGray,
+        // borderBottomWidth: 1,
+    },
+    things: {
+
+    },
+    textu: {
+        textAlign: 'center',
+    },
+    eigen: {
+        borderTopColor: up4meColours.lineGray,
+        borderTopWidth: 1,
+        paddingTop: 30,
+        marginVertical: 15,
     },
 
 });

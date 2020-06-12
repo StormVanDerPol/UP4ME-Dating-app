@@ -13,6 +13,7 @@ import Axios from 'axios';
 import { debugMode } from '../../debugmode';
 import { endpointGetMatches } from '../../endpoints';
 import RNSVG_arrow_right from '../../res/ui/rnsvg/rnsvg_arrow_right';
+import { rootNavigation } from '../../rootNavigation';
 
 
 const Overview = () => {
@@ -57,7 +58,7 @@ const Overview = () => {
                 setMatchItemsToRender(
                     _matches.current.map((match, i) => {
                         return (
-                            <MatchItem name={match.naam} age={match.leeftijd} city={match.woonplaats} key={i} />
+                            <MatchItem name={match.naam} age={match.leeftijd} city={match.woonplaats} userid={match.userid} key={i} />
                         )
                     })
                 )
@@ -90,7 +91,9 @@ function MatchItem(p) {
     const _age = useRef(calcAgeHet(p.age));
 
     return (
-        <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: up4meColours.lineGray }} >
+        <TouchableOpacity style={{ paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: up4meColours.lineGray }}
+            onPress={() => { rootNavigation.navigate('InviteMatch', { userid: p.userid }) }}
+        >
             <View style={[s.container]}>
                 <View style={{ flexDirection: 'row', }}>
                     <Image
@@ -99,7 +102,7 @@ function MatchItem(p) {
                     />
 
                     <View style={{ marginLeft: 10, width: 100 }}>
-                        <Text>{p.name}, {_age.current}</Text>
+                        <Text>{p.name}, {_age.current} </Text>
                         <Text>{p.city}</Text>
                     </View>
                 </View>

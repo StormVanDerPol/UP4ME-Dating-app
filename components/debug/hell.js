@@ -43,39 +43,41 @@ const Hell = () => {
 
     return (
         <>
-            <Carousel
-                style={{
-                    borderWidth: 2,
-                }}
-                ref={(c) => { _carousel.current = c; }}
-                layout={'default'}
-                data={_items.current}
-                renderItem={renderItem}
-                sliderWidth={Dimensions.get('window').width}
-                sliderHeight={500}
-                itemHeight={200}
-                itemWidth={Dimensions.get('window').width}
-                scrollEnabled={false}
-                onSnapToItem={(index) => setCarouselIndex(index)}
-                loop={true}
-            >
-
-            </Carousel>
-
-            <Pagination
-                carouselRef={_carousel.current}
-                dotsLength={_items.current.length}
-                activeDotIndex={carouselIndex}
-
-            >
-
-            </Pagination>
             <TouchableWithoutFeedback
 
                 onPress={() => {
                     _carousel.current.snapToNext(true);
                 }}
             >
+
+                <Carousel
+                    style={{
+                        borderWidth: 2,
+                    }}
+                    ref={(c) => { _carousel.current = c; }}
+                    layout={'default'}
+                    data={_items.current}
+                    renderItem={renderItem}
+                    sliderWidth={Dimensions.get('window').width}
+                    sliderHeight={500}
+                    itemHeight={200}
+                    itemWidth={Dimensions.get('window').width}
+                    scrollEnabled={false}
+                    onSnapToItem={(index) => setCarouselIndex(index)}
+                    loop={true}
+                >
+
+                </Carousel>
+
+                <Pagination
+                    carouselRef={_carousel.current}
+                    dotsLength={_items.current.length}
+                    activeDotIndex={carouselIndex}
+
+                >
+
+                </Pagination>
+
                 <Text>
                     boi
                 </Text>
