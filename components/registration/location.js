@@ -96,7 +96,7 @@ const Location = () => {
                         <View>
                             <Text style={s.curLocationText}>Mijn huidige locatie:</Text>
 
-                            <Text style={[s.inputLocation]}>{currentLocation}</Text>
+                            {/* <Text style={[s.inputLocation]}>{currentLocation}</Text> */}
 
                             {/* <TextInput
                                 style={s.inputLocation}
@@ -143,7 +143,7 @@ const Location = () => {
                                     color: 'white',
                                     fontSize: 16
                                 }}>
-                                    {currentLocation}
+                                    {/* {currentLocation} */}
                                 </Text>
                             </View>
 

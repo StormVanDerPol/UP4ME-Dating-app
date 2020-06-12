@@ -202,7 +202,7 @@ export const gs = StyleSheet.create({
         backgroundColor: '#fff'
     },
     iconwrap: {
-        width: 50,
-        height: 50,
+        width: 55,
+        height: 55,
     },
 });

@@ -339,7 +339,7 @@ const MatchScreen = ({ route, navigation }) => {
                                             layoutCardOffset={18}
                                             sliderWidth={Dimensions.get('window').width}
                                             itemWidth={Dimensions.get('window').width}
-                                            scrollEnabled={false}
+                                            scrollEnabled={true}
                                             onSnapToItem={(index) => setCarouselIndex(index)}
                                             loop={true}
                                             useScrollView={true}
