@@ -8,7 +8,7 @@ import { up4meColours, gs, calcAgeHet } from '../../globals';
 import ProfileTextField from '../registration/profileTextField';
 import ProfilePictureUpload from '../registration/profilePictureUpload';
 import Axios from 'axios';
-import { endpointGetProfile, endpointSetProfileText, endpointSetPhotos } from '../../endpoints';
+import { endpointGetProfile, endpointSetProfileText, endpointSetPhotos, endpointSetProperties } from '../../endpoints';
 import BigButton from '../bigbutton';
 import UserPropsSelections from '../registration/userpropsSelections';
 import { debugMode } from '../../debugmode';
@@ -194,9 +194,12 @@ const EditProfile = () => {
         if (debugMode.general)
             console.log('brooooooo', _oldData.current.profilePictures);
 
+        console.log('fuck u', _userData.current.profieltext);
+
+
         Axios.post(`${endpointSetProfileText}`,
             {
-                profiletext: _userData.current.profieltext,
+                profiletext: _userData.current.profileText,
                 userid: global.sessionUserId,
             })
             .catch((err) => {
@@ -231,6 +234,35 @@ const EditProfile = () => {
                     console.log('Network Error', err);
                 });
         }
+
+        console.log({
+            userid: global.sessionUserId,
+            sport: _userData.current.userProperties.sport,
+            feesten: _userData.current.userProperties.party,
+            roken: _userData.current.userProperties.smoking,
+            alcohol: _userData.current.userProperties.alcohol,
+            stemmen: _userData.current.userProperties.politics,
+            werken: _userData.current.userProperties.work,
+            kinderen: _userData.current.userProperties.kids,
+            kinderwens: _userData.current.userProperties.kidWish,
+            eten: _userData.current.userProperties.food
+        })
+
+        Axios.post(`${endpointSetProperties}`, {
+            userid: global.sessionUserId,
+            sport: _userData.current.userProperties.sport,
+            feesten: _userData.current.userProperties.party,
+            roken: _userData.current.userProperties.smoking,
+            alcohol: _userData.current.userProperties.alcohol,
+            stemmen: _userData.current.userProperties.politics,
+            werken: _userData.current.userProperties.work,
+            kinderen: _userData.current.userProperties.kids,
+            kinderwens: _userData.current.userProperties.kidWish,
+            eten: _userData.current.userProperties.food
+        })
+            .then((res) => {
+                console.log('kanker man', res);
+            })
     }
 
     return (

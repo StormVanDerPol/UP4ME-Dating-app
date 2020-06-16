@@ -131,6 +131,7 @@ const Email = () => {
     }, [isValid]);
 
     const handleData = () => {
+        global.registData.registering = true;
         global.registData.email = email;
         if (debugMode.general)
             console.log('saved data: ', global.registData);

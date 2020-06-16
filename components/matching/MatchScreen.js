@@ -35,6 +35,7 @@ import RNSVG_report from '../../res/ui/rnsvg/rnsvg_report';
 
 import ModalUp4me from '../modalup4me';
 import BigButtonRedux, { ButtonTypes } from '../bigbuttonRedux';
+import WhenMatch from './whenMatch';
 
 const MatchScreen = ({ route, navigation }) => {
 
@@ -91,6 +92,8 @@ const MatchScreen = ({ route, navigation }) => {
         }
     }
 
+    const [showMatchModal, setShowMatchModal] = useState(false);
+
     const handleMatch = (reply) => {
 
         let interest = (reply ? 2 : 1);
@@ -101,19 +104,24 @@ const MatchScreen = ({ route, navigation }) => {
             interesse: interest,
         }
 
-        Axios.post(endpointMatchResponses, toSend)
-            .then((res) => {
-                console.log('match response', res);
-                matchList.splice(PotentialMatchIndex, 1);
-                setMatchList([...matchList]);
+        // Axios.post(endpointMatchResponses, toSend)
+        //     .then((res) => {
+        //         console.log('match response', res);
+        //         matchList.splice(PotentialMatchIndex, 1);
+        //         setMatchList([...matchList]);
 
-            })
-            .catch((err) => {
-                console.log('error sending match response', err);
-            })
-            .finally(() => {
-                changeMatchScreen('currentIndex');
-            })
+        //     })
+        //     .catch((err) => {
+        //         console.log('error sending match response', err);
+        //     })
+        //     .finally(() => {
+
+        //         changeMatchScreen('currentIndex');
+        //     })
+
+        if (reply) {
+            rootNavigation.navigate('WhenMatch', { username: _userData.current.name, pic: _userData.current.profilePictures[0] })
+        }
     }
 
     function changeMatchScreen(direction) {
