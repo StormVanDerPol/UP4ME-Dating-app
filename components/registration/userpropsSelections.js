@@ -125,6 +125,7 @@ const s = StyleSheet.create({
     questionHeader: {
         fontSize: 20,
         marginBottom: 10,
+        marginHorizontal: 15,
     },
 });
 

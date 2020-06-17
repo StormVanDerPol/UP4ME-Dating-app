@@ -206,12 +206,15 @@ const UserProfile = () => {
 
             </View>
 
-            <SectRouteBtn route={'EditProfile'} btnText={'profiel bewerken'} />
-            <SectRouteBtn route={'UserSettings'} btnText={'Instellingen'} />
-            {/* <View style={s.picwrap}> */}
+            <View style={s.line}>
+                <SectRouteBtn route={'EditProfile'} btnText={'profiel bewerken'} />
+            </View>
+            <View style={s.line}>
+                <SectRouteBtn route={'UserSettings'} btnText={'Instellingen'} />
+            </View>
+
             <SectRouteBtn route={'somewhere'} btnText={'Nodig vrienden uit'} />
-            {/* <View style={{ width: 50, height: 50, }}><RNSVG_edit /></View> */}
-            {/* </View> */}
+
 
 
             <LinearGradient
@@ -261,8 +264,8 @@ const sectRouteBtnStyles = StyleSheet.create({
         flexDirection: 'row',
         padding: 15,
         paddingLeft: 25,
-        borderBottomColor: up4meColours.lineGray,
-        borderBottomWidth: 2,
+        // borderBottomColor: up4meColours.lineGray,
+        // borderBottomWidth: 2,
         alignContent: 'space-around',
         justifyContent: 'space-between',
     },
@@ -366,6 +369,11 @@ const s = StyleSheet.create({
 
     picwrap: {
         backgroundColor: "red",
+    },
+
+    line: {
+        borderBottomWidth: 1,
+        borderBottomColor: up4meColours.lineGray,
     },
 
 
