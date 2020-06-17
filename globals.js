@@ -36,7 +36,7 @@ export const mx = 20;
 export const serverUrl = `upforme.nl:50000`
 
 
-export const apiUrl = `http://${serverUrl}/api/v1`;
+export const apiUrl = `https://${serverUrl}/api/v1`;
 
 export const MapsApiRootUrl = 'https://maps.googleapis.com/maps/api/staticmap?';
 

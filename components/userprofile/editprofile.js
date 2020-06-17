@@ -246,9 +246,11 @@ const EditProfile = () => {
 
                 {toRender}
 
-                <BigButton component="UserProfile" text="opslaan" disabled={_isValid.current}
-                    callBack={postData}
-                />
+                <View style={s.but}>
+                    <BigButton component="UserProfile" text="opslaan" disabled={_isValid.current}
+                        callBack={postData}
+                    />
+                </View>
 
             </ScrollView >
 
@@ -283,6 +285,12 @@ const s = StyleSheet.create({
         borderTopWidth: 1,
         paddingTop: 30,
         marginVertical: 15,
+    },
+
+    but: {
+        borderTopWidth: 1,
+        borderTopColor: up4meColours.lineGray,
+        paddingVertical: 15
     },
 
 });
