@@ -14,6 +14,9 @@ global.storedProfiles = {
 }
 
 global.registData = {
+
+    registering: false,
+
     email: null,
     confirmationCode: null,
 

@@ -53,6 +53,7 @@ import FilterRedux from './components/registration/filterRedux';
 import FunctionalComponent from './components/debug/death';
 
 import InviteMatch from './components/dating/inviteMatch';
+import WhenMatch from './components/matching/whenMatch';
 
 
 
@@ -155,6 +156,8 @@ const App = () => {
           <Stack.Screen name="ExampleProfile" component={ExampleProfile} />
           <Stack.Screen name="PickRestaurant" component={PickRestaurant} />
           <Stack.Screen name="InviteMatch" component={InviteMatch} />
+
+          <Stack.Screen name="WhenMatch" component={WhenMatch} />
 
           <Stack.Screen name="Hell" component={Hell} />
 

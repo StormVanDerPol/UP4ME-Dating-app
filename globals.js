@@ -33,7 +33,7 @@ export const mx = 20;
 //pls dont forget to change this to your local machine's ipv4 address if you wish to test
 //ok boss
 
-export const serverUrl = `upforme.nl:50000`
+export const serverUrl = `192.168.1.138:50000`
 
 
 export const apiUrl = `https://${serverUrl}/api/v1`;

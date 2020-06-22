@@ -93,18 +93,20 @@ const Filters = ({ route }) => {
         global.registData.prefGender = _prefGender.current;
         global.registData.distance = _sliderData.current.distance;
 
-        await Axios.post(`${endpointSetProfile}`, {
 
-            userid: global.sessionUserId,
-            naam: global.registData.name,
-            geboortedatum: global.registData.bday,
-            lengte: global.registData.height * 100,
-            beroep: global.registData.job,
-            woontin: global.registData.placeName,
-            geslacht: global.registData.gender,
-            profiletext: global.registData.profileDescription,
+        if (global.registData.registering)
+            await Axios.post(`${endpointSetProfile}`, {
 
-        })
+                userid: global.sessionUserId,
+                naam: global.registData.name,
+                geboortedatum: global.registData.bday,
+                lengte: global.registData.height * 100,
+                beroep: global.registData.job,
+                woontin: global.registData.placeName,
+                geslacht: global.registData.gender,
+                profiletext: global.registData.profileDescription,
+
+            })
 
         console.log('saved data: ', global.registData);
 
@@ -125,6 +127,10 @@ const Filters = ({ route }) => {
                         ],
                         { cancelable: false }
                     );
+                }
+
+                else {
+                    rootNavigation.navigate('MatchScreenInitial')
                 }
 
             })
@@ -415,7 +421,7 @@ const AgeSlider = (p) => {
 
 const HeightSlider = (p) => {
 
-    const [heights, setHeights] = useState([150, 250]);
+    const [heights, setHeights] = useState([100, 250]);
 
     const sendData = (data) => {
         p.getData(data);
@@ -446,7 +452,7 @@ const HeightSlider = (p) => {
 
 const DistanceSlider = (p) => {
 
-    const [distance, setDistance] = useState(250);
+    const [distance, setDistance] = useState(10000);
 
     const sendData = (data) => {
         p.getData(data);

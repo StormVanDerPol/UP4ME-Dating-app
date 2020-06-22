@@ -72,6 +72,7 @@ const MatchScreenInitial = ({ navigation }) => {
     }
 
     if (!init) {
+        global.registData.registering = false;
         retrievePotentialMatches(global.sessionUserId)
         setInit(true);
     }
