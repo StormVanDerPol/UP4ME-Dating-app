@@ -45,7 +45,7 @@ const UserSettings = ({ navigation }) => {
                         changeDropdown(1, (
                             <>
                                 <TouchableOpacity component="Gender">
-                                    <Text>Geslacht________whatever></Text>
+                                    <Text>Geslacht________whatever</Text>
                                 </TouchableOpacity>
 
                                 {/* <Gender /> */}

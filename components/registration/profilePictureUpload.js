@@ -122,6 +122,7 @@ const s = StyleSheet.create({
         width: ((deviceWidth - (mx * 2)) / cols) - (boxMarginX * 2),
         height: 270,
         marginHorizontal: boxMarginX,
+        // marginHorizontal: '25%',
         marginVertical: boxMarginY,
         backgroundColor: up4meColours.picGray,
         borderRadius: 15,
@@ -131,6 +132,7 @@ const s = StyleSheet.create({
     pfpImage: {
         width: '100%',
         height: '100%',
+        // marginHorizontal: '50%',
     },
 });
 
