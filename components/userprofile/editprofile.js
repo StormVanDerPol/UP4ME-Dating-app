@@ -302,13 +302,11 @@ const s = StyleSheet.create({
     },
     thing: {
         marginVertical: 15,
-        marginHorizontal: 15,
+        marginHorizontal: '5%',
         // borderBottomColor: up4meColours.lineGray,
         // borderBottomWidth: 1,
     },
-    things: {
 
-    },
     textu: {
         textAlign: 'center',
     },
