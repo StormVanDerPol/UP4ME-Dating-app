@@ -1,22 +1,20 @@
 **app.js** - app root.
 
-├──
+ - **dev**
 
-├── **dev**
+    - **DevConfig** - enables or disables certain parts used only in development.
 
-│   ├── **DevConfig** - enables or disables certain parts used only in development.
+    - **screens**
 
-│   └── **screens**
+    - **DevRouter** - quick access to all screens.
 
-│   ├── **DevRouter** - quick access to all screens.
+    - **DevSandbox** - screen where 3rd party functionality is tested.
 
-│   └── **DevSandbox** - screen where 3rd party functionality is tested.
+- **navigation**
 
-├── **navigation**
+    - **NavigationHandler.js** - Handles navigating between screens. To add more screens add {name, component } to 'routes' array.
 
-│   ├── **NavigationHandler.js** - Handles navigating between screens. To add more screens add {name, component } to 'routes' array.
-
-│   └── **navigationProxy** - proxy for the NavigationHandler's NavigationContainer's methods.
+    - **navigationProxy** - proxy for the NavigationHandler's NavigationContainer's methods.
 
 
 ### usefull docs:
