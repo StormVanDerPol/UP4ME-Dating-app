@@ -2,13 +2,13 @@
 
 - **dev/**
 
-    - **DevConfig** - enables or disables certain parts used only in development.
+    - **devConfig.js** - enables or disables certain parts used only in development.
 
     - **screens/**
 
-        - **DevRouter** - quick access to all screens.
+        - **DevRouter.js** - quick access to all screens.
 
-        - **DevSandbox** - screen where 3rd party functionality is tested.
+        - **DevSandbox.js** - screen where 3rd party functionality is tested.
 
 - **navigation/**
 
