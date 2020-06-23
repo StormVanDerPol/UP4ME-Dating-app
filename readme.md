@@ -1,6 +1,6 @@
-**app.js** - app root.
+- **app.js** - app root.
 
- - **dev**
+- **dev/**
 
     - **DevConfig** - enables or disables certain parts used only in development.
 
@@ -10,7 +10,7 @@
 
     - **DevSandbox** - screen where 3rd party functionality is tested.
 
-- **navigation**
+- **navigation/**
 
     - **NavigationHandler.js** - Handles navigating between screens. To add more screens add {name, component } to 'routes' array.
 
