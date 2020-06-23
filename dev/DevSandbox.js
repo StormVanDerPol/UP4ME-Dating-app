@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Text, Button, Platform, PermissionsAndroid, SafeAreaView, View } from 'react-native';
+import { Button, Platform, PermissionsAndroid, SafeAreaView, View, Linking, Alert } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -14,7 +14,11 @@ import Geolocation from '@react-native-community/geolocation';
 import Carousel from 'react-native-snap-carousel';
 
 import { WheelPicker, TimePicker, DatePicker } from 'react-native-wheel-picker-android'
+import UpForMeButton, { ButtonTypes } from '../components/UpForMeButton';
+import UpForMeModal from '../components/UpForMeModal';
+import TextQuicksand from '../components/TextQuicksand';
 
+import InAppBrowser from 'react-native-inappbrowser-reborn'
 
 export default DevSandbox = () => {
 
@@ -72,11 +76,60 @@ export default DevSandbox = () => {
 
     const _carousel = useRef();
 
+    const [modalEnabled, setModalEnabled] = useState(true);
+
+    const openBrowser = async (url) => {
+
+        try {
+
+            if (await InAppBrowser.isAvailable()) {
+                const res = await InAppBrowser.open(url, {
+                    // iOS Properties
+                    dismissButtonStyle: 'cancel',
+                    preferredBarTintColor: '#453AA4',
+                    preferredControlTintColor: 'white',
+                    readerMode: false,
+                    animated: true,
+                    modalPresentationStyle: 'overFullScreen',
+                    modalTransitionStyle: 'partialCurl',
+                    modalEnabled: true,
+                    enableBarCollapsing: false,
+                    // Android Properties
+                    showTitle: true,
+                    toolbarColor: '#6200EE',
+                    secondaryToolbarColor: 'black',
+                    enableUrlBarHiding: true,
+                    enableDefaultShare: true,
+                    forceCloseOnRedirection: false,
+                    // Specify full animation resource identifier(package:anim/name)
+                    // or only resource name(in case of animation bundled with app).
+                    animations: {
+                        startEnter: 'slide_in_right',
+                        startExit: 'slide_out_left',
+                        endEnter: 'slide_in_left',
+                        endExit: 'slide_out_right'
+                    },
+                    headers: {
+                        'my-custom-header': 'my custom header value'
+                    }
+                })
+                Alert.alert(JSON.stringify(result))
+            }
+            else {
+                Linking.openURL(url)
+            }
+        } catch (err) {
+            Alert.alert(err.message)
+        }
+    }
+
+    const inputUrl = useRef('');
+
     return (
         <>
             <SafeAreaView>
                 <ScrollView>
-                    <Text>{runningOn()}</Text>
+                    <TextQuicksand>{runningOn()}</TextQuicksand>
 
                     <Button title={'force re-render'} onPress={() => { forceUpdate(fu + 1) }} />
 
@@ -93,7 +146,7 @@ export default DevSandbox = () => {
                             });
                         }} />
 
-                    <Text>react-native-fast-image</Text>
+                    <TextQuicksand>react-native-fast-image</TextQuicksand>
                     <FastImage
                         style={{
                             width: 300,
@@ -105,13 +158,13 @@ export default DevSandbox = () => {
                     />
 
                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#4c669f', '#3b5998', '#192f6a']}>
-                        <Text>
+                        <TextQuicksand>
                             react-native-linear-gradient
-                    </Text>
+                    </TextQuicksand>
                     </LinearGradient>
 
 
-                    <Text>@ptomasroos/react-native-multi-slider/MultiSlider</Text>
+                    <TextQuicksand>@ptomasroos/react-native-multi-slider/MultiSlider</TextQuicksand>
                     <MultiSlider />
 
                     <Button title={'Request Location'} onPress={async () => {
@@ -136,7 +189,7 @@ export default DevSandbox = () => {
                         }
                     }} />
 
-                    <Text>{location}</Text>
+                    <TextQuicksand>{location}</TextQuicksand>
 
                     <TextInput onChangeText={(input) => {
                         inputAS.current = input;
@@ -147,9 +200,9 @@ export default DevSandbox = () => {
                         await storeData('test', inputAS.current);
                         getData('test')
                     }} />
-                    <Text>stored value: {savedAS.current}</Text>
+                    <TextQuicksand>stored value: {savedAS.current}</TextQuicksand>
 
-                    <Text>react-native-snap-carousel</Text>
+                    <TextQuicksand>react-native-snap-carousel</TextQuicksand>
                     <TapGestureHandler onHandlerStateChange={(e) => {
                         if (e.nativeEvent.state == State.END) {
                             _carousel.current.snapToNext();
@@ -190,8 +243,8 @@ export default DevSandbox = () => {
                                             backgroundColor: '#f55',
                                             borderWidth: 2,
                                         }}>
-                                        <Text>{data.item.name}</Text>
-                                        <Text>{data.item.number}</Text>
+                                        <TextQuicksand>{data.item.name}</TextQuicksand>
+                                        <TextQuicksand>{data.item.number}</TextQuicksand>
                                     </View>
                                 )
                             }}
@@ -220,7 +273,25 @@ export default DevSandbox = () => {
 
                     <DatePicker />
 
+
+
+                    <Button title={'show modal'} onPress={() => { setModalEnabled(true) }} />
+
+                    <TextInput onChangeText={(input) => { inputUrl.current = input }} placeholder={'insert url'} />
+                    <Button title={'Open url'} onPress={() => { openBrowser(inputUrl.current) }} />
+
                 </ScrollView>
+
+                <UpForMeModal enabled={modalEnabled}>
+                    <UpForMeButton title={'Hello'} />
+                    <UpForMeButton title={'Hello'} buttonType={ButtonTypes.white} />
+                    <UpForMeButton title={'Hello'} buttonType={ButtonTypes.dimmed} onPress={() => { setModalEnabled(false) }} />
+                </UpForMeModal>
+
+
+
+
+
             </SafeAreaView>
         </>
     );
