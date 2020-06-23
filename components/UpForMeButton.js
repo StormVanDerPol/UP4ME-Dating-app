@@ -24,6 +24,7 @@ export const ButtonTypes = {
     default: 0,
     dimmed: 1,
     white: 2,
+    landing: 3,
 }
 
 const UpForMeButton = ({ onPress = () => { }, buttonType = ButtonTypes.default, title, style = {}, enabled = true }) => {
@@ -50,6 +51,11 @@ const UpForMeButton = ({ onPress = () => { }, buttonType = ButtonTypes.default, 
 
         case ButtonTypes.white:
             layout = <WhiteLayout>{titleWrapper}</WhiteLayout>
+
+            break;
+
+        case ButtonTypes.landing:
+            layout = <WhiteLayout extraStyles={{ borderWidth: 1.5 }}>{titleWrapper}</WhiteLayout>
 
             break;
 
@@ -91,12 +97,13 @@ const DimmedLayout = ({ children = <></> }) => {
     );
 }
 
-const WhiteLayout = ({ children = <></> }) => {
+const WhiteLayout = ({ children = <></>, extraStyles = {} }) => {
     return (
         <View
             style={{
                 ...styles.button,
                 ...styles.white,
+                ...extraStyles,
             }}>
             {children}
         </View>

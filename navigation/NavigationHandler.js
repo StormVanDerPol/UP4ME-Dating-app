@@ -10,10 +10,17 @@ import { navigationContainerRef } from './navigationProxy';
 
 import DevRouter from '../dev/DevRouter';
 import DevSandbox from '../dev/DevSandbox';
+import Landing from '../screens/Landing/Landing';
 
 const Stack = createStackNavigator();
 
-var routes = [];
+//Add new routes here
+var routes = [
+    {
+        name: 'Landing',
+        component: Landing,
+    }
+];
 
 if (devMode.enabled) {
     routes.unshift(
