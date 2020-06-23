@@ -4,11 +4,11 @@
 
     - **DevConfig** - enables or disables certain parts used only in development.
 
-    - **screens**
+    - **screens/**
 
-    - **DevRouter** - quick access to all screens.
+        - **DevRouter** - quick access to all screens.
 
-    - **DevSandbox** - screen where 3rd party functionality is tested.
+        - **DevSandbox** - screen where 3rd party functionality is tested.
 
 - **navigation/**
 
