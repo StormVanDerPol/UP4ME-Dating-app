@@ -20,13 +20,21 @@
 ### usefull docs:
 
 https://github.com/ivpusic/react-native-image-crop-picker
+
 https://github.com/react-native-community/react-native-linear-gradient
+
 https://reactnavigation.org/docs/navigating-without-navigation-prop/
+
 https://github.com/ptomasroos/react-native-multi-slider
+
 https://github.com/DylanVann/react-native-fast-image
+
 https://github.com/react-native-community/react-native-geolocation
+
 https://github.com/react-native-community/async-storage
+
 https://github.com/archriss/react-native-snap-carousel
+
 https://github.com/StormVanDerPol/ReactNativeWheelPicker
 
 
