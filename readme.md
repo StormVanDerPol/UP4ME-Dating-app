@@ -101,3 +101,8 @@ https://drive.google.com/file/d/1mNv0ifk3uobZADvSvkAWRvxtuwzlQ7Ef/view?usp=shari
 
 ### converting svg to a jsx expression
 https://react-svgr.com/playground/?expandProps=none&native=true
+
+
+
+### help me please dad
+check if safeAreaView thing does anything good for ios pls I need to nut
