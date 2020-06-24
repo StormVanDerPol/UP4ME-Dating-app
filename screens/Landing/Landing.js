@@ -1,56 +1,84 @@
-import React from 'react'
-import { StyleSheet, Text, SafeAreaView, Dimensions, View } from 'react-native';
+import React, { useState, useRef } from 'react'
+
+import { StyleSheet, SafeAreaView, Dimensions, View } from 'react-native';
+
 import TextQuicksand from '../../components/TextQuicksand';
 import LinearGradient from 'react-native-linear-gradient';
+
 import up4meColours from '../../res/data/colours';
-import RnsvgIcon from '../../components/RnsvgIcon';
-import RNSVG_up4me_logo_login from '../../res/icons/rnsvg/rnsvg_up4me_logo_login';
+
+import UpForMeIcon, { iconIndex } from '../../components/UpForMeIcon';
+
 import UpForMeButton, { ButtonTypes } from '../../components/UpForMeButton';
+
 import { navigationProxy } from '../../navigation/navigationProxy';
 import { openBrowser } from '../../functions/bowser';
 
+import StaticScreenWrapper, { StaticContent } from '../../components/StaticScreenWrapper';
+import UpForMeModal from '../../components/UpForMeModal';
+import AuthButton, { providerIndex } from '../../components/AuthButton';
 
 
 const Landing = () => {
 
+    const action = useRef('');
+
+    const [provModalActive, setProvModalActive] = useState(false);
+
     return (
         <>
-            <SafeAreaView style={{
-                height: Dimensions.get('window').height - 24,
-            }}>
-                <LinearGradient style={s.bg} colors={[up4meColours.gradOrange, up4meColours.gradPink]}>
+            <StaticScreenWrapper>
+                <LinearGradient style={styles.bg} colors={[up4meColours.gradOrange, up4meColours.gradPink]}>
 
-                    <RnsvgIcon style={s.logo} icon={<RNSVG_up4me_logo_login />} />
+                    <StaticContent>
 
-                    <UpForMeButton
-                        style={s.button}
-                        title={'Inloggen'}
-                        buttonType={ButtonTypes.landing}
-                        onPress={() => { navigationProxy.navigate() }} />
+                        <UpForMeIcon style={styles.logo} icon={iconIndex.up4me_logo_login} />
 
-                    <UpForMeButton
-                        style={s.button}
-                        title={'Maak een nieuw account aan'}
-                        buttonType={ButtonTypes.landing}
-                        onPress={() => { navigationProxy.navigate() }} />
+                        <UpForMeButton
+                            style={styles.button}
+                            title={'Inloggen'}
+                            buttonType={ButtonTypes.landing}
+                            onPress={() => {
+                                action.current = 'sign-in';
+                                setProvModalActive(true)
+                            }}
+                        />
 
-                    <View style={s.bottom}>
-                        <TextQuicksand style={s.text}>Als je inloggen of Maak een account aan tikt, ga je akkoord met onze
-                        <TextQuicksand style={s.underline} tap={() => { openBrowser('https://www.nhentai.net') }}>Voorwaarden</TextQuicksand>.Lees meer over hoe we je  gegevens verwerken in ons
-                        <TextQuicksand style={s.underline} tap={() => { openBrowser('https://www.nhentai.net') }}>Privacybeleid</TextQuicksand>, en
-                        <TextQuicksand style={s.underline} tap={() => { openBrowser('https://www.nhentai.net') }}>Cookiebeleid</TextQuicksand>.
-                        </TextQuicksand>
+                        <UpForMeButton
+                            style={styles.button}
+                            title={'Maak een nieuw account aan'}
+                            buttonType={ButtonTypes.landing}
+                            onPress={() => {
+                                action.current = 'sign-up';
+                                setProvModalActive(true)
+                            }}
+                        />
+
+                    </StaticContent>
+
+                    <View style={styles.bottom}>
+                        <TextQuicksand style={styles.text}>Als je inloggen of Maak een account aan tikt, ga je akkoord met onze <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.nhentai.net') }}>Voorwaarden</TextQuicksand>. Lees meer over hoe we je gegevens verwerken in ons <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.nhentai.net') }}>Privacybeleid</TextQuicksand>, en <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.nhentai.net') }}>Cookiebeleid</TextQuicksand>.</TextQuicksand>
                     </View>
 
                 </LinearGradient>
-            </SafeAreaView>
+            </StaticScreenWrapper>
+
+            <UpForMeModal style={styles.modalContent} enabled={provModalActive} duration={300}>
+                <AuthButton style={styles.authButton} provider={providerIndex.up4me} action={action.current}
+                    onPress={() => {
+                        navigationProxy.navigate('LocalStratEmail');
+                    }} />
+                <AuthButton style={styles.authButton} provider={providerIndex.google} action={action.current} />
+                <UpForMeButton style={styles.modalCancelButton} title={'Sluiten'} onPress={() => { setProvModalActive(false) }} />
+            </UpForMeModal>
         </>
     );
 }
 
-const s = StyleSheet.create({
+const styles = StyleSheet.create({
+
     bg: {
-        height: '100%',
+        flex: 1,
     },
 
     logo: {
@@ -78,12 +106,24 @@ const s = StyleSheet.create({
     },
 
     bottom: {
-        flex: 1,
-        justifyContent: 'flex-end',
         marginBottom: 10,
         alignSelf: "center",
         padding: 10,
     },
+
+    modalContent: {
+        justifyContent: "flex-end",
+        alignItems: "center",
+    },
+
+    modalCancelButton: {
+        marginTop: 50,
+        marginBottom: 25,
+    },
+
+    authButton: {
+        marginBottom: 25,
+    }
 })
 
 export default Landing;

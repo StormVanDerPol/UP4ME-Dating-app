@@ -12,12 +12,11 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import up4meColours from '../res/data/colours';
 
-import { deviceWidth } from '../res/data/dimensions';
-
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import TextQuicksand from './TextQuicksand';
+import getDeviceDimensions from '../functions/dimensions';
 
 
 export const ButtonTypes = {
@@ -114,7 +113,7 @@ const styles = StyleSheet.create({
     button: {
         height: 65,
         borderRadius: 100,
-        width: deviceWidth - 40,
+        width: getDeviceDimensions('window', 'width') - 40
     },
 
     dimmed: {

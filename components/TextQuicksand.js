@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text } from 'react-native';
 
-const TextQuicksand = ({ type = 'Regular', style = {}, children, tap = () => { } }) => {
+const TextQuicksand = ({ type = 'Medium', style = { color: '#000' }, children, onPress = () => { } }) => {
     return (
         <Text
-            onPress={tap}
+            onPress={onPress}
             style={{
                 ...style,
                 fontFamily: `Quicksand-${type}`

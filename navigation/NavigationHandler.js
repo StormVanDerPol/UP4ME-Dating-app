@@ -11,6 +11,7 @@ import { navigationContainerRef } from './navigationProxy';
 import DevRouter from '../dev/DevRouter';
 import DevSandbox from '../dev/DevSandbox';
 import Landing from '../screens/Landing/Landing';
+import LocalStratEmail from '../screens/authentication/LocalStratEmail/LocalStratEmail';
 
 const Stack = createStackNavigator();
 
@@ -19,6 +20,10 @@ var routes = [
     {
         name: 'Landing',
         component: Landing,
+    },
+    {
+        name: 'LocalStratEmail',
+        component: LocalStratEmail,
     }
 ];
 
@@ -41,6 +46,7 @@ export const exportedRoutes = routes;
 export default NavigationHandler = () => {
     return (
         <>
+
             <NavigationContainer ref={navigationContainerRef}>
                 <Stack.Navigator screenOptions={{ headerShown: false }} >
 
@@ -61,6 +67,7 @@ export default NavigationHandler = () => {
 
                 </Stack.Navigator>
             </NavigationContainer>
+
         </>
     );
 }
