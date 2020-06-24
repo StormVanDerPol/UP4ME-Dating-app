@@ -12,18 +12,18 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import up4meColours from '../res/data/colours';
 
-import { deviceWidth } from '../res/data/dimensions';
-
 import { StyleSheet, View } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 import TextQuicksand from './TextQuicksand';
+import getDeviceDimensions from '../functions/dimensions';
 
 
 export const ButtonTypes = {
     default: 0,
     dimmed: 1,
     white: 2,
+    landing: 3,
 }
 
 const UpForMeButton = ({ onPress = () => { }, buttonType = ButtonTypes.default, title, style = {}, enabled = true }) => {
@@ -50,6 +50,11 @@ const UpForMeButton = ({ onPress = () => { }, buttonType = ButtonTypes.default, 
 
         case ButtonTypes.white:
             layout = <WhiteLayout>{titleWrapper}</WhiteLayout>
+
+            break;
+
+        case ButtonTypes.landing:
+            layout = <WhiteLayout extraStyles={{ borderWidth: 1.5 }}>{titleWrapper}</WhiteLayout>
 
             break;
 
@@ -91,12 +96,13 @@ const DimmedLayout = ({ children = <></> }) => {
     );
 }
 
-const WhiteLayout = ({ children = <></> }) => {
+const WhiteLayout = ({ children = <></>, extraStyles = {} }) => {
     return (
         <View
             style={{
                 ...styles.button,
                 ...styles.white,
+                ...extraStyles,
             }}>
             {children}
         </View>
@@ -107,7 +113,7 @@ const styles = StyleSheet.create({
     button: {
         height: 65,
         borderRadius: 100,
-        width: deviceWidth - 40,
+        width: getDeviceDimensions('window', 'width') - 40
     },
 
     dimmed: {

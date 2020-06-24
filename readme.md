@@ -6,7 +6,7 @@
 
     - **DevRouter.js** - quick access to all screens.
 
-    - **DevSandbox.js** - screen where 3rd party functionality is tested.
+    - **DevSandbox.js** - screen where 3rd party functionality is tested and memes are made.
 
 - **navigation/**
 
@@ -24,6 +24,20 @@
     - **UpForMeMOdal.js** - THe modal meme component
 
     - **UpForMeSliders.js** - Double and Single slider (not yet made)
+
+    - **UpForMeIcon.js** - a wrapper for a react-native-svg component, includes a list **iconIndex** containing all rnsvg conversions.
+
+    - **AuthButton.js** - a sign in button with layouts for different providers
+
+    - **StaticScreenWrapper.js** - wakarimasen
+
+    - **KeyboardDismiss.js** - put at the root of a screen to hide input keyboard when tapping anywhere on the screen.
+
+- **functions/**
+
+    - **bowser.js** - call the in app web browser
+
+    - **dimensions.js** - get the devices' dimensions regardless of OS.
 
 
 - **screens/**
@@ -53,8 +67,13 @@
 
         - **colours.js** - all the hexes in the project.
 
-        - **dimensions.js** - a const ref to Dimensions.get("screen")
+        <!-- - **dimensions.js** - a const ref to Dimensions.get("screen") -->
+    
+    - **icons/**
 
+        - **rnsvg/** - react-native-svg conversions
+
+        - **svg/** - source vector graphics
 
 - **assets/**
 
@@ -94,10 +113,13 @@
 - https://github.com/wix/react-native-calendars
 
 
-### run npx patch-package if wheel picker gives you issues.
-
 ### planning
 https://drive.google.com/file/d/1mNv0ifk3uobZADvSvkAWRvxtuwzlQ7Ef/view?usp=sharing
 
 ### converting svg to a jsx expression
 https://react-svgr.com/playground/?expandProps=none&native=true
+
+
+
+### help me please dad
+check if safeAreaView thing does anything good for ios pls I need to nut

@@ -1,5 +1,23 @@
+/*
+usage:
+
+<UpForMeModal
+    enabled={bool: shows or kills the modal}
+    style={}
+    duration={int: duration of the anim in ms}
+    animated={bool: play the fadein anim or nah}
+    >
+
+    <Whatever the fuck/>
+
+</UpForMeModal>
+
+*/
+
 import React, { useRef, useEffect } from 'react';
-import { StyleSheet, Dimensions, View, Animated } from 'react-native';
+import { StyleSheet, View, Animated } from 'react-native';
+
+import getDeviceDimensions from '../functions/dimensions';
 
 const UpForMeModal = ({ enabled = true, style = {}, children, duration = 1000, animated = true }) => {
     return (enabled) ? <Modal style={style} children={children} duration={duration} animated={animated} /> : <></>;
@@ -10,7 +28,7 @@ const Modal = ({ style, children, duration, animated }) => {
 
     const ypos = useRef(
         (animated) ?
-            new Animated.Value(Dimensions.get('window').height) :
+            new Animated.Value(getDeviceDimensions('window', 'height')) :
             new Animated.Value(0)
     ).current
 
@@ -48,8 +66,8 @@ const Modal = ({ style, children, duration, animated }) => {
     return (
         <Animated.View style={{
             ...styles.bg,
-            width: Dimensions.get('window').width,
-            height: Dimensions.get('window').height,
+            width: getDeviceDimensions('window', 'width'),
+            height: getDeviceDimensions('window', 'height'),
             opacity: opacity
         }}>
             <Animated.View

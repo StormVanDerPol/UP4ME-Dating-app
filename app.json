@@ -1,4 +1,17 @@
 {
   "name": "up4me",
-  "displayName": "up4me"
+  "displayName": "up4me",
+  "expo": {
+    "name": "up4me",
+    "slug": "up4me",
+    "version": "1.0.0",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
 }
