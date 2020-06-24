@@ -59,6 +59,10 @@
     - **RegistUserData**
         
         - **RegistUserData.js** - screen where you input name, job, height and age.
+
+- **stored**
+
+    - **dataStore.js** - contains cache object and a method to change it. 
         
 
 - **res/**
@@ -68,6 +72,8 @@
         - **colours.js** - all the hexes in the project.
 
         <!-- - **dimensions.js** - a const ref to Dimensions.get("screen") -->
+
+        - **regex.js** - contains some regular expressions
     
     - **icons/**
 
@@ -112,6 +118,7 @@
 
 - https://github.com/wix/react-native-calendars
 
+- https://stackoverflow.com/questions/55893268/react-constructor-like-in-functional-component
 
 ### planning
 https://drive.google.com/file/d/1mNv0ifk3uobZADvSvkAWRvxtuwzlQ7Ef/view?usp=sharing

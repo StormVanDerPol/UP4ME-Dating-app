@@ -19,6 +19,7 @@ import UpForMeModal from '../components/UpForMeModal';
 import TextQuicksand from '../components/TextQuicksand';
 
 import InAppBrowser from 'react-native-inappbrowser-reborn'
+import { setDataStore, DATA_STORE } from '../stored/dataStore';
 
 export default DevSandbox = () => {
 
@@ -196,11 +197,13 @@ export default DevSandbox = () => {
                     }}
                         placeholder={'enter shit'} />
 
-                    <Button title={'save string asyncStorage'} onPress={async () => {
+                    <Button title={'save string asyncStorage && to DATA_STORE as key "meme"'} onPress={async () => {
                         await storeData('test', inputAS.current);
-                        getData('test')
+                        getData('test');
+                        // setDataStore('meme', inputAS.current);
+                        DATA_STORE.meme = inputAS.current;
                     }} />
-                    <TextQuicksand>stored value: {savedAS.current}</TextQuicksand>
+                    <TextQuicksand>asyncstorage stored value: {savedAS.current}</TextQuicksand>
 
                     <TextQuicksand>react-native-snap-carousel</TextQuicksand>
                     <TapGestureHandler onHandlerStateChange={(e) => {
