@@ -63,8 +63,10 @@ const UpForMeButton = ({ onPress = () => { }, buttonType = ButtonTypes.default, 
             break;
     }
 
+    let buttonOpacity = (enabled) ? 1 : 0.5;
+
     return (
-        <View style={style}>
+        <View style={{ ...style, opacity: buttonOpacity }}>
             {layout}
         </View>
     );

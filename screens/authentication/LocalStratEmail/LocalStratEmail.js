@@ -1,20 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Alert } from 'react-native';
+import { TextInput, } from 'react-native-gesture-handler';
 
-import TextQuicksand from '../../../components/TextQuicksand';
+import { RegistStyles } from '../../../styles/RegistStyles';
+
+import { DATA_STORE } from '../../../stored/dataStore';
 
 import StaticScreenWrapper, { StaticContent } from '../../../components/StaticScreenWrapper';
 import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4MeLogo';
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
-import { View, StyleSheet } from 'react-native';
-
-import { TextInput, } from 'react-native-gesture-handler';
-
+import TextQuicksand from '../../../components/TextQuicksand';
 import UpForMeButton from '../../../components/UpForMeButton';
-
-import { RegistStyles } from '../../../styles/RegistStyles';
 import KeyboardDismiss from '../../../components/KeyboardDismiss';
+import { regex } from '../../../res/data/regex';
+import { devMode } from '../../../dev/devConfig';
+import Axios from 'axios';
+import endpoints, { getEndpoint } from '../../../res/data/endpoints';
+import { navigationProxy } from '../../../navigation/navigationProxy';
 
 const LocalStratEmail = () => {
+
+    const [email, setEmail] = useState('');
+
+    const [feedback, setFeedback] = useState({
+        valid: false,
+        message: '',
+        color: '#fff',
+    })
+
+    const validateEmail = (toCheck) => {
+
+        if (devMode.enabled) {
+            console.log(toCheck);
+        }
+
+        if (!regex.validEmail.test(toCheck)) {
+            setFeedback({
+                valid: false,
+                message: 'Invalid email!',
+                color: 'red'
+            })
+        }
+        else {
+            setFeedback({
+                valid: true,
+                message: 'Good to go!',
+                color: 'green',
+            })
+        }
+    }
+
     return (
         <>
             <KeyboardDismiss>
@@ -28,14 +63,60 @@ const LocalStratEmail = () => {
                             <TextInput style={[
                                 styles.inputText,
                                 RegistStyles.inputText
-                            ]} />
+                            ]}
+
+                                onChangeText={(input) => {
+                                    setFeedback({
+                                        valid: false,
+                                        message: '',
+                                        color: '#fff',
+                                    });
+
+                                    setEmail(input);
+
+                                }}
+
+                                onBlur={() => {
+                                    validateEmail(email);
+                                }}
+                            />
+                            <TextQuicksand style={{ color: feedback.color }}>{feedback.message}</TextQuicksand>
                             <TextQuicksand>We sturen je een email met een verificatie code.</TextQuicksand>
                         </View>
 
                     </StaticContent>
 
                     <View style={RegistStyles.bottom}>
-                        <UpForMeButton title={'doorgaan'} />
+                        <UpForMeButton title={'doorgaan'} enabled={feedback.valid} onPress={async () => {
+
+                            if (devMode.network) {
+                                console.log('making call to:', getEndpoint(endpoints.registerEmail) + email);
+                            }
+
+                            await Axios.get(getEndpoint(endpoints.registerEmail) + email)
+                                .then((res) => {
+                                    if (devMode.network) {
+                                        console.log(res)
+                                    }
+
+                                    if (res.data.registered != undefined && res.status === 200) {
+                                        navigationProxy.navigate('DevRouter');
+                                    }
+                                })
+                                .catch((err) => {
+
+                                    if (devMode.network) {
+                                        console.warn(err);
+                                    }
+
+                                    setFeedback({
+                                        valid: true,
+                                        message: `Network Error... please try again!`,
+                                        color: 'red'
+                                    })
+                                })
+
+                        }} />
                     </View>
                 </StaticScreenWrapper>
             </KeyboardDismiss>
