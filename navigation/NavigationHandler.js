@@ -12,6 +12,8 @@ import DevRouter from '../dev/DevRouter';
 import DevSandbox from '../dev/DevSandbox';
 import Landing from '../screens/Landing/Landing';
 import LocalStratEmail from '../screens/authentication/LocalStratEmail/LocalStratEmail';
+import RegistUserData from '../screens/registration/RegistUserData.js/RegistUserData';
+import ConfirmationCode from '../screens/authentication/ConfirmationCode/ConfirmationCode';
 
 const Stack = createStackNavigator();
 
@@ -24,6 +26,14 @@ var routes = [
     {
         name: 'LocalStratEmail',
         component: LocalStratEmail,
+    },
+    {
+        name: 'ConfirmationCode',
+        component: ConfirmationCode,
+    },
+    {
+        name: 'RegistUserData',
+        component: RegistUserData,
     }
 ];
 

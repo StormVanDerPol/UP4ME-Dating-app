@@ -4,28 +4,31 @@ export var DATA_STORE = {
 
 }
 
+// DATA_STORE.meme = 'pp'
+// setDataStore('meme', 'pp')
+
 //Apparently this is all extra.
-export const setDataStore = (key, value) => {
+// export const setDataStore = (key, value) => {
 
-    DATA_STORE[key] = value;
+//     DATA_STORE[key] = value;
 
-    if (devMode.enabled) {
-        console.log('DATA_STORE:', DATA_STORE)
-    }
+//     if (devMode.enabled) {
+//         console.log('DATA_STORE:', DATA_STORE)
+//     }
 
-}
+// }
 
-export const clearDataStore = (...exceptions) => {
+// export const clearDataStore = (...exceptions) => {
 
-    let temp = {};
+//     let temp = {};
 
-    for (key of exceptions) {
-        temp[key] = DATA_STORE[key];
-    }
+//     for (key of exceptions) {
+//         temp[key] = DATA_STORE[key];
+//     }
 
-    DATA_STORE = { ...temp };
+//     DATA_STORE = { ...temp };
 
-    if (devMode.enabled) {
-        console.log('DATA_STORE after clearing:', DATA_STORE)
-    }
-}
+//     if (devMode.enabled) {
+//         console.log('DATA_STORE after clearing:', DATA_STORE)
+//     }
+// }

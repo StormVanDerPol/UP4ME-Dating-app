@@ -1,7 +1,7 @@
 import { devMode } from "../../dev/devConfig";
 
 const protocol = (devMode.localBackend) ? `http://` : `https://`;
-const domain = (devMode.localBackend) ? `192.168.1.17` : `www.upforme.nl`;
+const domain = (devMode.localBackend) ? `192.168.1.239` : `www.upforme.nl`;
 const port = `:50000`;
 const apiRoot = `/api/v1`;
 

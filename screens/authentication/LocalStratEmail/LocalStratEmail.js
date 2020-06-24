@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
-import { TextInput, } from 'react-native-gesture-handler';
+import { TextInput, ScrollView, } from 'react-native-gesture-handler';
 
 import { RegistStyles } from '../../../styles/RegistStyles';
 
-import { DATA_STORE } from '../../../stored/dataStore';
-
-import StaticScreenWrapper, { StaticContent } from '../../../components/StaticScreenWrapper';
+import Body, { FlexSection } from '../../../components/Body';
 import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4MeLogo';
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
 import TextQuicksand from '../../../components/TextQuicksand';
@@ -17,6 +15,7 @@ import { devMode } from '../../../dev/devConfig';
 import Axios from 'axios';
 import endpoints, { getEndpoint } from '../../../res/data/endpoints';
 import { navigationProxy } from '../../../navigation/navigationProxy';
+import UpForMeIcon, { iconIndex } from '../../../components/UpForMeIcon';
 
 const LocalStratEmail = () => {
 
@@ -53,9 +52,8 @@ const LocalStratEmail = () => {
     return (
         <>
             <KeyboardDismiss>
-                <StaticScreenWrapper>
-
-                    <StaticContent>
+                <Body>
+                    <FlexSection>
                         <RegistUp4MeLogo />
                         <RegistHeader>Mijn emailadres</RegistHeader>
 
@@ -84,7 +82,7 @@ const LocalStratEmail = () => {
                             <TextQuicksand>We sturen je een email met een verificatie code.</TextQuicksand>
                         </View>
 
-                    </StaticContent>
+                    </FlexSection>
 
                     <View style={RegistStyles.bottom}>
                         <UpForMeButton title={'doorgaan'} enabled={feedback.valid} onPress={async () => {
@@ -118,7 +116,9 @@ const LocalStratEmail = () => {
 
                         }} />
                     </View>
-                </StaticScreenWrapper>
+
+
+                </Body>
             </KeyboardDismiss>
         </>
     );
