@@ -17,6 +17,7 @@ import endpoints, { getEndpoint } from '../../../res/data/endpoints';
 import { DATA_STORE } from '../../../stored/dataStore';
 import { timeouts } from '../../../res/data/requests';
 import { devMode } from '../../../dev/devConfig';
+import { MemeMath } from '../../../functions/math';
 
 const RegistUserData = () => {
 
@@ -59,7 +60,7 @@ const RegistUserData = () => {
                                         data: {
                                             userid: DATA_STORE.userToken,
                                             naam: userData.name,
-                                            geboortedatum: userData.birthday.year + userData.birthday.month + userData.birthday.day,
+                                            geboortedatum: userData.birthday.year + '' + userData.birthday.month + '' + userData.birthday.day + '',
                                             beroep: userData.job,
                                             lengte: userData.height,
                                         },
@@ -74,7 +75,7 @@ const RegistUserData = () => {
                                     naam: userData.name,
                                     geboortedatum: userData.birthday.year + userData.birthday.month + userData.birthday.day,
                                     beroep: userData.job,
-                                    lengte: userData.height,
+                                    lengte: MemeMath.roundTwoDecimals(userData.height),
                                 }, {
                                     headers: {
                                         authorization: DATA_STORE.userToken,

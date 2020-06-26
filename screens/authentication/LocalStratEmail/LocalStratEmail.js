@@ -71,6 +71,10 @@ const LocalStratEmail = () => {
                                 RegistStyles.inputText
                             ]}
 
+                                onFocus={() => {
+                                    _FOCUSED_C.canSnap = false;
+                                }}
+
                                 onChangeText={(input) => {
                                     setFeedback({
                                         valid: false,
