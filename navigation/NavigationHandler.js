@@ -8,40 +8,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { navigationContainerRef } from './navigationProxy';
 
-import DevRouter from '../dev/DevRouter';
-import DevSandbox from '../dev/DevSandbox';
-import Landing from '../screens/Landing/Landing';
-import LocalStratEmail from '../screens/authentication/LocalStratEmail/LocalStratEmail';
+import appRoutes from './navigationRoutes';
 
 const Stack = createStackNavigator();
-
-//Add new routes here
-var routes = [
-    {
-        name: 'Landing',
-        component: Landing,
-    },
-    {
-        name: 'LocalStratEmail',
-        component: LocalStratEmail,
-    }
-];
-
-if (devMode.enabled) {
-    routes.unshift(
-        {
-            name: 'DevRouter',
-            component: DevRouter,
-        },
-        {
-            name: 'DevSandbox',
-            component: DevSandbox,
-        },
-    )
-}
-
-export const exportedRoutes = routes;
-
 
 export default NavigationHandler = () => {
     return (
@@ -50,7 +19,7 @@ export default NavigationHandler = () => {
             <NavigationContainer ref={navigationContainerRef}>
                 <Stack.Navigator screenOptions={{ headerShown: false }} >
 
-                    {routes.map((route, i) => {
+                    {appRoutes.map((route, i) => {
 
                         if (!route.options) {
                             route.options = {};
@@ -58,6 +27,7 @@ export default NavigationHandler = () => {
 
                         return (
                             <Stack.Screen
+                                key={i}
                                 name={route.name}
                                 component={route.component}
                                 options={route.options}

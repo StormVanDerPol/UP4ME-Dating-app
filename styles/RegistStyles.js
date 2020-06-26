@@ -29,6 +29,13 @@ export const RegistStyles = StyleSheet.create({
 
     inputText: {
         borderBottomColor: up4meColours.lineGray,
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+        paddingBottom: 0,
+        fontFamily: 'Quicksand-Medium',
+        fontSize: 16,
+    },
+
+    waitIndicator: {
+        alignSelf: "center",
     }
 })

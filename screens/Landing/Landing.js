@@ -14,7 +14,7 @@ import UpForMeButton, { ButtonTypes } from '../../components/UpForMeButton';
 import { navigationProxy } from '../../navigation/navigationProxy';
 import { openBrowser } from '../../functions/bowser';
 
-import StaticScreenWrapper, { StaticContent } from '../../components/StaticScreenWrapper';
+import Body, { FlexSection } from '../../components/Body';
 import UpForMeModal from '../../components/UpForMeModal';
 import AuthButton, { providerIndex } from '../../components/AuthButton';
 
@@ -27,10 +27,10 @@ const Landing = () => {
 
     return (
         <>
-            <StaticScreenWrapper>
+            <Body>
                 <LinearGradient style={styles.bg} colors={[up4meColours.gradOrange, up4meColours.gradPink]}>
 
-                    <StaticContent>
+                    <FlexSection>
 
                         <UpForMeIcon style={styles.logo} icon={iconIndex.up4me_logo_login} />
 
@@ -54,19 +54,20 @@ const Landing = () => {
                             }}
                         />
 
-                    </StaticContent>
+                    </FlexSection>
 
                     <View style={styles.bottom}>
                         <TextQuicksand style={styles.text}>Als je inloggen of Maak een account aan tikt, ga je akkoord met onze <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.nhentai.net') }}>Voorwaarden</TextQuicksand>. Lees meer over hoe we je gegevens verwerken in ons <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.nhentai.net') }}>Privacybeleid</TextQuicksand>, en <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.nhentai.net') }}>Cookiebeleid</TextQuicksand>.</TextQuicksand>
                     </View>
 
                 </LinearGradient>
-            </StaticScreenWrapper>
+            </Body>
 
             <UpForMeModal style={styles.modalContent} enabled={provModalActive} duration={300}>
                 <AuthButton style={styles.authButton} provider={providerIndex.up4me} action={action.current}
                     onPress={() => {
                         navigationProxy.navigate('LocalStratEmail');
+                        setProvModalActive(false);
                     }} />
                 <AuthButton style={styles.authButton} provider={providerIndex.google} action={action.current} />
                 <UpForMeButton style={styles.modalCancelButton} title={'Sluiten'} onPress={() => { setProvModalActive(false) }} />

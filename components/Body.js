@@ -5,18 +5,24 @@ Container that will scale to fit the screen, child must have flex: n, use Static
 
 import React from 'react';
 import { View, StyleSheet, SafeAreaView } from 'react-native';
+import getDeviceDimensions from '../functions/dimensions';
 
-const StaticScreenWrapper = ({ children }) => {
+const Body = ({ children }) => {
     return (
-        <SafeAreaView style={styles.root}>
+        <SafeAreaView style={{
+            ...styles.root,
+            height: getDeviceDimensions('window', 'height'),
+        }}>
             {children}
         </SafeAreaView>
     );
 }
 
-export const StaticContent = ({ children }) => {
+export const FlexSection = ({ children }) => {
     return (
-        <View style={styles.root}>
+        <View style={{
+            flex: 1,
+        }}>
             {children}
         </View>
     );
@@ -24,10 +30,8 @@ export const StaticContent = ({ children }) => {
 
 const styles = StyleSheet.create({
     root: {
-        flex: 1,
-        // borderWidth: 2,
-        // borderColor: 'red',
+        backgroundColor: '#fff',
     }
 })
 
-export default StaticScreenWrapper;
+export default Body;
