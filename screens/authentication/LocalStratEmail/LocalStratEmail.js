@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { TextInput, ScrollView, } from 'react-native-gesture-handler';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
+import { TextInput } from 'react-native-gesture-handler';
 
 import { RegistStyles } from '../../../styles/RegistStyles';
 
@@ -10,12 +10,18 @@ import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader'
 import TextQuicksand from '../../../components/TextQuicksand';
 import UpForMeButton from '../../../components/UpForMeButton';
 import KeyboardDismiss from '../../../components/KeyboardDismiss';
+
 import { regex } from '../../../res/data/regex';
+
 import { devMode } from '../../../dev/devConfig';
+
 import Axios from 'axios';
-import endpoints, { getEndpoint } from '../../../res/data/endpoints';
+
+import endpoints, { getEndpoint, requestFeedback } from '../../../res/data/endpoints';
 import { navigationProxy } from '../../../navigation/navigationProxy';
-import UpForMeIcon, { iconIndex } from '../../../components/UpForMeIcon';
+import WaitIndicator from '../../../components/waitIndicator';
+import { timeouts } from '../../../res/data/requests';
+import { DATA_STORE } from '../../../stored/dataStore';
 
 const LocalStratEmail = () => {
 
@@ -25,7 +31,9 @@ const LocalStratEmail = () => {
         valid: false,
         message: '',
         color: '#fff',
-    })
+    });
+
+    const [busy, setBusy] = useState(false);
 
     const validateEmail = (toCheck) => {
 
@@ -85,20 +93,28 @@ const LocalStratEmail = () => {
                     </FlexSection>
 
                     <View style={RegistStyles.bottom}>
-                        <UpForMeButton title={'doorgaan'} enabled={feedback.valid} onPress={async () => {
+                        <WaitIndicator style={RegistStyles.waitIndicator} visible={busy} />
+                        <UpForMeButton title={'doorgaan'} enabled={feedback.valid && !busy} onPress={async () => {
+
+                            setBusy(true);
 
                             if (devMode.network) {
-                                console.log('making call to:', getEndpoint(endpoints.registerEmail) + email);
+                                console.log('making call to:', getEndpoint(endpoints.get.registerEmail) + email);
                             }
 
-                            await Axios.get(getEndpoint(endpoints.registerEmail) + email)
+                            await Axios.get(getEndpoint(endpoints.get.registerEmail) + email, {
+                                timeout: timeouts.short,
+                            })
                                 .then((res) => {
                                     if (devMode.network) {
                                         console.log(res)
                                     }
 
                                     if (res.data.registered != undefined && res.status === 200) {
-                                        navigationProxy.navigate('DevRouter');
+
+                                        DATA_STORE.registData.email = email;
+
+                                        navigationProxy.navigate('ConfirmationCode');
                                     }
                                 })
                                 .catch((err) => {
@@ -109,15 +125,15 @@ const LocalStratEmail = () => {
 
                                     setFeedback({
                                         valid: true,
-                                        message: `Network Error... please try again!`,
+                                        message: requestFeedback.err,
                                         color: 'red'
                                     })
                                 })
-
+                                .finally(() => {
+                                    setBusy(false);
+                                })
                         }} />
                     </View>
-
-
                 </Body>
             </KeyboardDismiss>
         </>

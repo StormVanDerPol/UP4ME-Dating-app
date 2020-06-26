@@ -2,6 +2,11 @@ import { devMode } from "../dev/devConfig";
 
 export var DATA_STORE = {
 
+    userToken: null,
+
+    registData: {
+        email: null,
+    }
 }
 
 // DATA_STORE.meme = 'pp'

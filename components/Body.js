@@ -22,7 +22,6 @@ export const FlexSection = ({ children }) => {
     return (
         <View style={{
             flex: 1,
-            // borderWidth: 2
         }}>
             {children}
         </View>
