@@ -32,6 +32,10 @@ const devRoutes = [
     {
         name: 'RegistUserData',
         color: { r: 60, g: 60, b: 255 },
+    },
+    {
+        name: 'RegistLocation',
+        color: { r: 60, g: 60, b: 255 },
     }
 ]
 

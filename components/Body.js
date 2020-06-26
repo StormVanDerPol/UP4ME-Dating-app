@@ -6,6 +6,7 @@ Container that will scale to fit the screen, child must have flex: n, use Static
 import React from 'react';
 import { View, StyleSheet, SafeAreaView } from 'react-native';
 import getDeviceDimensions from '../functions/dimensions';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Body = ({ children }) => {
     return (
@@ -20,11 +21,11 @@ const Body = ({ children }) => {
 
 export const FlexSection = ({ children }) => {
     return (
-        <View style={{
+        <ScrollView style={{
             flex: 1,
         }}>
             {children}
-        </View>
+        </ScrollView>
     );
 }
 

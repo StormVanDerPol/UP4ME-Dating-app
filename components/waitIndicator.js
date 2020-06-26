@@ -1,14 +1,39 @@
 import React from 'react';
 import TextQuicksand from './TextQuicksand';
+import up4meColours from '../res/data/colours';
 
-const WaitIndicator = ({ style = {}, visible = true }) => {
+export const networkFeedbackMessages = {
+    wait: 'Please wait...',
+    err: 'Network Error, please try again!'
+}
+
+const NetworkFeedBackIndicator = ({ style = {}, message = networkFeedbackMessages.wait }) => {
+
+    let color = '';
+
+    switch (message) {
+        case networkFeedbackMessages.wait:
+            color = up4meColours.darkGray
+            break;
+
+        case networkFeedbackMessages.err:
+            color = 'red';
+            break;
+
+        default:
+            color = 'green';
+    }
+
     return (
         <TextQuicksand
-            style={(visible) ? { opacity: 1, ...style } : { opacity: 0, ...style }}
+            style={{
+                ...style,
+                color: color
+            }}
         >
-            Please wait...
+            {message}
         </TextQuicksand>
     );
 }
 
-export default WaitIndicator;
+export default NetworkFeedBackIndicator;

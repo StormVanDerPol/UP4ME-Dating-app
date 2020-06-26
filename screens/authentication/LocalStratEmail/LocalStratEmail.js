@@ -9,7 +9,7 @@ import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4M
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
 import TextQuicksand from '../../../components/TextQuicksand';
 import UpForMeButton from '../../../components/UpForMeButton';
-import KeyboardDismiss from '../../../components/KeyboardDismiss';
+import KeyboardDismiss, { _FOCUSED_C } from '../../../components/KeyboardDismiss';
 
 import { regex } from '../../../res/data/regex';
 
@@ -19,9 +19,10 @@ import Axios from 'axios';
 
 import endpoints, { getEndpoint, requestFeedback } from '../../../res/data/endpoints';
 import { navigationProxy } from '../../../navigation/navigationProxy';
-import WaitIndicator from '../../../components/waitIndicator';
+import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../components/waitIndicator';
 import { timeouts } from '../../../res/data/requests';
 import { DATA_STORE } from '../../../stored/dataStore';
+import up4meColours from '../../../res/data/colours';
 
 const LocalStratEmail = () => {
 
@@ -33,7 +34,10 @@ const LocalStratEmail = () => {
         color: '#fff',
     });
 
-    const [busy, setBusy] = useState(false);
+    const [netFeedback, setNetFeedback] = useState({
+        busy: false,
+        message: '',
+    });
 
     const validateEmail = (toCheck) => {
 
@@ -97,10 +101,15 @@ const LocalStratEmail = () => {
                     </FlexSection>
 
                     <View style={RegistStyles.bottom}>
-                        <WaitIndicator style={RegistStyles.waitIndicator} visible={busy} />
-                        <UpForMeButton title={'doorgaan'} enabled={feedback.valid && !busy} onPress={async () => {
 
-                            setBusy(true);
+                        <NetworkFeedBackIndicator style={RegistStyles.waitIndicator} message={netFeedback.message} />
+
+                        <UpForMeButton title={'doorgaan'} enabled={feedback.valid && !netFeedback.busy} onPress={async () => {
+
+                            setNetFeedback({
+                                busy: true,
+                                message: networkFeedbackMessages.wait,
+                            })
 
                             if (devMode.network) {
                                 console.log('making call to:', getEndpoint(endpoints.get.registerEmail) + email);
@@ -114,10 +123,14 @@ const LocalStratEmail = () => {
                                         console.log(res)
                                     }
 
+                                    setNetFeedback({
+                                        busy: false,
+                                        message: '',
+                                    })
+
                                     if (res.data.registered != undefined && res.status === 200) {
 
                                         DATA_STORE.registData.email = email;
-
                                         navigationProxy.navigate('ConfirmationCode');
                                     }
                                 })
@@ -127,14 +140,10 @@ const LocalStratEmail = () => {
                                         console.warn(err);
                                     }
 
-                                    setFeedback({
-                                        valid: true,
-                                        message: requestFeedback.err,
-                                        color: 'red'
+                                    setNetFeedback({
+                                        busy: false,
+                                        message: networkFeedbackMessages.err,
                                     })
-                                })
-                                .finally(() => {
-                                    setBusy(false);
                                 })
                         }} />
                     </View>

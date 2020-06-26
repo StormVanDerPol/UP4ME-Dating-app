@@ -4,6 +4,7 @@ import Landing from '../screens/Landing/Landing';
 import LocalStratEmail from '../screens/authentication/LocalStratEmail/LocalStratEmail';
 import RegistUserData from '../screens/registration/RegistUserData/RegistUserData';
 import ConfirmationCode from '../screens/authentication/ConfirmationCode/ConfirmationCode';
+import RegistLocation from '../screens/registration/RegistLocation/RegistLocation';
 import { devMode } from '../dev/devConfig';
 
 //Add new routes here
@@ -23,7 +24,12 @@ var appRoutes = [
     {
         name: 'RegistUserData',
         component: RegistUserData,
-    }
+    },
+    {
+        name: 'RegistLocation',
+        component: RegistLocation,
+    },
+
 ];
 
 if (devMode.enabled) {
