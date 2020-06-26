@@ -11,10 +11,9 @@ import UpForMeButton from '../../../components/UpForMeButton';
 import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4MeLogo';
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../components/waitIndicator';
-import InputLocation from '../../../components/bigComponents/InputLocation';
 
 
-const RegistLocation = () => {
+const RegistTemplate = () => {
 
     const [netFeedback, setNetFeedback] = useState({
         busy: false,
@@ -27,13 +26,9 @@ const RegistLocation = () => {
                 <RegistUp4MeLogo />
                 <RegistHeader>Mijn locatie</RegistHeader>
 
-                <InputLocation />
+                <View style={RegistStyles.container}>
 
-                {/* <View style={RegistStyles.container}>
-
-
-
-                </View> */}
+                </View>
             </FlexSection>
 
             <View style={RegistStyles.bottom}>
@@ -54,4 +49,4 @@ const RegistLocation = () => {
     );
 }
 
-export default RegistLocation;
+export default RegistTemplate;

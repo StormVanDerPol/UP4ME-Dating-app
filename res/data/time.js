@@ -1,5 +1,18 @@
 import moment from "moment";
 
+const now = new Date();
+
+export const getYearIndex = (year) => {
+    return year - 1950;
+}
+
+export const today = {
+    year: now.getFullYear(),
+    month: now.getMonth(),
+    day: now.getDate(),
+    yearIndex: getYearIndex(now.getFullYear()),
+}
+
 export function getDaysInMonth(month, year) {
     var date = new Date(year, month, 1);
     var days = [];

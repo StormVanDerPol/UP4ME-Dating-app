@@ -12,7 +12,7 @@ import TextQuicksand from '../../../components/TextQuicksand';
 
 import { RegistStyles } from '../../../styles/RegistStyles';
 import UpForMeButton from '../../../components/UpForMeButton';
-import WaitIndicator from '../../../components/waitIndicator';
+import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../components/waitIndicator';
 import Axios from 'axios';
 import { devMode } from '../../../dev/devConfig';
 import endpoints, { getEndpoint, requestFeedback } from '../../../res/data/endpoints';
@@ -25,11 +25,12 @@ const ConfirmationCode = () => {
     const [confCode, setConfCode] = useState('');
     const codeLength = 6;
 
-    const [busy, setBusy] = useState(false);
-    const [feedback, setFeedback] = useState({
+    const [netFeedback, setNetFeedback] = useState({
+        busy: false,
         message: '',
-        color: 'green',
     })
+
+    useEffect(() => { console.log(netFeedback) }, [netFeedback])
 
     return (
         <KeyboardDismiss>
@@ -44,17 +45,14 @@ const ConfirmationCode = () => {
 
                 <View style={RegistStyles.bottom}>
 
-                    <TextQuicksand style={{ color: feedback.color }}>{feedback.message}</TextQuicksand>
+                    <NetworkFeedBackIndicator style={RegistStyles.waitIndicator} message={netFeedback.message} />
+                    <UpForMeButton title={'doorgaan'} enabled={(confCode.length == codeLength && !netFeedback.busy)} onPress={async () => {
 
-                    <WaitIndicator style={RegistStyles.waitIndicator} visible={busy} />
-                    <UpForMeButton title={'doorgaan'} enabled={(confCode.length == codeLength)} onPress={async () => {
-
-                        setFeedback({
-                            message: '',
-                            color: 'green',
+                        setNetFeedback({
+                            busy: true,
+                            message: networkFeedbackMessages.wait,
                         })
 
-                        setBusy(true);
 
                         if (devMode.network) {
                             console.log('request:', getEndpoint(endpoints.post.login), { email: DATA_STORE.registData.email, security: confCode });
@@ -68,25 +66,33 @@ const ConfirmationCode = () => {
                             timeout: timeouts.short,
                         })
                             .then((res) => {
-                                console.log('res', res);
+
+                                if (devMode.network) {
+                                    console.log('res', res);
+                                }
+
+                                setNetFeedback({
+                                    busy: false,
+                                    message: '',
+                                })
 
                                 DATA_STORE.userToken = res.headers.authorization;
 
-                                console.log(DATA_STORE);
+                                if (devMode.enabled) {
+                                    console.log(DATA_STORE);
+                                }
 
                                 navigationProxy.navigate('RegistUserData');
 
                             })
                             .catch((err) => {
-                                setFeedback({
-                                    message: requestFeedback.err,
-                                    color: 'red',
+                                console.log(err);
+
+                                setNetFeedback({
+                                    busy: false,
+                                    message: networkFeedbackMessages.err,
                                 })
                             })
-                            .finally(() => {
-                                setBusy(false);
-                            })
-
                     }} />
                 </View>
 

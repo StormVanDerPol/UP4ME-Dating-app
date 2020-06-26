@@ -20,7 +20,7 @@ export const SingleSliderInfo = ({
     title = '',
     unit = '',
     suffix = '',
-    showDecimals = false,
+    toDecimals = false,
 }) => {
 
     const [val, setVal] = useState(initVal)
@@ -30,7 +30,7 @@ export const SingleSliderInfo = ({
             <View style={styles.header}>
                 <TextQuicksand>{title}</TextQuicksand>
                 <TextQuicksand>
-                    {(showDecimals) ? val.toFixed(2) : val}{unit}{suffix}
+                    {(toDecimals) ? val / 100 : val}{unit}{suffix}
                 </TextQuicksand>
             </View>
             <SingleSlider
@@ -63,7 +63,7 @@ export const DoubleSliderInfo = ({
     title = '',
     unit = '',
     suffix = '',
-    showDecimals = false,
+    toDecimals = false,
 }) => {
 
     const [val, setVal] = useState(initVals)
@@ -73,7 +73,7 @@ export const DoubleSliderInfo = ({
             <View style={styles.header}>
                 <TextQuicksand>{title}</TextQuicksand>
                 <TextQuicksand>
-                    {(showDecimals) ? val[0].toFixed(2) : val[0]}{unit} - {(showDecimals) ? val[1].toFixed(2) : val[1]}{unit}{suffix}
+                    {(showDecimals) ? val[0] / 100 : val[0]}{unit} - {(showDecimals) ? val[1] / 100 : val[1]}{unit}{suffix}
                 </TextQuicksand>
             </View>
             <DoubleSlider
