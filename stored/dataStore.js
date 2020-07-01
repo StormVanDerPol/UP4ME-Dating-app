@@ -1,6 +1,6 @@
 import { devMode } from "../dev/devConfig";
 
-export var DATA_STORE = {
+export const DATA_STORE = {
 
     userToken: null,
 

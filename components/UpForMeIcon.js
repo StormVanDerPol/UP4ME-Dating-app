@@ -39,6 +39,7 @@ import RNSVG_matches_gray_notif from '../res/icons/rnsvg/nav/rnsvg_matches_gray_
 import RNSVG_paperPlane from '../res/icons/rnsvg/nav/rnsvg_paperPlane';
 import RNSVG_profile_colour from '../res/icons/rnsvg/nav/rnsvg_profile_colour';
 import RNSVG_profile_gray from '../res/icons/rnsvg/nav/rnsvg_profile_gray';
+import RNSVG_magnifying_glass from '../res/icons/rnsvg/rnsvg_magnifying_glass';
 
 export const iconIndex = {
 
@@ -94,6 +95,8 @@ export const iconIndex = {
     arrow_right: <RNSVG_arrow_right />,
     arrow_left: <RNSVG_arrow_back />,
     arrow_down: <RNSVG_arrow_down />,
+
+    magnifying_glass: <RNSVG_magnifying_glass />,
 
     google_logo: <RNSVG_google_logo />,
 }

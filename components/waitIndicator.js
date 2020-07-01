@@ -21,7 +21,7 @@ const NetworkFeedBackIndicator = ({ style = {}, message = networkFeedbackMessage
             break;
 
         default:
-            color = 'green';
+            color = 'orange';
     }
 
     return (

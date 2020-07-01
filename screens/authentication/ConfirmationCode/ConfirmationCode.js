@@ -46,7 +46,7 @@ const ConfirmationCode = () => {
                 <View style={RegistStyles.bottom}>
 
                     <NetworkFeedBackIndicator style={RegistStyles.waitIndicator} message={netFeedback.message} />
-                    <UpForMeButton title={'doorgaan'} enabled={(confCode.length == codeLength && !netFeedback.busy)} onPress={async () => {
+                    <UpForMeButton style={RegistStyles.botButton} title={'doorgaan'} enabled={(confCode.length == codeLength && !netFeedback.busy)} onPress={async () => {
 
                         setNetFeedback({
                             busy: true,

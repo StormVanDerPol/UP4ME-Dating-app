@@ -71,6 +71,7 @@ const LocalStratEmail = () => {
 
                         <View style={RegistStyles.container}>
                             <TextInput style={[
+                                RegistStyles.botMargin,
                                 styles.inputText,
                                 RegistStyles.inputText
                             ]}
@@ -104,7 +105,7 @@ const LocalStratEmail = () => {
 
                         <NetworkFeedBackIndicator style={RegistStyles.waitIndicator} message={netFeedback.message} />
 
-                        <UpForMeButton title={'doorgaan'} enabled={feedback.valid && !netFeedback.busy} onPress={async () => {
+                        <UpForMeButton style={RegistStyles.botButton} title={'doorgaan'} enabled={feedback.valid && !netFeedback.busy} onPress={async () => {
 
                             setNetFeedback({
                                 busy: true,
@@ -128,7 +129,7 @@ const LocalStratEmail = () => {
                                         message: '',
                                     })
 
-                                    if (res.data.registered != undefined && res.status === 200) {
+                                    if (res.status === 200) {
 
                                         DATA_STORE.registData.email = email;
                                         navigationProxy.navigate('ConfirmationCode');
@@ -156,7 +157,6 @@ const LocalStratEmail = () => {
 const styles = StyleSheet.create({
     inputText: {
         marginTop: 75,
-        marginBottom: 25,
     }
 })
 

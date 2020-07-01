@@ -17,7 +17,9 @@ const endpoints = {
 
     post: {
         login: `/login`,
-        setUserData: `/set/profile/bjnh`
+        setUserData: `/set/profile/bjnh`,
+        setGPS: `/set/gps`, //userid, latitude, longitude
+        setPlace: `/set/profile/city`, //userid, woontin
     }
 };
 

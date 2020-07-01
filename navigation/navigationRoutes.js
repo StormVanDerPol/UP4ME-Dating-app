@@ -6,6 +6,7 @@ import RegistUserData from '../screens/registration/RegistUserData/RegistUserDat
 import ConfirmationCode from '../screens/authentication/ConfirmationCode/ConfirmationCode';
 import RegistLocation from '../screens/registration/RegistLocation/RegistLocation';
 import { devMode } from '../dev/devConfig';
+import RegistGender from '../screens/registration/RegistGender/RegistGender';
 
 //Add new routes here
 var appRoutes = [
@@ -28,6 +29,10 @@ var appRoutes = [
     {
         name: 'RegistLocation',
         component: RegistLocation,
+    },
+    {
+        name: 'RegistGender',
+        component: RegistGender,
     },
 
 ];
