@@ -21,6 +21,8 @@ const RegistGender = () => {
         message: '',
     });
 
+    const [gender, setGender] = useState(-1);
+
     return (
         <Body>
             <FlexSection>
@@ -29,14 +31,16 @@ const RegistGender = () => {
 
                 <View style={RegistStyles.container}>
 
-                    <SelectGender />
+                    <SelectGender onChange={(penis) => {
+                        setGender(penis);
+                    }} />
 
                 </View>
             </FlexSection>
 
             <View style={RegistStyles.bottom}>
                 <NetworkFeedBackIndicator style={RegistStyles.waitIndicator} message={netFeedback.message} />
-                <UpForMeButton style={RegistStyles.botButton} title={'doorgaan'} enabled={false} onPress={async () => {
+                <UpForMeButton style={RegistStyles.botButton} title={'doorgaan'} enabled={(gender != -1 && !netFeedback.busy)} onPress={async () => {
                     setNetFeedback({
                         busy: true,
                         message: networkFeedbackMessages.wait,

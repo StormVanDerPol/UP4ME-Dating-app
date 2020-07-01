@@ -1,20 +1,18 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 import up4meColours from '../res/data/colours';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 
-const UpForMeSwitch = ({ active = false, onPress = () => { } }) => {
+const UpForMeSwitch = ({ initActive = false, onPress = () => { } }) => {
 
     const xpos = useRef(new Animated.Value(0)).current;
 
-    // const active = useRef(false);
+    const [active, setActive] = useState(initActive)
 
-    const [fu, forceUpdate] = useState(0);
+    // const [fu, forceUpdate] = useState(0);
 
     const slideAnim = () => {
-
-        console.log('nyanpasu')
 
         Animated.timing(
             xpos,
@@ -25,15 +23,13 @@ const UpForMeSwitch = ({ active = false, onPress = () => { } }) => {
             }
         ).start(
             () => {
-                forceUpdate(fu + 1);
+                (active) ? setActive(false) : setActive(true);
             }
         );
-
-        (active) ? active = false : active = true
     }
 
     return (
-        <TouchableWithoutFeedback onPress={() => { onPress() }}>
+        <TouchableWithoutFeedback onPress={() => { onPress(); slideAnim(); }}>
             <LinearGradient colors={(active) ? [up4meColours.gradPink, up4meColours.gradOrange] : ['#DDDDDD', '#DDDDDD']}
                 style={styles.slideCheckbox}>
 
