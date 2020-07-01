@@ -19,11 +19,17 @@ const Body = ({ children }) => {
     );
 }
 
-export const FlexSection = ({ children }) => {
+export const FlexSection = ({ children, onLayout = (e) => { } }) => {
     return (
-        <ScrollView style={{
-            flex: 1,
-        }}>
+        <ScrollView
+            onLayout={(e) => {
+                onLayout(e);
+            }}
+            style={{
+                flex: 1,
+                // borderWidth: 2,
+                // borderColor: 'green',
+            }}>
             {children}
         </ScrollView>
     );

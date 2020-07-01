@@ -2,7 +2,7 @@ import * as React from "react"
 import Svg, { Path } from "react-native-svg"
 /* SVGR has dropped some elements not supported by react-native-svg: title */
 
-function RNSVG_vergroot() {
+function RNSVG_magnifying_glass() {
     return (
         <Svg width={'100%'} height={'100%'} viewBox="0 0 16 16">
             <Path
@@ -14,4 +14,4 @@ function RNSVG_vergroot() {
     )
 }
 
-export default RNSVG_vergroot
+export default RNSVG_magnifying_glass

@@ -11,9 +11,10 @@ import UpForMeButton from '../../../components/UpForMeButton';
 import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4MeLogo';
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../components/waitIndicator';
+import SelectGender from '../../../components/bigComponents/SelectGender';
 
 
-const RegistTemplate = () => {
+const RegistGender = () => {
 
     const [netFeedback, setNetFeedback] = useState({
         busy: false,
@@ -24,9 +25,11 @@ const RegistTemplate = () => {
         <Body>
             <FlexSection>
                 <RegistUp4MeLogo />
-                <RegistHeader>Mijn locatie</RegistHeader>
+                <RegistHeader>Ik ben een</RegistHeader>
 
                 <View style={RegistStyles.container}>
+
+                    <SelectGender />
 
                 </View>
             </FlexSection>
@@ -49,4 +52,4 @@ const RegistTemplate = () => {
     );
 }
 
-export default RegistTemplate;
+export default RegistGender;

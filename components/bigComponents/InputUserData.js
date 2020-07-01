@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 import TextQuicksand from '../TextQuicksand';
 import { TextInput } from 'react-native-gesture-handler';
@@ -38,7 +38,7 @@ const InputUserData = ({ initValues = {
                 }}
             />
 
-            <View style={styles.birthdayContainer}>
+            <View style={RegistStyles.topMargin}>
                 <TextQuicksand style={styles.birthdayHeader}>Mijn geboortedatum</TextQuicksand>
                 <BirthDayPicker
                     initValues={initValues.birthday}
@@ -48,7 +48,7 @@ const InputUserData = ({ initValues = {
                     }} />
             </View>
 
-            <SingleSliderInfo style={styles.slider} title={'Lengte'} unit={'m'} initVal={initValues.height} range={[130, 245]} step={1} toDecimals={true}
+            <SingleSliderInfo style={RegistStyles.topMargin} title={'Lengte'} unit={'m'} initVal={initValues.height} range={[130, 245]} step={1} toDecimals={true}
                 onChange={(output) => {
                     _userData.height = output;
                     onChange(_userData);
@@ -72,7 +72,7 @@ const UserDataTextInput = ({ initVal = '', header, onChangeText = () => { } }) =
     var _ref = useRef().current;
 
     return (
-        <View style={[styles.textInputContainer]}>
+        <View style={[RegistStyles.topMargin]}>
             <TextQuicksand>{header}</TextQuicksand>
             <TextInput style={[
                 RegistStyles.inputText
@@ -94,18 +94,6 @@ const UserDataTextInput = ({ initVal = '', header, onChangeText = () => { } }) =
 }
 
 const styles = StyleSheet.create({
-
-    textInputContainer: {
-        marginTop: 24,
-    },
-
-    slider: {
-        marginTop: 24,
-    },
-
-    birthdayContainer: {
-        marginTop: 24,
-    },
 
     birthdayHeader: {
         marginBottom: 12,

@@ -57,7 +57,7 @@ const Landing = () => {
                     </FlexSection>
 
                     <View style={styles.bottom}>
-                        <TextQuicksand style={styles.text}>Als je inloggen of Maak een account aan tikt, ga je akkoord met onze <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.nhentai.net') }}>Voorwaarden</TextQuicksand>. Lees meer over hoe we je gegevens verwerken in ons <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.nhentai.net') }}>Privacybeleid</TextQuicksand>, en <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.nhentai.net') }}>Cookiebeleid</TextQuicksand>.</TextQuicksand>
+                        <TextQuicksand style={styles.text}>Als je inloggen of Maak een account aan tikt, ga je akkoord met onze <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.uptodates.nl/algemene-voorwaarden') }}>Voorwaarden</TextQuicksand>. Lees meer over hoe we je gegevens verwerken in ons <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.uptodates.nl/privacybeleid') }}>Privacybeleid</TextQuicksand>, en <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.uptodates.nl/cookiebeleid') }}>Cookiebeleid</TextQuicksand>.</TextQuicksand>
                     </View>
 
                 </LinearGradient>

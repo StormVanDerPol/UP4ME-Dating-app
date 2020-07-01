@@ -20,8 +20,12 @@ export const RegistStyles = StyleSheet.create({
 
     bottom: {
         marginBottom: 25,
-        alignSelf: "center",
+        // alignSelf: "center",
         borderTopWidth: 1,
+    },
+
+    botButton: {
+        alignSelf: "center",
     },
 
     container: {
@@ -39,5 +43,13 @@ export const RegistStyles = StyleSheet.create({
     waitIndicator: {
         marginVertical: 4,
         alignSelf: "center",
+    },
+
+    topMargin: {
+        marginTop: 24,
+    },
+
+    botMargin: {
+        marginBottom: 24,
     }
 })

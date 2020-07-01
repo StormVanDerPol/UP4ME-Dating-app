@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 
 import { RegistStyles } from '../../../styles/RegistStyles';
 
@@ -64,7 +64,7 @@ const RegistUserData = () => {
 
                 <View style={RegistStyles.bottom}>
                     <NetworkFeedBackIndicator style={RegistStyles.waitIndicator} message={netFeedback.message} />
-                    <UpForMeButton title={'doorgaan'} enabled={
+                    <UpForMeButton style={RegistStyles.botButton} title={'doorgaan'} enabled={
                         (userData.job.length > 0 && userData.name.length > 0 && !netFeedback.busy)
                     }
                         onPress={async () => {
@@ -89,55 +89,71 @@ const RegistUserData = () => {
                                 });
                             }
 
-                            Axios.post(getEndpoint(endpoints.post.setUserData), {
-                                userid: DATA_STORE.userToken,
-                                naam: userData.name,
-                                geboortedatum: userData.birthday.year + userData.birthday.month + userData.birthday.day,
-                                beroep: userData.job,
-                                lengte: MemeMath.roundTwoDecimals(userData.height),
-                            }, {
-                                headers: {
-                                    authorization: DATA_STORE.userToken,
-                                },
-                                timeout: timeouts.short,
-                            })
-                                .then((res) => {
-                                    // console.log(res);
+                            if (DATA_STORE.userToken != null) {
 
-                                    if (res.data) {
-                                        navigationProxy.navigate('RegistLocation');
-                                        netFeedback.message = ''
-
-                                    }
-
-                                    else {
-                                        netFeedback.message = networkFeedbackMessages.err
-                                    }
-
-                                    setNetFeedback({
-                                        busy: false,
-                                        ...netFeedback,
-                                    });
+                                Axios.post(getEndpoint(endpoints.post.setUserData), {
+                                    userid: DATA_STORE.userToken,
+                                    naam: userData.name,
+                                    geboortedatum: userData.birthday.year + userData.birthday.month + userData.birthday.day,
+                                    beroep: userData.job,
+                                    lengte: MemeMath.roundTwoDecimals(userData.height),
+                                }, {
+                                    headers: {
+                                        authorization: DATA_STORE.userToken,
+                                    },
+                                    timeout: timeouts.short,
                                 })
-                                .catch((err) => {
-                                    setNetFeedback({
-                                        busy: false,
-                                        message: networkFeedbackMessages.err,
-                                    });
-                                })
+                                    .then((res) => {
+                                        console.log(res);
+
+                                        if (res.data) {
+                                            navigationProxy.navigate('RegistLocation');
+                                            netFeedback.message = ''
+                                        }
+
+                                        else {
+                                            netFeedback.message = networkFeedbackMessages.err
+                                        }
+
+                                        setNetFeedback({
+                                            busy: false,
+                                            ...netFeedback,
+                                        });
+                                    })
+                                    .catch((err) => {
+                                        console.log(err)
+
+                                        setNetFeedback({
+                                            busy: false,
+                                            message: networkFeedbackMessages.err,
+                                        });
+                                    })
+                            }
+                            else {
+                                setNetFeedback({
+                                    busy: false,
+                                    message: 'No token found',
+                                });
+
+                                Alert.alert(
+                                    'No token found',
+                                    'Quitting the registrtation process',
+                                    [
+                                        {
+                                            text: 'OK', onPress: () => {
+                                                navigationProxy.navigate('Landing');
+                                            }
+                                        }
+                                    ],
+                                    { cancelable: false }
+                                );
+                            }
                         }} />
                 </View>
-
-
-
-
-
             </Body>
         </KeyboardDismiss>
     );
 }
-
-
 
 
 const styles = StyleSheet.create({
