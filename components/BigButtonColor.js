@@ -6,10 +6,10 @@ import TextQuicksand from './TextQuicksand';
 import { StyleSheet } from 'react-native';
 import getDeviceDimensions from '../functions/dimensions';
 
-const BigButtonColor = ({ active = true, header = '', onPress = () => { } }) => {
+const BigButtonColor = ({ style = {}, active = true, header = '', onPress = () => { } }) => {
     return (
         <LinearGradient colors={(active) ? [up4meColours.gradPink, up4meColours.gradOrange] : ['#FFF', '#FFF']}
-            style={[styles.outer]}>
+            style={[styles.outer, style]}>
             <TouchableOpacity style={[styles.inner]}
                 onPress={() => onPress()}>
                 <TextQuicksand>{header}</TextQuicksand>
