@@ -7,8 +7,9 @@ import ConfirmationCode from '../screens/authentication/ConfirmationCode/Confirm
 import RegistLocation from '../screens/registration/RegistLocation/RegistLocation';
 import { devMode } from '../dev/devConfig';
 import RegistGender from '../screens/registration/RegistGender/RegistGender';
+import RegistPhotos from '../screens/registration/RegistPhotos/RegistPhotos';
 
-//Add new routes here
+//Add new routes here + put it in the DevRouter.js
 var appRoutes = [
     {
         name: 'Landing',
@@ -33,6 +34,10 @@ var appRoutes = [
     {
         name: 'RegistGender',
         component: RegistGender,
+    },
+    {
+        name: 'RegistPhotos',
+        component: RegistPhotos,
     },
 
 ];

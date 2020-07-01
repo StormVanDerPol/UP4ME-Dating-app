@@ -26,7 +26,7 @@ const RegistUserProperties = () => {
 
             <View style={RegistStyles.bottom}>
                 <WaitIndicator style={RegistStyles.waitIndicator} visible={busy} />
-                <UpForMeButton title={'doorgaan'} enabled={false} onPress={async () => { }} />
+                <UpForMeButton style={RegistStyles.botButton} title={'doorgaan'} enabled={false} onPress={async () => { }} />
             </View>
 
         </Body>
