@@ -8,6 +8,7 @@ import RegistLocation from '../screens/registration/RegistLocation/RegistLocatio
 import { devMode } from '../dev/devConfig';
 import RegistGender from '../screens/registration/RegistGender/RegistGender';
 import RegistPhotos from '../screens/registration/RegistPhotos/RegistPhotos';
+import RegistProfileText from '../screens/registration/RegistProfileText/RegistProfileText';
 
 //Add new routes here + put it in the DevRouter.js
 var appRoutes = [
@@ -38,6 +39,10 @@ var appRoutes = [
     {
         name: 'RegistPhotos',
         component: RegistPhotos,
+    },
+    {
+        name: 'RegistProfileText',
+        component: RegistProfileText,
     },
 
 ];
