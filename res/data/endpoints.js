@@ -2,24 +2,25 @@ import { devMode } from "../../dev/devConfig";
 
 const protocol = (devMode.localBackend) ? `http://` : `https://`;
 const domain = (devMode.localBackend) ? `192.168.1.17` : `www.upforme.nl`;
-const port = `:50000`;
-const apiRoot = `/api/v1`;
+const port = `:8080`;
+// const apiRoot = `/api/v1`;
 
-export const API_URL = `${protocol}${domain}${port}${apiRoot}`;
+export const API_URL = `${protocol}${domain}${port}`;
 
 const endpoints = {
 
     get: {
 
-        registerEmail: `/register/1/`,
-        checkMail: `/get/profile/checkmail/`,
+        // registerEmail: `/register/1/`,
+        checkMail: `/api/v1/get/profile/checkmail/`,
     },
 
     post: {
-        login: `/login`,
-        setUserData: `/set/profile/bjnh`,
-        setGPS: `/set/gps`, //userid, latitude, longitude
-        setPlace: `/set/profile/city`, //userid, woontin
+        authLocalReq: `/auth/local/req`,
+        authLocal: `/auth/local`,
+        setUserData: `/api/v1/set/profile/bjnh`,
+        setGPS: `/api/v1/set/gps`, //userid, latitude, longitude
+        setPlace: `/api/v1/set/profile/city`, //userid, woontin
     }
 };
 
@@ -32,3 +33,5 @@ export const requestFeedback = {
 }
 
 export default endpoints;
+
+//403 als expired

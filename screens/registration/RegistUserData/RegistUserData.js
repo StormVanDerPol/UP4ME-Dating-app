@@ -20,6 +20,7 @@ import { devMode } from '../../../dev/devConfig';
 import { MemeMath } from '../../../functions/math';
 import { navigationProxy } from '../../../navigation/navigationProxy';
 import { getYearIndex } from '../../../res/data/time';
+import { dodoFlight } from '../../../functions/dodoAirlines';
 
 const RegistUserData = () => {
 
@@ -74,60 +75,58 @@ const RegistUserData = () => {
                                 message: networkFeedbackMessages.wait,
                             });
 
-                            if (devMode.network) {
-                                console.log('request:', getEndpoint(endpoints.post.setUserData), {
-                                    data: {
-                                        userid: DATA_STORE.userToken,
-                                        naam: userData.name,
-                                        geboortedatum: userData.birthday.year + '' + userData.birthday.month + '' + userData.birthday.day + '',
-                                        beroep: userData.job,
-                                        lengte: userData.height,
-                                    },
-                                    headers: {
-                                        authorization: DATA_STORE.userToken,
-                                    }
-                                });
-                            }
-
                             if (DATA_STORE.userToken != null) {
 
-                                Axios.post(getEndpoint(endpoints.post.setUserData), {
-                                    userid: DATA_STORE.userToken,
-                                    naam: userData.name,
-                                    geboortedatum: userData.birthday.year + userData.birthday.month + userData.birthday.day,
-                                    beroep: userData.job,
-                                    lengte: MemeMath.roundTwoDecimals(userData.height),
-                                }, {
-                                    headers: {
-                                        authorization: DATA_STORE.userToken,
-                                    },
+                                await dodoFlight({
+                                    method: 'post',
+                                    url: getEndpoint(endpoints.post.setUserData),
                                     timeout: timeouts.short,
+                                    data: {
+                                        userid: DATA_STORE.userID,
+                                        naam: userData.name,
+                                        geboortedatum: userData.birthday.year + userData.birthday.month + userData.birthday.day,
+                                        beroep: userData.job,
+                                        lengte: MemeMath.roundTwoDecimals(userData.height),
+                                    },
                                 })
-                                    .then((res) => {
-                                        console.log(res);
 
-                                        if (res.data) {
-                                            navigationProxy.navigate('RegistLocation');
-                                            netFeedback.message = ''
-                                        }
+                                // Axios.post(getEndpoint(endpoints.post.setUserData), {
+                                // userid: DATA_STORE.userToken,
+                                // naam: userData.name,
+                                // geboortedatum: userData.birthday.year + userData.birthday.month + userData.birthday.day,
+                                // beroep: userData.job,
+                                // lengte: MemeMath.roundTwoDecimals(userData.height),
+                                // }, {
+                                //     headers: {
+                                //         authorization: DATA_STORE.userToken,
+                                //     },
+                                //     timeout: timeouts.short,
+                                // })
+                                //     .then((res) => {
+                                // console.log(res);
 
-                                        else {
-                                            netFeedback.message = networkFeedbackMessages.err
-                                        }
+                                // if (res.data) {
+                                //     navigationProxy.navigate('RegistLocation');
+                                //     netFeedback.message = ''
+                                // }
 
-                                        setNetFeedback({
-                                            busy: false,
-                                            ...netFeedback,
-                                        });
-                                    })
-                                    .catch((err) => {
-                                        console.log(err)
+                                // else {
+                                //     netFeedback.message = networkFeedbackMessages.err
+                                // }
 
-                                        setNetFeedback({
-                                            busy: false,
-                                            message: networkFeedbackMessages.err,
-                                        });
-                                    })
+                                // setNetFeedback({
+                                //     busy: false,
+                                //     ...netFeedback,
+                                // });
+                                //     })
+                                //     .catch((err) => {
+                                // console.log(err)
+
+                                // setNetFeedback({
+                                //     busy: false,
+                                //     message: networkFeedbackMessages.err,
+                                // });
+                                //     })
                             }
                             else {
                                 setNetFeedback({

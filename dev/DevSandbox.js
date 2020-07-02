@@ -20,6 +20,7 @@ import TextQuicksand from '../components/TextQuicksand';
 
 import InAppBrowser from 'react-native-inappbrowser-reborn'
 import { setDataStore, DATA_STORE } from '../stored/dataStore';
+import { dodoFlight } from '../functions/dodoAirlines';
 
 export default DevSandbox = () => {
 
@@ -282,6 +283,12 @@ export default DevSandbox = () => {
 
                     <TextInput onChangeText={(input) => { inputUrl.current = input }} placeholder={'insert url'} />
                     <Button title={'Open url'} onPress={() => { openBrowser(inputUrl.current) }} />
+
+                    <Button title={'Request 403'} onPress={() => { dodoFlight({ url: 'https://httpstat.us/403', method: 'get' }) }} />
+                    <Button title={'Request 200'} onPress={() => { dodoFlight({ url: 'https://httpstat.us/200', method: 'get' }) }} />
+
+
+
 
                 </ScrollView>
 

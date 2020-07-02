@@ -3,6 +3,7 @@ import { devMode } from "../dev/devConfig";
 export const DATA_STORE = {
 
     userToken: null,
+    userID: null,
 
     registData: {
         email: null,

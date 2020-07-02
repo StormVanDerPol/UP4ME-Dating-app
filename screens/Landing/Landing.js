@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 
-import { StyleSheet, SafeAreaView, Dimensions, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import TextQuicksand from '../../components/TextQuicksand';
 import LinearGradient from 'react-native-linear-gradient';

@@ -7,7 +7,7 @@ import { timeouts } from "../res/data/requests";
 
 
 const GPS_CONFIG = {
-    enabled: false,
+    enabled: true,
     logging: true,
 }
 

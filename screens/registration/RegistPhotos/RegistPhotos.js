@@ -4,12 +4,13 @@ import { View, StyleSheet } from 'react-native';
 import { RegistStyles } from '../../../styles/RegistStyles';
 
 import Body, { FlexSection } from '../../../components/Body';
-// import WaitIndicator from '../../../components/waitIndicator';
 import UpForMeButton from '../../../components/UpForMeButton';
 import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4MeLogo';
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
 import TextQuicksand from '../../../components/TextQuicksand';
 import NetworkFeedBackIndicator from '../../../components/waitIndicator';
+import { openBrowser } from '../../../functions/bowser';
+import UploadPictures from '../../../components/bigComponents/UploadPictures';
 
 const RegistPhotos = () => {
 
@@ -24,7 +25,9 @@ const RegistPhotos = () => {
                 <RegistUp4MeLogo />
                 <RegistHeader>Foto's toevoegen</RegistHeader>
 
-                <View style={[RegistStyles.container,]}>
+                <View style={[RegistStyles.container]}>
+
+                    <UploadPictures />
 
                     <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.uptodates.nl/richtlijnen-veiligheid') }}>Lees de richtlijnen</TextQuicksand>
                 </View>

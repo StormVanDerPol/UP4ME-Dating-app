@@ -20,6 +20,8 @@ import { DATA_STORE } from '../../../stored/dataStore';
 import { timeouts } from '../../../res/data/requests';
 import { navigationProxy } from '../../../navigation/navigationProxy';
 
+import { getTerminalCancer } from '../../../functions/getCancerID';
+
 const ConfirmationCode = () => {
 
     const [confCode, setConfCode] = useState('');
@@ -55,10 +57,10 @@ const ConfirmationCode = () => {
 
 
                         if (devMode.network) {
-                            console.log('request:', getEndpoint(endpoints.post.login), { email: DATA_STORE.registData.email, security: confCode });
+                            console.log('request:', getEndpoint(endpoints.post.authLocal), { email: DATA_STORE.registData.email, security: confCode });
                         }
 
-                        await Axios.post(getEndpoint(endpoints.post.login), {
+                        await Axios.post(getEndpoint(endpoints.post.authLocal), {
                             email: DATA_STORE.registData.email,
                             security: confCode,
                         }, {
@@ -77,6 +79,8 @@ const ConfirmationCode = () => {
                                 })
 
                                 DATA_STORE.userToken = res.headers.authorization;
+
+                                DATA_STORE.userID = getTerminalCancer(DATA_STORE.userToken);
 
                                 if (devMode.enabled) {
                                     console.log(DATA_STORE);
