@@ -9,13 +9,8 @@ const regExps = {
     keyValuePairs: /(\b[^"]+)/g,
 };
 
-const cripplingDepression = true;
-
 export const getTerminalCancer = (token) => {
 
-    console.log('penis', token);
-
-    console.log(token.match(regExps.userIDFromToken));
 
     const decodedToken = base64.decode(token.match(regExps.userIDFromToken)[1]);
 
@@ -28,10 +23,6 @@ export const getTerminalCancer = (token) => {
             fuckery[meme] = terminalCancer[i + 1];
         }
     });
-
-    if (cripplingDepression) {
-        console.log(fuckery.sub)
-    }
 
     return fuckery.sub
 }

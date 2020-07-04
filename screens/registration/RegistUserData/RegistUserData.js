@@ -13,13 +13,13 @@ import TextQuicksand from '../../../components/TextQuicksand';
 import KeyboardDismiss from '../../../components/KeyboardDismiss';
 import InputUserData from '../../../components/bigComponents/InputUserData';
 import Axios from 'axios';
-import endpoints, { getEndpoint, requestFeedback } from '../../../res/data/endpoints';
+import endpoints, { getEndpoint, requestFeedback, host } from '../../../res/data/endpoints';
 import { DATA_STORE } from '../../../stored/dataStore';
 import { timeouts } from '../../../res/data/requests';
 import { devMode } from '../../../dev/devConfig';
 import { MemeMath } from '../../../functions/math';
 import { navigationProxy } from '../../../navigation/navigationProxy';
-import { getYearIndex } from '../../../res/data/time';
+import { getYearIndex, toRetardDate } from '../../../res/data/time';
 import { dodoFlight } from '../../../functions/dodoAirlines';
 
 const RegistUserData = () => {
@@ -84,49 +84,33 @@ const RegistUserData = () => {
                                     data: {
                                         userid: DATA_STORE.userID,
                                         naam: userData.name,
-                                        geboortedatum: userData.birthday.year + userData.birthday.month + userData.birthday.day,
+                                        geboortedatum: toRetardDate(userData.birthday),
                                         beroep: userData.job,
                                         lengte: MemeMath.roundTwoDecimals(userData.height),
                                     },
+
+                                    thenCallback: (res) => {
+
+                                        if (res.data == true) {
+                                            navigationProxy.navigate('RegistLocation');
+                                            netFeedback.message = '';
+                                        }
+                                        else {
+                                            netFeedback.message = networkFeedbackMessages.err;
+                                        }
+                                        setNetFeedback({
+                                            ...netFeedback,
+                                            busy: false,
+                                        });
+                                    },
+
+                                    catchCallback: () => {
+                                        setNetFeedback({
+                                            busy: false,
+                                            message: networkFeedbackMessages.err,
+                                        });
+                                    }
                                 })
-
-                                // Axios.post(getEndpoint(endpoints.post.setUserData), {
-                                // userid: DATA_STORE.userToken,
-                                // naam: userData.name,
-                                // geboortedatum: userData.birthday.year + userData.birthday.month + userData.birthday.day,
-                                // beroep: userData.job,
-                                // lengte: MemeMath.roundTwoDecimals(userData.height),
-                                // }, {
-                                //     headers: {
-                                //         authorization: DATA_STORE.userToken,
-                                //     },
-                                //     timeout: timeouts.short,
-                                // })
-                                //     .then((res) => {
-                                // console.log(res);
-
-                                // if (res.data) {
-                                //     navigationProxy.navigate('RegistLocation');
-                                //     netFeedback.message = ''
-                                // }
-
-                                // else {
-                                //     netFeedback.message = networkFeedbackMessages.err
-                                // }
-
-                                // setNetFeedback({
-                                //     busy: false,
-                                //     ...netFeedback,
-                                // });
-                                //     })
-                                //     .catch((err) => {
-                                // console.log(err)
-
-                                // setNetFeedback({
-                                //     busy: false,
-                                //     message: networkFeedbackMessages.err,
-                                // });
-                                //     })
                             }
                             else {
                                 setNetFeedback({

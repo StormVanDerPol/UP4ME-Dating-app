@@ -6,10 +6,18 @@ import up4meColours from '../res/data/colours';
 
 import TextQuicksand from './TextQuicksand';
 import getDeviceDimensions from '../functions/dimensions';
+import { oAuthLogin } from '../functions/authBrowser';
 
 export const providerIndex = {
     up4me: 0,
     google: 1,
+    apple: 2,
+}
+
+const btnDims = {
+    height: 50,
+    width: getDeviceDimensions('window', 'width') - 100,
+    iconMargin: 4,
 }
 
 const AuthButton = ({ style = {}, provider = providerIndex.up4me, action = 'sign-in', onPress = () => { } }) => {
@@ -69,6 +77,35 @@ const AuthButton = ({ style = {}, provider = providerIndex.up4me, action = 'sign
             }
             break;
 
+        case providerIndex.apple:
+
+            providerLogo = iconIndex.apple_login_logo;
+            providerName = 'Apple';
+            textColor = '#fff';
+
+            extraIconStyle = {
+                top: 0,
+                left: 0,
+                width: btnDims.height,
+                height: btnDims.height,
+                backgroundColor: '#000',
+
+            };
+
+            ButtonJSX = ({ children }) => {
+                return (
+                    <View style={[
+                        styles.buttonCommon,
+                        {
+                            backgroundColor: '#000',
+                        },
+                    ]}>
+                        {children}
+                    </View>
+                )
+            }
+            break;
+
         default:
             break;
     }
@@ -100,11 +137,7 @@ const AuthButton = ({ style = {}, provider = providerIndex.up4me, action = 'sign
     );
 }
 
-const btnDims = {
-    height: 50,
-    width: getDeviceDimensions('window', 'width') - 100,
-    iconMargin: 4,
-}
+
 
 const styles = StyleSheet.create({
     buttonCommon: {

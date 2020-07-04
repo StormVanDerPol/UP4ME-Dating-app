@@ -4,6 +4,7 @@ import { DATA_STORE } from "../stored/dataStore"
 import { devMode } from "../dev/devConfig";
 import { Alert } from "react-native";
 import { navigationProxy } from "../navigation/navigationProxy";
+// import { stopWatchingGPS } from "./gps";
 
 export const dodoFlight = async ({
     method,
@@ -11,29 +12,26 @@ export const dodoFlight = async ({
     timeout = timeouts.short,
     data = {},
     headers = {},
+    config = {},
     thenCallback = (res) => { },
     catchCallback = (err) => { },
     finallyCallback = () => { },
 }) => {
 
-    if (devMode.network)
-        console.log(
-            'Preparing dodo flight',
-            {
-                method: method
+    console.log(
+        'Preparing dodo flight',
+        {
+            method: method,
+            url: url,
+            data: data,
+
+            headers: {
+                authorization: DATA_STORE.userToken,
+                ...headers,
             },
-            {
-                url: url
-            },
-            {
-                data: data
-            },
-            {
-                headers: {
-                    authorization: DATA_STORE.userToken,
-                    ...headers,
-                }
-            });
+
+            ...config,
+        });
 
     await Axios({
         method: method,
@@ -48,44 +46,53 @@ export const dodoFlight = async ({
         }
     })
         .then((res) => {
-            if (devMode.network)
-                console.log(res);
+            console.log(res);
 
             if (res.status == 200) {
 
-                console.log('same token', (res.headers.authorization == DATA_STORE.userToken));
-
                 if (res.headers.authorization) {
+                    console.log('new token received!')
                     DATA_STORE.userToken = res.headers.authorization;
+                }
+                else {
+                    console.log('keeping old token')
                 }
 
                 thenCallback(res);
             }
         })
         .catch((err) => {
-            if (devMode.network)
+            console.log(err);
+
+            if (err.response) {
+
                 console.log(err.response);
 
-            if (err.response.status == 403) {
+                if (err.response.status == 403) {
 
-                DATA_STORE.userToken = {};
+                    DATA_STORE.userToken = null;
+                    DATA_STORE.userID = null;
 
-                Alert.alert(
-                    'Token expired',
-                    'Please log-in again',
-                    [
-                        {
-                            text: 'OK', onPress: () => {
-                                navigationProxy.navigate('Landing');
+                    // stopWatchingGPS();
+
+                    Alert.alert(
+                        'Token expired',
+                        'Please log-in again',
+                        [
+                            {
+                                text: 'OK', onPress: () => {
+                                    navigationProxy.navigate('Landing');
+                                }
                             }
-                        }
-                    ],
-                    { cancelable: false }
-                );
+                        ],
+                        { cancelable: false }
+                    );
+                }
             }
-
-            catchCallback(err.response);
-
+            else {
+                alert('server error');
+            }
+            catchCallback(err);
         })
         .finally(() => {
             finallyCallback()

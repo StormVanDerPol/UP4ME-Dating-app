@@ -34,7 +34,7 @@ const KeyboardDismiss = ({ children }) => {
     };
 
     const _keyboardDidHide = (e) => {
-        console.log(e);
+        // console.log(e);
         setKBHeight(0);
     };
 

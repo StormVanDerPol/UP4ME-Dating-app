@@ -13,10 +13,21 @@ import appRoutes from './navigationRoutes';
 const Stack = createStackNavigator();
 
 export default NavigationHandler = () => {
+
+
     return (
         <>
 
-            <NavigationContainer ref={navigationContainerRef}>
+            <NavigationContainer
+                linking={{
+                    prefixes: [`app://up4me/`, `up4me://`],
+                    config: {
+                        screens: {
+                            Callback: 'Callback',
+                        }
+                    }
+                }}
+                ref={navigationContainerRef}>
                 <Stack.Navigator screenOptions={{ headerShown: false }} >
 
                     {appRoutes.map((route, i) => {

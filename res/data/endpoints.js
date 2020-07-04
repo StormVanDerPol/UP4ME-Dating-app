@@ -1,11 +1,14 @@
 import { devMode } from "../../dev/devConfig";
 
-const protocol = (devMode.localBackend) ? `http://` : `https://`;
-const domain = (devMode.localBackend) ? `192.168.1.17` : `www.upforme.nl`;
-const port = `:8080`;
-// const apiRoot = `/api/v1`;
+const local = true
 
-export const API_URL = `${protocol}${domain}${port}`;
+const protocol = (local) ? `http://` : `https://`;
+const domain = (local) ? `192.168.1.12` : `www.upforme.nl`;
+const port = (local) ? `:8080` : '';
+
+const apiRoot = `/api/v1`;
+
+export const HOST = `${protocol}${domain}${port}`;
 
 const endpoints = {
 
@@ -13,19 +16,24 @@ const endpoints = {
 
         // registerEmail: `/register/1/`,
         checkMail: `/api/v1/get/profile/checkmail/`,
+        authGoogle: `https://www.upforme.nl/auth/google`,
+        authApple: `https://www.upforme.nl/auth/apple`,
+        lastLogin: `/get/lastlogin/`,
     },
 
     post: {
         authLocalReq: `/auth/local/req`,
         authLocal: `/auth/local`,
-        setUserData: `/api/v1/set/profile/bjnh`,
-        setGPS: `/api/v1/set/gps`, //userid, latitude, longitude
-        setPlace: `/api/v1/set/profile/city`, //userid, woontin
+        setUserData: `/set/profile/bjnh`,
+        setGPS: `/set/gps`, //userid, latitude, longitude
+        setPlace: `/set/profile/city`, //userid, woontin.
+        setGender: `/set/profile/gender`, //userid, geslacht
     }
 };
 
-export const getEndpoint = (endpoint) => {
-    return `${API_URL}${endpoint}`;
+export const getEndpoint = (endpoint, api = true) => {
+
+    return (api) ? HOST + apiRoot + endpoint : HOST + endpoint;
 }
 
 export const requestFeedback = {

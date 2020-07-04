@@ -40,6 +40,7 @@ import RNSVG_paperPlane from '../res/icons/rnsvg/nav/rnsvg_paperPlane';
 import RNSVG_profile_colour from '../res/icons/rnsvg/nav/rnsvg_profile_colour';
 import RNSVG_profile_gray from '../res/icons/rnsvg/nav/rnsvg_profile_gray';
 import RNSVG_magnifying_glass from '../res/icons/rnsvg/rnsvg_magnifying_glass';
+import RNSVG_apple_login_logo from '../res/icons/rnsvg/rnsvg_apple_login_logo';
 
 export const iconIndex = {
 
@@ -99,6 +100,8 @@ export const iconIndex = {
     magnifying_glass: <RNSVG_magnifying_glass />,
 
     google_logo: <RNSVG_google_logo />,
+
+    apple_login_logo: <RNSVG_apple_login_logo />,
 }
 
 const UpForMeIcon = ({ icon, style = { height: 50, width: 50, } }) => {

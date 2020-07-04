@@ -143,7 +143,7 @@ export default DevSandbox = () => {
                                 cropping: true,
                                 includeBase64: true,
                             }).then(image => {
-                                console.log(image)
+                                // console.log(image)
                                 setImgBase64(`data:${image.mime};base64,${image.data}`);
                             });
                         }} />

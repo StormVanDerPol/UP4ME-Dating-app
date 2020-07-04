@@ -17,6 +17,8 @@ import { openBrowser } from '../../functions/bowser';
 import Body, { FlexSection } from '../../components/Body';
 import UpForMeModal from '../../components/UpForMeModal';
 import AuthButton, { providerIndex } from '../../components/AuthButton';
+import { oAuthLogin } from '../../functions/authBrowser';
+import endpoints, { getEndpoint } from '../../res/data/endpoints';
 
 
 const Landing = () => {
@@ -69,7 +71,16 @@ const Landing = () => {
                         navigationProxy.navigate('LocalStratEmail');
                         setProvModalActive(false);
                     }} />
-                <AuthButton style={styles.authButton} provider={providerIndex.google} action={action.current} />
+                <AuthButton style={styles.authButton} provider={providerIndex.google} action={action.current}
+                    onPress={() => {
+                        oAuthLogin(endpoints.get.authGoogle);
+                    }}
+                />
+                <AuthButton style={styles.authButton} provider={providerIndex.apple} action={action.current}
+                    onPress={() => {
+                        oAuthLogin(endpoints.get.authApple);
+                    }}
+                />
                 <UpForMeButton style={styles.modalCancelButton} title={'Sluiten'} onPress={() => { setProvModalActive(false) }} />
             </UpForMeModal>
         </>

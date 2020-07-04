@@ -19,12 +19,18 @@ const UploadPictures = ({ initImages = [] }) => {
         _init.current = true;
     }
 
+
+
     return (
         <View style={styles.container}>
             {images.map((image, i) => {
                 return (
                     <View key={i} style={styles.item}>
-                        <TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+
+                            }}
+                        >
                             <FastImage
                                 source={{
                                     uri: image,

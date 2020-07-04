@@ -13,6 +13,24 @@ export const today = {
     yearIndex: getYearIndex(now.getFullYear()),
 }
 
+export function toRetardDate({ year, month, day }) {
+
+    let tempDate = {
+        year: year + '',
+        month: month + '',
+        day: day + '',
+    };
+
+    tempDate = {
+        year: tempDate.year,
+        month: (tempDate.month.length == 1) ? '0' + tempDate.month : tempDate.month,
+        day: (tempDate.day.length == 1) ? '0' + tempDate.day : tempDate.day,
+    };
+
+    return tempDate.year + tempDate.month + tempDate.day;
+
+}
+
 export function getDaysInMonth(month, year) {
     var date = new Date(year, month, 1);
     var days = [];

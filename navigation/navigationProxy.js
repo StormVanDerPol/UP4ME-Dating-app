@@ -16,7 +16,7 @@ export const navigationProxy = {
         navigationContainerRef.current?.goBack();
     },
 
-    reset() {
+    reset(...args) {
         navigationContainerRef.current?.dispatch(
             CommonActions.reset(...args)
         );

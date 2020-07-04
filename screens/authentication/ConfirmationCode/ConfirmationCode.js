@@ -21,6 +21,7 @@ import { timeouts } from '../../../res/data/requests';
 import { navigationProxy } from '../../../navigation/navigationProxy';
 
 import { getTerminalCancer } from '../../../functions/getCancerID';
+import { dodoFlight } from '../../../functions/dodoAirlines';
 
 const ConfirmationCode = () => {
 
@@ -32,7 +33,7 @@ const ConfirmationCode = () => {
         message: '',
     })
 
-    useEffect(() => { console.log(netFeedback) }, [netFeedback])
+    // useEffect(() => { console.log(netFeedback) }, [netFeedback])
 
     return (
         <KeyboardDismiss>
@@ -60,33 +61,53 @@ const ConfirmationCode = () => {
                             console.log('request:', getEndpoint(endpoints.post.authLocal), { email: DATA_STORE.registData.email, security: confCode });
                         }
 
-                        await Axios.post(getEndpoint(endpoints.post.authLocal), {
+                        await Axios.post(getEndpoint(endpoints.post.authLocal, false), {
                             email: DATA_STORE.registData.email,
                             security: confCode,
                         }, {
                             withCredentials: true,
                             timeout: timeouts.short,
                         })
-                            .then((res) => {
+                            .then(async (res) => {
 
                                 if (devMode.network) {
-                                    console.log('res', res);
+                                    console.log(res);
                                 }
 
-                                setNetFeedback({
-                                    busy: false,
-                                    message: '',
-                                })
 
                                 DATA_STORE.userToken = res.headers.authorization;
 
                                 DATA_STORE.userID = getTerminalCancer(DATA_STORE.userToken);
 
-                                if (devMode.enabled) {
-                                    console.log(DATA_STORE);
-                                }
+                                await dodoFlight({
+                                    method: 'get',
+                                    url: getEndpoint(endpoints.get.lastLogin) + DATA_STORE.userID,
 
-                                navigationProxy.navigate('RegistUserData');
+                                    thenCallback: (res) => {
+
+                                        if (res.data[0][0].actief == -1) {
+                                            navigationProxy.navigate('RegistUserData');
+                                        }
+                                        else {
+                                            navigationProxy.navigate('Landing');
+                                        }
+
+                                        setNetFeedback({
+                                            busy: false,
+                                            message: '',
+                                        })
+
+                                    },
+
+                                    catchCallback: (err) => {
+                                        setNetFeedback({
+                                            busy: false,
+                                            message: 'error getting last login timestamp',
+                                        })
+                                    }
+                                })
+
+
 
                             })
                             .catch((err) => {
