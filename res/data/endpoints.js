@@ -19,6 +19,8 @@ const endpoints = {
         authGoogle: `https://www.upforme.nl/auth/google`,
         authApple: `https://www.upforme.nl/auth/apple`,
         lastLogin: `/get/lastlogin/`,
+        setLastLogin: `/set/lastlogin/`,
+        potentialMatches: `/get/potentials/`,
     },
 
     post: {
@@ -29,7 +31,10 @@ const endpoints = {
         setPlace: `/set/profile/city`, //userid, woontin.
         setGender: `/set/profile/gender`, //userid, geslacht
         setPhotos: `/set/photos`,
-        setProfilePicture: `/set/profile/picture`
+        setProfilePicture: `/set/profile/picture`,
+        setProfileText: `/set/profile/text`,
+        setProperties: `/set/properties`,
+        setCriteria: `/set/criteria`,
     }
 };
 

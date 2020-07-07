@@ -73,7 +73,7 @@ export const DoubleSliderInfo = ({
             <View style={styles.header}>
                 <TextQuicksand>{title}</TextQuicksand>
                 <TextQuicksand>
-                    {(showDecimals) ? val[0] / 100 : val[0]}{unit} - {(showDecimals) ? val[1] / 100 : val[1]}{unit}{suffix}
+                    {(toDecimals) ? val[0] / 100 : val[0]}{unit} - {(toDecimals) ? val[1] / 100 : val[1]}{unit}{suffix}
                 </TextQuicksand>
             </View>
             <DoubleSlider

@@ -4,7 +4,7 @@ import up4meColours from '../res/data/colours';
 import { StyleSheet, View } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider/MultiSlider';
 
-const markerDiameter = 20;
+const markerDiameter = 30;
 
 export const SliderMarkerGradient = () => {
     return (

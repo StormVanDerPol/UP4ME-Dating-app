@@ -14,6 +14,8 @@ const AuthCallback = ({ route }) => {
     DATA_STORE.userToken = 'bearer ' + token;
     DATA_STORE.userID = getTerminalCancer(DATA_STORE.userToken);
 
+    console.log(route)
+
     dodoFlight({
         method: 'get',
         url: getEndpoint(endpoints.get.lastLogin) + DATA_STORE.userID,

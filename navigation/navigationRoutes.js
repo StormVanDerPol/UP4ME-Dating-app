@@ -11,6 +11,8 @@ import RegistPhotos from '../screens/registration/RegistPhotos/RegistPhotos';
 import AuthCallback from '../screens/authentication/oAuthCallback/oAuthCallback';
 import WebViewContainer from '../screens/authentication/WebViewContainer/WebViewContainer';
 import RegistProfileText from '../screens/registration/RegistProfileText/RegistProfileText';
+import RegistUserProperties from '../screens/registration/RegistUserProperties/RegistUserProperties';
+import RegistCriteria from '../screens/registration/RegistCriteria/RegistCriteria';
 
 //Add new routes here + put it in the DevRouter.js
 var appRoutes = [
@@ -50,8 +52,17 @@ var appRoutes = [
         name: 'WebViewContainer',
         component: WebViewContainer,
     },
+    {
         name: 'RegistProfileText',
         component: RegistProfileText,
+    },
+    {
+        name: 'RegistUserProperties',
+        component: RegistUserProperties,
+    },
+    {
+        name: 'RegistCriteria',
+        component: RegistCriteria,
     },
 
 ];

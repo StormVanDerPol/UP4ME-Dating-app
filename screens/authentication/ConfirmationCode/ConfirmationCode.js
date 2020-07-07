@@ -164,7 +164,6 @@ const EnterConfCode = ({ codeLength = 6, onChangeCode = () => { } }) => {
                                 numberRefs.current[i].clear();
                                 confCode.current[i] = '';
                                 onChangeCode(confCode.current.join(''));
-
                             }}
 
                             onChangeText={(input) => {

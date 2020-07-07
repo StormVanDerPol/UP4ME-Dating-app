@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Text, View, StyleSheet } from 'react-native';
 
 import { navigationProxy } from '../navigation/navigationProxy';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
 import { rnRGB, invertRGB } from '../functions/colors';
 
@@ -49,6 +49,14 @@ const devRoutes = [
         name: 'RegistProfileText',
         color: { r: 60, g: 60, b: 255 },
     },
+    {
+        name: 'RegistUserProperties',
+        color: { r: 60, g: 60, b: 255 },
+    },
+    {
+        name: 'RegistCriteria',
+        color: { r: 60, g: 60, b: 255 },
+    },
 ]
 
 const styles = StyleSheet.create({
@@ -62,7 +70,7 @@ const styles = StyleSheet.create({
 
 export default DevRouter = () => {
     return (
-        <>
+        <ScrollView>
             {devRoutes.map((route, i) => {
 
                 let headerJSX = <></>;
@@ -89,6 +97,6 @@ export default DevRouter = () => {
 
                 )
             })}
-        </>
+        </ScrollView>
     );
 }

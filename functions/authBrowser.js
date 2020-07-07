@@ -32,6 +32,8 @@ export const oAuthLogin = async (url) => {
                     endEnter: 'slide_in_left',
                     endExit: 'slide_out_right'
                 },
+            }).then((res) => {
+                console.log(res);
             })
         } else Linking.openURL(url)
     } catch (error) {
