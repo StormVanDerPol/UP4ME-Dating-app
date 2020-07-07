@@ -45,6 +45,10 @@ const devRoutes = [
         name: 'RegistPhotos',
         color: { r: 60, g: 60, b: 255 },
     },
+    {
+        name: 'RegistProfileText',
+        color: { r: 60, g: 60, b: 255 },
+    },
 ]
 
 const styles = StyleSheet.create({
