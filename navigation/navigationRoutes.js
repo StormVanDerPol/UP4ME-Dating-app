@@ -8,6 +8,8 @@ import RegistLocation from '../screens/registration/RegistLocation/RegistLocatio
 import { devMode } from '../dev/devConfig';
 import RegistGender from '../screens/registration/RegistGender/RegistGender';
 import RegistPhotos from '../screens/registration/RegistPhotos/RegistPhotos';
+import AuthCallback from '../screens/authentication/oAuthCallback/oAuthCallback';
+import WebViewContainer from '../screens/authentication/WebViewContainer/WebViewContainer';
 import RegistProfileText from '../screens/registration/RegistProfileText/RegistProfileText';
 
 //Add new routes here + put it in the DevRouter.js
@@ -41,6 +43,13 @@ var appRoutes = [
         component: RegistPhotos,
     },
     {
+        name: 'Callback',
+        component: AuthCallback,
+    },
+    {
+        name: 'WebViewContainer',
+        component: WebViewContainer,
+    },
         name: 'RegistProfileText',
         component: RegistProfileText,
     },

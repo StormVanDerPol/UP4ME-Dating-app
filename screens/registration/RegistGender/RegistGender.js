@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { RegistStyles } from '../../../styles/RegistStyles';
 
-import endpoints from '../../../res/data/endpoints';
+import endpoints, { getEndpoint } from '../../../res/data/endpoints';
 import { devMode } from '../../../dev/devConfig';
 
 import Body, { FlexSection } from '../../../components/Body';
@@ -12,6 +12,9 @@ import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4M
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../components/waitIndicator';
 import SelectGender from '../../../components/bigComponents/SelectGender';
+import { dodoFlight } from '../../../functions/dodoAirlines';
+import { DATA_STORE } from '../../../stored/dataStore';
+import { navigationProxy } from '../../../navigation/navigationProxy';
 
 
 const RegistGender = () => {
@@ -46,9 +49,38 @@ const RegistGender = () => {
                         message: networkFeedbackMessages.wait,
                     })
 
-                    if (devMode.network) {
-                        console.log('request:', getEndpoint(endpoints.something));
-                    }
+                    await dodoFlight({
+                        method: 'post',
+                        url: getEndpoint(endpoints.post.setGender),
+                        data: {
+                            userid: DATA_STORE.userID,
+                            geslacht: gender + 1,
+                        },
+                        thenCallback: (res) => {
+                            if (res.data == true) {
+                                setNetFeedback({
+                                    busy: false,
+                                    message: '',
+                                })
+
+                                navigationProxy.navigate('RegistPhotos');
+                            }
+                            else {
+                                setNetFeedback({
+                                    busy: false,
+                                    message: networkFeedbackMessages.err,
+                                })
+                            }
+                        },
+
+                        catchCallback: (err) => {
+                            setNetFeedback({
+                                busy: false,
+                                message: networkFeedbackMessages.err,
+                            })
+                        }
+                    })
+
                 }} />
             </View>
 

@@ -16,6 +16,7 @@ import Axios from 'axios';
 import { DATA_STORE } from '../../../stored/dataStore';
 import { timeouts } from '../../../res/data/requests';
 import { navigationProxy } from '../../../navigation/navigationProxy';
+import { dodoFlight } from '../../../functions/dodoAirlines';
 
 const RegistLocation = () => {
 
@@ -46,39 +47,34 @@ const RegistLocation = () => {
                         message: networkFeedbackMessages.wait,
                     })
 
-                    if (devMode.network) {
-                        console.log('request:', getEndpoint(endpoints.post.setPlace));
-                    }
-
-                    Axios.post(getEndpoint(endpoints.post.setPlace), {
-                        userid: DATA_STORE.userToken,
-                        woontin: placeName,
-                    }, {
-                        timeout: timeouts.short,
-                        headers: {
-                            authorization: DATA_STORE.userToken,
+                    await dodoFlight({
+                        method: 'post',
+                        url: getEndpoint(endpoints.post.setPlace),
+                        data: {
+                            userid: DATA_STORE.userID,
+                            woontin: placeName,
                         },
-                    })
-                        .then((res) => {
-                            if (devMode.network)
-                                console.log(res);
 
-                            setNetFeedback({
-                                busy: false,
-                                message: '',
-                            });
+                        thenCallback: (res) => {
 
-                            navigationProxy.navigate('RegistGender')
-                        })
-                        .catch((err) => {
-                            if (devMode.network)
-                                console.log(err);
+                            if (res.data) {
 
+                                setNetFeedback({
+                                    busy: false,
+                                    message: '',
+                                });
+
+                                navigationProxy.navigate('RegistGender');
+                            }
+                        },
+
+                        catchCallback: (err) => {
                             setNetFeedback({
                                 busy: false,
                                 message: networkFeedbackMessages.err,
                             });
-                        });
+                        },
+                    })
 
                 }} />
             </View>

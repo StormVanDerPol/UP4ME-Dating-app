@@ -41,9 +41,9 @@ const LocalStratEmail = () => {
 
     const validateEmail = (toCheck) => {
 
-        if (devMode.enabled) {
-            console.log(toCheck);
-        }
+        // if (devMode.enabled) {
+        //     console.log(toCheck);
+        // }
 
         if (!regex.validEmail.test(toCheck)) {
             setFeedback({
@@ -113,10 +113,12 @@ const LocalStratEmail = () => {
                             })
 
                             if (devMode.network) {
-                                console.log('making call to:', getEndpoint(endpoints.get.registerEmail) + email);
+                                console.log('making call to:', getEndpoint(endpoints.post.authLocalReq, false));
                             }
 
-                            await Axios.get(getEndpoint(endpoints.get.registerEmail) + email, {
+                            await Axios.post(getEndpoint(endpoints.post.authLocalReq, false), {
+                                email: email,
+                            }, {
                                 timeout: timeouts.short,
                             })
                                 .then((res) => {
@@ -138,7 +140,7 @@ const LocalStratEmail = () => {
                                 .catch((err) => {
 
                                     if (devMode.network) {
-                                        console.warn(err);
+                                        console.log(err);
                                     }
 
                                     setNetFeedback({

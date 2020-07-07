@@ -1,14 +1,13 @@
 import { PermissionsAndroid, Platform } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
-import Axios from "axios";
 import endpoints, { getEndpoint } from "../res/data/endpoints";
 import { DATA_STORE } from "../stored/dataStore";
-import { timeouts } from "../res/data/requests";
+import { dodoFlight } from "./dodoAirlines";
 
 
 const GPS_CONFIG = {
-    enabled: false,
-    logging: true,
+    enabled: true,
+    logging: false,
 }
 
 export const GPS_DATA = {
@@ -22,7 +21,7 @@ const hrToMS = (hr) => {
     return hr * 60 * 60 * 1000;
 }
 
-const msOffset = hrToMS(0.01);
+const msOffset = hrToMS(0.1);
 
 export const requestPermission = async () => {
 
@@ -59,31 +58,34 @@ export const getGPS = () => {
 
             if (GPS_CONFIG.logging)
                 console.log('requesting', getEndpoint(endpoints.post.setGPS), {
-                    userid: DATA_STORE.userToken,
+                    userid: DATA_STORE.userID,
                     latitude: GPS_DATA.coords.latitude,
                     longitude: GPS_DATA.coords.longitude,
                 })
 
-            Axios.post(getEndpoint(endpoints.post.setGPS), {
-                userid: DATA_STORE.userToken,
-                latitude: GPS_DATA.coords.latitude,
-                longitude: GPS_DATA.coords.longitude,
-            }, {
-                headers: {
-                    authorization: DATA_STORE.userToken,
-                },
-                timeout: timeouts.short,
-            }).then((res) => {
-                if (GPS_CONFIG.logging)
-                    console.log(res);
-            }).catch((err) => {
-                if (GPS_CONFIG.logging)
-                    console.log(err);
-                GPS_DATA.timestamp -= msOffset + 100;
 
-                if (GPS_CONFIG.logging)
-                    console.log('error making request', 'new timestamp', GPS_DATA.timestamp);
-            });
+            dodoFlight({
+                method: 'post',
+                url: getEndpoint(endpoints.post.setGPS),
+                data: {
+                    userid: DATA_STORE.userID,
+                    latitude: GPS_DATA.coords.latitude,
+                    longitude: GPS_DATA.coords.longitude,
+                },
+
+                thenCallback: (res) => {
+                    if (GPS_CONFIG.logging)
+                        console.log(res);
+                },
+
+                catchCallback: (err) => {
+                    GPS_DATA.timestamp -= msOffset + 100;
+                    if (GPS_CONFIG.logging) {
+                        console.log(err);
+                        console.warn('error updating GPS', 'new timestamp', GPS_DATA.timestamp);
+                    }
+                },
+            })
         }
         else {
             GPS_DATA.timestamp -= msOffset + 100;
@@ -102,6 +104,9 @@ export const getGPS = () => {
     }
 }
 
+
+let gpsTimer = null;
+
 export const startWatchingGPS = () => {
 
     if (GPS_CONFIG.enabled) {
@@ -115,20 +120,29 @@ export const startWatchingGPS = () => {
 
         if (!GPS_DATA.enabled) {
 
-            setInterval(() => {
+            console.log('tasukete onii-chan')
 
-                let now = Date.now()
+            gpsTimer = setInterval(() => {
 
-                if (now > GPS_DATA.timestamp + msOffset) {
+                if (DATA_STORE.userToken) {
 
-                    requestPermission()
-                        .then(() => {
-                            getGPS();
-                        });
+                    let now = Date.now()
+
+                    if (now > GPS_DATA.timestamp + msOffset) {
+
+                        requestPermission()
+                            .then(() => {
+                                getGPS();
+                            });
+                    }
+                    else {
+                        if (GPS_CONFIG.logging)
+                            console.log(`${(GPS_DATA.timestamp + msOffset) - now} ms left till update`);
+                    }
                 }
                 else {
-                    if (GPS_CONFIG.logging)
-                        console.log(`${(GPS_DATA.timestamp + msOffset) - now} ms left till update`);
+                    clearInterval(gpsTimer);
+                    console.log('stopped watching GPS...');
                 }
 
             }, 10000)

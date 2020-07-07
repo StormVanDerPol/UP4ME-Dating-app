@@ -1,30 +1,41 @@
 import { devMode } from "../../dev/devConfig";
 
-const protocol = (devMode.localBackend) ? `http://` : `https://`;
-const domain = (devMode.localBackend) ? `192.168.1.17` : `www.upforme.nl`;
-const port = `:50000`;
+const local = true
+
+const protocol = (local) ? `http://` : `https://`;
+const domain = (local) ? `192.168.1.12` : `www.upforme.nl`;
+const port = (local) ? `:8080` : '';
+
 const apiRoot = `/api/v1`;
 
-export const API_URL = `${protocol}${domain}${port}${apiRoot}`;
+export const HOST = `${protocol}${domain}${port}`;
 
 const endpoints = {
 
     get: {
 
-        registerEmail: `/register/1/`,
-        checkMail: `/get/profile/checkmail/`,
+        // registerEmail: `/register/1/`,
+        checkMail: `/api/v1/get/profile/checkmail/`,
+        authGoogle: `https://www.upforme.nl/auth/google`,
+        authApple: `https://www.upforme.nl/auth/apple`,
+        lastLogin: `/get/lastlogin/`,
     },
 
     post: {
-        login: `/login`,
+        authLocalReq: `/auth/local/req`,
+        authLocal: `/auth/local`,
         setUserData: `/set/profile/bjnh`,
         setGPS: `/set/gps`, //userid, latitude, longitude
-        setPlace: `/set/profile/city`, //userid, woontin
+        setPlace: `/set/profile/city`, //userid, woontin.
+        setGender: `/set/profile/gender`, //userid, geslacht
+        setPhotos: `/set/photos`,
+        setProfilePicture: `/set/profile/picture`
     }
 };
 
-export const getEndpoint = (endpoint) => {
-    return `${API_URL}${endpoint}`;
+export const getEndpoint = (endpoint, api = true) => {
+
+    return (api) ? HOST + apiRoot + endpoint : HOST + endpoint;
 }
 
 export const requestFeedback = {
@@ -32,3 +43,5 @@ export const requestFeedback = {
 }
 
 export default endpoints;
+
+//403 als expired

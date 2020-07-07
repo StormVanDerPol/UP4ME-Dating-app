@@ -1,15 +1,13 @@
-import { Linking, Alert } from "react-native"
+import { Linking } from 'react-native'
 import InAppBrowser from 'react-native-inappbrowser-reborn'
 
-
-
-export const openBrowser = async (url) => {
+export const oAuthLogin = async (url) => {
 
     try {
-
         if (await InAppBrowser.isAvailable()) {
-            await InAppBrowser.open(url, {
+            await InAppBrowser.openAuth(url, '', {
                 // iOS Properties
+                ephemeralWebSession: true,
                 dismissButtonStyle: 'cancel',
                 preferredBarTintColor: '#453AA4',
                 preferredControlTintColor: 'white',
@@ -24,8 +22,8 @@ export const openBrowser = async (url) => {
                 toolbarColor: '#6200EE',
                 secondaryToolbarColor: 'black',
                 enableUrlBarHiding: true,
-                enableDefaultShare: true,
-                forceCloseOnRedirection: false,
+                enableDefaultShare: false,
+                forceCloseOnRedirection: true,
                 // Specify full animation resource identifier(package:anim/name)
                 // or only resource name(in case of animation bundled with app).
                 animations: {
@@ -35,12 +33,8 @@ export const openBrowser = async (url) => {
                     endExit: 'slide_out_right'
                 },
             })
-        }
-        else {
-            Linking.openURL(url)
-        }
-    }
-    catch (err) {
+        } else Linking.openURL(url)
+    } catch (error) {
         Linking.openURL(url)
     }
 }

@@ -56,7 +56,7 @@ const InputUserData = ({ initValues = {
             />
 
             <UserDataTextInput header={'Mijn beroep'}
-                initVal={initValues.name}
+                initVal={initValues.job}
                 onChangeText={(input) => {
                     _userData.job = input;
                     onChange(_userData);

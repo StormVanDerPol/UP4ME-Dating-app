@@ -13,13 +13,14 @@ import TextQuicksand from '../../../components/TextQuicksand';
 import KeyboardDismiss from '../../../components/KeyboardDismiss';
 import InputUserData from '../../../components/bigComponents/InputUserData';
 import Axios from 'axios';
-import endpoints, { getEndpoint, requestFeedback } from '../../../res/data/endpoints';
+import endpoints, { getEndpoint, requestFeedback, host } from '../../../res/data/endpoints';
 import { DATA_STORE } from '../../../stored/dataStore';
 import { timeouts } from '../../../res/data/requests';
 import { devMode } from '../../../dev/devConfig';
 import { MemeMath } from '../../../functions/math';
 import { navigationProxy } from '../../../navigation/navigationProxy';
-import { getYearIndex } from '../../../res/data/time';
+import { getYearIndex, toRetardDate } from '../../../res/data/time';
+import { dodoFlight } from '../../../functions/dodoAirlines';
 
 const RegistUserData = () => {
 
@@ -74,60 +75,42 @@ const RegistUserData = () => {
                                 message: networkFeedbackMessages.wait,
                             });
 
-                            if (devMode.network) {
-                                console.log('request:', getEndpoint(endpoints.post.setUserData), {
-                                    data: {
-                                        userid: DATA_STORE.userToken,
-                                        naam: userData.name,
-                                        geboortedatum: userData.birthday.year + '' + userData.birthday.month + '' + userData.birthday.day + '',
-                                        beroep: userData.job,
-                                        lengte: userData.height,
-                                    },
-                                    headers: {
-                                        authorization: DATA_STORE.userToken,
-                                    }
-                                });
-                            }
-
                             if (DATA_STORE.userToken != null) {
 
-                                Axios.post(getEndpoint(endpoints.post.setUserData), {
-                                    userid: DATA_STORE.userToken,
-                                    naam: userData.name,
-                                    geboortedatum: userData.birthday.year + userData.birthday.month + userData.birthday.day,
-                                    beroep: userData.job,
-                                    lengte: MemeMath.roundTwoDecimals(userData.height),
-                                }, {
-                                    headers: {
-                                        authorization: DATA_STORE.userToken,
-                                    },
+                                await dodoFlight({
+                                    method: 'post',
+                                    url: getEndpoint(endpoints.post.setUserData),
                                     timeout: timeouts.short,
-                                })
-                                    .then((res) => {
-                                        console.log(res);
+                                    data: {
+                                        userid: DATA_STORE.userID,
+                                        naam: userData.name,
+                                        geboortedatum: toRetardDate(userData.birthday),
+                                        beroep: userData.job,
+                                        lengte: MemeMath.roundTwoDecimals(userData.height),
+                                    },
 
-                                        if (res.data) {
+                                    thenCallback: (res) => {
+
+                                        if (res.data == true) {
                                             navigationProxy.navigate('RegistLocation');
-                                            netFeedback.message = ''
+                                            netFeedback.message = '';
                                         }
-
                                         else {
-                                            netFeedback.message = networkFeedbackMessages.err
+                                            netFeedback.message = networkFeedbackMessages.err;
                                         }
-
                                         setNetFeedback({
-                                            busy: false,
                                             ...netFeedback,
+                                            busy: false,
                                         });
-                                    })
-                                    .catch((err) => {
-                                        console.log(err)
+                                    },
 
+                                    catchCallback: () => {
                                         setNetFeedback({
                                             busy: false,
                                             message: networkFeedbackMessages.err,
                                         });
-                                    })
+                                    }
+                                })
                             }
                             else {
                                 setNetFeedback({
