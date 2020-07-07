@@ -1,16 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, StyleSheet } from 'react-native';
 
 import { RegistStyles } from '../../../styles/RegistStyles';
+
+import ImageResizer from 'react-native-image-resizer';
 
 import Body, { FlexSection } from '../../../components/Body';
 import UpForMeButton from '../../../components/UpForMeButton';
 import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4MeLogo';
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
 import TextQuicksand from '../../../components/TextQuicksand';
-import NetworkFeedBackIndicator from '../../../components/waitIndicator';
-import { openBrowser } from '../../../functions/bowser';
+import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../components/waitIndicator';
 import UploadPictures from '../../../components/bigComponents/UploadPictures';
+import { dodoFlight } from '../../../functions/dodoAirlines';
 
 const RegistPhotos = () => {
 
@@ -19,31 +21,76 @@ const RegistPhotos = () => {
         message: '',
     });
 
+    const [images, setImages] = useState(new Array(6))
+
+    const _init = useRef(false);
+
+    if (!_init.current) {
+        images.fill('');
+        _init.current = true;
+    }
+
+    const [canContinue, setCanContinue] = useState(false);
+
+    useEffect(() => {
+
+        let _canContinue = false;
+
+        for (let image of images) {
+            if (image != '') {
+                _canContinue = true;
+                continue;
+            }
+            else {
+                _canContinue = false;
+            }
+        }
+
+        setCanContinue(_canContinue);
+
+    }, [images])
+
     return (
         <Body>
             <FlexSection>
                 <RegistUp4MeLogo />
                 <RegistHeader>Foto's toevoegen</RegistHeader>
 
+
                 <View style={[RegistStyles.container]}>
-
-                    <UploadPictures />
-
-                    <TextQuicksand style={styles.underline} onPress={() => { openBrowser('https://www.uptodates.nl/richtlijnen-veiligheid') }}>Lees de richtlijnen</TextQuicksand>
+                    <TextQuicksand>Voeg teminste één foto toe. De foto met het sterretje wordt gebruikt als profiel foto!</TextQuicksand>
+                    <UploadPictures onChange={(output) => {
+                        setImages(output);
+                    }} />
                 </View>
             </FlexSection>
 
             <View style={RegistStyles.bottom}>
                 <NetworkFeedBackIndicator style={RegistStyles.waitIndicator} message={netFeedback.message} />
-                <UpForMeButton style={RegistStyles.botButton} title={'doorgaan'} enabled={false} onPress={async () => {
+                <UpForMeButton style={RegistStyles.botButton} title={'doorgaan'} enabled={canContinue} onPress={async () => {
                     setNetFeedback({
                         busy: true,
                         message: networkFeedbackMessages.wait,
                     })
 
-                    if (devMode.network) {
-                        console.log('request:', getEndpoint(endpoints.something));
-                    }
+                    // const profilePic = await ImageResizer.createResizedImage(
+                    //     images[0],
+                    //     200,
+                    //     200,
+                    //     'JPEG',
+                    //     0.5,
+                    //     RNFS
+                    // )
+
+                    // let toSend = {
+
+                    // }
+
+                    await dodoFlight({
+
+                    })
+
+
                 }} />
             </View>
 
@@ -52,10 +99,7 @@ const RegistPhotos = () => {
 }
 const styles = StyleSheet.create({
 
-    underline: {
-        textDecorationLine: "underline",
 
-    },
 });
 
 export default RegistPhotos;

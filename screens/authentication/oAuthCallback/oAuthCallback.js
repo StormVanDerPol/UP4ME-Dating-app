@@ -52,18 +52,8 @@ const AuthCallback = ({ route }) => {
 
             DATA_STORE.userToken = null;
             DATA_STORE.userID = null;
+            navigationProxy.navigate('Landing');
 
-            Alert.alert(
-                'Error',
-                'Something went wrong, please log-in again!',
-                [
-                    {
-                        text: 'OK', onPress: () => {
-                            navigationProxy.navigate('Landing');
-                        }
-                    }
-                ]
-            )
         }
     })
 

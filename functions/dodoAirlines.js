@@ -90,7 +90,16 @@ export const dodoFlight = async ({
                 }
             }
             else {
-                alert('server error');
+                Alert.alert(
+                    'Server Error',
+                    'Please try again later!',
+                    [
+                        {
+                            text: 'OK',
+                        }
+                    ],
+                    { cancelable: false }
+                );
             }
             catchCallback(err);
         })

@@ -1,12 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, createRef } from 'react';
 import TextQuicksand from '../TextQuicksand';
-import { StyleSheet, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { StyleSheet, View, Alert } from 'react-native';
+import { TouchableOpacity, TapGestureHandler, State, LongPressGestureHandler, FlingGestureHandler, Directions } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 
-const UploadPictures = ({ initImages = [] }) => {
+import * as ImagePicker from 'expo-image-picker';
+import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
+import { openBrowser } from '../../functions/bowser';
 
-    const [images, setImages] = useState((initImages.length == 0) ? new Array(6) : initImages)
+
+const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
+
+    const [images, setImages] = useState((initImages.length == 0) ? new Array(6) : initImages);
 
     const _init = useRef(false);
 
@@ -19,32 +24,165 @@ const UploadPictures = ({ initImages = [] }) => {
         _init.current = true;
     }
 
+    const handleChoosePhoto = async (id) => {
 
+        try {
+
+            let res = await ImagePicker.launchImageLibraryAsync(
+                {
+                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    allowsEditing: true,
+                    aspect: [1, 1],
+                    quality: 0.5,
+                    base64: true,
+                }
+            );
+
+            if (!res.cancelled) {
+
+                let fileExtension = res.uri.substr(res.uri.lastIndexOf('.') + 1);
+
+                if (fileExtension == 'jpg') {
+                    fileExtension = 'jpeg';
+                }
+
+                let index = id;
+
+                if (images[0] == '')
+                    index = 0;
+
+                images[index] = `data:${res.type}/${fileExtension};base64,${res.base64}`;
+                setImages([...images])
+            }
+
+        }
+        catch (err) {
+            console.log(err);
+        }
+    }
+
+    useEffect(() => {
+        onChange(images);
+    }, [images])
+
+    const _longTapRef = createRef();
 
     return (
-        <View style={styles.container}>
-            {images.map((image, i) => {
-                return (
-                    <View key={i} style={styles.item}>
-                        <TouchableOpacity
-                            onPress={() => {
+        <>
+            <View style={styles.container}>
 
+                {images.map((image, i) => {
+
+                    return (
+                        <TapGestureHandler
+                            key={i}
+                            onHandlerStateChange={(e) => {
+                                if (e.nativeEvent.state == State.END) {
+
+                                    if (image === '') {
+                                        handleChoosePhoto(i);
+                                    }
+                                    else {
+                                        Alert.alert(
+                                            `What to do with image #${i + 1}?`,
+                                            '',
+                                            [
+                                                {
+                                                    text: 'Choose a different image', onPress: () => {
+                                                        handleChoosePhoto(i);
+                                                    }
+                                                },
+                                                {
+                                                    text: 'Set as profile picture', onPress: () => {
+                                                        [images[i], images[0]] = [images[0], images[i]];
+                                                        setImages([...images])
+                                                    }
+                                                },
+                                                {
+                                                    text: 'Delete', onPress: () => {
+                                                        images[i] = '';
+
+                                                        if (i == 0) {
+                                                            for (let a in images) {
+                                                                if (images[a] != '') {
+                                                                    [images[a], images[0]] = [images[0], images[a]];
+                                                                    break;
+                                                                }
+                                                            }
+                                                        }
+                                                        setImages([...images])
+                                                    }
+                                                },
+                                            ],
+                                            { cancelable: true }
+                                        );
+                                    }
+                                }
                             }}
+
+                            waitFor={_longTapRef}
                         >
-                            <FastImage
-                                source={{
-                                    uri: image,
+                            <LongPressGestureHandler
+                                ref={_longTapRef}
+                                onHandlerStateChange={(e) => {
+                                    if (e.nativeEvent.state == State.ACTIVE) {
+                                        console.log('long')
+                                    }
                                 }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-                )
-            })}
-        </View>
+                                minDurationMs={300}
+                            >
+                                <View key={i} style={styles.item}>
+
+                                    <FastImage
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            // borderWidth: 2
+                                        }}
+                                        source={{
+                                            uri: image,
+                                        }}
+                                    />
+
+                                    {(images[i] == '') ? <UpForMeIcon style={styles.icon} icon={iconIndex.paperplane} /> : <UpForMeIcon style={styles.icon} icon={iconIndex.edit} />}
+                                    {(i == 0 && images[0] != '') ? <UpForMeIcon style={styles.favicon} icon={iconIndex.restaurant_star} /> : <></>}
+
+                                </View>
+
+                            </LongPressGestureHandler>
+                        </TapGestureHandler>
+                    )
+                })}
+
+            </View>
+            <TextQuicksand style={styles.guidelines} onPress={() => { openBrowser('https://www.uptodates.nl/richtlijnen-veiligheid') }}>Lees de richtlijnen</TextQuicksand>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
+
+    guidelines: {
+        textDecorationLine: "underline",
+        alignSelf: "center",
+    },
+
+    favicon: {
+        position: "absolute",
+        top: 4,
+        left: 4,
+        width: 33,
+        height: 33,
+    },
+
+    icon: {
+        position: "absolute",
+        bottom: 4,
+        right: 4,
+        width: 50,
+        height: 50,
+    },
+
     container: {
         flex: 1,
         flexDirection: 'row',
@@ -58,6 +196,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#e0e0e0',
         borderRadius: 25,
         marginVertical: 15,
+        overflow: "hidden",
     }
 })
 

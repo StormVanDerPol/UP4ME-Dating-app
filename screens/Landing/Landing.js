@@ -74,11 +74,13 @@ const Landing = () => {
                 <AuthButton style={styles.authButton} provider={providerIndex.google} action={action.current}
                     onPress={() => {
                         oAuthLogin(endpoints.get.authGoogle);
+                        setProvModalActive(false);
                     }}
                 />
                 <AuthButton style={styles.authButton} provider={providerIndex.apple} action={action.current}
                     onPress={() => {
                         oAuthLogin(endpoints.get.authApple);
+                        setProvModalActive(false);
                     }}
                 />
                 <UpForMeButton style={styles.modalCancelButton} title={'Sluiten'} onPress={() => { setProvModalActive(false) }} />
