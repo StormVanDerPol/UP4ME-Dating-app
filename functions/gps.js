@@ -21,7 +21,7 @@ const hrToMS = (hr) => {
     return hr * 60 * 60 * 1000;
 }
 
-const msOffset = hrToMS(0.001);
+const msOffset = hrToMS(0.1);
 
 export const requestPermission = async () => {
 

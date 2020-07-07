@@ -3,7 +3,7 @@ import { devMode } from "../../dev/devConfig";
 const local = true
 
 const protocol = (local) ? `http://` : `https://`;
-const domain = (local) ? `192.168.1.14` : `www.upforme.nl`;
+const domain = (local) ? `192.168.1.12` : `www.upforme.nl`;
 const port = (local) ? `:8080` : '';
 
 const apiRoot = `/api/v1`;
@@ -28,6 +28,8 @@ const endpoints = {
         setGPS: `/set/gps`, //userid, latitude, longitude
         setPlace: `/set/profile/city`, //userid, woontin.
         setGender: `/set/profile/gender`, //userid, geslacht
+        setPhotos: `/set/photos`,
+        setProfilePicture: `/set/profile/picture`
     }
 };
 

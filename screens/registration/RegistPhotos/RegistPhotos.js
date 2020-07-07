@@ -13,6 +13,8 @@ import TextQuicksand from '../../../components/TextQuicksand';
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../components/waitIndicator';
 import UploadPictures from '../../../components/bigComponents/UploadPictures';
 import { dodoFlight } from '../../../functions/dodoAirlines';
+import { DATA_STORE } from '../../../stored/dataStore';
+import endpoints, { getEndpoint } from '../../../res/data/endpoints';
 
 const RegistPhotos = () => {
 
@@ -22,6 +24,8 @@ const RegistPhotos = () => {
     });
 
     const [images, setImages] = useState(new Array(6))
+
+    const profilePicture = useRef('');
 
     const _init = useRef(false);
 
@@ -39,7 +43,7 @@ const RegistPhotos = () => {
         for (let image of images) {
             if (image != '') {
                 _canContinue = true;
-                continue;
+                break;
             }
             else {
                 _canContinue = false;
@@ -59,7 +63,8 @@ const RegistPhotos = () => {
 
                 <View style={[RegistStyles.container]}>
                     <TextQuicksand>Voeg teminste één foto toe. De foto met het sterretje wordt gebruikt als profiel foto!</TextQuicksand>
-                    <UploadPictures onChange={(output) => {
+                    <UploadPictures onChange={({ images: output, profilePicture: outputpfp }) => {
+                        profilePicture.current = outputpfp;
                         setImages(output);
                     }} />
                 </View>
@@ -73,24 +78,64 @@ const RegistPhotos = () => {
                         message: networkFeedbackMessages.wait,
                     })
 
-                    // const profilePic = await ImageResizer.createResizedImage(
-                    //     images[0],
-                    //     200,
-                    //     200,
-                    //     'JPEG',
-                    //     0.5,
-                    //     RNFS
-                    // )
-
-                    // let toSend = {
-
-                    // }
+                    let toSend = {
+                        userid: DATA_STORE.userID,
+                        photo1: images[0],
+                        photo2: images[1],
+                        photo3: images[2],
+                        photo4: images[3],
+                        photo5: images[4],
+                        photo6: images[5],
+                    }
 
                     await dodoFlight({
+                        url: getEndpoint(endpoints.post.setPhotos),
+                        method: 'post',
+                        data: toSend,
+
+                        thenCallback: async (res) => {
+                            await dodoFlight({
+                                url: getEndpoint(endpoints.post.setProfilePicture),
+                                method: 'post',
+                                data: {
+                                    userid: DATA_STORE.userID,
+                                    photo: profilePicture.current,
+                                },
+
+                                thenCallback: (res) => {
+
+                                    if (res.data === true) {
+
+                                        setNetFeedback({
+                                            busy: false,
+                                            message: '',
+                                        });
+                                    }
+                                    else {
+                                        setNetFeedback({
+                                            busy: false,
+                                            message: networkFeedbackMessages.err,
+                                        });
+                                    }
+                                },
+
+                                catchCallback: (err) => {
+                                    setNetFeedback({
+                                        busy: false,
+                                        message: networkFeedbackMessages.err,
+                                    });
+                                }
+                            })
+                        },
+
+                        catchCallback: (err) => {
+                            setNetFeedback({
+                                busy: false,
+                                message: networkFeedbackMessages.err,
+                            })
+                        }
 
                     })
-
-
                 }} />
             </View>
 

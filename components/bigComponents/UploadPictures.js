@@ -7,11 +7,15 @@ import FastImage from 'react-native-fast-image';
 import * as ImagePicker from 'expo-image-picker';
 import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
 import { openBrowser } from '../../functions/bowser';
+import ImageResizer from 'react-native-image-resizer';
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 
 
 const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
 
     const [images, setImages] = useState((initImages.length == 0) ? new Array(6) : initImages);
+
+    const profilePicture = useRef()
 
     const _init = useRef(false);
 
@@ -22,6 +26,21 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
         }
 
         _init.current = true;
+    }
+
+    const createProfilePicture = async (image) => {
+
+        let res = await manipulateAsync(
+            image,
+            [{
+                resize: { width: 200, height: 200 },
+            }],
+            {
+                base64: true,
+                format: SaveFormat.JPEG,
+            }
+        )
+        return `data:image/jpeg;base64,${res.base64}`;
     }
 
     const handleChoosePhoto = async (id) => {
@@ -38,6 +57,8 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
                 }
             );
 
+            console.log(res);
+
             if (!res.cancelled) {
 
                 let fileExtension = res.uri.substr(res.uri.lastIndexOf('.') + 1);
@@ -52,6 +73,11 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
                     index = 0;
 
                 images[index] = `data:${res.type}/${fileExtension};base64,${res.base64}`;
+
+                // console.log(await createProfilePicture(images[index]));
+
+                profilePicture.current = await createProfilePicture(images[index])
+
                 setImages([...images])
             }
 
@@ -61,9 +87,31 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
         }
     }
 
+    const deletePhoto = async (id) => {
+        images[id] = '';
+
+        if (id == 0) {
+            for (let a in images) {
+                if (images[a] != '') {
+                    [images[a], images[0]] = [images[0], images[a]];
+                    profilePicture.current = await createProfilePicture(images[0])
+                    break;
+                }
+            }
+        }
+        setImages([...images])
+    }
+
+    const swapProfPic = async (id) => {
+        [images[id], images[0]] = [images[0], images[id]];
+        profilePicture.current = await createProfilePicture(images[0]);
+        setImages([...images]);
+    }
+
     useEffect(() => {
-        onChange(images);
+        onChange({ images: images, profilePicture: profilePicture.current });
     }, [images])
+
 
     const _longTapRef = createRef();
 
@@ -94,23 +142,12 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
                                                 },
                                                 {
                                                     text: 'Set as profile picture', onPress: () => {
-                                                        [images[i], images[0]] = [images[0], images[i]];
-                                                        setImages([...images])
+                                                        swapProfPic(i);
                                                     }
                                                 },
                                                 {
                                                     text: 'Delete', onPress: () => {
-                                                        images[i] = '';
-
-                                                        if (i == 0) {
-                                                            for (let a in images) {
-                                                                if (images[a] != '') {
-                                                                    [images[a], images[0]] = [images[0], images[a]];
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                        setImages([...images])
+                                                        deletePhoto(i);
                                                     }
                                                 },
                                             ],
@@ -126,7 +163,7 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
                                 ref={_longTapRef}
                                 onHandlerStateChange={(e) => {
                                     if (e.nativeEvent.state == State.ACTIVE) {
-                                        console.log('long')
+                                        deletePhoto(i);
                                     }
                                 }}
                                 minDurationMs={300}
