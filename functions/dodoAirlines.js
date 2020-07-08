@@ -73,7 +73,15 @@ export const dodoFlight = async ({
                     DATA_STORE.userToken = null;
                     DATA_STORE.userID = null;
 
-                    timedReset('Landing', 1000);
+                    navigationProxy.reset({
+                        index: 1,
+                        routes: [
+                            {
+                                name: 'Landing',
+                                params: {},
+                            },
+                        ]
+                    });
 
                     Alert.alert(
                         '403 Forbidden request',
@@ -81,7 +89,16 @@ export const dodoFlight = async ({
                     );
                 }
                 else if (err.response.status == 404) {
-                    timedReset('Landing', 1000);
+
+                    navigationProxy.reset({
+                        index: 1,
+                        routes: [
+                            {
+                                name: 'Landing',
+                                params: {},
+                            },
+                        ]
+                    });
 
                     Alert.alert(
                         '404 not found',
