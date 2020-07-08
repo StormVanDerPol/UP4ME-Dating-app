@@ -15,6 +15,7 @@ import UploadPictures from '../../../components/bigComponents/UploadPictures';
 import { dodoFlight } from '../../../functions/dodoAirlines';
 import { DATA_STORE } from '../../../stored/dataStore';
 import endpoints, { getEndpoint } from '../../../res/data/endpoints';
+import { navigationProxy } from '../../../navigation/navigationProxy';
 
 const RegistPhotos = () => {
 
@@ -65,6 +66,7 @@ const RegistPhotos = () => {
                     <TextQuicksand>Voeg teminste één foto toe. De foto met het sterretje wordt gebruikt als profiel foto!</TextQuicksand>
                     <UploadPictures onChange={({ images: output, profilePicture: outputpfp }) => {
                         profilePicture.current = outputpfp;
+                        console.log('pfp', outputpfp)
                         setImages(output);
                     }} />
                 </View>
@@ -78,14 +80,26 @@ const RegistPhotos = () => {
                         message: networkFeedbackMessages.wait,
                     })
 
+                    let _photos = [];
+
+                    for (let image of images) {
+                        if (image != '') {
+                            _photos.push(image)
+                        }
+                    }
+
+                    while (_photos.length != 6) {
+                        _photos.push('');
+                    }
+
                     let toSend = {
                         userid: DATA_STORE.userID,
-                        photo1: images[0],
-                        photo2: images[1],
-                        photo3: images[2],
-                        photo4: images[3],
-                        photo5: images[4],
-                        photo6: images[5],
+                        photo1: _photos[0],
+                        photo2: _photos[1],
+                        photo3: _photos[2],
+                        photo4: _photos[3],
+                        photo5: _photos[4],
+                        photo6: _photos[5],
                     }
 
                     await dodoFlight({
@@ -99,7 +113,7 @@ const RegistPhotos = () => {
                                 method: 'post',
                                 data: {
                                     userid: DATA_STORE.userID,
-                                    photo: profilePicture.current,
+                                    profpic: profilePicture.current,
                                 },
 
                                 thenCallback: (res) => {
@@ -110,6 +124,8 @@ const RegistPhotos = () => {
                                             busy: false,
                                             message: '',
                                         });
+
+                                        navigationProxy.navigate('RegistProfileText');
                                     }
                                     else {
                                         setNetFeedback({

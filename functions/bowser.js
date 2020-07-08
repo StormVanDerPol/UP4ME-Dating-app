@@ -1,5 +1,6 @@
 import { Linking, Alert } from "react-native"
 import InAppBrowser from 'react-native-inappbrowser-reborn'
+import up4meColours from "../res/data/colours"
 
 
 
@@ -11,7 +12,7 @@ export const openBrowser = async (url) => {
             await InAppBrowser.open(url, {
                 // iOS Properties
                 dismissButtonStyle: 'cancel',
-                preferredBarTintColor: '#453AA4',
+                preferredBarTintColor: up4meColours.gradPink,
                 preferredControlTintColor: 'white',
                 readerMode: false,
                 animated: true,
@@ -21,7 +22,7 @@ export const openBrowser = async (url) => {
                 enableBarCollapsing: false,
                 // Android Properties
                 showTitle: false,
-                toolbarColor: '#6200EE',
+                toolbarColor: up4meColours.gradPink,
                 secondaryToolbarColor: 'black',
                 enableUrlBarHiding: true,
                 enableDefaultShare: true,

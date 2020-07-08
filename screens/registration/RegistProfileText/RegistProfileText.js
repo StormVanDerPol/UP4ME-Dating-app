@@ -13,6 +13,9 @@ import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../comp
 import KeyboardDismiss from '../../../components/KeyboardDismiss';
 import TextInputField from '../../../components/bigComponents/TextInputField';
 import endpoints, { getEndpoint } from '../../../res/data/endpoints';
+import { dodoFlight } from '../../../functions/dodoAirlines';
+import { DATA_STORE } from '../../../stored/dataStore';
+import { navigationProxy } from '../../../navigation/navigationProxy';
 
 const RegistProfileText = () => {
 
@@ -33,7 +36,7 @@ const RegistProfileText = () => {
                     <View style={[RegistStyles.container, styles.flexinput]}>
 
                         <TextInputField
-                            // initValue={whatever we got from the backend}
+                            // initValue={whatever we got from the backend
                             onChange={(input) => {
                                 setProfileText(input);
                             }}
@@ -51,9 +54,34 @@ const RegistProfileText = () => {
                             message: networkFeedbackMessages.wait,
                         })
 
-                        if (devMode.network) {
-                            console.log('request:', getEndpoint(endpoints.post.login));
-                        }
+                        await dodoFlight({
+                            method: 'post',
+                            url: getEndpoint(endpoints.post.setProfileText),
+                            data: {
+                                userid: DATA_STORE.userID,
+                                profiletext: profileText,
+                            },
+
+                            thenCallback: (res) => {
+
+                                if (res.data === true) {
+                                    setNetFeedback({
+                                        busy: false,
+                                        message: '',
+                                    });
+
+                                    navigationProxy.navigate('RegistUserProperties');
+                                }
+                            },
+
+                            catchCallback: (err) => {
+                                setNetFeedback({
+                                    busy: false,
+                                    message: networkFeedbackMessages.err,
+                                })
+                            },
+                        })
+
                     }} />
                 </View>
 
@@ -66,7 +94,6 @@ const styles = StyleSheet.create({
     flexinput: {
         marginVertical: 25,
     },
-
 
 });
 

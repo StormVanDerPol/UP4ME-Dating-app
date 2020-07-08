@@ -113,7 +113,7 @@ const LocalStratEmail = () => {
                             })
 
                             if (devMode.network) {
-                                console.log('making call to:', getEndpoint(endpoints.post.authLocalReq, false));
+                                console.log('making call to:', getEndpoint(endpoints.post.authLocalReq, false), email);
                             }
 
                             await Axios.post(getEndpoint(endpoints.post.authLocalReq, false), {

@@ -22,6 +22,7 @@ import { navigationProxy } from '../../../navigation/navigationProxy';
 
 import { getTerminalCancer } from '../../../functions/getCancerID';
 import { dodoFlight } from '../../../functions/dodoAirlines';
+import { createSession } from '../../../functions/createSession';
 
 const ConfirmationCode = () => {
 
@@ -33,7 +34,10 @@ const ConfirmationCode = () => {
         message: '',
     })
 
-    // useEffect(() => { console.log(netFeedback) }, [netFeedback])
+    const [resendFeedback, setResendFeedback] = useState({
+        color: 'green',
+        message: ''
+    })
 
     return (
         <KeyboardDismiss>
@@ -45,6 +49,36 @@ const ConfirmationCode = () => {
                     <EnterConfCode onChangeCode={(input) => { setConfCode(input) }} codeLength={codeLength} />
 
                 </FlexSection>
+
+                <TextQuicksand
+                    style={{ alignSelf: 'center' }}
+                    onPress={async () => {
+                        await Axios.post(getEndpoint(endpoints.post.authLocalReq, false), {
+                            email: DATA_STORE.registData.email,
+                        }, {
+                            timeout: timeouts.short,
+                        })
+                            .then((res) => {
+                                setResendFeedback({
+                                    color: 'green',
+                                    message: 'Code sent! Check your email!'
+                                });
+
+                                setTimeout(() => {
+                                    setResendFeedback({
+                                        color: 'green',
+                                        message: ''
+                                    });
+                                }, 3500)
+
+                            })
+                    }}>
+                    Resend code
+                    </TextQuicksand>
+                <TextQuicksand
+                    style={{ alignSelf: 'center', color: resendFeedback.color }}>
+                    {resendFeedback.message}
+                </TextQuicksand>
 
                 <View style={RegistStyles.bottom}>
 
@@ -75,9 +109,8 @@ const ConfirmationCode = () => {
                                 }
 
 
-                                DATA_STORE.userToken = res.headers.authorization;
+                                createSession(res.headers.authorization);
 
-                                DATA_STORE.userID = getTerminalCancer(DATA_STORE.userToken);
 
                                 await dodoFlight({
                                     method: 'get',
@@ -164,7 +197,6 @@ const EnterConfCode = ({ codeLength = 6, onChangeCode = () => { } }) => {
                                 numberRefs.current[i].clear();
                                 confCode.current[i] = '';
                                 onChangeCode(confCode.current.join(''));
-
                             }}
 
                             onChangeText={(input) => {

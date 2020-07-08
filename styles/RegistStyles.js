@@ -22,6 +22,7 @@ export const RegistStyles = StyleSheet.create({
         marginBottom: 25,
         // alignSelf: "center",
         borderTopWidth: 1,
+        borderColor: up4meColours.lineGray
     },
 
     botButton: {
@@ -51,5 +52,19 @@ export const RegistStyles = StyleSheet.create({
 
     botMargin: {
         marginBottom: 24,
-    }
+    },
+
+    questionContainer: {
+        marginTop: 15,
+        paddingVertical: 15,
+        borderColor: up4meColours.lineGray,
+        borderTopWidth: 1,
+    },
+
+    questionHeader: {
+        fontSize: 20,
+        marginBottom: 24,
+        color: '#222',
+        marginLeft: registParams.xMargin
+    },
 })

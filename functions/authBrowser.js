@@ -1,5 +1,6 @@
 import { Linking } from 'react-native'
 import InAppBrowser from 'react-native-inappbrowser-reborn'
+import up4meColours from '../res/data/colours';
 
 export const oAuthLogin = async (url) => {
 
@@ -9,7 +10,7 @@ export const oAuthLogin = async (url) => {
                 // iOS Properties
                 ephemeralWebSession: true,
                 dismissButtonStyle: 'cancel',
-                preferredBarTintColor: '#453AA4',
+                preferredBarTintColor: up4meColours.gradOrange,
                 preferredControlTintColor: 'white',
                 readerMode: false,
                 animated: true,
@@ -19,7 +20,7 @@ export const oAuthLogin = async (url) => {
                 enableBarCollapsing: false,
                 // Android Properties
                 showTitle: false,
-                toolbarColor: '#6200EE',
+                toolbarColor: up4meColours.gradOrange,
                 secondaryToolbarColor: 'black',
                 enableUrlBarHiding: true,
                 enableDefaultShare: false,
@@ -32,6 +33,8 @@ export const oAuthLogin = async (url) => {
                     endEnter: 'slide_in_left',
                     endExit: 'slide_out_right'
                 },
+            }).then((res) => {
+                console.log(res);
             })
         } else Linking.openURL(url)
     } catch (error) {
