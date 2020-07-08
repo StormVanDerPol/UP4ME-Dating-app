@@ -6,13 +6,13 @@ import endpoints, { getEndpoint } from '../../../res/data/endpoints';
 import { navigationProxy } from '../../../navigation/navigationProxy';
 import { DATA_STORE } from '../../../stored/dataStore';
 import { getTerminalCancer } from '../../../functions/getCancerID';
+import { createSession } from '../../../functions/createSession';
 
 const AuthCallback = ({ route }) => {
 
     const token = route.params.token;
 
-    DATA_STORE.userToken = 'bearer ' + token;
-    DATA_STORE.userID = getTerminalCancer(DATA_STORE.userToken);
+    createSession('bearer ' + token);
 
     console.log(route)
 

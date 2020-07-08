@@ -5,12 +5,20 @@ import { navigationProxy } from '../navigation/navigationProxy';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
 import { rnRGB, invertRGB } from '../functions/colors';
+import { clearAsyncStorage, getData } from '../stored/handleData';
+import { DATA_STORE } from '../stored/dataStore';
 
 const devRoutes = [
     {
         name: 'DevSandbox',
         color: { r: 50, g: 200, b: 100 },
         header: 'Dev'
+    },
+
+    {
+        name: 'StartUp',
+        color: { r: 200, g: 50, b: 100 },
+        header: 'Boot'
     },
 
     {
@@ -65,12 +73,42 @@ const styles = StyleSheet.create({
         margin: 10,
         borderRadius: 25,
         borderWidth: 2,
+    },
+
+    buttonWrapper: {
+        paddingVertical: 10,
     }
 });
 
 export default DevRouter = () => {
     return (
         <ScrollView>
+
+            <View style={styles.buttonWrapper}>
+                <Button
+                    title={'clear asyncstorage'}
+                    onPress={() => {
+                        clearAsyncStorage();
+                    }}
+                />
+            </View>
+
+            <View style={styles.buttonWrapper}>
+                <Button
+                    title={'load userID and Token'}
+                    onPress={() => {
+                        let keys = [
+                            'userID',
+                            'userToken',
+                        ];
+
+                        for (key of keys) {
+                            DATA_STORE[key] = getData(key);
+                        }
+                    }}
+                />
+            </View>
+
             {devRoutes.map((route, i) => {
 
                 let headerJSX = <></>;

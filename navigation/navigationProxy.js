@@ -22,3 +22,18 @@ export const navigationProxy = {
         );
     },
 }
+
+export const timedReset = ({ name, params = {}, delay }) => {
+
+    setTimeout(() => {
+        navigationProxy.reset({
+            index: 1,
+            routes: [
+                {
+                    name: name,
+                    params: params,
+                },
+            ]
+        });
+    }, delay);
+}

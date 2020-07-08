@@ -53,7 +53,10 @@ export default DevSandbox = () => {
         try {
             await AsyncStorage.setItem(key, value)
         } catch (e) {
-            // saving error
+            Alert.alert(
+                'Something went wrong!',
+                'Error saving to internal storage',
+            )
         }
     }
 

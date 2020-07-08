@@ -2,8 +2,6 @@ import 'react-native-gesture-handler';
 
 import React from 'react';
 
-import { devMode } from '../dev/devConfig';
-
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { navigationContainerRef } from './navigationProxy';
@@ -14,11 +12,10 @@ const Stack = createStackNavigator();
 
 export default NavigationHandler = () => {
 
-
     return (
         <>
-
             <NavigationContainer
+
                 linking={{
                     prefixes: [`app://up4me/`, `up4me://`],
                     config: {
@@ -28,7 +25,9 @@ export default NavigationHandler = () => {
                     }
                 }}
                 ref={navigationContainerRef}>
-                <Stack.Navigator screenOptions={{ headerShown: false }} >
+                <Stack.Navigator
+                    // initialRouteName={'StartUp'}
+                    screenOptions={{ headerShown: false, }} >
 
                     {appRoutes.map((route, i) => {
 
@@ -42,6 +41,7 @@ export default NavigationHandler = () => {
                                 name={route.name}
                                 component={route.component}
                                 options={route.options}
+                                initialParams={route.params}
                             />
                         )
                     })}
