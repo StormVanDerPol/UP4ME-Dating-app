@@ -3,7 +3,7 @@ import { timeouts } from "../res/data/requests"
 import { DATA_STORE } from "../stored/dataStore"
 import { devMode } from "../dev/devConfig";
 import { Alert } from "react-native";
-import { navigationProxy } from "../navigation/navigationProxy";
+import { navigationProxy, timedReset } from "../navigation/navigationProxy";
 // import { stopWatchingGPS } from "./gps";
 
 export const dodoFlight = async ({
@@ -46,7 +46,7 @@ export const dodoFlight = async ({
         }
     })
         .then((res) => {
-            console.log(res);
+            console.log('Noot noot! we have arrived', res);
 
             if (res.status == 200) {
 
@@ -62,7 +62,7 @@ export const dodoFlight = async ({
             }
         })
         .catch((err) => {
-            console.log(err);
+            console.log('DoDoAirlines crashed...', err);
 
             if (err.response) {
 
@@ -73,23 +73,22 @@ export const dodoFlight = async ({
                     DATA_STORE.userToken = null;
                     DATA_STORE.userID = null;
 
-                    // stopWatchingGPS();
+                    timedReset('Landing', 1000);
 
                     Alert.alert(
-                        'Token expired',
-                        'Please log-in again',
-                        [
-                            {
-                                text: 'OK', onPress: () => {
-                                    navigationProxy.navigate('Landing');
-                                }
-                            }
-                        ],
-                        { cancelable: false }
+                        '403 Forbidden request',
+                        'Try logging in again',
                     );
                 }
-            }
-            else {
+                else if (err.response.status == 404) {
+                    timedReset('Landing', 1000);
+
+                    Alert.alert(
+                        '404 not found',
+                        'Try logging in again',
+                    );
+                }
+            } else {
                 Alert.alert(
                     'Server Error',
                     'Please try again later!',

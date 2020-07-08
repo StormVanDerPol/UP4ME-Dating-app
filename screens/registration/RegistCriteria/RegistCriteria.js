@@ -12,7 +12,7 @@ import Body, { FlexSection } from '../../../components/Body';
 import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4MeLogo';
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
 import InputCriteria from '../../../components/bigComponents/InputCriteria';
-import { useCompare } from '../../../hooks/hooks';
+import { navigationProxy } from '../../../navigation/navigationProxy';
 
 const RegistCriteria = () => {
 
@@ -120,7 +120,9 @@ const RegistCriteria = () => {
                                                             message: '',
                                                         });
 
-                                                        navigationProxy.navigate('Landing');
+                                                        DATA_STORE.pMatches.list = res.data;
+                                                        DATA_STORE.pMatches.timeStamp = Date.now();
+                                                        navigationProxy.navigate('LoadHome');
                                                     }
                                                     else {
                                                         //if no potential matches, ask the user to soften up, else just continue as normal
@@ -130,7 +132,10 @@ const RegistCriteria = () => {
                                                             [
                                                                 {
                                                                     text: 'Toch doorgaan', onPress: () => {
-                                                                        navigationProxy.navigate('Landing');
+
+                                                                        DATA_STORE.pMatches.list = res.data;
+                                                                        DATA_STORE.pMatches.timeStamp = Date.now();
+                                                                        navigationProxy.navigate('LoadHome');
                                                                     }
                                                                 },
                                                                 {

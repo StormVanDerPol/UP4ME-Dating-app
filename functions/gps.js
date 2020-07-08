@@ -3,6 +3,7 @@ import Geolocation from "@react-native-community/geolocation";
 import endpoints, { getEndpoint } from "../res/data/endpoints";
 import { DATA_STORE } from "../stored/dataStore";
 import { dodoFlight } from "./dodoAirlines";
+import { hrToMS } from "../res/data/time";
 
 
 const GPS_CONFIG = {
@@ -15,10 +16,6 @@ export const GPS_DATA = {
     permission: false,
     timestamp: null,
     coords: null,
-}
-
-const hrToMS = (hr) => {
-    return hr * 60 * 60 * 1000;
 }
 
 const msOffset = hrToMS(0.1);

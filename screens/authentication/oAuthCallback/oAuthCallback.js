@@ -10,11 +10,11 @@ import { createSession } from '../../../functions/createSession';
 
 const AuthCallback = ({ route }) => {
 
-    const token = route.params.token;
+    const token = route.params.token.replace(/\#/g, '');
 
     createSession('bearer ' + token);
 
-    console.log(route)
+    // console.log(route)
 
     dodoFlight({
         method: 'get',

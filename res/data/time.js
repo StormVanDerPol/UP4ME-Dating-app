@@ -111,6 +111,10 @@ export function toNonRetardTime(retardTime) {
     return nonRetardTime;
 }
 
+export const hrToMS = (hr) => {
+    return hr * 60 * 60 * 1000;
+}
+
 export const calcAgeHet = (bdateApi) => {
 
     let now = moment();

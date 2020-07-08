@@ -3,6 +3,8 @@ import { getData } from "../../stored/handleData";
 import { dodoFlight } from "../../functions/dodoAirlines";
 import endpoints, { getEndpoint } from "../../res/data/endpoints";
 import { timedReset } from "../../navigation/navigationProxy";
+import { hrToMS } from "../../res/data/time";
+import { Alert } from "react-native";
 
 export const loadingTasks = {
     startUp: [
@@ -16,8 +18,6 @@ export const loadingTasks = {
             name: 'load token',
             exec: async () => {
                 DATA_STORE.userToken = await getData('userToken');
-
-
             }
         },
         {
@@ -35,8 +35,8 @@ export const loadingTasks = {
                             if (res.data === true) {
 
                                 timedReset({
-                                    name: 'Landing',
-                                    delay: 2000,
+                                    name: 'LoadHome',
+                                    delay: 100,
                                 });
 
                             } else {
@@ -62,4 +62,36 @@ export const loadingTasks = {
             }
         },
     ],
+
+    home: [
+        {
+            name: 'loading potential matches',
+            exec: async () => {
+                if (DATA_STORE.pMatches.timeStamp == null || Date.now() > DATA_STORE.pMatches.timeStamp + hrToMS(1)) {
+                    await dodoFlight({
+                        method: 'get',
+                        url: getEndpoint(endpoints.get.potentialMatches) + DATA_STORE.userID,
+                        // url: `https://www.upforme.nl/api/v1/suckmybigpp`,
+
+                        thenCallback: (res) => {
+                            DATA_STORE.pMatches.list = res.data;
+                            if (res.data != false) {
+                                DATA_STORE.pMatches.timeStamp = Date.now();
+                            }
+                        },
+                    });
+                }
+            }
+        },
+
+        {
+            name: 'redirect to home',
+            exec: async () => {
+                timedReset({
+                    name: 'Home',
+                    delay: 2000
+                });
+            }
+        },
+    ]
 }

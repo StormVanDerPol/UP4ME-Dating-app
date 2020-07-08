@@ -15,6 +15,7 @@ import RegistUserProperties from '../screens/registration/RegistUserProperties/R
 import RegistCriteria from '../screens/registration/RegistCriteria/RegistCriteria';
 import LoadingFull from '../screens/loading/LoadingFull';
 import { loadingTasks } from '../screens/loading/loadingTasks';
+import Home from '../screens/home/Home/Home';
 
 //Add new routes here + put it in the DevRouter.js
 var appRoutes = [
@@ -72,6 +73,17 @@ var appRoutes = [
     {
         name: 'RegistCriteria',
         component: RegistCriteria,
+    },
+    {
+        name: 'LoadHome',
+        component: LoadingFull,
+        params: {
+            taskSet: 'home',
+        }
+    },
+    {
+        name: 'Home',
+        component: Home,
     },
 
 ];
