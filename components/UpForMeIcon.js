@@ -41,6 +41,7 @@ import RNSVG_profile_colour from '../res/icons/rnsvg/nav/rnsvg_profile_colour';
 import RNSVG_profile_gray from '../res/icons/rnsvg/nav/rnsvg_profile_gray';
 import RNSVG_magnifying_glass from '../res/icons/rnsvg/rnsvg_magnifying_glass';
 import RNSVG_apple_login_logo from '../res/icons/rnsvg/rnsvg_apple_login_logo';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const iconIndex = {
 
@@ -104,10 +105,27 @@ export const iconIndex = {
     apple_login_logo: <RNSVG_apple_login_logo />,
 }
 
-const UpForMeIcon = ({ icon, style = { height: 50, width: 50, } }) => {
+const UpForMeIcon = ({ icon, touchable = false, onPress = () => { }, style = { height: 50, width: 50, } }) => {
     return (
         <View style={style}>
-            {icon}
+            {
+                (touchable) ?
+
+                    <TouchableOpacity
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                        }}
+                        onPress={onPress()}>
+                        {icon}
+                    </TouchableOpacity>
+
+                    :
+
+                    icon
+
+            }
+
         </View>
     );
 }

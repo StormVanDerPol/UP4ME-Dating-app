@@ -4,7 +4,6 @@ import { View } from 'react-native';
 import { RegistStyles } from '../../../styles/RegistStyles';
 
 import endpoints, { getEndpoint } from '../../../res/data/endpoints';
-import { devMode } from '../../../dev/devConfig';
 
 import Body, { FlexSection } from '../../../components/Body';
 import UpForMeButton from '../../../components/UpForMeButton';
@@ -12,9 +11,7 @@ import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4M
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../components/waitIndicator';
 import InputLocation from '../../../components/bigComponents/InputLocation';
-import Axios from 'axios';
 import { DATA_STORE } from '../../../stored/dataStore';
-import { timeouts } from '../../../res/data/requests';
 import { navigationProxy } from '../../../navigation/navigationProxy';
 import { dodoFlight } from '../../../functions/dodoAirlines';
 
