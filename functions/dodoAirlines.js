@@ -1,7 +1,6 @@
 import Axios from "axios"
 import { timeouts } from "../res/data/requests"
 import { DATA_STORE } from "../stored/dataStore"
-import { devMode } from "../dev/devConfig";
 import { Alert } from "react-native";
 import { navigationProxy, timedReset } from "../navigation/navigationProxy";
 // import { stopWatchingGPS } from "./gps";

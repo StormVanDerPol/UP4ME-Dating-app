@@ -5,6 +5,8 @@ import endpoints, { getEndpoint } from "../../res/data/endpoints";
 import { timedReset } from "../../navigation/navigationProxy";
 import { hrToMS } from "../../res/data/time";
 import { Alert } from "react-native";
+import loadProfile from "./loadProfile";
+import { startWatchingGPS } from "../../functions/gps";
 
 export const loadingTasks = {
     startUp: [
@@ -47,7 +49,7 @@ export const loadingTasks = {
 
                                 timedReset({
                                     name: 'Landing',
-                                    delay: 2000,
+                                    delay: 500,
                                 });
 
                             }
@@ -56,7 +58,7 @@ export const loadingTasks = {
                 } else {
                     timedReset({
                         name: 'Landing',
-                        delay: 2000,
+                        delay: 500,
                     });
                 }
             }
@@ -83,13 +85,28 @@ export const loadingTasks = {
                 }
             }
         },
+        {
+            name: `loading profiles`,
+            exec: async () => {
+                for (pMatch of DATA_STORE.pMatches.list) {
+                    await loadProfile(pMatch);
+                }
 
+                console.log(DATA_STORE)
+            }
+        },
+        {
+            name: 'getting location data',
+            exec: async () => {
+                startWatchingGPS();
+            }
+        },
         {
             name: 'redirect to home',
             exec: async () => {
                 timedReset({
                     name: 'Home',
-                    delay: 2000
+                    delay: 500
                 });
             }
         },

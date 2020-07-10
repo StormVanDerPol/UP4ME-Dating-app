@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Text, View, StyleSheet } from 'react-native';
 
 import { navigationProxy } from '../navigation/navigationProxy';
-import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { TouchableOpacity, ScrollView, TextInput } from 'react-native-gesture-handler';
 
 import { rnRGB, invertRGB } from '../functions/colors';
 import { clearAsyncStorage, getData } from '../stored/handleData';
@@ -91,6 +91,8 @@ export default DevRouter = () => {
 
     const [userData, setUserData] = useState([]);
 
+
+
     return (
         <ScrollView>
 
@@ -123,6 +125,10 @@ export default DevRouter = () => {
                     }}
                 />
             </View>
+
+            <TextInput style={{ borderBottomWidth: 1 }} placeholder={'email...'} onChangeText={(input) => {
+                DATA_STORE.registData.email = input;
+            }} />
 
             {userData.map((val, i) => {
                 return <TextQuicksand key={i}>{val}</TextQuicksand>

@@ -21,6 +21,7 @@ const endpoints = {
         lastLogin: `/get/lastlogin/`,
         setLastLogin: `/set/lastlogin/`,
         potentialMatches: `/get/potentials/`,
+        profile: `/get/profile/`
     },
 
     post: {
