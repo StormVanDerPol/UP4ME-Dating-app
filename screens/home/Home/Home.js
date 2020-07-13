@@ -19,20 +19,27 @@ const Home = () => {
                 <Carousel
                     data={matchList}
                     renderItem={(userid) => {
+
                         return (
-                            <UserProfile key={userid.index} userid={matchList[userid.index]}>
+                            <>
+                                <UserProfile key={userid.index} userid={userid.item}>
+
+                                </UserProfile>
+
                                 <MatchButtons userid={userid.item} onMatch={(answer, mUserid) => {
                                     // await dodoFlight({
                                     //     method: 'post',
                                     //     url: 
                                     // });
 
-                                    console.log(matchList.splice(userid.index, 1));
-                                    setMatchList([...matchList]);
+                                    console.log('match button', mUserid, userid.item)
 
+                                    // console.log(matchList.splice(userid.index, 1));
+                                    // setMatchList([...matchList]);
 
                                 }} />
-                            </UserProfile>
+
+                            </>
                         )
                     }}
                     // layout={"tinder"}
@@ -43,6 +50,7 @@ const Home = () => {
                     itemWidth={getDeviceDimensions('window', 'width')}
                 />
             </FlexSection>
+
         </Body>
     );
 }

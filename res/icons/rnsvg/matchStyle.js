@@ -2,8 +2,8 @@ import { StyleSheet } from "react-native";
 
 export const matchBtnStyle = StyleSheet.create({
     container: {
-        width: 80,
-        height: 80,
+        width: '100%',
+        height: '100%',
         borderRadius: 100,
         borderColor: 'pink',
         borderWidth: 2,

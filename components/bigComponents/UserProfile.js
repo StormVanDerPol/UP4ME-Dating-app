@@ -94,12 +94,12 @@ export const MatchButtons = ({ userid, onMatch = (answer, userid) => { } }) => {
                 }].map((item, i) => {
                     return (
                         <UpForMeIcon
-                            style={{}}
+                            style={styles.matchButtons}
                             key={i}
                             icon={item.icon}
                             touchable={true}
                             onPress={() => {
-                                onMatch(item.answer, item.icon);
+                                onMatch(item.answer, userid);
                             }}
                         />
 
@@ -311,6 +311,7 @@ const styles = StyleSheet.create({
         marginBottom: 25,
         flexWrap: "wrap",
         marginHorizontal: 10,
+        height: 200,
     },
     matchProperty: {
         fontSize: 16,
@@ -324,13 +325,19 @@ const styles = StyleSheet.create({
         marginVertical: 5,
     },
     matchDecision: {
-        paddingTop: 10,
+        paddingVertical: 16,
         borderTopWidth: 1,
-        borderColor: '#666',
+        borderColor: '#DDD',
         paddingHorizontal: 50,
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         flexDirection: 'row',
     },
+
+    matchButtons: {
+        width: 80,
+        height: 80,
+        marginHorizontal: 24,
+    }
 })
 
 export default UserProfile;

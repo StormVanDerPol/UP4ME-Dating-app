@@ -13,18 +13,17 @@ import WebViewContainer from '../screens/authentication/WebViewContainer/WebView
 import RegistProfileText from '../screens/registration/RegistProfileText/RegistProfileText';
 import RegistUserProperties from '../screens/registration/RegistUserProperties/RegistUserProperties';
 import RegistCriteria from '../screens/registration/RegistCriteria/RegistCriteria';
-import LoadingFull from '../screens/loading/LoadingFull';
-import { loadingTasks } from '../screens/loading/loadingTasks';
+import LoadingScreen from '../screens/loading/LoadingScreen';
 import Home from '../screens/home/Home/Home';
+import Boot from '../screens/Landing/Boot';
+import LoadHome from '../screens/home/Home/LoadHome';
+import LoadProfiles from '../screens/home/Home/LoadProfiles';
 
 //Add new routes here + put it in the DevRouter.js
 var appRoutes = [
     {
         name: 'StartUp',
-        component: LoadingFull,
-        params: {
-            taskSet: 'startUp',
-        }
+        component: Boot,
     },
     {
         name: 'Landing',
@@ -76,10 +75,11 @@ var appRoutes = [
     },
     {
         name: 'LoadHome',
-        component: LoadingFull,
-        params: {
-            taskSet: 'home',
-        }
+        component: LoadHome,
+    },
+    {
+        name: 'LoadProfiles',
+        component: LoadProfiles,
     },
     {
         name: 'Home',

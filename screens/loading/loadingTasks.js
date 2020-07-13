@@ -2,11 +2,15 @@ import { DATA_STORE } from "../../stored/dataStore";
 import { getData } from "../../stored/handleData";
 import { dodoFlight } from "../../functions/dodoAirlines";
 import endpoints, { getEndpoint } from "../../res/data/endpoints";
-import { timedReset } from "../../navigation/navigationProxy";
+import { timedReset, navigationProxy } from "../../navigation/navigationProxy";
 import { hrToMS } from "../../res/data/time";
 import { Alert } from "react-native";
 import loadProfile from "./loadProfile";
 import { startWatchingGPS } from "../../functions/gps";
+
+export const profileLoadTasks = {
+    tasks: []
+}
 
 export const loadingTasks = {
     startUp: [
@@ -36,9 +40,16 @@ export const loadingTasks = {
                             console.log(res)
                             if (res.data === true) {
 
-                                timedReset({
-                                    name: 'LoadHome',
-                                    delay: 10,
+                                navigationProxy.reset({
+                                    index: 1,
+                                    routes: [
+                                        {
+                                            name: 'Loading',
+                                            params: {
+                                                taskSet: loadingTasks.home,
+                                            },
+                                        },
+                                    ]
                                 });
 
                             } else {
@@ -47,18 +58,28 @@ export const loadingTasks = {
                                     'Weird userID',
                                 );
 
-                                timedReset({
-                                    name: 'Landing',
-                                    delay: 10,
+                                navigationProxy.reset({
+                                    index: 1,
+                                    routes: [
+                                        {
+                                            name: 'Landing',
+                                            params: {},
+                                        },
+                                    ]
                                 });
 
                             }
                         },
                     })
                 } else {
-                    timedReset({
-                        name: 'Landing',
-                        delay: 10,
+                    navigationProxy.reset({
+                        index: 1,
+                        routes: [
+                            {
+                                name: 'Landing',
+                                params: {},
+                            },
+                        ]
                     });
                 }
             }
@@ -67,17 +88,33 @@ export const loadingTasks = {
 
     home: [
         {
+            name: 'getting location data',
+            exec: async () => {
+                await startWatchingGPS();
+            }
+        },
+        {
             name: 'loading potential matches',
             exec: async () => {
                 if (DATA_STORE.pMatches.timeStamp == null || Date.now() > DATA_STORE.pMatches.timeStamp + hrToMS(1)) {
                     await dodoFlight({
                         method: 'get',
                         url: getEndpoint(endpoints.get.potentialMatches) + DATA_STORE.userID,
-                        // url: `https://www.upforme.nl/api/v1/suckmybigpp`,
 
                         thenCallback: (res) => {
                             DATA_STORE.pMatches.list = res.data;
+
                             if (!res.data) {
+
+                                for (let pMatch of DATA_STORE.pMatches.list) {
+                                    profileLoadTasks.tasks.push({
+                                        name: `loading profile ${pMatch}`,
+                                        exec: async () => {
+                                            await loadProfile(pMatch);
+                                        },
+                                    })
+                                }
+
                                 DATA_STORE.pMatches.timeStamp = Date.now();
                             }
                         },
@@ -86,27 +123,18 @@ export const loadingTasks = {
             }
         },
         {
-            name: 'getting location data',
+            name: 'redirect',
             exec: async () => {
-                await startWatchingGPS();
-            }
-        },
-        {
-            name: `loading profiles`,
-            exec: async () => {
-                for (pMatch of DATA_STORE.pMatches.list) {
-                    await loadProfile(pMatch);
-                }
-
-                console.log(DATA_STORE)
-            }
-        },
-        {
-            name: 'redirect to home',
-            exec: async () => {
-                timedReset({
-                    name: 'Home',
-                    delay: 10,
+                navigationProxy.reset({
+                    index: 1,
+                    routes: [
+                        {
+                            name: 'Loading',
+                            params: {
+                                taskSet: profileLoadTasks.tasks,
+                            },
+                        },
+                    ]
                 });
             }
         },
