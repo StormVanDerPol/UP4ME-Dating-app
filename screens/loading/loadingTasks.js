@@ -38,7 +38,7 @@ export const loadingTasks = {
 
                                 timedReset({
                                     name: 'LoadHome',
-                                    delay: 100,
+                                    delay: 10,
                                 });
 
                             } else {
@@ -49,7 +49,7 @@ export const loadingTasks = {
 
                                 timedReset({
                                     name: 'Landing',
-                                    delay: 500,
+                                    delay: 10,
                                 });
 
                             }
@@ -58,7 +58,7 @@ export const loadingTasks = {
                 } else {
                     timedReset({
                         name: 'Landing',
-                        delay: 500,
+                        delay: 10,
                     });
                 }
             }
@@ -77,12 +77,18 @@ export const loadingTasks = {
 
                         thenCallback: (res) => {
                             DATA_STORE.pMatches.list = res.data;
-                            if (res.data != false) {
+                            if (!res.data) {
                                 DATA_STORE.pMatches.timeStamp = Date.now();
                             }
                         },
                     });
                 }
+            }
+        },
+        {
+            name: 'getting location data',
+            exec: async () => {
+                await startWatchingGPS();
             }
         },
         {
@@ -96,17 +102,11 @@ export const loadingTasks = {
             }
         },
         {
-            name: 'getting location data',
-            exec: async () => {
-                startWatchingGPS();
-            }
-        },
-        {
             name: 'redirect to home',
             exec: async () => {
                 timedReset({
                     name: 'Home',
-                    delay: 500
+                    delay: 10,
                 });
             }
         },
