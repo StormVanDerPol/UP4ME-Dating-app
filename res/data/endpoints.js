@@ -21,7 +21,8 @@ const endpoints = {
         lastLogin: `/get/lastlogin/`,
         setLastLogin: `/set/lastlogin/`,
         potentialMatches: `/get/potentials/`,
-        profile: `/get/profile/`
+        profile: `/get/profile/`,
+
     },
 
     post: {
@@ -36,6 +37,9 @@ const endpoints = {
         setProfileText: `/set/profile/text`,
         setProperties: `/set/properties`,
         setCriteria: `/set/criteria`,
+        setLastedit: `/set/lastedit`,
+        getLastedit: `/get/lastedit`,
+        setMatchResponses: `/set/matchresponses`
     }
 };
 

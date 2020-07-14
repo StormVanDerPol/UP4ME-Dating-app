@@ -8,9 +8,10 @@ import { View, StyleSheet, SafeAreaView } from 'react-native';
 import getDeviceDimensions from '../functions/dimensions';
 import { ScrollView } from 'react-native-gesture-handler';
 
-const Body = ({ children }) => {
+const Body = ({ children, style }) => {
     return (
         <SafeAreaView style={{
+            ...style,
             ...styles.root,
             height: getDeviceDimensions('window', 'height'),
         }}>

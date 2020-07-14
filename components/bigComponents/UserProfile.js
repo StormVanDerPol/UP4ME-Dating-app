@@ -1,86 +1,64 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import getDeviceDimensions from '../../functions/dimensions';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+
 import { DATA_STORE } from '../../stored/dataStore';
-import FastImage from 'react-native-fast-image';
-import { TapGestureHandler, State } from 'react-native-gesture-handler';
-import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
+import { GPS_DATA } from '../../functions/gps';
+
+import getDeviceDimensions from '../../functions/dimensions';
 import { calcAgeHet } from '../../res/data/time';
 import { getDistBetweenCoords } from '../../functions/getDistBetweenCoords';
-import { GPS_DATA } from '../../functions/gps';
+
+import FastImage from 'react-native-fast-image';
+import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
+import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
+
 import TextQuicksand from '../TextQuicksand';
-import { dodoFlight } from '../../functions/dodoAirlines';
 
-const _renderItem = ({ item: image, index: i }) => {
-    return (
-        <FastImage
-            key={i}
-            style={styles.carouselItem}
-            source={{
-                uri: image,
-            }}
-        />
-    )
-}
+const ImageContainer = ({ images }) => {
 
-const ImageCarousel = ({ images }) => {
-
-    const _carouselRef = useRef();
-    const [carouselIndex, setCarouselIndex] = useState(0);
-
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    })
+    const [active, setActive] = useState(0);
 
     return (
         <>
-            <TapGestureHandler
-                onHandlerStateChange={({ nativeEvent }) => {
-                    if (nativeEvent.state == State.END) {
-                        _carouselRef.current.snapToNext();
+            <View>
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        setActive((active < images.length - 1) ? active + 1 : 0);
+                    }}
+                >
+                    <FastImage
+                        style={styles.carouselItem}
+                        source={{
+                            uri: images[active],
+                        }}
+                    />
+                </TouchableWithoutFeedback>
+
+                <View style={styles.paginationContainer}>
+                    {
+                        images.map((img, i) => {
+                            return (
+                                <TouchableOpacity key={i} onPress={() => {
+                                    if (active != i) {
+                                        setActive(i)
+                                    }
+                                }}>
+                                    <View style={[styles.paginationDot, (active == i) ? {
+                                        width: 32,
+                                        height: 32,
+                                    } : {}]} />
+                                </TouchableOpacity>
+                            )
+                        })
                     }
-                }}
-            >
-                <Carousel
-                    data={images}
-                    renderItem={_renderItem}
-                    ref={(c) => {
-                        _carouselRef.current = c;
-                    }}
-                    loop={true}
-                    scrollEnabled={false}
-                    onSnapToItem={(i) => {
-                        setCarouselIndex(i);
-                    }}
-                    useScrollView={true}
-                    sliderWidth={getDeviceDimensions('window', 'width')}
-                    itemWidth={getDeviceDimensions('window', 'width')}
-                />
-            </TapGestureHandler>
-
-            <View style={styles.paginationContainer}>
-
-                {
-                    (mounted) ?
-                        <Pagination
-                            tappableDots={true}
-                            inactiveDotOpacity={1}
-                            dotStyle={styles.paginationDot}
-                            carouselRef={_carouselRef.current}
-                            dotsLength={images.length}
-                            activeDotIndex={carouselIndex}
-                        /> : <View />
-                }
-
+                </View>
             </View>
+
         </>
     )
 }
 
-export const MatchButtons = ({ userid, onMatch = (answer, userid) => { } }) => {
+export const MatchButtons = ({ onMatch = () => { } }) => {
 
     return (
         <View style={styles.matchDecision}>
@@ -99,7 +77,7 @@ export const MatchButtons = ({ userid, onMatch = (answer, userid) => { } }) => {
                             icon={item.icon}
                             touchable={true}
                             onPress={() => {
-                                onMatch(item.answer, userid);
+                                onMatch(item.answer)
                             }}
                         />
 
@@ -116,11 +94,10 @@ const UserProfile = ({ children, userid, hideReport = false, reportCallback = ()
         deRetardify(userid)
     ).current;
 
-
     return (
         <View style={styles.bg}>
             <View style={styles.container}>
-                <ImageCarousel images={userData.images} />
+                <ImageContainer images={userData.images} />
 
                 {
                     (!hideReport) ?
@@ -203,6 +180,7 @@ const styles = StyleSheet.create({
 
     bg: {
         backgroundColor: '#fff',
+        width: getDeviceDimensions('window', 'width'),
     },
 
     container: {
@@ -211,20 +189,26 @@ const styles = StyleSheet.create({
     carouselItem: {
         width: getDeviceDimensions('window', 'width'),
         height: '100%',
+        backgroundColor: '#dba',
     },
 
     paginationContainer: {
         position: "absolute",
         left: 0,
         right: 0,
+        top: 10,
+
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
     },
 
     paginationDot: {
-        margin: -2.5,
+        margin: 10,
         padding: 0,
 
-        width: 25,
-        height: 25,
+        width: 16,
+        height: 16,
 
         borderRadius: 100,
 
@@ -340,7 +324,6 @@ const styles = StyleSheet.create({
     }
 })
 
-export default UserProfile;
 
 function deRetardify(userid) {
 
@@ -489,3 +472,11 @@ function propDesc(userProps) {
     return profProps;
 
 }
+
+function memoCompare(prevProps, nextProps) {
+    return prevProps.userid == nextProps.userid;
+}
+
+export default UserProfile;
+
+export const MemoizedUserProfile = React.memo(UserProfile, memoCompare);
