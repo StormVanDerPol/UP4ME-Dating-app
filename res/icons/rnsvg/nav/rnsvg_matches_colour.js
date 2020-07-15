@@ -4,7 +4,7 @@ import Svg, { Defs, LinearGradient, Stop, Path } from "react-native-svg"
 
 function RNSVG_matches_colour() {
     return (
-        <Svg width={23} height={20} viewBox="0 0 23 20">
+        <Svg width={'100%'} height={'100%'} viewBox="0 0 23 20">
             <Defs>
                 <LinearGradient
                     x1="4.234%"

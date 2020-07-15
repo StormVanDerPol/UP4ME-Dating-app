@@ -10,43 +10,37 @@ const LoadProfiles = () => {
 
     let toLoad = DATA_STORE.pMatches.list;
 
-    const loaded = useRef(0);
-
     const _init = useRef(false);
 
     if (!_init.current) {
 
         if (toLoad) {
 
-            const loadCount = toLoad.length;
-
             for (let pMatch of toLoad) {
                 tasks.current.push({
                     name: `loading profile ${pMatch}`,
                     exec: async () => {
                         await loadProfile(pMatch)
-                            .then(() => {
-                                loaded.current++;
-
-                                if (loaded.current == loadCount) {
-
-                                    console.log(DATA_STORE.profileCache)
-
-                                    navigationProxy.reset({
-                                        index: 1,
-                                        routes: [
-                                            {
-                                                name: 'Home',
-                                                params: {},
-                                            },
-                                        ]
-                                    });
-                                }
-                            });
                     }
                 })
             }
         }
+
+        tasks.current.push({
+            name: 'redirecting...',
+            exec: () => {
+                navigationProxy.reset({
+                    index: 1,
+                    routes: [
+                        {
+                            name: 'Home',
+                            params: {},
+                        },
+                    ]
+                });
+            }
+        })
+
         _init.current = true;
     }
 

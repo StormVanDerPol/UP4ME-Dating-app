@@ -18,6 +18,10 @@ import Home from '../screens/home/Home/Home';
 import Boot from '../screens/Landing/Boot';
 import LoadHome from '../screens/home/Home/LoadHome';
 import LoadProfiles from '../screens/home/Home/LoadProfiles';
+import LoadCriteria from '../screens/EditCriteria/LoadCriteria';
+import EditCriteria from '../screens/EditCriteria/EditCriteria';
+import LoadProfileHub from '../screens/profile/LoadProfileHub';
+import ProfileHub from '../screens/profile/ProfileHub';
 
 //Add new routes here + put it in the DevRouter.js
 var appRoutes = [
@@ -85,7 +89,22 @@ var appRoutes = [
         name: 'Home',
         component: Home,
     },
-
+    {
+        name: 'LoadCriteria',
+        component: LoadCriteria,
+    },
+    {
+        name: 'EditCriteria',
+        component: EditCriteria,
+    },
+    {
+        name: 'LoadProfileHub',
+        component: LoadProfileHub,
+    },
+    {
+        name: 'ProfileHub',
+        component: ProfileHub,
+    },
 ];
 
 if (devMode.enabled) {

@@ -22,6 +22,7 @@ const endpoints = {
         setLastLogin: `/set/lastlogin/`,
         potentialMatches: `/get/potentials/`,
         profile: `/get/profile/`,
+        criteria: `/get/criteria/`,
 
     },
 
@@ -39,7 +40,8 @@ const endpoints = {
         setCriteria: `/set/criteria`,
         setLastedit: `/set/lastedit`,
         getLastedit: `/get/lastedit`,
-        setMatchResponses: `/set/matchresponses`
+        setMatchResponses: `/set/matchresponses`,
+        setReport: `/set/report`,
     }
 };
 
