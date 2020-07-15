@@ -104,12 +104,12 @@ export const getGPS = () => {
 
 let gpsTimer = null;
 
-export const startWatchingGPS = () => {
+export const startWatchingGPS = async () => {
 
     if (GPS_CONFIG.enabled) {
 
         if (!GPS_DATA.coords) {
-            requestPermission()
+            await requestPermission()
                 .then(() => {
                     getGPS();
                 });

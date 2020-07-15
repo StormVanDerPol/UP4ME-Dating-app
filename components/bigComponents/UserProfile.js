@@ -1,16 +1,92 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import getDeviceDimensions from '../../functions/dimensions';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+
 import { DATA_STORE } from '../../stored/dataStore';
-import FastImage from 'react-native-fast-image';
-import { TapGestureHandler, State } from 'react-native-gesture-handler';
-import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
+import { GPS_DATA } from '../../functions/gps';
+
+import getDeviceDimensions from '../../functions/dimensions';
 import { calcAgeHet } from '../../res/data/time';
 import { getDistBetweenCoords } from '../../functions/getDistBetweenCoords';
-import { GPS_DATA } from '../../functions/gps';
+
+import FastImage from 'react-native-fast-image';
+import { TouchableWithoutFeedback, TouchableOpacity } from 'react-native-gesture-handler';
+import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
+
 import TextQuicksand from '../TextQuicksand';
-import Body, { FlexSection } from '../Body';
+
+const ImageContainer = ({ images }) => {
+
+    const [active, setActive] = useState(0);
+
+    return (
+        <>
+            <View>
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        setActive((active < images.length - 1) ? active + 1 : 0);
+                    }}
+                >
+                    <FastImage
+                        style={styles.carouselItem}
+                        source={{
+                            uri: images[active],
+                        }}
+                    />
+                </TouchableWithoutFeedback>
+
+                <View style={styles.paginationContainer}>
+                    {
+                        images.map((img, i) => {
+                            return (
+                                <TouchableOpacity key={i} onPress={() => {
+                                    if (active != i) {
+                                        setActive(i)
+                                    }
+                                }}>
+                                    <View style={[styles.paginationDot, (active == i) ? {
+                                        width: 32,
+                                        height: 32,
+                                    } : {}]} />
+                                </TouchableOpacity>
+                            )
+                        })
+                    }
+                </View>
+            </View>
+
+        </>
+    )
+}
+
+export const MatchButtons = ({ onMatch = () => { } }) => {
+
+    return (
+        <View style={styles.matchDecision}>
+            {
+                [{
+                    icon: iconIndex.match_like,
+                    answer: true,
+                }, {
+                    icon: iconIndex.match_dislike,
+                    answer: false,
+                }].map((item, i) => {
+                    return (
+                        <UpForMeIcon
+                            style={styles.matchButtons}
+                            key={i}
+                            icon={item.icon}
+                            touchable={true}
+                            onPress={() => {
+                                onMatch(item.answer)
+                            }}
+                        />
+
+                    )
+                })
+            }
+        </View>
+    );
+}
 
 const UserProfile = ({ children, userid, hideReport = false, reportCallback = () => { } }) => {
 
@@ -18,61 +94,10 @@ const UserProfile = ({ children, userid, hideReport = false, reportCallback = ()
         deRetardify(userid)
     ).current;
 
-    const _carouselRef = useRef();
-
-    // const [carouselIndex, setCarouselIndex] = useState(0);
-    let carouselIndex = 0;
-    function setCarouselIndex(a) { carouselIndex = a }
-
     return (
-        <>
+        <View style={styles.bg}>
             <View style={styles.container}>
-                <TapGestureHandler
-                    onHandlerStateChange={({ nativeEvent }) => {
-                        if (nativeEvent.state == State.END) {
-                            _carouselRef.current.snapToNext();
-                        }
-                    }}
-                >
-                    <Carousel
-                        data={userData.images}
-                        renderItem={(images) => {
-                            return (
-                                <FastImage
-
-                                    key={images.index}
-                                    style={styles.carouselItem}
-                                    source={{
-                                        uri: images.item,
-                                    }}
-                                />
-                            )
-                        }}
-                        ref={(c) => {
-                            _carouselRef.current = c;
-                        }}
-                        loop={true}
-                        scrollEnabled={false}
-                        onSnapToItem={(i) => {
-                            setCarouselIndex(i);
-                        }}
-                        useScrollView={true}
-                        sliderWidth={getDeviceDimensions('window', 'width')}
-                        itemWidth={getDeviceDimensions('window', 'width')}
-                    />
-                </TapGestureHandler>
-
-                <View style={styles.paginationContainer}>
-                    <Pagination
-                        tappableDots={true}
-                        inactiveDotOpacity={1}
-                        dotStyle={styles.paginationDot}
-                        carouselRef={_carouselRef.current}
-                        dotsLength={userData.images.length}
-                        activeDotIndex={carouselIndex}
-                    />
-                </View>
-
+                <ImageContainer images={userData.images} />
 
                 {
                     (!hideReport) ?
@@ -108,9 +133,9 @@ const UserProfile = ({ children, userid, hideReport = false, reportCallback = ()
                         })
                     }
 
-
                 </View>
             </View>
+
             <View style={styles.subInfoBoxContainer}>
                 {
                     [{
@@ -147,31 +172,43 @@ const UserProfile = ({ children, userid, hideReport = false, reportCallback = ()
             <View>
                 {children}
             </View>
-        </>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+
+    bg: {
+        backgroundColor: '#fff',
+        width: getDeviceDimensions('window', 'width'),
+    },
+
     container: {
         height: 600,
     },
     carouselItem: {
         width: getDeviceDimensions('window', 'width'),
         height: '100%',
+        backgroundColor: '#dba',
     },
 
     paginationContainer: {
         position: "absolute",
         left: 0,
         right: 0,
+        top: 10,
+
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
     },
 
     paginationDot: {
-        margin: -2.5,
+        margin: 10,
         padding: 0,
 
-        width: 25,
-        height: 25,
+        width: 16,
+        height: 16,
 
         borderRadius: 100,
 
@@ -258,6 +295,7 @@ const styles = StyleSheet.create({
         marginBottom: 25,
         flexWrap: "wrap",
         marginHorizontal: 10,
+        height: 200,
     },
     matchProperty: {
         fontSize: 16,
@@ -270,13 +308,36 @@ const styles = StyleSheet.create({
         marginHorizontal: 5,
         marginVertical: 5,
     },
+    matchDecision: {
+        paddingVertical: 16,
+        borderTopWidth: 1,
+        borderColor: '#DDD',
+        paddingHorizontal: 50,
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+
+    matchButtons: {
+        width: 80,
+        height: 80,
+        marginHorizontal: 24,
+    }
 })
 
-export default UserProfile;
 
 function deRetardify(userid) {
 
     const data = DATA_STORE.profileCache[userid];
+
+    let lat, lon;
+
+    if (GPS_DATA.coords) {
+        lat = GPS_DATA.coords.latitude;
+        lon = GPS_DATA.coords.longitude;
+    }
+    else {
+        lat, lon = 0;
+    }
 
     const userData = {
 
@@ -301,8 +362,8 @@ function deRetardify(userid) {
         age: calcAgeHet(data.geboortedatum),
         dist: Math.round(
             getDistBetweenCoords(
-                GPS_DATA.coords.latitude,
-                GPS_DATA.coords.longitude,
+                lat,
+                lon,
                 data.latitude,
                 data.longitude,
                 'K')
@@ -411,3 +472,11 @@ function propDesc(userProps) {
     return profProps;
 
 }
+
+function memoCompare(prevProps, nextProps) {
+    return prevProps.userid == nextProps.userid;
+}
+
+export default UserProfile;
+
+export const MemoizedUserProfile = React.memo(UserProfile, memoCompare);

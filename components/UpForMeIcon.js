@@ -42,8 +42,12 @@ import RNSVG_profile_gray from '../res/icons/rnsvg/nav/rnsvg_profile_gray';
 import RNSVG_magnifying_glass from '../res/icons/rnsvg/rnsvg_magnifying_glass';
 import RNSVG_apple_login_logo from '../res/icons/rnsvg/rnsvg_apple_login_logo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import RNSVG_heart from '../res/icons/rnsvg/rnsvg_heart';
 
 export const iconIndex = {
+
+
+    heart: <RNSVG_heart />,
 
     nav: {
         filter_colour: <RNSVG_filter_colour />,
@@ -116,7 +120,9 @@ const UpForMeIcon = ({ icon, touchable = false, onPress = () => { }, style = { h
                             height: '100%',
                             width: '100%',
                         }}
-                        onPress={onPress()}>
+                        onPress={() => {
+                            onPress()
+                        }}>
                         {icon}
                     </TouchableOpacity>
 

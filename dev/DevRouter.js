@@ -72,6 +72,11 @@ const devRoutes = [
         color: { r: 60, g: 255, b: 60 },
         header: 'Home'
     },
+    {
+        name: 'LoadCriteria',
+        color: { r: 255, g: 255, b: 60 },
+        header: 'Criteria'
+    },
 ]
 
 const styles = StyleSheet.create({

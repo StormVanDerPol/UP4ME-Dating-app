@@ -1,12 +1,9 @@
 import React, { useState, useRef } from 'react';
 import TextQuicksand from '../../components/TextQuicksand';
-import { loadingTasks } from './loadingTasks';
 
-const LoadingFull = ({ route }) => {
+const LoadingScreen = ({ tasks }) => {
 
-    const tasks = loadingTasks[route.params.taskSet];
-
-    const [ec, updateEC] = useState(0);
+    const [doneTaskCount, updateDTC] = useState(0);
 
     const [taskList, setTaskList] = useState([]);
 
@@ -19,7 +16,7 @@ const LoadingFull = ({ route }) => {
 
             await task.exec();
             tasksDone++;
-            updateEC(tasksDone);
+            updateDTC(tasksDone);
         }
     }
 
@@ -31,7 +28,7 @@ const LoadingFull = ({ route }) => {
 
     return (
         <>
-            <TextQuicksand>{(ec / tasks.length) * 100}%</TextQuicksand>
+            <TextQuicksand>{(doneTaskCount / tasks.length) * 100}%</TextQuicksand>
             {taskList.map((task, i) => {
                 return <TextQuicksand key={i}>...{task}</TextQuicksand>
             })}
@@ -39,4 +36,4 @@ const LoadingFull = ({ route }) => {
     );
 }
 
-export default LoadingFull;
+export default LoadingScreen;

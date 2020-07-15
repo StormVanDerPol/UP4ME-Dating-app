@@ -4,13 +4,14 @@ import TextQuicksand from './TextQuicksand';
 import { RegistStyles } from '../styles/RegistStyles';
 import UpForMeRadioButton from './UpForMeRadioButton';
 
-const Question = ({ title, initValue, headers, onChange = (active) => { } }) => {
+const Question = ({ title, defaultValue, initValue, headers, onChange = (active) => { } }) => {
     return (
         <>
             <View style={RegistStyles.questionContainer}>
                 <TextQuicksand style={RegistStyles.questionHeader}>{title}</TextQuicksand>
                 <UpForMeRadioButton
-                    defaultValue={initValue}
+                    defaultValue={defaultValue}
+                    active={initValue}
                     headers={headers}
                     onChange={(active) => { onChange(active); }}
                 />

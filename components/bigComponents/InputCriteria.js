@@ -44,7 +44,7 @@ const InputCriteria = ({ initValues = {
             <View style={RegistStyles.questionContainer}>
                 <TextQuicksand style={RegistStyles.questionHeader}>Geïnteresseerd in</TextQuicksand>
                 <UpForMeBigRadioButton
-                    active={initValues.gender}
+                    active={initValues.gender - 1}
                     headers={[
                         'Mannen',
                         'Vrouwen',
@@ -108,6 +108,7 @@ const InputCriteria = ({ initValues = {
             <Question
                 title={'Wil je dat iemand sport?'}
                 initValue={initValues.sport - 1}
+                defaultValue={4}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -122,6 +123,7 @@ const InputCriteria = ({ initValues = {
             <Question
                 title={'Wil je dat iemand feest?'}
                 initValue={initValues.party - 1}
+                defaultValue={4}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -136,6 +138,7 @@ const InputCriteria = ({ initValues = {
             <Question
                 title={'Wil je dat iemand rookt?'}
                 initValue={initValues.smoking - 1}
+                defaultValue={4}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -151,6 +154,7 @@ const InputCriteria = ({ initValues = {
             <Question
                 title={'Wil je dat iemand alcohol drinkt?'}
                 initValue={initValues.alcohol - 1}
+                defaultValue={4}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -166,6 +170,7 @@ const InputCriteria = ({ initValues = {
             <Question
                 title={'Wil je dat iemand stemt?'}
                 initValue={initValues.politics - 1}
+                defaultValue={5}
                 headers={[
                     'Links',
                     'Midden',
@@ -181,6 +186,7 @@ const InputCriteria = ({ initValues = {
             <Question
                 title={'Hoeveel wil je dat iemand werkt?'}
                 initValue={initValues.work - 1}
+                defaultValue={4}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -196,6 +202,7 @@ const InputCriteria = ({ initValues = {
             <Question
                 title={'Wil je dat iemand gezond eet?'}
                 initValue={initValues.food - 1}
+                defaultValue={4}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -211,6 +218,7 @@ const InputCriteria = ({ initValues = {
             <Question
                 title={'Wil je dat iemand kinderen heeft?'}
                 initValue={initValues.kids - 1}
+                defaultValue={3}
                 headers={[
                     'Ja',
                     'Nee',
@@ -224,6 +232,7 @@ const InputCriteria = ({ initValues = {
             <Question
                 title={'Wil je dat iemand kinderen wilt?'}
                 initValue={initValues.kidWish - 1}
+                defaultValue={4}
                 headers={[
                     'Ja',
                     'Mischien',

@@ -1,20 +1,21 @@
 import * as React from "react"
 import Svg, { Defs, LinearGradient, Stop, Path } from "react-native-svg"
+import up4meColours from "../../data/colours"
 /* SVGR has dropped some elements not supported by react-native-svg: title */
 
-function RNSVG_matches_colour() {
+function RNSVG_heart() {
     return (
         <Svg width={'100%'} height={'100%'} viewBox="0 0 23 20">
             <Defs>
                 <LinearGradient
-                    x1="4.234%"
-                    y1="49.961%"
-                    x2="101.246%"
-                    y2="49.961%"
+                    x1="0%"
+                    y1="0%"
+                    y2="80%"
+                    x2="0%"
                     id="prefix__a"
                 >
-                    <Stop stopColor="#D626E7" offset="0%" />
-                    <Stop stopColor="#FFAC01" offset="100%" />
+                    <Stop stopColor={up4meColours.gradPink} offset="0%" />
+                    <Stop stopColor={up4meColours.gradOrange} offset="100%" />
                 </LinearGradient>
             </Defs>
             <Path
@@ -26,4 +27,4 @@ function RNSVG_matches_colour() {
     )
 }
 
-export default RNSVG_matches_colour
+export default RNSVG_heart
