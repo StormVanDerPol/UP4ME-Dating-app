@@ -11,6 +11,21 @@ import ImageResizer from 'react-native-image-resizer';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 
 
+export const createProfilePicture = async (image) => {
+
+    let res = await manipulateAsync(
+        image,
+        [{
+            resize: { width: 200, height: 200 },
+        }],
+        {
+            base64: true,
+            format: SaveFormat.JPEG,
+        }
+    )
+    return `data:image/jpeg;base64,${res.base64}`;
+}
+
 const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
 
     const [images, setImages] = useState((initImages.length == 0) ? new Array(6) : initImages);
@@ -24,23 +39,17 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
         if (initImages.length == 0) {
             images.fill('');
         }
+        // else {
+        //     initImages.map((img, i) => {
+        //         if (!img) {
+        //             images[i] = '';
+        //         }
+        //     })
+        // }
+
+        setImages([...images]);
 
         _init.current = true;
-    }
-
-    const createProfilePicture = async (image) => {
-
-        let res = await manipulateAsync(
-            image,
-            [{
-                resize: { width: 200, height: 200 },
-            }],
-            {
-                base64: true,
-                format: SaveFormat.JPEG,
-            }
-        )
-        return `data:image/jpeg;base64,${res.base64}`;
     }
 
     const handleChoosePhoto = async (id) => {

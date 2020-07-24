@@ -1,7 +1,7 @@
-import { dodoFlight } from "../../../functions/dodoAirlines";
-import endpoints, { getEndpoint } from "../../../res/data/endpoints";
-import { DATA_STORE } from "../../../stored/dataStore";
-import { navigationProxy } from "../../../navigation/navigationProxy";
+import { dodoFlight } from "../functions/dodoAirlines";
+import endpoints, { getEndpoint } from "../res/data/endpoints";
+import { DATA_STORE } from "../stored/dataStore";
+import { navigationProxy } from "../navigation/navigationProxy";
 import { Alert } from "react-native";
 
 export default postCriteria = async (

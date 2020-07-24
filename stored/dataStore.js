@@ -4,7 +4,21 @@ export const DATA_STORE = {
     userID: null,
     userCriteria: null,
 
+    settings: {
+        notification: {
+            newMatch: null,
+            newDate: null,
+            newChange: null,
+        }
+    },
+
     profileCache: {},
+
+    locations: {},
+
+    matches: {},
+
+    dates: {},
 
     pMatches: {
         list: null,

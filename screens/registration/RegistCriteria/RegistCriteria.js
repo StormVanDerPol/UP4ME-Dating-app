@@ -13,7 +13,7 @@ import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4M
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
 import InputCriteria from '../../../components/bigComponents/InputCriteria';
 import { navigationProxy } from '../../../navigation/navigationProxy';
-import postCriteria from './postCriteria';
+import postCriteria from '../../../requests/postCriteria';
 
 const RegistCriteria = () => {
 

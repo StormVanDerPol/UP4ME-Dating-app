@@ -37,14 +37,14 @@ const NavBar = ({ route }) => {
             iconStyle: styles.logo,
         },
         {
-            route: '',
+            route: 'LoadOverview',
             n: nbroutes.matches,
             iconColour: iconIndex.nav.matches_colour,
             iconGray: iconIndex.nav.matches_gray,
             iconStyle: styles.icon,
         },
         {
-            route: '',
+            route: 'LoadViewLocations',
             n: nbroutes.locations,
             iconColour: iconIndex.nav.locations_colour,
             iconGray: iconIndex.nav.locations_gray,

@@ -13,6 +13,17 @@ export const storeData = async (key, value) => {
     };
 };
 
+export const deleteData = async (key) => {
+    try {
+        await AsyncStorage.removeItem(key);
+    } catch (e) {
+        Alert.alert(
+            'Something went wrong!',
+            'Error deleting data',
+        )
+    }
+}
+
 export const getData = async (key) => {
 
     try {
@@ -25,6 +36,33 @@ export const getData = async (key) => {
         );
     };
 };
+
+export const getJSONData = async (key) => {
+    try {
+        const value = await AsyncStorage.getItem(key);
+        if (value) {
+            return JSON.parse(value);
+        } else {
+            return null;
+        }
+    } catch (e) {
+        Alert.alert(
+            'Something went wrong!',
+            'Tried getting alot of data, encountered an error'
+        )
+    }
+}
+
+export const setJSONData = async (key, object) => {
+    try {
+        await AsyncStorage.setItem(key, JSON.stringify(object));
+    } catch (e) {
+        Alert.alert(
+            'Something went wrong!',
+            'Attempted to save JSON',
+        );
+    }
+}
 
 export const clearAsyncStorage = async () => {
     try {

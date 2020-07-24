@@ -13,7 +13,7 @@ import { startWatchingGPS, requestPermission, getGPS, GPS_DATA } from '../../fun
 const MapsApiRootUrl = 'https://maps.googleapis.com/maps/api/staticmap?';
 const GOOGLE_MAPS_API_KEY = ***REMOVED***;
 
-const InputLocation = ({ containerHeight = 350, onBlur = (placeName) => { } }) => {
+const InputLocation = ({ initVal = '', containerHeight = 350, onBlur = (placeName) => { } }) => {
 
     const loadedTimer = useRef(null);
 
@@ -23,7 +23,7 @@ const InputLocation = ({ containerHeight = 350, onBlur = (placeName) => { } }) =
 
     const mapUri = useRef('');
 
-    const placeName = useRef('');
+    const placeName = useRef(initVal);
 
     useEffect(() => {
         startWatchingGPS();
@@ -67,6 +67,8 @@ const InputLocation = ({ containerHeight = 350, onBlur = (placeName) => { } }) =
             <View style={[RegistStyles.container, RegistStyles.botMargin, RegistStyles.topMargin]}>
                 <TextQuicksand>Woonplaats</TextQuicksand>
                 <TextInput style={[RegistStyles.inputText, RegistStyles.botMargin]}
+
+                    defaultValue={placeName.current}
                     onChangeText={(input) => {
                         placeName.current = input;
                     }}

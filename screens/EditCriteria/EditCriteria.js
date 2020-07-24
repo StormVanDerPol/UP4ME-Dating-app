@@ -6,7 +6,7 @@ import InputCriteria from '../../components/bigComponents/InputCriteria';
 import { View, StyleSheet } from 'react-native';
 import { registParams, RegistStyles } from '../../styles/RegistStyles';
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../components/waitIndicator';
-import postCriteria from '../registration/RegistCriteria/postCriteria';
+import postCriteria from '../../requests/postCriteria';
 import UpForMeButton from '../../components/UpForMeButton';
 
 const EditCriteria = () => {
@@ -39,7 +39,7 @@ const EditCriteria = () => {
 
             <View style={RegistStyles.bottom}>
                 <NetworkFeedBackIndicator style={RegistStyles.waitIndicator} message={netFeedback.message} />
-                <UpForMeButton style={RegistStyles.botButton} title={'Opslaan'} enabled={(newGender != -1)} onPress={async () => {
+                <UpForMeButton style={RegistStyles.botButton} title={'Opslaan'} enabled={(newGender != -1 && !netFeedback.busy)} onPress={async () => {
 
                     console.log(newCriteria.current);
 

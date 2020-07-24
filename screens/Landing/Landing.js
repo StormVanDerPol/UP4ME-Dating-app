@@ -19,6 +19,7 @@ import UpForMeModal from '../../components/UpForMeModal';
 import AuthButton, { providerIndex } from '../../components/AuthButton';
 import { oAuthLogin } from '../../functions/authBrowser';
 import endpoints, { getEndpoint } from '../../res/data/endpoints';
+import { dodoFlight } from '../../functions/dodoAirlines';
 
 
 const Landing = () => {
@@ -67,7 +68,7 @@ const Landing = () => {
 
             <UpForMeModal style={styles.modalContent} enabled={provModalActive} duration={300}>
                 <AuthButton style={styles.authButton} provider={providerIndex.up4me} action={action.current}
-                    onPress={() => {
+                    onPress={async () => {
                         navigationProxy.navigate('LocalStratEmail');
                         setProvModalActive(false);
                     }} />

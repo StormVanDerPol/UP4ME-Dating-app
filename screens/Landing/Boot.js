@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { dodoFlight } from '../../functions/dodoAirlines';
 import { DATA_STORE } from '../../stored/dataStore';
-import { getData } from '../../stored/handleData';
+import { getData, getJSONData } from '../../stored/handleData';
 import endpoints, { getEndpoint } from '../../res/data/endpoints';
 import { navigationProxy } from '../../navigation/navigationProxy';
 import LoadingScreen from '../loading/LoadingScreen';
@@ -19,6 +19,18 @@ const Boot = () => {
             name: 'load token',
             exec: async () => {
                 DATA_STORE.userToken = await getData('userToken');
+            }
+        },
+        {
+            name: 'loading settings',
+            exec: async () => {
+
+                let _data = await getJSONData('settings');
+
+                console.log('this fucker', _data, DATA_STORE.settings)
+                if (_data) {
+                    DATA_STORE.settings = _data;
+                }
             }
         },
         {

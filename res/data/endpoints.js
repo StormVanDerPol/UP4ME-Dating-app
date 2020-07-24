@@ -1,9 +1,9 @@
 import { devMode } from "../../dev/devConfig";
 
-const local = false
+const local = true
 
 const protocol = (local) ? `http://` : `https://`;
-const domain = (local) ? `169.254.69.40` : `www.upforme.nl`;
+const domain = (local) ? `192.168.1.14` : `www.upforme.nl`;
 const port = (local) ? `:8080` : '';
 
 const apiRoot = `/api/v1`;
@@ -23,6 +23,11 @@ const endpoints = {
         potentialMatches: `/get/potentials/`,
         profile: `/get/profile/`,
         criteria: `/get/criteria/`,
+        matches: `/get/matches/`,
+        dates: `/get/dates/`,
+        bigLocationList: `/get/restaurant/list`,
+        bigLocationListTo: `/get/restaurant/list/to`,
+        resProfPic: `/get/restaurant/profpic/`
 
     },
 

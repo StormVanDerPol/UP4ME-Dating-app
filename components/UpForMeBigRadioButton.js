@@ -25,7 +25,6 @@ const UpForMeBigRadioButton = ({
                         >
                             <TouchableOpacity
 
-
                                 onPress={() => {
                                     setActive(i);
                                     onChange(i);

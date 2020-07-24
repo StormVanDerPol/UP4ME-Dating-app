@@ -8,15 +8,12 @@ import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../comp
 import UpForMeButton from '../../../components/UpForMeButton';
 import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4MeLogo';
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
-import TextQuicksand from '../../../components/TextQuicksand';
 
 import KeyboardDismiss from '../../../components/KeyboardDismiss';
 import InputUserData from '../../../components/bigComponents/InputUserData';
-import Axios from 'axios';
 import endpoints, { getEndpoint, requestFeedback, host } from '../../../res/data/endpoints';
 import { DATA_STORE } from '../../../stored/dataStore';
 import { timeouts } from '../../../res/data/requests';
-import { devMode } from '../../../dev/devConfig';
 import { MemeMath } from '../../../functions/math';
 import { navigationProxy } from '../../../navigation/navigationProxy';
 import { getYearIndex, toRetardDate } from '../../../res/data/time';
@@ -47,13 +44,6 @@ const RegistUserData = () => {
 
                         <InputUserData
 
-                            // initValues={{
-                            //     name: 'bitch',
-                            //     job: 'lamler',
-                            //     birthday: { day: 20, month: 2, year: 1996, yearIndex: getYearIndex(1996) },
-                            //     height: 167,
-                            // }}
-
                             onChange={(input) => {
                                 setUserData({ ...input });
                             }} />
@@ -75,62 +65,41 @@ const RegistUserData = () => {
                                 message: networkFeedbackMessages.wait,
                             });
 
-                            if (DATA_STORE.userToken != null) {
 
-                                await dodoFlight({
-                                    method: 'post',
-                                    url: getEndpoint(endpoints.post.setUserData),
-                                    timeout: timeouts.short,
-                                    data: {
-                                        userid: DATA_STORE.userID,
-                                        naam: userData.name,
-                                        geboortedatum: toRetardDate(userData.birthday),
-                                        beroep: userData.job,
-                                        lengte: MemeMath.roundTwoDecimals(userData.height),
-                                    },
+                            await dodoFlight({
+                                method: 'post',
+                                url: getEndpoint(endpoints.post.setUserData),
+                                timeout: timeouts.short,
+                                data: {
+                                    userid: DATA_STORE.userID,
+                                    naam: userData.name,
+                                    geboortedatum: toRetardDate(userData.birthday),
+                                    beroep: userData.job,
+                                    lengte: MemeMath.roundTwoDecimals(userData.height),
+                                },
 
-                                    thenCallback: (res) => {
+                                thenCallback: (res) => {
 
-                                        if (res.data == true) {
-                                            navigationProxy.navigate('RegistLocation');
-                                            netFeedback.message = '';
-                                        }
-                                        else {
-                                            netFeedback.message = networkFeedbackMessages.err;
-                                        }
-                                        setNetFeedback({
-                                            ...netFeedback,
-                                            busy: false,
-                                        });
-                                    },
-
-                                    catchCallback: () => {
-                                        setNetFeedback({
-                                            busy: false,
-                                            message: networkFeedbackMessages.err,
-                                        });
+                                    if (res.data == true) {
+                                        navigationProxy.navigate('RegistLocation');
+                                        netFeedback.message = '';
                                     }
-                                })
-                            }
-                            else {
-                                setNetFeedback({
-                                    busy: false,
-                                    message: 'No token found',
-                                });
+                                    else {
+                                        netFeedback.message = networkFeedbackMessages.err;
+                                    }
+                                    setNetFeedback({
+                                        ...netFeedback,
+                                        busy: false,
+                                    });
+                                },
 
-                                Alert.alert(
-                                    'No token found',
-                                    'Quitting the registrtation process',
-                                    [
-                                        {
-                                            text: 'OK', onPress: () => {
-                                                navigationProxy.navigate('Landing');
-                                            }
-                                        }
-                                    ],
-                                    { cancelable: false }
-                                );
-                            }
+                                catchCallback: () => {
+                                    setNetFeedback({
+                                        busy: false,
+                                        message: networkFeedbackMessages.err,
+                                    });
+                                }
+                            })
                         }} />
                 </View>
             </Body>

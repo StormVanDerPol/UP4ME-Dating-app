@@ -22,6 +22,19 @@ import LoadCriteria from '../screens/EditCriteria/LoadCriteria';
 import EditCriteria from '../screens/EditCriteria/EditCriteria';
 import LoadProfileHub from '../screens/profile/LoadProfileHub';
 import ProfileHub from '../screens/profile/ProfileHub';
+import EditProfile from '../screens/profile/EditProfile';
+import ExampleProfile from '../screens/profile/ExampleProfile';
+import LoadSettings from '../screens/Settings/LoadSettings';
+import Settings from '../screens/Settings/Settings';
+import EditLocation from '../screens/Settings/EditLocation';
+import EditUserData from '../screens/Settings/EditUserData';
+import LoadOverview from '../screens/overview/LoadOverview';
+import MatchOverview from '../screens/overview/matches/MatchOverview';
+import DatesOverview from '../screens/overview/dates/DatesOverview';
+import LoadViewLocations from '../screens/dateLocations/LoadViewLocations';
+import ViewLocations from '../screens/dateLocations/ViewLocations';
+import DevEndpointTests from '../dev/DevEndpointTests';
+import EditGender from '../screens/Settings/EditGender';
 
 //Add new routes here + put it in the DevRouter.js
 var appRoutes = [
@@ -105,6 +118,54 @@ var appRoutes = [
         name: 'ProfileHub',
         component: ProfileHub,
     },
+    {
+        name: 'EditProfile',
+        component: EditProfile,
+    },
+    {
+        name: 'ExampleProfile',
+        component: ExampleProfile,
+    },
+    {
+        name: 'LoadSettings',
+        component: LoadSettings,
+    },
+    {
+        name: 'Settings',
+        component: Settings,
+    },
+    {
+        name: 'EditLocation',
+        component: EditLocation,
+    },
+    {
+        name: 'EditUserData',
+        component: EditUserData,
+    },
+    {
+        name: 'EditGender',
+        component: EditGender,
+    },
+    {
+        name: 'LoadOverview',
+        component: LoadOverview,
+    },
+    {
+        name: 'MatchOverview',
+        component: MatchOverview,
+    },
+    {
+        name: 'DatesOverview',
+        component: DatesOverview,
+    },
+    {
+        name: 'LoadViewLocations',
+        component: LoadViewLocations,
+    },
+    {
+        name: 'ViewLocations',
+        component: ViewLocations,
+    },
 ];
 
 if (devMode.enabled) {
@@ -117,6 +178,10 @@ if (devMode.enabled) {
             name: 'DevSandbox',
             component: DevSandbox,
         },
+        {
+            name: 'DevEndpointTests',
+            component: DevEndpointTests,
+        }
     )
 }
 

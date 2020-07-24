@@ -42,7 +42,7 @@ const AuthCallback = ({ route }) => {
                     index: 1,
                     routes: [
                         {
-                            name: 'Landing',
+                            name: 'LoadHome',
                             params: {},
                         },
                     ]
