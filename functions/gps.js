@@ -18,7 +18,7 @@ export const GPS_DATA = {
     coords: null,
 }
 
-const msOffset = hrToMS(0.1);
+const msOffset = hrToMS(1);
 
 export const requestPermission = async () => {
 
@@ -49,17 +49,9 @@ export const getGPS = () => {
             console.log('got location:', pos);
 
         GPS_DATA.coords = pos.coords;
-        GPS_DATA.timestamp = pos.timestamp;
+        GPS_DATA.timestamp = Date.now();
 
         if (DATA_STORE.userToken != null) {
-
-            if (GPS_CONFIG.logging)
-                console.log('requesting', getEndpoint(endpoints.post.setGPS), {
-                    userid: DATA_STORE.userID,
-                    latitude: GPS_DATA.coords.latitude,
-                    longitude: GPS_DATA.coords.longitude,
-                })
-
 
             dodoFlight({
                 method: 'post',
@@ -117,7 +109,7 @@ export const startWatchingGPS = async () => {
 
         if (!GPS_DATA.enabled) {
 
-            console.log('tasukete onii-chan')
+
 
             gpsTimer = setInterval(() => {
 
@@ -142,7 +134,7 @@ export const startWatchingGPS = async () => {
                     console.log('stopped watching GPS...');
                 }
 
-            }, 10000)
+            }, 10000);
             GPS_DATA.enabled = true;
         }
     }

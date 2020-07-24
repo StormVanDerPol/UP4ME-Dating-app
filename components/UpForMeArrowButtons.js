@@ -5,17 +5,17 @@ import { StyleSheet, View } from 'react-native';
 import UpForMeIcon, { iconIndex } from './UpForMeIcon';
 import TextQuicksand from './TextQuicksand';
 
-export const ArrowButtonRight = ({ header, route }) => {
+export const ArrowButtonRight = ({ header, onPress = () => { }, end = false, start = true }) => {
 
     return (
-        <TouchableOpacity style={styles.button} onPress={() => navigationProxy.navigate(route)}>
+        <TouchableOpacity style={[styles.button, { borderTopWidth: (start) ? 1 : 0, borderBottomWidth: (end) ? 1 : 0 }]} onPress={() => onPress()}>
             <TextQuicksand style={styles.header}>{header}</TextQuicksand>
             <UpForMeIcon style={styles.icon} icon={iconIndex.arrow_right} />
         </TouchableOpacity>
     );
 }
 
-export const ArrowButtonTop = ({ header, route }) => {
+export const ArrowButtonTop = ({ header, onPress = () => { } }) => {
 
     const [topBtnHeight, setTopBtnHeight] = useState(0);
 
@@ -26,7 +26,7 @@ export const ArrowButtonTop = ({ header, route }) => {
             setTopBtnHeight(e.nativeEvent.layout.height);
 
         }}>
-            <TouchableOpacity style={[styles.topButtonWrapper]} onPress={() => navigationProxy.navigate(route)}>
+            <TouchableOpacity style={[styles.topButtonWrapper]} onPress={() => onPress()}>
 
                 <UpForMeIcon
                     icon={iconIndex.arrow_left}
@@ -40,7 +40,40 @@ export const ArrowButtonTop = ({ header, route }) => {
     );
 }
 
+export const ArrowButtonDropDown = ({ header, children, end = false, start = true }) => {
+
+    const [down, setDown] = useState(false);
+
+    return (
+        <View style={[styles.dropDown, { borderTopWidth: (start) ? 1 : 0, borderBottomWidth: (end) ? 1 : 0 }]}>
+            <TouchableOpacity style={styles.dropDownBtn} onPress={() => setDown((down) ? false : true)}>
+                <TextQuicksand style={styles.header}>{header}</TextQuicksand>
+                <UpForMeIcon style={styles.icon} icon={(down) ? iconIndex.arrow_down : iconIndex.arrow_right} />
+            </TouchableOpacity>
+            <View>
+                {
+                    (down) ? <>
+                        {children}
+                    </> : <></>
+                }
+            </View>
+        </View>
+    );
+}
+
 const styles = StyleSheet.create({
+
+    dropDown: {
+        borderColor: '#666'
+    },
+
+    dropDownBtn: {
+        flexDirection: 'row',
+        padding: 15,
+        paddingLeft: 25,
+        alignContent: 'space-around',
+        justifyContent: 'space-between',
+    },
 
     button: {
         flexDirection: 'row',
@@ -50,10 +83,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
 
         borderTopWidth: 1,
-        borderTopColor: '#666'
+        borderColor: '#666'
     },
     header: {
-        fontSize: 15,
+        fontSize: 18,
+        color: '#333',
     },
     icon: {
         width: 25,

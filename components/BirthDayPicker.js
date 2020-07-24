@@ -2,13 +2,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import { WheelPicker } from 'react-native-wheel-picker-android';
 import { StyleSheet, View } from 'react-native';
 
-import { writtenMonths, getDaysInMonth, getYears, today } from '../res/data/time';
+import { writtenMonths, getDaysInMonth, getYears, today, getYearIndex } from '../res/data/time';
 
 const BirthDayPicker = ({ initValues = {
     month: today.month,
     day: today.day,
     year: today.year,
-    yearIndex: today.yearIndex,
 }, onChangeDate = () => { } }) => {
 
 
@@ -16,10 +15,12 @@ const BirthDayPicker = ({ initValues = {
     const months = useRef(writtenMonths).current
     const years = useRef(getYears()).current;
 
+    const initYearIndex = getYearIndex(initValues.year);
+
     const [selected, setSelected] = useState({
-        day: today.day,
-        month: today.month,
-        year: today.year,
+        day: initValues.day - 1,
+        month: initValues.month - 1,
+        year: initValues.year,
     });
 
     useEffect(() => {
@@ -36,7 +37,7 @@ const BirthDayPicker = ({ initValues = {
             <View style={styles.container}>
                 <WheelPicker style={styles.picker}
                     data={months}
-                    initPosition={initValues.month}
+                    initPosition={initValues.month - 1}
                     onItemSelected={(month) => {
                         setDays(getDaysInMonth(month, selected.year));
                         setSelected({ ...selected, month: month });
@@ -44,7 +45,7 @@ const BirthDayPicker = ({ initValues = {
                 />
                 <WheelPicker style={styles.picker}
                     data={days}
-                    initPosition={initValues.day}
+                    initPosition={initValues.day - 1}
                     onItemSelected={(day) => {
                         setSelected({ ...selected, day: day });
                     }}
@@ -52,7 +53,7 @@ const BirthDayPicker = ({ initValues = {
 
                 <WheelPicker style={styles.picker}
                     data={years}
-                    initPosition={initValues.yearIndex}
+                    initPosition={initYearIndex - 1}
                     onItemSelected={(year) => {
                         setDays(getDaysInMonth(selected.month, years[year]));
                         setSelected({ ...selected, year: years[year] });

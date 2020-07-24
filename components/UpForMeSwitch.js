@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const UpForMeSwitch = ({ initActive = false, onPress = () => { } }) => {
 
-    const xpos = useRef(new Animated.Value(0)).current;
+    const xpos = useRef(new Animated.Value((initActive) ? 40 : 0)).current;
 
     const [active, setActive] = useState(initActive)
 

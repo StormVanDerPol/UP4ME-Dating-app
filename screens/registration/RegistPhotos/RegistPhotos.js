@@ -16,6 +16,7 @@ import { dodoFlight } from '../../../functions/dodoAirlines';
 import { DATA_STORE } from '../../../stored/dataStore';
 import endpoints, { getEndpoint } from '../../../res/data/endpoints';
 import { navigationProxy } from '../../../navigation/navigationProxy';
+import { postPhotos } from '../../../requests/postPhotos';
 
 const RegistPhotos = () => {
 
@@ -75,83 +76,104 @@ const RegistPhotos = () => {
             <View style={RegistStyles.bottom}>
                 <NetworkFeedBackIndicator style={RegistStyles.waitIndicator} message={netFeedback.message} />
                 <UpForMeButton style={RegistStyles.botButton} title={'doorgaan'} enabled={canContinue} onPress={async () => {
+
                     setNetFeedback({
                         busy: true,
                         message: networkFeedbackMessages.wait,
-                    })
+                    });
 
-                    let _photos = [];
+                    await postPhotos(
+                        DATA_STORE.userID,
+                        images,
+                        profilePicture.current,
+                        () => {
+                            setNetFeedback({
+                                busy: false,
+                                message: '',
+                            });
 
-                    for (let image of images) {
-                        if (image != '') {
-                            _photos.push(image)
-                        }
-                    }
-
-                    while (_photos.length != 6) {
-                        _photos.push('');
-                    }
-
-                    let toSend = {
-                        userid: DATA_STORE.userID,
-                        photo1: _photos[0],
-                        photo2: _photos[1],
-                        photo3: _photos[2],
-                        photo4: _photos[3],
-                        photo5: _photos[4],
-                        photo6: _photos[5],
-                    }
-
-                    await dodoFlight({
-                        url: getEndpoint(endpoints.post.setPhotos),
-                        method: 'post',
-                        data: toSend,
-
-                        thenCallback: async (res) => {
-                            await dodoFlight({
-                                url: getEndpoint(endpoints.post.setProfilePicture),
-                                method: 'post',
-                                data: {
-                                    userid: DATA_STORE.userID,
-                                    profpic: profilePicture.current,
-                                },
-
-                                thenCallback: (res) => {
-
-                                    if (res.data === true) {
-
-                                        setNetFeedback({
-                                            busy: false,
-                                            message: '',
-                                        });
-
-                                        navigationProxy.navigate('RegistProfileText');
-                                    }
-                                    else {
-                                        setNetFeedback({
-                                            busy: false,
-                                            message: networkFeedbackMessages.err,
-                                        });
-                                    }
-                                },
-
-                                catchCallback: (err) => {
-                                    setNetFeedback({
-                                        busy: false,
-                                        message: networkFeedbackMessages.err,
-                                    });
-                                }
-                            })
+                            navigationProxy.navigate('RegistProfileText');
                         },
-
-                        catchCallback: (err) => {
+                        () => {
                             setNetFeedback({
                                 busy: false,
                                 message: networkFeedbackMessages.err,
                             })
-                        }
+                        },
+                    )
 
-                    })
+                    //     let _photos = [];
+
+                    //     for (let image of images) {
+                    //         if (image != '') {
+                    //             _photos.push(image)
+                    //         }
+                    //     }
+
+                    //     while (_photos.length != 6) {
+                    //         _photos.push('');
+                    //     }
+
+                    //     let toSend = {
+                    //         userid: DATA_STORE.userID,
+                    //         photo1: _photos[0],
+                    //         photo2: _photos[1],
+                    //         photo3: _photos[2],
+                    //         photo4: _photos[3],
+                    //         photo5: _photos[4],
+                    //         photo6: _photos[5],
+                    //     }
+
+                    //     await dodoFlight({
+                    //         url: getEndpoint(endpoints.post.setPhotos),
+                    //         method: 'post',
+                    //         data: toSend,
+
+                    //         thenCallback: async (res) => {
+                    //             await dodoFlight({
+                    //                 url: getEndpoint(endpoints.post.setProfilePicture),
+                    //                 method: 'post',
+                    //                 data: {
+                    //                     userid: DATA_STORE.userID,
+                    //                     profpic: profilePicture.current,
+                    //                 },
+
+                    //                 thenCallback: (res) => {
+
+                    //                     if (res.data === true) {
+
+                    // setNetFeedback({
+                    //     busy: false,
+                    //     message: '',
+                    // });
+
+                    // navigationProxy.navigate('RegistProfileText');
+                    //                     }
+                    //                     else {
+                    //                         setNetFeedback({
+                    //                             busy: false,
+                    //                             message: networkFeedbackMessages.err,
+                    //                         });
+                    //                     }
+                    //                 },
+
+                    //                 catchCallback: (err) => {
+                    //                     setNetFeedback({
+                    //                         busy: false,
+                    //                         message: networkFeedbackMessages.err,
+                    //                     });
+                    //                 }
+                    //             })
+                    //         },
+
+                    //         catchCallback: (err) => {
+                    // setNetFeedback({
+                    //     busy: false,
+                    //     message: networkFeedbackMessages.err,
+                    // })
+                    //         }
+
+                    //     })
                 }} />
             </View>
 

@@ -90,7 +90,7 @@ export const toNonRetardDate = (bdateApi) => {
         bdate.day = '0' + bdate.day;
     }
 
-    return bdate;
+    return bdate; // { String year, String month, String day};
 
 }
 

@@ -30,7 +30,7 @@ const InputProperties = ({ initValues = {
             <Question
                 title={'Sport je?'}
                 initValue={initValues.sport - 1}
-                defaultValue={0}
+                defaultValue={-1}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -46,7 +46,7 @@ const InputProperties = ({ initValues = {
             <Question
                 title={'Feest je?'}
                 initValue={initValues.party - 1}
-                defaultValue={0}
+                defaultValue={-1}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -62,7 +62,7 @@ const InputProperties = ({ initValues = {
             <Question
                 title={'Rook je?'}
                 initValue={initValues.smoking - 1}
-                defaultValue={0}
+                defaultValue={-1}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -78,7 +78,7 @@ const InputProperties = ({ initValues = {
             <Question
                 title={'Drink je alcohol?'}
                 initValue={initValues.alcohol - 1}
-                defaultValue={0}
+                defaultValue={-1}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -94,7 +94,7 @@ const InputProperties = ({ initValues = {
             <Question
                 title={'Stem je?'}
                 initValue={initValues.politics - 1}
-                defaultValue={0}
+                defaultValue={-1}
                 headers={[
                     'Links',
                     'Midden',
@@ -110,7 +110,7 @@ const InputProperties = ({ initValues = {
             <Question
                 title={'Hoe veel uur per week werk je?'}
                 initValue={initValues.work - 1}
-                defaultValue={0}
+                defaultValue={-1}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -126,7 +126,7 @@ const InputProperties = ({ initValues = {
             <Question
                 title={'Eet je gezond?'}
                 initValue={initValues.food - 1}
-                defaultValue={0}
+                defaultValue={-1}
                 headers={[
                     'Ja',
                     'Af en toe',
@@ -142,7 +142,7 @@ const InputProperties = ({ initValues = {
             <Question
                 title={'Heb je kinderen?'}
                 initValue={initValues.kids - 1}
-                defaultValue={0}
+                defaultValue={-1}
                 headers={[
                     'Ja',
                     'Nee',
@@ -156,7 +156,7 @@ const InputProperties = ({ initValues = {
             <Question
                 title={'Wil je kinderen?'}
                 initValue={initValues.kidWish - 1}
-                defaultValue={0}
+                defaultValue={-1}
                 headers={[
                     'Ja',
                     'Mischien',

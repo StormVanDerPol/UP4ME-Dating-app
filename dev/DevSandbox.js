@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Button, Platform, PermissionsAndroid, SafeAreaView, View, Linking, Alert } from 'react-native';
+import { Button, Platform, PermissionsAndroid, SafeAreaView, View, Linking, Alert, Share } from 'react-native';
 
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -21,6 +21,7 @@ import TextQuicksand from '../components/TextQuicksand';
 import InAppBrowser from 'react-native-inappbrowser-reborn'
 import { setDataStore, DATA_STORE } from '../stored/dataStore';
 import { dodoFlight } from '../functions/dodoAirlines';
+import shareApp from '../functions/shareApp';
 
 export default DevSandbox = () => {
 
@@ -289,6 +290,9 @@ export default DevSandbox = () => {
 
                     <Button title={'Request 403'} onPress={() => { dodoFlight({ url: 'https://httpstat.us/403', method: 'get' }) }} />
                     <Button title={'Request 200'} onPress={() => { dodoFlight({ url: 'https://httpstat.us/200', method: 'get' }) }} />
+                    <Button title={'Share'} onPress={() => {
+                        shareApp();
+                    }} />
 
 
 

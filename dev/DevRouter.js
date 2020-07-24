@@ -17,6 +17,11 @@ const devRoutes = [
     },
 
     {
+        name: 'DevEndpointTests',
+        color: { r: 50, g: 200, b: 100 },
+    },
+
+    {
         name: 'StartUp',
         color: { r: 200, g: 50, b: 100 },
         header: 'Boot'
@@ -77,6 +82,11 @@ const devRoutes = [
         color: { r: 255, g: 255, b: 60 },
         header: 'Criteria'
     },
+    {
+        name: 'LoadProfileHub',
+        color: { r: 75, g: 200, b: 75 },
+        header: 'Profile'
+    },
 ]
 
 const styles = StyleSheet.create({
@@ -95,8 +105,6 @@ const styles = StyleSheet.create({
 export default DevRouter = () => {
 
     const [userData, setUserData] = useState([]);
-
-
 
     return (
         <ScrollView>

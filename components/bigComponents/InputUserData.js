@@ -15,7 +15,6 @@ const InputUserData = ({ initValues = {
         month: today.month,
         day: today.day,
         year: today.year,
-        yearIndex: today.yearIndex,
     },
     name: '',
     job: '',

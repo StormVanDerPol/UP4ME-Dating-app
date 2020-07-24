@@ -91,7 +91,7 @@ export const MatchButtons = ({ onMatch = () => { } }) => {
 const UserProfile = ({ children, userid, hideReport = false, reportCallback = () => { } }) => {
 
     const userData = useRef(
-        deRetardify(userid)
+        deRetardifyProfile(userid)
     ).current;
 
     return (
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
 })
 
 
-function deRetardify(userid) {
+export function deRetardifyProfile(userid) {
 
     const data = DATA_STORE.profileCache[userid];
 
