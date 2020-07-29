@@ -5,17 +5,23 @@ import { StyleSheet, View } from 'react-native';
 import UpForMeIcon, { iconIndex } from './UpForMeIcon';
 import TextQuicksand from './TextQuicksand';
 
-export const ArrowButtonRight = ({ header, onPress = () => { }, end = false, start = true }) => {
+export const ArrowButtonRight = ({ icon = null, iconStyle = { height: 18, width: 18, }, header, onPress = () => { }, end = false, start = true }) => {
 
     return (
         <TouchableOpacity style={[styles.button, { borderTopWidth: (start) ? 1 : 0, borderBottomWidth: (end) ? 1 : 0 }]} onPress={() => onPress()}>
-            <TextQuicksand style={styles.header}>{header}</TextQuicksand>
+            <View style={{
+                flexDirection: 'row',
+                alignItems: "center",
+            }}>
+                {(!icon) ? <></> : <UpForMeIcon style={{ ...iconStyle, marginRight: 24 }} icon={icon} />}
+                <TextQuicksand style={styles.header}>{header}</TextQuicksand>
+            </View>
             <UpForMeIcon style={styles.icon} icon={iconIndex.arrow_right} />
         </TouchableOpacity>
     );
 }
 
-export const ArrowButtonTop = ({ header, onPress = () => { } }) => {
+export const ArrowButtonTop = ({ end = true, header, onPress = () => { } }) => {
 
     const [topBtnHeight, setTopBtnHeight] = useState(0);
 
@@ -26,7 +32,7 @@ export const ArrowButtonTop = ({ header, onPress = () => { } }) => {
             setTopBtnHeight(e.nativeEvent.layout.height);
 
         }}>
-            <TouchableOpacity style={[styles.topButtonWrapper]} onPress={() => onPress()}>
+            <TouchableOpacity style={[styles.topButtonWrapper, { borderBottomWidth: (end) ? 1 : 0 }]} onPress={() => onPress()}>
 
                 <UpForMeIcon
                     icon={iconIndex.arrow_left}
@@ -40,14 +46,20 @@ export const ArrowButtonTop = ({ header, onPress = () => { } }) => {
     );
 }
 
-export const ArrowButtonDropDown = ({ header, children, end = false, start = true }) => {
+export const ArrowButtonDropDown = ({ icon = null, iconStyle = { height: 18, width: 18, }, header, children, end = false, start = true }) => {
 
     const [down, setDown] = useState(false);
 
     return (
         <View style={[styles.dropDown, { borderTopWidth: (start) ? 1 : 0, borderBottomWidth: (end) ? 1 : 0 }]}>
             <TouchableOpacity style={styles.dropDownBtn} onPress={() => setDown((down) ? false : true)}>
-                <TextQuicksand style={styles.header}>{header}</TextQuicksand>
+                <View style={{
+                    flexDirection: 'row',
+                    alignItems: "center",
+                }}>
+                    {(!icon) ? <></> : <UpForMeIcon style={{ ...iconStyle, marginRight: 24 }} icon={icon} />}
+                    <TextQuicksand style={styles.header}>{header}</TextQuicksand>
+                </View>
                 <UpForMeIcon style={styles.icon} icon={(down) ? iconIndex.arrow_down : iconIndex.arrow_right} />
             </TouchableOpacity>
             <View>
@@ -97,7 +109,6 @@ const styles = StyleSheet.create({
     topButtonWrapper: {
         padding: 15,
         paddingLeft: 25,
-        borderBottomWidth: 1,
         borderBottomColor: 'gray',
     },
 

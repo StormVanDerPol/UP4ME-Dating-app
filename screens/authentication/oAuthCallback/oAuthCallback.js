@@ -24,7 +24,7 @@ const AuthCallback = ({ route }) => {
 
             if (res.data[0][0].actief == -1) {
                 navigationProxy.reset({
-                    index: 2,
+                    index: 1,
                     routes: [
                         {
                             name: 'Landing',
@@ -39,7 +39,7 @@ const AuthCallback = ({ route }) => {
             }
             else {
                 navigationProxy.reset({
-                    index: 1,
+                    index: 0,
                     routes: [
                         {
                             name: 'LoadHome',

@@ -1,145 +1,152 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DATA_STORE } from '../../../stored/dataStore';
+import Body, { FlexSection } from '../../../components/Body';
+import NavBar, { nbroutes } from '../../../components/navBar/NavBar';
+import UpForMeBigRadioButton from '../../../components/UpForMeBigRadioButton';
+import { navigationProxy } from '../../../navigation/navigationProxy';
+import TextQuicksand from '../../../components/TextQuicksand';
+import { View, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import up4meColours from '../../../res/data/colours';
+import FastImage from 'react-native-fast-image';
+import { calcAgeHet } from '../../../res/data/time';
+import UpForMeIcon, { iconIndex } from '../../../components/UpForMeIcon';
+import { dodoFlight } from '../../../functions/dodoAirlines';
+import endpoints, { getEndpoint } from '../../../res/data/endpoints';
+import { planThatDamnDate } from '../../../functions/planThatDamnDate';
 
 const MatchOverview = () => {
 
     console.log(DATA_STORE)
 
     return (
-        <>
+        <Body>
+            <NavBar route={nbroutes.matches} />
+            <FlexSection>
+                <View style={{
+                    margin: 12,
+                }}>
+                    <UpForMeBigRadioButton active={0} headers={['Matches', 'Dates']} onChange={(active) => {
+                        if (active == 1) {
+                            navigationProxy.reset({
+                                index: 1,
+                                routes: [
+                                    {
+                                        name: 'Home',
+                                        params: {},
+                                    },
+                                    {
+                                        name: 'LoadDatesOverview',
+                                        params: {},
+                                    },
+                                ]
+                            });
+                        }
+                    }} />
+                </View>
 
-        </>
+                {
+                    (DATA_STORE.matches == false) ? <TextQuicksand>No matches</TextQuicksand> :
+                        DATA_STORE.matches.map((match, i) => {
+                            return <MatchItem key={i} start={(i == 0) ? true : false} data={match} />
+                        })
+                }
+
+            </FlexSection>
+        </Body>
     );
 }
 
-export const getStatusDescription = (yourStatus, otherStatus, otherName) => {
+export const MatchItem = ({ goToPlan = false, data, start = false, end = true }) => {
 
-    let desc = '';
 
-    let possibleOtherStatuses;
+    const [image, setImage] = useState(null)
 
-    switch (yourStatus) {
-        case -1:
-            switch (otherStatus) {
-                case 2:
-                    desc = 'new date request!';
-                    break;
-                default:
-                    desc = 'weird result (you 2 other !2)';
-                    break;
+
+    useEffect(() => {
+        dodoFlight({
+            method: 'get',
+            url: getEndpoint(endpoints.get.smallProfPic) + data.userid,
+
+            thenCallback: (res) => {
+                setImage(res.data.foto);
             }
-            break;
+        });
+    }, [])
 
-        case 1:
+    return (
+        <TouchableOpacity style={[styles.bruh, {
+            borderBottomWidth: (end) ? 1 : 0,
+            borderTopWidth: (start) ? 1 : 0,
+        }]}
+            onPress={() => {
 
-            possibleOtherStatuses = [2, 4, 5]
+                if (!goToPlan)
+                    navigationProxy.navigate('LoadInviteMatch', {
+                        userid: data.userid,
+                    })
+                else
+                    planThatDamnDate({
+                        userid: data.userid
+                    }, true);
+            }}
+        >
+            <View style={styles.container}>
+                <View style={{ flexDirection: 'row', }}>
 
-            switch (true) {
-                case (possibleOtherStatuses.includes(otherStatus)):
-                    desc = 'you declined';
-                    break;
+                    {(!image) ? <TextQuicksand style={styles.img}>Loading...</TextQuicksand> : <FastImage
+                        style={styles.img}
+                        source={{
+                            uri: image
+                        }}
+                    />}
 
-                default:
-                    desc = 'weird result (you 1 other ![2, 4 ,5])';
-                    break;
-            }
-            break;
+                    <View style={styles.infoBox}>
+                        <TextQuicksand>{data.naam}, {calcAgeHet(data.geboortedatum)} </TextQuicksand>
+                        <TextQuicksand>{data.woonplaats}</TextQuicksand>
+                    </View>
+                </View>
 
-        case 2:
-            switch (otherStatus) {
-
-                case 1:
-                    desc = `${otherName} declined`;
-                    break;
-
-                case 2:
-                    desc = 'accepted';
-                    break;
-
-                case 6:
-                    desc = `${otherName} made a reservation`
-                    break;
-
-                case -1:
-                    desc = 'waiting for reply...';
-                    break;
-
-                default:
-                    desc = 'weird result (you 2 other ![1, 2 ,6, -1])';
-                    break;
-            }
-            break;
-
-        case 3:
-            possibleOtherStatuses = [2, 4, 5, 6];
-
-            switch (true) {
-                case (possibleOtherStatuses.includes(otherStatus)):
-                    desc = 'you cancelled';
-                    break;
-                default:
-                    desc = 'weird result (you 3 other ![2, 4, 5, 6])';
-                    break;
-            }
-            break;
-
-        case 4:
-
-            possibleOtherStatuses = [2, 4, 5]
-
-            switch (true) {
-
-                case (otherStatus == 1):
-                    desc = `${otherName} declined`;
-                    break;
-
-                case (otherStatus == 3):
-                    desc = `${otherName} cancelled`;
-                    break;
-
-                case (possibleOtherStatuses.includes(otherStatus)):
-                    desc = 'you re-proposed';
-                    break;
-                default:
-                    desc = 'weird result (you 4 other ![1, 2, 3 , 4, 5])';
-                    break;
-            }
-            break;
-
-        case 5:
-            switch (true) {
-                case (otherStatus == 1):
-                    desc = `${otherName} declined`;
-                    break;
-
-                case (otherStatus == 3):
-                    desc = `${otherName} cancelled`;
-                    break;
-
-                case (otherStatus == 2 || otherStatus == 6):
-                    desc = 'you rescheduled'
-                    break;
-
-                default:
-                    desc = 'weird result (you 5 other ![1, 2, 3, 6])';
-                    break;
-
-            }
-            break;
-
-        case 6:
-            switch (otherStatus) {
-                case 2:
-                    desc = 'you made a reservatinooooo'
-                    break;
-                default:
-                    desc = 'weird result (you 6 other !2)';
-                    break;
-            }
-            break;
-    }
-
-    return desc;
+                <UpForMeIcon style={styles.imgEnd} icon={iconIndex.arrow_right} />
+            </View>
+        </TouchableOpacity>
+    )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        // backgroundColor: 'red',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: "center",
+        // height: 50,
+    },
+    img: {
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        backgroundColor: '#fff',
+
+    },
+    imgEnd: {
+        height: 25,
+        width: 25,
+    },
+    underline: {
+        borderBottomWidth: 1,
+        borderBottomColor: up4meColours.lineGray,
+        paddingBottom: 15,
+    },
+    infoBox: {
+        marginLeft: 10,
+        width: 150
+    },
+
+    bruh: {
+        paddingVertical: 10,
+        borderColor: up4meColours.lineGray
+    },
+
+});
 
 export default MatchOverview;

@@ -1,11 +1,346 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Body, { FlexSection } from '../../../components/Body';
+import NavBar, { nbroutes } from '../../../components/navBar/NavBar';
+import UpForMeBigRadioButton from '../../../components/UpForMeBigRadioButton';
+import { navigationProxy } from '../../../navigation/navigationProxy';
+import { DATA_STORE } from '../../../stored/dataStore';
+import TextQuicksand from '../../../components/TextQuicksand';
+import { View, StyleSheet } from 'react-native';
+import FastImage from 'react-native-fast-image';
+import { dodoFlight } from '../../../functions/dodoAirlines';
+import endpoints, { getEndpoint } from '../../../res/data/endpoints';
+import LinearGradient from 'react-native-linear-gradient';
+import UpForMeIcon, { iconIndex } from '../../../components/UpForMeIcon';
+import { toNonRetardDate, toNonRetardTime, writtenMonths } from '../../../res/data/time';
+import up4meColours from '../../../res/data/colours';
+import { TapGestureHandler, State } from 'react-native-gesture-handler';
 
 const DatesOverview = () => {
     return (
-        <>
+        <Body>
+            <NavBar route={nbroutes.matches} />
+            <FlexSection>
+                <View style={{
+                    margin: 12,
+                }}>
+                    <UpForMeBigRadioButton active={1} headers={['Matches', 'Dates']} onChange={(active) => {
+                        if (active == 0) {
+                            navigationProxy.reset({
+                                index: 1,
+                                routes: [
+                                    {
+                                        name: 'Home',
+                                        params: {},
+                                    },
+                                    {
+                                        name: 'LoadMatchOverview',
+                                        params: {},
+                                    },
+                                ]
+                            });
+                        }
+                    }} />
+                </View>
 
-        </>
+                {(DATA_STORE.dates == false) ? <TextQuicksand>No dates</TextQuicksand> : DATA_STORE.dates.map((date, i) => {
+                    return (
+                        <DateItem data={date} key={i} />
+                    )
+                })}
+
+            </FlexSection>
+        </Body>
     );
+}
+
+const DateItem = ({ data }) => {
+
+    const [image, setImage] = useState(null);
+
+    const [resData, setResData] = useState(null);
+
+    const date = toNonRetardDate(data.datum);
+
+    const time = toNonRetardTime(data.tijd);
+
+    useEffect(() => {
+        dodoFlight({
+            method: 'get',
+            url: getEndpoint(endpoints.get.smallProfPic) + data.userid2,
+
+            thenCallback: (res) => {
+                setImage(res.data.foto);
+            }
+        });
+
+        dodoFlight({
+            method: 'get',
+            url: getEndpoint(endpoints.get.resProfileTo) + data.resid,
+
+            thenCallback: (res) => {
+                setResData(res.data[0]);
+            }
+        })
+    }, [])
+
+    return (
+        <TapGestureHandler onHandlerStateChange={({ nativeEvent }) => {
+            if (nativeEvent.state === State.END) {
+                navigationProxy.navigate('LoadDateDetails', {
+                    dateData: {
+                        userid: data.userid2,
+                        dateData: data,
+                        resData: resData,
+                        date: date,
+                        time: time,
+                    }
+                })
+            }
+        }}>
+            <View style={styles.dateItemContainer}>
+
+                <View style={styles.imageSection} >
+                    {(!image) ? <TextQuicksand style={{ height: 250 }}>Loading</TextQuicksand> : <FastImage
+                        style={{ height: 250 }}
+                        source={{
+                            uri: image,
+                        }}
+                    />}
+                </View>
+
+
+                <View style={styles.infoSection}>
+                    <TextQuicksand style={styles.infoSectionHeader} type={'Bold'}>Date met naam</TextQuicksand>
+
+                    <View style={styles.infoSectionItem}>
+                        <UpForMeIcon icon={iconIndex.calendar} style={styles.iconWrapper} />
+                        <TextQuicksand> {date.day}, {writtenMonths[date.month - 1]}, {date.year}</TextQuicksand>
+                    </View>
+
+                    <View style={styles.infoSectionItem}>
+                        <UpForMeIcon icon={iconIndex.clock} style={styles.iconWrapper} />
+                        <TextQuicksand>{time}</TextQuicksand>
+                    </View>
+
+                    <View style={styles.infoSectionItem}>
+                        <UpForMeIcon icon={iconIndex.location} style={styles.iconWrapper} />
+                        {
+                            (!resData) ? <></> : <View>
+                                <TextQuicksand>{resData.naam}</TextQuicksand>
+                                <TextQuicksand>{resData.straat} {resData.huisnummer}</TextQuicksand>
+                                <TextQuicksand>{resData.Postcode} {resData.stad}</TextQuicksand>
+                            </View>
+                        }
+                    </View>
+                </View>
+
+                {(data.notisent == -1) ? <LinearGradient
+                    style={styles.statusMsg}
+                    colors={[up4meColours.gradYellow1, up4meColours.gradYellow2]} >
+                    <TextQuicksand style={styles.statusMsgStr} >{getStatusDescription(data.status, data.status2, data.userid2)}</TextQuicksand>
+                </LinearGradient> : <></>}
+
+            </View>
+        </TapGestureHandler>
+    )
+}
+
+const styles = StyleSheet.create({
+
+    dateItemContainer: {
+        flexDirection: "row",
+        margin: 20,
+
+        // height: 250,
+
+        borderRadius: 10,
+        backgroundColor: "white",
+        overflow: "hidden",
+
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.6,
+        shadowRadius: 2,
+        elevation: 5
+    },
+
+    imageSection: {
+        flex: 2,
+    },
+
+    image: {
+        // width: '100%',
+        // height: '100%',
+    },
+
+    infoSection: {
+        flex: 3,
+        padding: 10,
+        paddingTop: 50,
+    },
+
+    infoSectionHeader: {
+        fontSize: 20,
+    },
+
+    infoSectionItem: {
+        flexDirection: "row",
+        marginVertical: 5,
+    },
+
+    iconWrapper: {
+        marginTop: 5,
+        width: 20,
+        height: 20,
+        marginRight: 10,
+    },
+
+    statusMsg: {
+        position: "absolute",
+        right: 10,
+        top: 10,
+        paddingVertical: 4,
+        paddingHorizontal: 8,
+        borderRadius: 10,
+    },
+
+    statusMsgStr: {
+        color: "white"
+    }
+});
+
+export const getStatusDescription = (yourStatus, otherStatus, otherName) => {
+
+    let desc = '';
+
+    const yeet = `yours: ${yourStatus}, other: ${otherStatus}`;
+
+    let possibleOtherStatuses;
+
+    switch (yourStatus) {
+        case -1:
+            switch (otherStatus) {
+                case 2:
+                    desc = 'new date request!';
+                    break;
+                default:
+                    desc = yeet
+                    break;
+            }
+            break;
+
+        case 1:
+
+            possibleOtherStatuses = [2, 4, 5]
+
+            switch (true) {
+                case (possibleOtherStatuses.includes(otherStatus)):
+                    desc = 'you declined';
+                    break;
+
+                default:
+                    desc = yeet;
+                    break;
+            }
+            break;
+
+        case 2:
+            switch (otherStatus) {
+
+                case 1:
+                    desc = `${otherName} declined`;
+                    break;
+
+                case 2:
+                    desc = 'accepted';
+                    break;
+
+                case 6:
+                    desc = `${otherName} made a reservation`
+                    break;
+
+                case -1:
+                    desc = 'waiting for reply...';
+                    break;
+
+                default:
+                    desc = yeet;
+                    break;
+            }
+            break;
+
+        case 3:
+            possibleOtherStatuses = [2, 4, 40, 5, 50, 6, 60];
+
+            switch (true) {
+                case (possibleOtherStatuses.includes(otherStatus)):
+                    desc = 'you cancelled';
+                    break;
+                default:
+                    desc = yeet;
+                    break;
+            }
+            break;
+
+        case 4:
+
+            possibleOtherStatuses = [2, 40, 5]
+
+            switch (true) {
+
+                case (otherStatus == 1):
+                    desc = `${otherName} declined`;
+                    break;
+
+                case (otherStatus == 3):
+                    desc = `${otherName} cancelled`;
+                    break;
+
+                case (possibleOtherStatuses.includes(otherStatus)):
+                    desc = 'you re-proposed';
+                    break;
+                default:
+                    desc = yeet;
+                    break;
+            }
+            break;
+
+        case 5:
+            switch (true) {
+                case (otherStatus == 1):
+                    desc = `${otherName} declined`;
+                    break;
+
+                case (otherStatus == 3):
+                    desc = `${otherName} cancelled`;
+                    break;
+
+                case (otherStatus == 2 || otherStatus == 6):
+                    desc = 'you rescheduled'
+                    break;
+
+                default:
+                    desc = yeet;
+                    break;
+
+            }
+            break;
+
+        case 6:
+            switch (otherStatus) {
+                case 2:
+                    desc = 'you made a reservatinooooo'
+                    break;
+                default:
+                    desc = yeet;
+                    break;
+            }
+            break;
+        default:
+            desc = yeet;
+    }
+
+    return desc;
 }
 
 export default DatesOverview;

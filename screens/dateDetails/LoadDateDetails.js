@@ -1,33 +1,33 @@
 import React from 'react';
-import loadProfile from '../loading/loadProfile';
-import { DATA_STORE } from '../../stored/dataStore';
 import LoadingScreen from '../loading/LoadingScreen';
+import loadProfile from '../loading/loadProfile';
 import { navigationProxy } from '../../navigation/navigationProxy';
 
-const LoadProfileHub = () => {
+const LoadDateDetails = ({ route }) => {
+
+    const dateData = route.params.dateData;
+
+    console.log(dateData);
 
     const tasks = [
         {
-            name: 'loading own profile',
+            name: 'Loading profile',
             exec: async () => {
-                await loadProfile(DATA_STORE.userID);
+                await loadProfile(dateData.userid);
             }
         },
         {
-            name: 'redirecting...',
+            name: 'redirecting',
             exec: () => {
+                // navigationProxy.navigate('DateDetails', dateData);
                 navigationProxy.reset({
                     index: 1,
                     routes: [
                         {
-                            name: 'Home',
-                            params: {},
+                            name: 'DateDetails',
+                            params: dateData,
                         },
-                        {
-                            name: 'ProfileHub',
-                            params: {},
-                        },
-                    ]
+                    ],
                 });
             }
         }
@@ -38,4 +38,4 @@ const LoadProfileHub = () => {
     );
 }
 
-export default LoadProfileHub;
+export default LoadDateDetails;

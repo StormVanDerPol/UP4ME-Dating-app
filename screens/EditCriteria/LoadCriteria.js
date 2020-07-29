@@ -49,6 +49,10 @@ const LoadCriteria = () => {
                     index: 1,
                     routes: [
                         {
+                            name: 'Home',
+                            params: {},
+                        },
+                        {
                             name: 'EditCriteria',
                             params: {},
                         },

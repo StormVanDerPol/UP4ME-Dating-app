@@ -6,11 +6,10 @@ import { DATA_STORE } from '../../stored/dataStore';
 import { navigationProxy } from '../../navigation/navigationProxy';
 import LoadingScreen from '../loading/LoadingScreen';
 
-//UNUSED
-
-const LoadOverview = () => {
+const LoadMatchOverview = () => {
 
     const tasks = [
+
         {
             name: 'getting matches',
             exec: async () => {
@@ -26,23 +25,22 @@ const LoadOverview = () => {
             }
         },
         {
-            name: 'getting dates',
-            exec: async () => {
-                await dodoFlight({
-                    method: 'get',
-                    url: getEndpoint(endpoints.get.dates) + DATA_STORE.userID,
-                    timeout: timeouts.short,
-
-                    thenCallback: (res) => {
-                        DATA_STORE.dates = res.data
-                    }
-                });
-            }
-        },
-        {
             name: 'redirecting',
             exec: () => {
-                navigationProxy.navigate('MatchOverview');
+                // navigationProxy.navigate('MatchOverview');
+                navigationProxy.reset({
+                    index: 1,
+                    routes: [
+                        {
+                            name: 'Home',
+                            params: {},
+                        },
+                        {
+                            name: 'MatchOverview',
+                            params: {},
+                        }
+                    ]
+                })
             }
         }
 
@@ -53,4 +51,4 @@ const LoadOverview = () => {
     );
 }
 
-export default LoadOverview;
+export default LoadMatchOverview;

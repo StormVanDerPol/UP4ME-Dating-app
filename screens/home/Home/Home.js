@@ -16,6 +16,7 @@ import UpForMeModal from '../../../components/UpForMeModal';
 import reportUser from '../../../functions/reportUser';
 import { navigationProxy } from '../../../navigation/navigationProxy';
 import NavBar, { nbroutes } from '../../../components/navBar/NavBar';
+import { planThatDamnDate } from '../../../functions/planThatDamnDate';
 
 const listRef = React.createRef();
 
@@ -218,7 +219,19 @@ const Home = () => {
                     <UpForMeButton
                         title={'Naar filters'}
                         onPress={() => {
-                            navigationProxy.navigate('LoadCriteria')
+                            navigationProxy.reset({
+                                index: 1,
+                                routes: [
+                                    {
+                                        name: 'Home',
+                                        params: {},
+                                    },
+                                    {
+                                        name: 'LoadCriteria',
+                                        params: {},
+                                    }
+                                ]
+                            })
                         }}
                     />
                 </View>
@@ -236,7 +249,9 @@ const Home = () => {
 
             {(!disableFade) ? (fadeIn) ? <FadeInOverlay /> : <FadeOutOverlay /> : <></>}
 
-            <UpForMeModal enabled={reportVisible}>
+            <UpForMeModal onPressBackButton={() => {
+                showReport(false);
+            }} enabled={reportVisible}>
 
                 <View style={{ flex: 1 }} />
 
@@ -305,7 +320,11 @@ const MatchSuccess = ({ userid, onContinueSwiping = () => { } }) => {
             <UpForMeButton
                 style={styles.MatchSuccessButton}
                 title={'Plan een date'}
-                onPress={() => { }}
+                onPress={() => {
+                    planThatDamnDate({
+                        userid: userid,
+                    })
+                }}
             />
 
             <TextQuicksand
