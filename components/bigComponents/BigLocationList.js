@@ -1,16 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
-import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
 import { DATA_STORE } from '../../stored/dataStore';
 import TextQuicksand from '../TextQuicksand';
 import { ArrowButtonDropDown } from '../UpForMeArrowButtons';
 import { WheelPicker } from 'react-native-wheel-picker-android';
-import { FlatList } from 'react-native-gesture-handler';
-import { dodoFlight } from '../../functions/dodoAirlines';
-import endpoints, { getEndpoint } from '../../res/data/endpoints';
+import { FlatList, TapGestureHandler, State } from 'react-native-gesture-handler';
 
-const BigLocationList = () => {
+const BigLocationList = ({ heightSubtract = 0, onPressItem = (resid) => { } }) => {
 
     var places = Object.keys(DATA_STORE.locations)
     var parts = {};
@@ -20,21 +17,52 @@ const BigLocationList = () => {
         parts[place] = [];
 
         for (let part of Object.keys(DATA_STORE.locations[place])) {
-
             parts[place].push(part);
-
         }
-
     }
-
-    console.log('this bs', places, parts);
 
     const [selected, setSelected] = useState({
         place: places[0],
         part: parts[places[0]][0],
     })
 
-    console.log(parts[selected.place])
+    const LocationItem = ({ item }) => {
+
+        return (
+            <TapGestureHandler onHandlerStateChange={({ nativeEvent }) => {
+                if (nativeEvent.state === State.END) {
+                    onPressItem(item.resid);
+                }
+            }}>
+                <View style={styles.resitem}>
+
+                    <View style={styles.resitemImageSection}>
+                        <FastImage style={{ width: 150, height: 150, }}
+                            source={{
+                                uri: item.photo,
+                            }}
+                        />
+                    </View>
+
+                    <View style={styles.resitemInfoSection}>
+                        <TextQuicksand style={styles.resitemName} type={'Bold'}>{item.name}</TextQuicksand>
+                        <TextQuicksand>{item.address}</TextQuicksand>
+                        <TextQuicksand>{item.postalCode} {item.city}</TextQuicksand>
+                        {/* <View style={resitemStyles.resitemRatingContainer}>
+                    {[1, 2, 3, 4, 5].map((i) => {
+
+                        return (i <= rating) ?
+                            <UpForMeIcon icon={iconIndex.restaurant_star} style={resitemStyles.resitemRatingIcon} /> :
+                            <UpForMeIcon icon={iconIndex.restaurant_star_gray} style={resitemStyles.resitemRatingIcon} />
+                    })}
+                </View> */}
+                    </View>
+                    {/* {(fav) ? <UpForMeIcon style={resitemStyles.resitemFavIcon} icon={iconIndex.restaurant_fav_heart} /> : <></>} */}
+
+                </View>
+            </TapGestureHandler>
+        )
+    }
 
     return (
         <>
@@ -84,60 +112,24 @@ const BigLocationList = () => {
 
                     return <LocationItem key={i} item={location} />
                 })} */}
-
                 <FlatList
+                    style={{ height: (selected.part == 'null') ? 580 - heightSubtract : 530 - heightSubtract }}
                     data={DATA_STORE.locations[selected.place][selected.part]}
                     renderItem={LocationItem}
                     initialNumToRender={1}
                     maxToRenderPerBatch={1}
                     windowSize={2}
-
+                    keyExtractor={item => item.key}
                 />
-
             </View>
-
         </>
     );
 }
 
 
-const LocationItem = ({ item }) => {
 
-    return (
-        <View style={resitemStyles.resitem}>
 
-            <View style={resitemStyles.resitemImageSection}>
-                <FastImage style={{ width: 125, height: 150, }}
-                    source={{
-                        uri: item.photo,
-                    }}
-                />
-            </View>
-
-            <View style={resitemStyles.resitemInfoSection}>
-
-                <TextQuicksand>{item.id}</TextQuicksand>
-                <TextQuicksand style={resitemStyles.resitemName}>{item.name}</TextQuicksand>
-                <TextQuicksand>{item.address}</TextQuicksand>
-                <TextQuicksand>{item.postalCode} {item.city}</TextQuicksand>
-
-                {/* <View style={resitemStyles.resitemRatingContainer}>
-
-                    {[1, 2, 3, 4, 5].map((i) => {
-
-                        return (i <= rating) ?
-                            <UpForMeIcon icon={iconIndex.restaurant_star} style={resitemStyles.resitemRatingIcon} /> :
-                            <UpForMeIcon icon={iconIndex.restaurant_star_gray} style={resitemStyles.resitemRatingIcon} />
-                    })}
-                </View> */}
-            </View>
-
-            {/* {(fav) ? <UpForMeIcon style={resitemStyles.resitemFavIcon} icon={iconIndex.restaurant_fav_heart} /> : <></>} */}
-        </View>
-    )
-}
-
-const resitemStyles = StyleSheet.create({
+const styles = StyleSheet.create({
     resitemRatingContainer: {
         justifyContent: "space-between",
         flexDirection: "row",
@@ -159,11 +151,13 @@ const resitemStyles = StyleSheet.create({
 
     resitemName: {
         fontSize: 20,
-        fontWeight: "bold",
         marginBottom: 10,
     },
 
     resitem: {
+
+        height: 150,
+
         borderRadius: 25,
         backgroundColor: "white",
         overflow: "hidden",
@@ -178,10 +172,6 @@ const resitemStyles = StyleSheet.create({
 
         marginHorizontal: 25,
         marginVertical: 12.5,
-    },
-
-    resitemContainer: {
-        marginTop: 12.5,
     },
 
     resitemInfoSection: {

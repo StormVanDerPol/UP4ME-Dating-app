@@ -1,6 +1,6 @@
 import { devMode } from "../../dev/devConfig";
 
-const local = true
+const local = false;
 
 const protocol = (local) ? `http://` : `https://`;
 const domain = (local) ? `192.168.1.14` : `www.upforme.nl`;
@@ -13,8 +13,6 @@ export const HOST = `${protocol}${domain}${port}`;
 const endpoints = {
 
     get: {
-
-        // registerEmail: `/register/1/`,
         checkMail: `/api/v1/get/profile/checkmail/`,
         authGoogle: `https://www.upforme.nl/auth/google`,
         authApple: `https://www.upforme.nl/auth/apple`,
@@ -27,8 +25,10 @@ const endpoints = {
         dates: `/get/dates/`,
         bigLocationList: `/get/restaurant/list`,
         bigLocationListTo: `/get/restaurant/list/to`,
-        resProfPic: `/get/restaurant/profpic/`
-
+        resProfPic: `/get/restaurant/profpic/`,
+        resProfile: `/get/restaurant/profile/`,
+        resProfileTo: `/get/restaurant/profile/to/`,
+        smallProfPic: `/get/profile/picture/`
     },
 
     post: {
@@ -47,6 +47,7 @@ const endpoints = {
         getLastedit: `/get/lastedit`,
         setMatchResponses: `/set/matchresponses`,
         setReport: `/set/report`,
+        setDate: `/set/date`,
     }
 };
 

@@ -61,7 +61,7 @@ const EditGender = () => {
 
                                 DATA_STORE.profileCache[DATA_STORE.userID].geslacht = gender + 1;
 
-                                navigationProxy.navigate('Settings');
+                                navigationProxy.goBack();
                             }
                             else {
                                 setNetFeedback({

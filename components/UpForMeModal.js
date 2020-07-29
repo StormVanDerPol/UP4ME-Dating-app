@@ -15,16 +15,16 @@ usage:
 */
 
 import React, { useRef, useEffect } from 'react';
-import { StyleSheet, View, Animated } from 'react-native';
+import { StyleSheet, View, Animated, BackHandler } from 'react-native';
 
 import getDeviceDimensions from '../functions/dimensions';
 
-const UpForMeModal = ({ enabled = true, style = {}, children, duration = 1000, animated = true }) => {
-    return (enabled) ? <Modal style={style} children={children} duration={duration} animated={animated} /> : <></>;
+const UpForMeModal = ({ onPressBackButton = () => { }, enabled = true, style = {}, children, duration = 1000, animated = true }) => {
+    return (enabled) ? <Modal style={style} children={children} duration={duration} animated={animated} onPressBackButton={onPressBackButton} /> : <></>;
 }
 
 
-const Modal = ({ style, children, duration, animated }) => {
+const Modal = ({ style, children, duration, animated, onPressBackButton }) => {
 
     const ypos = useRef(
         (animated) ?
@@ -59,6 +59,20 @@ const Modal = ({ style, children, duration, animated }) => {
 
             }
         ).start();
+
+
+
+        const backhandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            () => {
+                onPressBackButton();
+                return true;
+            }
+        );
+
+        return () => backhandler.remove();
+
+
     }, []);
 
 

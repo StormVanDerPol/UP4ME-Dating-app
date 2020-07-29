@@ -23,7 +23,7 @@ export const getLocations = async () => {
 
                 DATA_STORE.locations[location.stad][location.stadsdeel].push(
                     {
-                        id: location.resid,
+                        resid: location.resid,
                         name: location.naam,
                         address: location.straat + ' ' + location.huisnummer,
                         postalcode: location.Postcode,

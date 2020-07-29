@@ -87,8 +87,12 @@ const EditProfile = () => {
                         onChange={(active) => {
                             if (active == 1) {
                                 navigationProxy.reset({
-                                    index: 1,
+                                    index: 2,
                                     routes: [
+                                        {
+                                            name: 'Home',
+                                            params: {},
+                                        },
                                         {
                                             name: 'ProfileHub',
                                             params: {},
@@ -218,7 +222,19 @@ const EditProfile = () => {
                                                             message: '',
                                                         });
 
-                                                        navigationProxy.navigate('ProfileHub');
+                                                        navigationProxy.reset({
+                                                            index: 1,
+                                                            routes: [
+                                                                {
+                                                                    name: 'Home',
+                                                                    params: {},
+                                                                },
+                                                                {
+                                                                    name: 'ProfileHub',
+                                                                    params: {},
+                                                                }
+                                                            ]
+                                                        })
                                                     }
                                                 },
 

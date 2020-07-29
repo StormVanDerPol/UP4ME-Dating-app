@@ -39,7 +39,7 @@ const LoadHome = () => {
             name: 'redirect',
             exec: async () => {
                 navigationProxy.reset({
-                    index: 1,
+                    index: 0,
                     routes: [
                         {
                             name: 'LoadProfiles',

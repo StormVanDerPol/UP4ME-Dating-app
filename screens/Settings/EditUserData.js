@@ -113,7 +113,23 @@ const EditUserData = () => {
                                 thenCallback: (res) => {
 
                                     if (res.data == true) {
-                                        navigationProxy.navigate('Settings');
+                                        navigationProxy.reset({
+                                            index: 2,
+                                            routes: [
+                                                {
+                                                    name: 'Home',
+                                                    params: {},
+                                                },
+                                                {
+                                                    name: 'ProfileHub',
+                                                    params: {},
+                                                },
+                                                {
+                                                    name: 'Settings',
+                                                    params: {},
+                                                },
+                                            ]
+                                        });
                                         netFeedback.message = '';
                                     }
                                     else {

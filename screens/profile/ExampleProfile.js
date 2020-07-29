@@ -18,8 +18,12 @@ const ExampleProfile = () => {
                         onChange={(active) => {
                             if (active == 0) {
                                 navigationProxy.reset({
-                                    index: 1,
+                                    index: 2,
                                     routes: [
+                                        {
+                                            name: 'Home',
+                                            params: {},
+                                        },
                                         {
                                             name: 'ProfileHub',
                                             params: {},

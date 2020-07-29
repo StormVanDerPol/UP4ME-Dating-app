@@ -37,7 +37,7 @@ const NavBar = ({ route }) => {
             iconStyle: styles.logo,
         },
         {
-            route: 'LoadOverview',
+            route: 'LoadMatchOverview',
             n: nbroutes.matches,
             iconColour: iconIndex.nav.matches_colour,
             iconGray: iconIndex.nav.matches_gray,
@@ -61,7 +61,15 @@ const NavBar = ({ route }) => {
                     return (<View key={i}>
                         <TouchableOpacity onPress={() => {
                             if (route != item.n)
-                                navigationProxy.navigate(item.route);
+                                navigationProxy.reset({
+                                    index: 0,
+                                    routes: [
+                                        {
+                                            name: item.route,
+                                            params: {},
+                                        }
+                                    ]
+                                });
                         }}>
                             {(route == item.n) ?
                                 <UpForMeIcon style={item.iconStyle} icon={item.iconColour} /> :
@@ -85,6 +93,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         // paddingVertical: 20
         height: 50,
+        // borderBottomWidth: 1,
+        backgroundColor: '#fff',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.6,
+        shadowRadius: 2,
+        elevation: 5
     },
 
     icon: {

@@ -1,10 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { View, Alert } from 'react-native';
+import { View } from 'react-native';
 
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../components/waitIndicator';
 import { DATA_STORE } from '../../../stored/dataStore';
-import endpoints, { getEndpoint } from '../../../res/data/endpoints';
-import { dodoFlight } from '../../../functions/dodoAirlines';
 import { RegistStyles } from '../../../styles/RegistStyles';
 
 import UpForMeButton from '../../../components/UpForMeButton';
@@ -12,7 +10,6 @@ import Body, { FlexSection } from '../../../components/Body';
 import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4MeLogo';
 import RegistHeader from '../../../components/LoginAndRegistration/RegistHeader';
 import InputCriteria from '../../../components/bigComponents/InputCriteria';
-import { navigationProxy } from '../../../navigation/navigationProxy';
 import postCriteria from '../../../requests/postCriteria';
 
 const RegistCriteria = () => {
@@ -88,125 +85,6 @@ const RegistCriteria = () => {
                                 message: networkFeedbackMessages.err
                             })
                         })
-
-                    // //POST CRITERIA
-                    // await dodoFlight({
-                    //     method: 'post',
-                    //     url: getEndpoint(endpoints.post.setCriteria),
-                    // data: {
-                    //     userid: DATA_STORE.userID,
-                    //     sport: userCriteria.current.sport,
-                    //     feesten: userCriteria.current.party,
-                    //     roken: userCriteria.current.smoking,
-                    //     alcohol: userCriteria.current.alcohol,
-                    //     stemmen: userCriteria.current.politics,
-                    //     werken: userCriteria.current.work,
-                    //     kinderen: userCriteria.current.kids,
-                    //     kinderwens: userCriteria.current.kidWish,
-                    //     eten: userCriteria.current.food,
-                    //     afstand: userCriteria.current.distance,
-                    //     geslacht: userCriteria.current.gender,
-                    //     minlengte: userCriteria.current.heights[0],
-                    //     maxlengte: userCriteria.current.heights[1],
-                    //     leeftijdmin: userCriteria.current.ages[0],
-                    //     leeftijdmax: userCriteria.current.ages[1],
-                    // },
-
-                    //     thenCallback: async (res) => {
-
-                    //         //if criteria posting successful, set last login timestamp
-                    //         if (res.data) {
-
-                    //             await dodoFlight({
-                    //                 method: 'get',
-                    //                 url: getEndpoint(endpoints.get.setLastLogin) + DATA_STORE.userID,
-
-                    //                 thenCallback: async (res) => {
-
-                    //                     //if timestamp set, get potential matches
-                    //                     if (res.data) {
-                    //                         await dodoFlight({
-                    //                             method: 'get',
-                    //                             url: getEndpoint(endpoints.get.potentialMatches) + DATA_STORE.userID,
-
-                    //                             thenCallback: (res) => {
-
-                    //                                 //if potential matches, go to home screen, registration complete!
-                    //                                 if (res.data != false) {
-                    // setNetFeedback({
-                    //     busy: false,
-                    //     message: '',
-                    // });
-
-                    //                                     DATA_STORE.pMatches.list = res.data;
-                    //                                     DATA_STORE.pMatches.timeStamp = Date.now();
-                    //                                     navigationProxy.navigate('LoadHome');
-                    //                                 }
-                    //                                 else {
-                    //                                     //if no potential matches, ask the user to soften up, else just continue as normal
-                    //                                     Alert.alert(
-                    //                                         'Geen potentiële matches!',
-                    //                                         'Versoepel je criteria om te kunnen matchen met andere gebruikers.',
-                    //                                         [
-                    //                                             {
-                    //                                                 text: 'Toch doorgaan', onPress: () => {
-
-                    //                                                     DATA_STORE.pMatches.list = res.data;
-                    //                                                     DATA_STORE.pMatches.timeStamp = Date.now();
-                    //                                                     navigationProxy.navigate('LoadHome');
-                    //                                                 }
-                    //                                             },
-                    //                                             {
-                    //                                                 text: 'Okay!', onPress: () => {
-                    //                                                     setNetFeedback({
-                    //                                                         busy: false,
-                    //                                                         message: '',
-                    //                                                     })
-                    //                                                 }
-                    //                                             },
-                    //                                         ],
-                    //                                         { cancelable: false }
-                    //                                     );
-                    //                                 }
-                    //                             },
-
-                    //                             catchCallback: (err) => {
-                    //                                 //pot match error
-                    //                                 setNetFeedback({
-                    //                                     busy: false,
-                    //                                     message: networkFeedbackMessages.err
-                    //                                 })
-                    //                             }
-                    //                         })
-                    //                     }
-                    //                     else {
-                    //                         // TimeStamp error
-                    // setNetFeedback({
-                    //     busy: false,
-                    //     message: networkFeedbackMessages.err
-                    // })
-                    //                     }
-                    //                 }
-                    //             })
-                    //         }
-                    //         else {
-                    //             //if criteria posting unsuccessful
-                    //             setNetFeedback({
-                    //                 busy: false,
-                    //                 message: networkFeedbackMessages.err
-                    //             })
-                    //         }
-                    //     },
-
-                    //     catchCallback: (err) => {
-
-                    //         //criteria posting error
-                    //         setNetFeedback({
-                    //             busy: false,
-                    //             message: networkFeedbackMessages.err
-                    //         })
-                    //     }
-                    // })
                 }} />
             </View>
 

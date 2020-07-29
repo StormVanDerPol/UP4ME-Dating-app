@@ -20,6 +20,15 @@ export const DATA_STORE = {
 
     dates: {},
 
+    plannedDate: {
+        userid: null,
+        time: null,
+        date: null,
+        locationData: null,
+    },
+
+    currentResID: null,
+
     pMatches: {
         list: null,
         timeStamp: null,

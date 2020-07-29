@@ -89,24 +89,23 @@ export const dodoFlight = async ({
                 }
                 else if (err.response.status == 404) {
 
-                    navigationProxy.reset({
-                        index: 1,
-                        routes: [
-                            {
-                                name: 'Landing',
-                                params: {},
-                            },
-                        ]
-                    });
+                    // navigationProxy.reset({
+                    //     index: 0,
+                    //     routes: [
+                    //         {
+                    //             name: 'Landing',
+                    //             params: {},
+                    //         },
+                    //     ]
+                    // });
 
                     Alert.alert(
                         '404 not found',
-                        'Try logging in again',
                     );
                 }
             } else {
                 Alert.alert(
-                    'Server Error',
+                    'Error',
                     'Please try again later!',
                     [
                         {

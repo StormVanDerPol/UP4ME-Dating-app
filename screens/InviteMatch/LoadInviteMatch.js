@@ -1,20 +1,26 @@
 import React from 'react';
 import LoadingScreen from '../loading/LoadingScreen';
+import loadProfile from '../loading/loadProfile';
 import { navigationProxy } from '../../navigation/navigationProxy';
-import { getLocations } from './getLocations';
 
-const LoadViewLocations = () => {
+const LoadInviteMatch = ({ route }) => {
+
+    const userid = route.params.userid;
 
     const tasks = [
         {
-            name: 'Load locations',
+            name: 'Loading a dumbass his profile',
             exec: async () => {
-                await getLocations();
+                await loadProfile(userid);
             }
         },
         {
-            name: 'Together we ride!',
+            name: 'Redirect',
             exec: () => {
+                // navigationProxy.navigate('InviteMatch', {
+                //     userid: userid,
+                // })
+
                 navigationProxy.reset({
                     index: 1,
                     routes: [
@@ -23,10 +29,12 @@ const LoadViewLocations = () => {
                             params: {},
                         },
                         {
-                            name: 'ViewLocations',
-                            params: {},
+                            name: 'InviteMatch',
+                            params: {
+                                userid: userid,
+                            }
                         }
-                    ]
+                    ],
                 })
             }
         }
@@ -37,4 +45,4 @@ const LoadViewLocations = () => {
     );
 }
 
-export default LoadViewLocations;
+export default LoadInviteMatch;

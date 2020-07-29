@@ -29,12 +29,25 @@ import Settings from '../screens/Settings/Settings';
 import EditLocation from '../screens/Settings/EditLocation';
 import EditUserData from '../screens/Settings/EditUserData';
 import LoadOverview from '../screens/overview/LoadOverview';
+import LoadMatchOverview from '../screens/overview/LoadMatchOverview';
+import LoadDatesOverview from '../screens/overview/LoadDatesOverview';
 import MatchOverview from '../screens/overview/matches/MatchOverview';
 import DatesOverview from '../screens/overview/dates/DatesOverview';
 import LoadViewLocations from '../screens/dateLocations/LoadViewLocations';
 import ViewLocations from '../screens/dateLocations/ViewLocations';
 import DevEndpointTests from '../dev/DevEndpointTests';
 import EditGender from '../screens/Settings/EditGender';
+import ViewLocationProfile from '../screens/dateLocations/ViewLocationProfile';
+import LoadDateDetails from '../screens/dateDetails/LoadDateDetails';
+import DateDetails from '../screens/dateDetails/DateDetails';
+import InviteMatch from '../screens/InviteMatch/InviteMatch';
+import LoadInviteMatch from '../screens/InviteMatch/LoadInviteMatch';
+import MatchOverviewFromLocations from '../screens/overview/matches/MatchOverviewFromLocations';
+import PlanDate from '../screens/PlanDate/PlanDate';
+import LoadPlanDate from '../screens/PlanDate/LoadPlanDate';
+import PlanDateLocations from '../screens/PlanDate/PlanDateLocations';
+import LoadPlanDateLocations from '../screens/PlanDate/LoadPlanDateLocations';
+import PlanDateLocationProfile from '../screens/PlanDate/PlanDateLocationProfile';
 
 //Add new routes here + put it in the DevRouter.js
 var appRoutes = [
@@ -151,6 +164,14 @@ var appRoutes = [
         component: LoadOverview,
     },
     {
+        name: 'LoadMatchOverview',
+        component: LoadMatchOverview,
+    },
+    {
+        name: 'LoadDatesOverview',
+        component: LoadDatesOverview,
+    },
+    {
         name: 'MatchOverview',
         component: MatchOverview,
     },
@@ -166,6 +187,50 @@ var appRoutes = [
         name: 'ViewLocations',
         component: ViewLocations,
     },
+    {
+        name: 'ViewLocationProfile',
+        component: ViewLocationProfile,
+    },
+    {
+        name: 'LoadDateDetails',
+        component: LoadDateDetails,
+    },
+    {
+        name: 'DateDetails',
+        component: DateDetails,
+    },
+    {
+        name: 'InviteMatch',
+        component: InviteMatch,
+    },
+    {
+        name: 'LoadInviteMatch',
+        component: LoadInviteMatch,
+    },
+    {
+        name: 'MatchOverviewFromLocations',
+        component: MatchOverviewFromLocations,
+    },
+    {
+        name: 'PlanDate',
+        component: PlanDate,
+    },
+    {
+        name: 'LoadPlanDate',
+        component: LoadPlanDate,
+    },
+    {
+        name: 'PlanDateLocations',
+        component: PlanDateLocations,
+    },
+    {
+        name: 'LoadPlanDateLocations',
+        component: LoadPlanDateLocations,
+    },
+    {
+        name: 'PlanDateLocationProfile',
+        component: PlanDateLocationProfile,
+    }
 ];
 
 if (devMode.enabled) {

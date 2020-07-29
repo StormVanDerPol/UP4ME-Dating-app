@@ -1,9 +1,10 @@
 import React from 'react';
-import LoadingScreen from '../loading/LoadingScreen';
+import { getLocations } from '../dateLocations/getLocations';
 import { navigationProxy } from '../../navigation/navigationProxy';
-import { getLocations } from './getLocations';
+import LoadingScreen from '../loading/LoadingScreen';
+import { DATA_STORE } from '../../stored/dataStore';
 
-const LoadViewLocations = () => {
+const LoadPlanDateLocations = () => {
 
     const tasks = [
         {
@@ -14,16 +15,18 @@ const LoadViewLocations = () => {
         },
         {
             name: 'Together we ride!',
-            exec: () => {
+            exec: async () => {
                 navigationProxy.reset({
                     index: 1,
                     routes: [
                         {
-                            name: 'Home',
-                            params: {},
+                            name: 'PlanDate',
+                            params: {
+                                userid: DATA_STORE.plannedDate.userid,
+                            }
                         },
                         {
-                            name: 'ViewLocations',
+                            name: 'PlanDateLocations',
                             params: {},
                         }
                     ]
@@ -37,4 +40,4 @@ const LoadViewLocations = () => {
     );
 }
 
-export default LoadViewLocations;
+export default LoadPlanDateLocations;
