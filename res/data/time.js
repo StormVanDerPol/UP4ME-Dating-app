@@ -13,7 +13,7 @@ export const today = {
     yearIndex: getYearIndex(now.getFullYear()),
 }
 
-export function toRetardDate({ year, month, day }) {
+export function toAPIDate({ year, month, day }) {
 
     let tempDate = {
         year: year + '',
@@ -71,7 +71,7 @@ export const writtenMonths = [
     'December',
 ];
 
-export const toNonRetardDate = (bdateApi) => {
+export const convertDateAPI = (bdateApi) => {
 
     let bdateApiStr = bdateApi + '';
 
@@ -94,21 +94,21 @@ export const toNonRetardDate = (bdateApi) => {
 
 }
 
-export function toNonRetardTime(retardTime) {
+export function convertApiTime(apiTime) {
 
-    let nonRetardTime;
+    let nonApiTime;
 
-    retardTime = retardTime + '';
+    apiTime = apiTime + '';
 
-    if (retardTime < 1000) {
-        nonRetardTime = '0' + retardTime.substring(0, 1) + ':' + retardTime.substring(1, 3);
+    if (apiTime < 1000) {
+        nonApiTime = '0' + apiTime.substring(0, 1) + ':' + apiTime.substring(1, 3);
     }
 
     else {
-        nonRetardTime = retardTime.substring(0, 2) + ':' + retardTime.substring(2, 4);
+        nonApiTime = apiTime.substring(0, 2) + ':' + apiTime.substring(2, 4);
     }
 
-    return nonRetardTime;
+    return nonApiTime;
 }
 
 export const hrToMS = (hr) => {

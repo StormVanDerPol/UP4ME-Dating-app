@@ -4,10 +4,10 @@ import NavBar, { nbroutes } from '../../components/navBar/NavBar';
 import { ArrowButtonTop, ArrowButtonDropDown, ArrowButtonRight } from '../../components/UpForMeArrowButtons';
 import InputUserData from '../../components/bigComponents/InputUserData';
 import KeyboardDismiss from '../../components/KeyboardDismiss';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { RegistStyles } from '../../styles/RegistStyles';
 import { DATA_STORE } from '../../stored/dataStore';
-import { toNonRetardDate, getYearIndex, toRetardDate } from '../../res/data/time';
+import { convertDateAPI, getYearIndex, toAPIDate } from '../../res/data/time';
 import { navigationProxy } from '../../navigation/navigationProxy';
 import TextQuicksand from '../../components/TextQuicksand';
 import UpForMeSwitch from '../../components/UpForMeSwitch';
@@ -141,49 +141,68 @@ const Settings = () => {
                     }} end={true} />
 
                 </FlexSection>
-
-                <UpForMeModal enabled={(!showDelete && showLogout)}>
-
-                    <View style={{ flex: 1 }} />
-
-                    <View style={styles.reportModal}>
-
-                        <UpForMeButton style={styles.reportModalBtn} title={'Uitloggen'} onPress={async () => {
-                            await logout();
-                        }} />
-                        <UpForMeButton style={styles.reportModalBtn} buttonType={ButtonTypes.white} title={'Annuleren'} onPress={() => setShowLogout(false)} />
-
-                    </View>
-
-
-                </UpForMeModal>
-
-                <UpForMeModal enabled={(showDelete && !showLogout)}>
-                    <View style={{ flex: 1 }} />
-
-                    <View style={styles.reportModal}>
-                        <UpForMeButton style={styles.reportModalBtn} buttonType={ButtonTypes.dimmed} title={'Verwijder account'} onPress={async () => {
-
-                            setShowDelete(false);
-
-                            await dodoFlight({
-                                method: 'post',
-                                url: getEndpoint(endpoints.post.yeetusFetusYourChildDeletus),
-                                data: {
-                                    userid: DATA_STORE.userID,
-                                },
-
-                                thenCallback: async (res) => {
-                                    await logout();
-                                }
-                            })
-                        }} />
-                        <UpForMeButton style={styles.reportModalBtn} buttonType={ButtonTypes.white} title={'Annuleren'} onPress={() => setShowDelete(false)} />
-                    </View>
-
-                </UpForMeModal>
-
             </Body>
+
+            <UpForMeModal enabled={(!showDelete && showLogout)}>
+
+                <View style={{ flex: 1 }} />
+
+                <View style={styles.reportModal}>
+
+                    <UpForMeButton style={styles.reportModalBtn} title={'Uitloggen'} onPress={async () => {
+                        await logout();
+                    }} />
+                    <UpForMeButton style={styles.reportModalBtn} buttonType={ButtonTypes.white} title={'Annuleren'} onPress={() => setShowLogout(false)} />
+
+                </View>
+
+
+            </UpForMeModal>
+
+            <UpForMeModal enabled={(showDelete && !showLogout)}>
+                <View style={{ flex: 1 }} />
+
+                <View style={styles.reportModal}>
+                    <UpForMeButton style={styles.reportModalBtn} buttonType={ButtonTypes.dimmed} title={'Verwijder account'} onPress={async () => {
+
+                        setShowDelete(false);
+
+                        Alert.alert(
+                            'Waarschuwing',
+                            'Weet je zeker dat je je account wil verwijderen? Dit kan niet ongedaan gemaakt worden!',
+                            [
+                                {
+                                    text: 'Ja, ik weet het zeker', onPress: async () => {
+                                        await dodoFlight({
+                                            method: 'post',
+                                            url: getEndpoint(endpoints.post.yeetusFetusYourChildDeletus),
+                                            data: {
+                                                userid: DATA_STORE.userID,
+                                            },
+
+                                            thenCallback: async (res) => {
+                                                await logout();
+                                            }
+                                        })
+                                    }
+                                },
+                                {
+                                    text: 'Nee, anuleer'
+                                }
+                            ],
+                            {
+                                cancelable: true,
+                            }
+                        )
+
+
+                    }} />
+                    <UpForMeButton style={styles.reportModalBtn} buttonType={ButtonTypes.white} title={'Annuleren'} onPress={() => setShowDelete(false)} />
+                </View>
+
+            </UpForMeModal>
+
+
         </KeyboardDismiss>
     );
 }

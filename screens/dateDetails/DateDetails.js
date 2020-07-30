@@ -14,7 +14,6 @@ import UpForMeIcon, { iconIndex } from '../../components/UpForMeIcon';
 import { ArrowButtonTop } from '../../components/UpForMeArrowButtons';
 import { navigationProxy } from '../../navigation/navigationProxy';
 import { dodoFlight } from '../../functions/dodoAirlines';
-import endpoints, { getEndpoint } from '../../res/data/endpoints';
 import { networkFeedbackMessages } from '../../components/waitIndicator';
 
 const DateDetails = ({ route }) => {
@@ -41,7 +40,7 @@ const DateDetails = ({ route }) => {
         await dodoFlight({
             method: 'post',
             // url: getEndpoint(endpoints.post.setDate),
-            url: `http:/192.168.1.12:8080/api/v1/set/date`,
+            url: `http:/192.168.1.10:8080/api/v1/set/date`,
             data: {
                 userid1: DATA_STORE.userID,
                 userid2: dateData.userid,

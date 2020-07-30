@@ -11,7 +11,7 @@ import { dodoFlight } from '../../../functions/dodoAirlines';
 import endpoints, { getEndpoint } from '../../../res/data/endpoints';
 import LinearGradient from 'react-native-linear-gradient';
 import UpForMeIcon, { iconIndex } from '../../../components/UpForMeIcon';
-import { toNonRetardDate, toNonRetardTime, writtenMonths } from '../../../res/data/time';
+import { convertDateAPI, convertApiTime, writtenMonths } from '../../../res/data/time';
 import up4meColours from '../../../res/data/colours';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 
@@ -63,9 +63,9 @@ const DateItem = ({ data }) => {
 
     const [resData, setResData] = useState(null);
 
-    const date = toNonRetardDate(data.datum);
+    const date = convertDateAPI(data.datum);
 
-    const time = toNonRetardTime(data.tijd);
+    const time = convertApiTime(data.tijd);
 
     useEffect(() => {
         dodoFlight({

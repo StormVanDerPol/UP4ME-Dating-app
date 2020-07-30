@@ -1,11 +1,8 @@
-import React, { useEffect } from 'react';
-import TextQuicksand from '../../../components/TextQuicksand';
+import React from 'react';
 import { dodoFlight } from '../../../functions/dodoAirlines';
-import { Alert } from 'react-native';
 import endpoints, { getEndpoint } from '../../../res/data/endpoints';
 import { navigationProxy } from '../../../navigation/navigationProxy';
 import { DATA_STORE } from '../../../stored/dataStore';
-import { getTerminalCancer } from '../../../functions/getCancerID';
 import { createSession } from '../../../functions/createSession';
 
 const AuthCallback = ({ route }) => {

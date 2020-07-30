@@ -9,20 +9,20 @@ const regExps = {
     keyValuePairs: /(\b[^"]+)/g,
 };
 
-export const getTerminalCancer = (token) => {
+export const getUIDFromToken = (token) => {
 
 
     const decodedToken = base64.decode(token.match(regExps.userIDFromToken)[1]);
 
-    const terminalCancer = decodedToken.match(regExps.keyValuePairs);
+    const tokenParts = decodedToken.match(regExps.keyValuePairs);
 
-    let fuckery = {};
+    let container = {};
 
-    terminalCancer.map((meme, i) => {
+    tokenParts.map((part, i) => {
         if (isEven(i)) {
-            fuckery[meme] = terminalCancer[i + 1];
+            container[part] = tokenParts[i + 1];
         }
     });
 
-    return fuckery.sub
+    return container.sub
 }
