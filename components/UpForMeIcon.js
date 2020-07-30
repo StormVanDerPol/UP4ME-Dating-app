@@ -82,6 +82,7 @@ export const iconIndex = {
     oops: <RNSVG_oops />,
 
     occupation: <RNSVG_occupation />,
+    occupation_black: <RNSVG_occupation color={'#454545'} />,
 
     match_like: <RNSVG_match_yes />,
     match_dislike: <RNSVG_match_no />,

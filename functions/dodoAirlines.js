@@ -2,8 +2,9 @@ import Axios from "axios"
 import { timeouts } from "../res/data/requests"
 import { DATA_STORE } from "../stored/dataStore"
 import { Alert } from "react-native";
-import { navigationProxy, timedReset } from "../navigation/navigationProxy";
-// import { stopWatchingGPS } from "./gps";
+import { navigationProxy } from "../navigation/navigationProxy";
+
+const enableLogging = true;
 
 export const dodoFlight = async ({
     method,
@@ -17,20 +18,21 @@ export const dodoFlight = async ({
     finallyCallback = () => { },
 }) => {
 
-    console.log(
-        'Preparing dodo flight',
-        {
-            method: method,
-            url: url,
-            data: data,
+    if (enableLogging)
+        console.log(
+            'Preparing dodo flight',
+            {
+                method: method,
+                url: url,
+                data: data,
 
-            headers: {
-                authorization: DATA_STORE.userToken,
-                ...headers,
-            },
+                headers: {
+                    authorization: DATA_STORE.userToken,
+                    ...headers,
+                },
 
-            ...config,
-        });
+                ...config,
+            });
 
     await Axios({
         method: method,
@@ -45,16 +47,19 @@ export const dodoFlight = async ({
         }
     })
         .then((res) => {
-            console.log('Noot noot! we have arrived', res);
+            if (enableLogging)
+                console.log('Noot noot! we have arrived', res);
 
             if (res.status == 200) {
 
                 if (res.headers.authorization) {
-                    console.log('new token received!')
+                    if (enableLogging)
+                        console.log('new token received!')
                     DATA_STORE.userToken = res.headers.authorization;
                 }
                 else {
-                    console.log('keeping old token')
+                    if (enableLogging)
+                        console.log('keeping old token')
                 }
 
                 thenCallback(res);

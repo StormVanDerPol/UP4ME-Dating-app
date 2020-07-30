@@ -30,7 +30,6 @@ const InputLocation = ({ initVal = '', containerHeight = 350, onBlur = (placeNam
 
         loadedTimer.current = setInterval(() => {
             if (GPS_DATA.coords) {
-                // console.log('we got some coords', GPS_DATA.coords);
 
                 mapParams.current = {
                     width: getDeviceDimensions('window', 'width'),
@@ -52,9 +51,6 @@ const InputLocation = ({ initVal = '', containerHeight = 350, onBlur = (placeNam
 
                 setLoaded(true);
                 clearInterval(loadedTimer.current);
-            }
-            else {
-                // console.log('we got nothing', GPS_DATA.coords);
             }
         }, 1000)
 
@@ -98,9 +94,6 @@ const LoadingMap = ({ height }) => {
 }
 
 const StaticMap = ({ params, uri }) => {
-
-
-    // console.log('on load static map', { params, uri })
 
     return (
         <View>

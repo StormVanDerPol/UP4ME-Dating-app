@@ -20,7 +20,6 @@ export default NavigationHandler = () => {
             "hardwareBackPress",
             () => {
 
-                console.log(navigationContainerRef);
                 if (navigationContainerRef.current.canGoBack()) {
                     //Goes back normally, resets warning
                     warningGiven.current = false;

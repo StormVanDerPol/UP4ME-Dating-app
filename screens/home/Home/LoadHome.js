@@ -19,20 +19,20 @@ const LoadHome = () => {
         {
             name: 'loading potential matches',
             exec: async () => {
-                if (DATA_STORE.pMatches.timeStamp == null || Date.now() > DATA_STORE.pMatches.timeStamp + hrToMS(1)) {
-                    await dodoFlight({
-                        method: 'get',
-                        url: getEndpoint(endpoints.get.potentialMatches) + DATA_STORE.userID,
+                // if (DATA_STORE.pMatches.timeStamp == null || Date.now() > DATA_STORE.pMatches.timeStamp + hrToMS(1)) {
+                await dodoFlight({
+                    method: 'get',
+                    url: getEndpoint(endpoints.get.potentialMatches) + DATA_STORE.userID,
 
-                        thenCallback: (res) => {
-                            DATA_STORE.pMatches.list = res.data;
+                    thenCallback: (res) => {
+                        DATA_STORE.pMatches.list = res.data;
 
-                            if (!res.data) {
-                                DATA_STORE.pMatches.timeStamp = Date.now();
-                            }
-                        },
-                    });
-                }
+                        if (!res.data) {
+                            DATA_STORE.pMatches.timeStamp = Date.now();
+                        }
+                    },
+                });
+                // }
             }
         },
         {

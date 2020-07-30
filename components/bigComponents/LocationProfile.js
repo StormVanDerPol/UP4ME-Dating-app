@@ -6,8 +6,6 @@ import getDeviceDimensions from '../../functions/dimensions';
 
 const LocationProfile = ({ data }) => {
 
-    console.log(data);
-
     return (
         <>
             <View>
@@ -18,9 +16,9 @@ const LocationProfile = ({ data }) => {
                     }}
                 />
                 <View style={styles.infobox}>
-                    <TextQuicksand style={styles.infobig} type={'Bold'}>{data.naam}</TextQuicksand>
-                    <TextQuicksand style={styles.infosmall}>{data.straat} {data.huisnummer}</TextQuicksand>
-                    <TextQuicksand style={styles.infosmall}>{data.Postcode} {data.stad} {(data.stadsdeel != null) ? '- ' + data.stadsdeel : ''}</TextQuicksand>
+                    <TextQuicksand shadow={true} style={styles.infobig} type={'Bold'}>{data.naam}</TextQuicksand>
+                    <TextQuicksand shadow={true} style={styles.infosmall}>{data.straat} {data.huisnummer}</TextQuicksand>
+                    <TextQuicksand shadow={true} style={styles.infosmall}>{data.Postcode} {data.stad} {(data.stadsdeel != null) ? '- ' + data.stadsdeel : ''}</TextQuicksand>
                 </View>
                 <TextQuicksand style={styles.desc}>{data.omschrijving}</TextQuicksand>
             </View>

@@ -21,8 +21,6 @@ export const deRetardifyEditProfile = (userid) => {
 
     const data = DATA_STORE.profileCache[userid];
 
-    console.log(data);
-
     const output = {
         images: [],
 
@@ -64,7 +62,6 @@ export const deRetardifyEditProfile = (userid) => {
 const EditProfile = () => {
 
     const data = deRetardifyEditProfile(DATA_STORE.userID);
-    console.log(data)
 
     const [newData, setNewData] = useState(data);
 
@@ -72,10 +69,6 @@ const EditProfile = () => {
         message: '',
         busy: false,
     })
-
-    useEffect(() => {
-        console.log(newData);
-    }, [newData])
 
     return (
         <Body>

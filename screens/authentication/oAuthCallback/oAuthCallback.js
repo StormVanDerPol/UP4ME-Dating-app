@@ -14,8 +14,6 @@ const AuthCallback = ({ route }) => {
 
     createSession('bearer ' + token);
 
-    // console.log(route)
-
     dodoFlight({
         method: 'get',
         url: getEndpoint(endpoints.get.lastLogin) + DATA_STORE.userID,

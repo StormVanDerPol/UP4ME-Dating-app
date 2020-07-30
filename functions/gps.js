@@ -131,7 +131,8 @@ export const startWatchingGPS = async () => {
                 }
                 else {
                     clearInterval(gpsTimer);
-                    console.log('stopped watching GPS...');
+                    if (GPS_CONFIG.logging)
+                        console.log('stopped watching GPS...');
                 }
 
             }, 10000);

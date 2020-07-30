@@ -31,10 +31,6 @@ const ViewLocationProfile = ({ route }) => {
         })
     }, [])
 
-    useEffect(() => {
-        console.log(data);
-    }, [data])
-
     return (
         <Body>
             <FlexSection>
@@ -70,8 +66,6 @@ const ViewLocationProfile = ({ route }) => {
                             if (res.data) {
                                 navigationProxy.navigate('MatchOverviewFromLocations');
                                 DATA_STORE.currentResID = data.resid;
-
-                                console.log(DATA_STORE.currentResID);
                             }
                             else
                                 Alert.alert(

@@ -54,7 +54,6 @@ const RegistCriteria = () => {
                             if (userCriteria.current.gender != prevGender) {
                                 setPrevGender(userCriteria.current.gender);
                             }
-                            // console.log(userCriteria.current)
                         }}
                     />
 

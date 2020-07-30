@@ -9,7 +9,7 @@ import AlbeitABitLate from '../../components/bigComponents/AlbeitABitLate';
 import { DATA_STORE } from '../../stored/dataStore';
 import { iconIndex } from '../../components/UpForMeIcon';
 
-const PlanDateLocationProfile = ({ route }) => {
+const EditDateLocationProfile = ({ route }) => {
 
     const [data, setData] = useState(null);
 
@@ -30,7 +30,7 @@ const PlanDateLocationProfile = ({ route }) => {
             <FlexSection>
                 <ArrowButtonTop
                     icon={iconIndex.heart}
-                    header={'Date plannen'} onPress={() => {
+                    header={'Date wijzigen'} onPress={() => {
                         navigationProxy.reset({
                             index: 1,
                             routes: [
@@ -39,7 +39,7 @@ const PlanDateLocationProfile = ({ route }) => {
                                     params: {},
                                 },
                                 {
-                                    name: 'MatchOverview',
+                                    name: 'LoadDatesOverview',
                                     params: {},
                                 }
 
@@ -50,7 +50,7 @@ const PlanDateLocationProfile = ({ route }) => {
                 {(data != null) ? <LocationProfile data={data} /> : <></>}
             </FlexSection>
 
-            <AlbeitABitLate title={'Selecteer locatie'} onPress={
+            <AlbeitABitLate title={'Wijzig date locatie'} onPress={
                 () => {
                     DATA_STORE.plannedDate.locationData = data;
                     navigationProxy.reset({
@@ -65,9 +65,9 @@ const PlanDateLocationProfile = ({ route }) => {
                                 params: {},
                             },
                             {
-                                name: 'PlanDate',
+                                name: 'EditDate',
                                 params: {
-                                    userid: DATA_STORE.plannedDate.userid,
+                                    canEdit: true,
                                 },
                             }
                         ]
@@ -78,4 +78,4 @@ const PlanDateLocationProfile = ({ route }) => {
     );
 }
 
-export default PlanDateLocationProfile;
+export default EditDateLocationProfile;

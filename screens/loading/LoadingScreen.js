@@ -1,5 +1,10 @@
 import React, { useState, useRef } from 'react';
 import TextQuicksand from '../../components/TextQuicksand';
+import Body from '../../components/Body';
+import { View } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import up4meColours from '../../res/data/colours';
+import getDeviceDimensions from '../../functions/dimensions';
 
 const LoadingScreen = ({ tasks }) => {
 
@@ -27,12 +32,48 @@ const LoadingScreen = ({ tasks }) => {
     }
 
     return (
-        <>
-            <TextQuicksand>{(doneTaskCount / tasks.length) * 100}%</TextQuicksand>
-            {taskList.map((task, i) => {
-                return <TextQuicksand key={i}>...{task}</TextQuicksand>
-            })}
-        </>
+
+        /*old layout*/
+
+        // <>
+        //     <TextQuicksand>{(doneTaskCount / tasks.length) * 100}%</TextQuicksand>
+        //     {taskList.map((task, i) => {
+        //         return <TextQuicksand key={i}>...{task}</TextQuicksand>
+        //     })}
+        // </>
+
+        <Body>
+            <View style={{
+                flex: 1,
+            }} />
+
+            <TextQuicksand
+                style={{
+                    textAlign: 'center',
+                }}
+            >Loading... {Math.round((doneTaskCount / tasks.length) * 100)}%</TextQuicksand>
+            <LinearGradient
+                colors={[
+                    up4meColours.gradOrange,
+                    up4meColours.gradPink,
+                ]}
+                start={{
+                    x: 0,
+                    y: 0,
+                }}
+                end={{
+                    x: 1,
+                    y: 0,
+                }}
+                style={{
+
+                    width: (doneTaskCount / tasks.length) * (getDeviceDimensions('window', 'width')),
+
+                    height: 16,
+                    opacity: 0.5,
+                }} />
+
+        </Body>
     );
 }
 

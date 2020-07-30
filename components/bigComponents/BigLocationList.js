@@ -102,31 +102,19 @@ const BigLocationList = ({ heightSubtract = 0, onPressItem = (resid) => { } }) =
             }
 
             <View>
-
-                {/* {DATA_STORE.locations[selected.place][selected.part].map((location, i) => {
-
-
-                    // console.log(selected);
-                    // console.log(DATA_STORE.locations);
-                    // console.log(location)
-
-                    return <LocationItem key={i} item={location} />
-                })} */}
                 <FlatList
                     style={{ height: (selected.part == 'null') ? 580 - heightSubtract : 530 - heightSubtract }}
                     data={DATA_STORE.locations[selected.place][selected.part]}
                     renderItem={LocationItem}
-                    initialNumToRender={1}
-                    maxToRenderPerBatch={1}
-                    windowSize={2}
+                    initialNumToRender={10}
+                    maxToRenderPerBatch={20}
+                    windowSize={21}
                     keyExtractor={item => item.key}
                 />
             </View>
         </>
     );
 }
-
-
 
 
 const styles = StyleSheet.create({

@@ -17,8 +17,6 @@ import { planThatDamnDate } from '../../../functions/planThatDamnDate';
 
 const MatchOverview = () => {
 
-    console.log(DATA_STORE)
-
     return (
         <Body>
             <NavBar route={nbroutes.matches} />
@@ -46,7 +44,12 @@ const MatchOverview = () => {
                 </View>
 
                 {
-                    (DATA_STORE.matches == false) ? <TextQuicksand>No matches</TextQuicksand> :
+                    (DATA_STORE.matches == false) ? <TextQuicksand
+                        style={{
+                            fontSize: 16,
+                            textAlign: 'center',
+                        }}
+                    >Je hebt geen matches!</TextQuicksand> :
                         DATA_STORE.matches.map((match, i) => {
                             return <MatchItem key={i} start={(i == 0) ? true : false} data={match} />
                         })

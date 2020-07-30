@@ -27,7 +27,6 @@ const Boot = () => {
 
                 let _data = await getJSONData('settings');
 
-                console.log('this fucker', _data, DATA_STORE.settings)
                 if (_data) {
                     DATA_STORE.settings = _data;
                 }
@@ -44,7 +43,6 @@ const Boot = () => {
                         url: getEndpoint(endpoints.get.setLastLogin) + DATA_STORE.userID,
 
                         thenCallback: (res) => {
-                            console.log(res)
                             if (res.data === true) {
 
                                 navigationProxy.reset({

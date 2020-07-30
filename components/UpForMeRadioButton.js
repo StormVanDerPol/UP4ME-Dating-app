@@ -30,8 +30,6 @@ const UpForMeRadioButton = ({
                                         let _active = (active == i) ? defaultValue : i
                                         setActive(_active);
                                         onChange(_active);
-
-                                        // console.log('onchange rad but', _active)
                                     }}>
                                     <LinearGradient
                                         style={[styles.btnGrad, { borderColor: (active == i) ? '#fffff000' : up4meColours.darkGray }]}

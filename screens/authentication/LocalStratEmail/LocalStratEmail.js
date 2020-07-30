@@ -22,7 +22,8 @@ import { navigationProxy } from '../../../navigation/navigationProxy';
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../components/waitIndicator';
 import { timeouts } from '../../../res/data/requests';
 import { DATA_STORE } from '../../../stored/dataStore';
-import up4meColours from '../../../res/data/colours';
+
+const enableLogging = false;
 
 const LocalStratEmail = () => {
 
@@ -41,9 +42,6 @@ const LocalStratEmail = () => {
 
     const validateEmail = (toCheck) => {
 
-        // if (devMode.enabled) {
-        //     console.log(toCheck);
-        // }
 
         if (!regex.validEmail.test(toCheck)) {
             setFeedback({
@@ -112,7 +110,7 @@ const LocalStratEmail = () => {
                                 message: networkFeedbackMessages.wait,
                             })
 
-                            if (devMode.network) {
+                            if (enableLogging) {
                                 console.log('making call to:', getEndpoint(endpoints.post.authLocalReq, false), email);
                             }
 
@@ -122,7 +120,7 @@ const LocalStratEmail = () => {
                                 timeout: timeouts.short,
                             })
                                 .then((res) => {
-                                    if (devMode.network) {
+                                    if (enableLogging) {
                                         console.log(res)
                                     }
 
@@ -139,9 +137,9 @@ const LocalStratEmail = () => {
                                 })
                                 .catch((err) => {
 
-                                    if (devMode.network) {
-                                        console.log(err);
-                                    }
+
+                                    console.log(err);
+
 
                                     setNetFeedback({
                                         busy: false,

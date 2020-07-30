@@ -18,6 +18,8 @@ import { MemeMath } from '../../functions/math';
 import UpForMeModal from '../../components/UpForMeModal';
 import { GPS_DATA } from '../../functions/gps';
 import { deleteData, setJSONData } from '../../stored/handleData';
+import { dodoFlight } from '../../functions/dodoAirlines';
+import endpoints, { getEndpoint } from '../../res/data/endpoints';
 
 export const logout = async () => {
 
@@ -160,7 +162,22 @@ const Settings = () => {
                     <View style={{ flex: 1 }} />
 
                     <View style={styles.reportModal}>
-                        <UpForMeButton style={styles.reportModalBtn} buttonType={ButtonTypes.dimmed} title={'Verwijder account'} onPress={() => setShowDelete(false)} />
+                        <UpForMeButton style={styles.reportModalBtn} buttonType={ButtonTypes.dimmed} title={'Verwijder account'} onPress={async () => {
+
+                            setShowDelete(false);
+
+                            await dodoFlight({
+                                method: 'post',
+                                url: getEndpoint(endpoints.post.yeetusFetusYourChildDeletus),
+                                data: {
+                                    userid: DATA_STORE.userID,
+                                },
+
+                                thenCallback: async (res) => {
+                                    await logout();
+                                }
+                            })
+                        }} />
                         <UpForMeButton style={styles.reportModalBtn} buttonType={ButtonTypes.white} title={'Annuleren'} onPress={() => setShowDelete(false)} />
                     </View>
 

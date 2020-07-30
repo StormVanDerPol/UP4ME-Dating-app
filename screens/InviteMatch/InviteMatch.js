@@ -24,10 +24,14 @@ const InviteMatch = ({ route }) => {
         setModalVisible(0);
 
         navigationProxy.reset({
-            index: 0,
+            index: 1,
             routes: [
                 {
-                    name: 'LoadHome',
+                    name: 'Home',
+                    params: {},
+                },
+                {
+                    name: 'LoadMatchOverview',
                     params: {},
                 }
             ]
@@ -42,21 +46,23 @@ const InviteMatch = ({ route }) => {
                 <FlexSection>
 
                     <View>
-                        <ArrowButtonTop header={'Match'} onPress={() => {
-                            navigationProxy.reset({
-                                index: 1,
-                                routes: [
-                                    {
-                                        name: 'Home',
-                                        params: {},
-                                    },
-                                    {
-                                        name: 'LoadMatchOverview',
-                                        params: {},
-                                    }
-                                ]
-                            })
-                        }} />
+                        <ArrowButtonTop
+                            icon={iconIndex.heart}
+                            header={'Match'} onPress={() => {
+                                navigationProxy.reset({
+                                    index: 1,
+                                    routes: [
+                                        {
+                                            name: 'Home',
+                                            params: {},
+                                        },
+                                        {
+                                            name: 'LoadMatchOverview',
+                                            params: {},
+                                        }
+                                    ]
+                                })
+                            }} />
                         <UpForMeIcon style={styles.cancelMatchIcon} icon={iconIndex.match_dislike} touchable={true} onPress={() => {
                             setModalVisible(1);
                         }} />
@@ -71,10 +77,6 @@ const InviteMatch = ({ route }) => {
                         });
                     }} />
                 </FlexSection>
-
-
-
-
             </Body>
 
             <UpForMeModal
