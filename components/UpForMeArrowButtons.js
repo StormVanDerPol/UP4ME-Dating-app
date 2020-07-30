@@ -21,7 +21,7 @@ export const ArrowButtonRight = ({ icon = null, iconStyle = { height: 18, width:
     );
 }
 
-export const ArrowButtonTop = ({ end = true, header, onPress = () => { } }) => {
+export const ArrowButtonTop = ({ icon = null, end = true, header, onPress = () => { } }) => {
 
     const [topBtnHeight, setTopBtnHeight] = useState(0);
 
@@ -40,7 +40,18 @@ export const ArrowButtonTop = ({ end = true, header, onPress = () => { } }) => {
                         ...styles.iconWrapper,
                         top: topBtnHeight / 2 - 10,
                     }} />
-                <TextQuicksand style={styles.topText}>{header}</TextQuicksand>
+                <View style={{ alignItems: "center", flexDirection: "row", justifyContent: "center" }}>
+
+                    {(icon) ? <UpForMeIcon
+                        icon={icon}
+                        style={{
+                            height: 18,
+                            width: 18,
+                            marginRight: 5,
+                        }}
+                    /> : <></>}
+                    <TextQuicksand style={styles.topText}>{header}</TextQuicksand>
+                </View>
             </TouchableOpacity>
         </View>
     );
@@ -120,7 +131,7 @@ const styles = StyleSheet.create({
     },
 
     topText: {
-        textAlign: 'center',
+        // textAlign: 'center',
         fontSize: 20,
         color: '#666',
     },

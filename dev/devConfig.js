@@ -1,5 +1,5 @@
 export const devMode = {
-    enabled: true,
+    enabled: false,
     network: true,
-    localBackend: true,
+    localBackend: false,
 }

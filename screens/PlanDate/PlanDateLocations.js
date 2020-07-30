@@ -4,12 +4,14 @@ import NavBar, { nbroutes } from '../../components/navBar/NavBar';
 import { ArrowButtonTop } from '../../components/UpForMeArrowButtons';
 import { navigationProxy } from '../../navigation/navigationProxy';
 import BigLocationList from '../../components/bigComponents/BigLocationList';
+import { iconIndex } from '../../components/UpForMeIcon';
 
 const PlanDateLocations = () => {
     return (
         <Body>
             <NavBar route={nbroutes.matches} />
             <ArrowButtonTop
+                icon={iconIndex.heart}
                 end={false}
                 header={'Date plannen'} onPress={() => {
                     navigationProxy.reset({

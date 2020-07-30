@@ -28,7 +28,8 @@ const endpoints = {
         resProfPic: `/get/restaurant/profpic/`,
         resProfile: `/get/restaurant/profile/`,
         resProfileTo: `/get/restaurant/profile/to/`,
-        smallProfPic: `/get/profile/picture/`
+        smallProfPic: `/get/profile/picture/`,
+        profileTo: `/get/profile/to/`,
     },
 
     post: {
@@ -48,6 +49,7 @@ const endpoints = {
         setMatchResponses: `/set/matchresponses`,
         setReport: `/set/report`,
         setDate: `/set/date`,
+        yeetusFetusYourChildDeletus: `/set/remove/profile`,
     }
 };
 

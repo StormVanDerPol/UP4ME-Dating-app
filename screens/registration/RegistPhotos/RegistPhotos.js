@@ -67,7 +67,6 @@ const RegistPhotos = () => {
                     <TextQuicksand>Voeg teminste één foto toe. De foto met het sterretje wordt gebruikt als profiel foto!</TextQuicksand>
                     <UploadPictures onChange={({ images: output, profilePicture: outputpfp }) => {
                         profilePicture.current = outputpfp;
-                        console.log('pfp', outputpfp)
                         setImages(output);
                     }} />
                 </View>

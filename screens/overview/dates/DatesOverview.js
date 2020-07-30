@@ -42,7 +42,10 @@ const DatesOverview = () => {
                     }} />
                 </View>
 
-                {(DATA_STORE.dates == false) ? <TextQuicksand>No dates</TextQuicksand> : DATA_STORE.dates.map((date, i) => {
+                {(DATA_STORE.dates == false) ? <TextQuicksand style={{
+                    fontSize: 16,
+                    textAlign: 'center',
+                }}>No dates!</TextQuicksand> : DATA_STORE.dates.map((date, i) => {
                     return (
                         <DateItem data={date} key={i} />
                     )
@@ -56,6 +59,7 @@ const DatesOverview = () => {
 const DateItem = ({ data }) => {
 
     const [image, setImage] = useState(null);
+    const [name, setName] = useState(null);
 
     const [resData, setResData] = useState(null);
 
@@ -72,6 +76,15 @@ const DateItem = ({ data }) => {
                 setImage(res.data.foto);
             }
         });
+
+        dodoFlight({
+            method: 'get',
+            url: getEndpoint(endpoints.get.profileTo) + data.userid2,
+
+            thenCallback: (res) => {
+                setName(res.data.naam);
+            }
+        })
 
         dodoFlight({
             method: 'get',
@@ -110,7 +123,7 @@ const DateItem = ({ data }) => {
 
 
                 <View style={styles.infoSection}>
-                    <TextQuicksand style={styles.infoSectionHeader} type={'Bold'}>Date met naam</TextQuicksand>
+                    {(!name) ? <TextQuicksand>Loading...</TextQuicksand> : <TextQuicksand style={styles.infoSectionHeader} type={'Bold'}>Date met {name}</TextQuicksand>}
 
                     <View style={styles.infoSectionItem}>
                         <UpForMeIcon icon={iconIndex.calendar} style={styles.iconWrapper} />
@@ -137,7 +150,7 @@ const DateItem = ({ data }) => {
                 {(data.notisent == -1) ? <LinearGradient
                     style={styles.statusMsg}
                     colors={[up4meColours.gradYellow1, up4meColours.gradYellow2]} >
-                    <TextQuicksand style={styles.statusMsgStr} >{getStatusDescription(data.status, data.status2, data.userid2)}</TextQuicksand>
+                    <TextQuicksand style={styles.statusMsgStr} >{getStatusDescription(data.status, data.status2, name)}</TextQuicksand>
                 </LinearGradient> : <></>}
 
             </View>
@@ -213,131 +226,37 @@ export const getStatusDescription = (yourStatus, otherStatus, otherName) => {
 
     let desc = '';
 
-    const yeet = `yours: ${yourStatus}, other: ${otherStatus}`;
+    const steinsGate = `You've reached Steins;Gate - yours: ${yourStatus}, other: ${otherStatus}`;
 
-    let possibleOtherStatuses;
+    switch (otherStatus) {
 
-    switch (yourStatus) {
-        case -1:
-            switch (otherStatus) {
-                case 2:
-                    desc = 'new date request!';
-                    break;
-                default:
-                    desc = yeet
-                    break;
-            }
+        case 60:
+            desc = `${otherName} has reserved!`
             break;
 
-        case 1:
-
-            possibleOtherStatuses = [2, 4, 5]
-
-            switch (true) {
-                case (possibleOtherStatuses.includes(otherStatus)):
-                    desc = 'you declined';
-                    break;
-
-                default:
-                    desc = yeet;
-                    break;
-            }
-            break;
-
-        case 2:
-            switch (otherStatus) {
-
-                case 1:
-                    desc = `${otherName} declined`;
-                    break;
-
-                case 2:
-                    desc = 'accepted';
-                    break;
-
-                case 6:
-                    desc = `${otherName} made a reservation`
-                    break;
-
-                case -1:
-                    desc = 'waiting for reply...';
-                    break;
-
-                default:
-                    desc = yeet;
-                    break;
-            }
-            break;
-
-        case 3:
-            possibleOtherStatuses = [2, 4, 40, 5, 50, 6, 60];
-
-            switch (true) {
-                case (possibleOtherStatuses.includes(otherStatus)):
-                    desc = 'you cancelled';
-                    break;
-                default:
-                    desc = yeet;
-                    break;
-            }
-            break;
-
-        case 4:
-
-            possibleOtherStatuses = [2, 40, 5]
-
-            switch (true) {
-
-                case (otherStatus == 1):
-                    desc = `${otherName} declined`;
-                    break;
-
-                case (otherStatus == 3):
-                    desc = `${otherName} cancelled`;
-                    break;
-
-                case (possibleOtherStatuses.includes(otherStatus)):
-                    desc = 'you re-proposed';
-                    break;
-                default:
-                    desc = yeet;
-                    break;
-            }
-            break;
-
-        case 5:
-            switch (true) {
-                case (otherStatus == 1):
-                    desc = `${otherName} declined`;
-                    break;
-
-                case (otherStatus == 3):
-                    desc = `${otherName} cancelled`;
-                    break;
-
-                case (otherStatus == 2 || otherStatus == 6):
-                    desc = 'you rescheduled'
-                    break;
-
-                default:
-                    desc = yeet;
-                    break;
-
-            }
-            break;
-
+        //He's reserving
         case 6:
-            switch (otherStatus) {
-                case 2:
-                    desc = 'you made a reservatinooooo'
-                    break;
-                default:
-                    desc = yeet;
-                    break;
-            }
+            desc = `${otherName} is reserving...`
+            break;
+
+        //He counter proposed
+        case 4 || 40 || 5 || 50:
+            desc = `${otherName} proposed something else!`
+            break;
+        //He canceled
+        case 3:
+            desc = `${otherName} canceled`
+            break;
+        //He accepted
+        case 2:
+            desc = `${otherName} proposed a date!`
+            break;
+        //he declined
+        case 1:
+            desc = `${otherName} declined`
             break;
         default:
-            desc = yeet;
+            desc = steinsGate;
     }
 
     return desc;

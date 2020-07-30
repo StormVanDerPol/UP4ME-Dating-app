@@ -4,7 +4,7 @@ import { MatchButtons, MemoizedUserProfile } from '../../../components/bigCompon
 import getDeviceDimensions from '../../../functions/dimensions';
 import Body, { FlexSection } from '../../../components/Body';
 import { FlatList } from 'react-native-gesture-handler';
-import { View, Animated, StyleSheet } from 'react-native';
+import { View, Animated, StyleSheet, BackHandler } from 'react-native';
 import { dodoFlight } from '../../../functions/dodoAirlines';
 import endpoints, { getEndpoint } from '../../../res/data/endpoints';
 import TextQuicksand from '../../../components/TextQuicksand';
@@ -157,8 +157,6 @@ const Home = () => {
 
                             matchee.current = matchList.current[swipedex.current];
 
-                            console.log(matchee.current);
-
                             await dodoFlight({
                                 method: 'post',
                                 url: getEndpoint(endpoints.post.setMatchResponses),
@@ -211,12 +209,34 @@ const Home = () => {
                 :
 
                 // NO MATCHES SCREEN
-                <View>
+                <View style={{ flex: 1 }}>
+                    <View style={{ flex: 1 }}>
 
-                    <TextQuicksand>No matches bruh</TextQuicksand>
-                    <TextQuicksand>Pas je criteria aan</TextQuicksand>
+                        <UpForMeIcon style={{
+                            alignSelf: 'center',
+                            marginTop: 100,
+                            height: 100,
+                            width: 250,
+                        }} icon={iconIndex.oops} />
+
+                        <TextQuicksand
+                            style={{
+                                fontSize: 24,
+                                color: '#666',
+                                textAlign: 'center',
+                                marginTop: 64,
+                                marginHorizontal: 24,
+                            }}
+                            type={'Bold'}
+                        >Helaas zijn er geen profielen meer die aan je filters voldoen. Pas je filters aan of wacht op nieuwe profielen.</TextQuicksand>
+
+                    </View>
 
                     <UpForMeButton
+                        style={{
+                            alignSelf: 'center',
+                            marginBottom: 24,
+                        }}
                         title={'Naar filters'}
                         onPress={() => {
                             navigationProxy.reset({
@@ -241,6 +261,9 @@ const Home = () => {
 
 
             {(match) ? <MatchSuccess userid={matchee.current}
+                onPressBackButton={() => {
+                    setMatch(false);
+                }}
                 onContinueSwiping={() => {
                     setMatch(false);
                     // setDisableFade(false);
@@ -290,7 +313,20 @@ const Home = () => {
     );
 }
 
-const MatchSuccess = ({ userid, onContinueSwiping = () => { } }) => {
+const MatchSuccess = ({ userid, onPressBackButton = () => { }, onContinueSwiping = () => { } }) => {
+
+
+    useEffect(() => {
+        const backhandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            () => {
+                onPressBackButton();
+                return true;
+            }
+        );
+
+        return () => backhandler.remove();
+    }, [])
 
     return (
         <View style={styles.MatchSuccess}>

@@ -58,7 +58,6 @@ const RegistUserProperties = () => {
 
                         onChange={(output) => {
                             userProperties.current = output;
-                            // console.log(userProperties.current)
                         }} />
                 </View>
 

@@ -32,7 +32,6 @@ export const getLocations = async () => {
                     }
                 )
             }
-            console.log(DATA_STORE.locations)
         }
     })
 }

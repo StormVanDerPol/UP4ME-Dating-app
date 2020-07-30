@@ -7,8 +7,6 @@ const LoadDateDetails = ({ route }) => {
 
     const dateData = route.params.dateData;
 
-    console.log(dateData);
-
     const tasks = [
         {
             name: 'Loading profile',
@@ -23,6 +21,14 @@ const LoadDateDetails = ({ route }) => {
                 navigationProxy.reset({
                     index: 1,
                     routes: [
+                        {
+                            name: 'Home',
+                            params: {},
+                        },
+                        {
+                            name: 'DatesOverview',
+                            params: {},
+                        },
                         {
                             name: 'DateDetails',
                             params: dateData,

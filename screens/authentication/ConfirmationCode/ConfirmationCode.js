@@ -15,14 +15,15 @@ import UpForMeButton from '../../../components/UpForMeButton';
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../../components/waitIndicator';
 import Axios from 'axios';
 import { devMode } from '../../../dev/devConfig';
-import endpoints, { getEndpoint, requestFeedback } from '../../../res/data/endpoints';
+import endpoints, { getEndpoint } from '../../../res/data/endpoints';
 import { DATA_STORE } from '../../../stored/dataStore';
 import { timeouts } from '../../../res/data/requests';
 import { navigationProxy } from '../../../navigation/navigationProxy';
 
-import { getTerminalCancer } from '../../../functions/getCancerID';
 import { dodoFlight } from '../../../functions/dodoAirlines';
 import { createSession } from '../../../functions/createSession';
+
+const enableLogging = false;
 
 const ConfirmationCode = () => {
 
@@ -92,7 +93,8 @@ const ConfirmationCode = () => {
 
 
                         if (devMode.network) {
-                            console.log('request:', getEndpoint(endpoints.post.authLocal), { email: DATA_STORE.registData.email, security: confCode });
+                            if (enableLogging)
+                                console.log('request:', getEndpoint(endpoints.post.authLocal), { email: DATA_STORE.registData.email, security: confCode });
                         }
 
                         await Axios.post(getEndpoint(endpoints.post.authLocal, false), {
@@ -104,10 +106,9 @@ const ConfirmationCode = () => {
                         })
                             .then(async (res) => {
 
-                                if (devMode.network) {
+                                if (enableLogging) {
                                     console.log(res);
                                 }
-
 
                                 createSession(res.headers.authorization);
 

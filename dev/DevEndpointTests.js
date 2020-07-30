@@ -23,7 +23,7 @@ const DevEndpointTests = () => {
                 <Button title={'Run'} onPress={async () => {
 
                     let parsed = JSON.parse(data);
-                    console.log(parsed);
+
 
                     await dodoFlight({
                         method: method,

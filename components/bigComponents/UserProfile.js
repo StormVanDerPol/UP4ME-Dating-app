@@ -112,7 +112,7 @@ const UserProfile = ({ children, userid, hideReport = false, reportCallback = ()
                 }
 
                 <View style={styles.infoBox}>
-                    <TextQuicksand style={styles.infoBoxHeader}>
+                    <TextQuicksand shadow={true} style={styles.infoBoxHeader}>
                         {userData.name}, {userData.age}
                     </TextQuicksand>
 
@@ -127,7 +127,7 @@ const UserProfile = ({ children, userid, hideReport = false, reportCallback = ()
                             return (
                                 <View key={i} style={styles.infoBoxItem}>
                                     <UpForMeIcon style={styles.infoBoxIcon} icon={item.icon} />
-                                    <TextQuicksand style={styles.infoBoxText}>{item.data}</TextQuicksand>
+                                    <TextQuicksand shadow={true} style={styles.infoBoxText}>{item.data}</TextQuicksand>
                                 </View>
                             );
                         })

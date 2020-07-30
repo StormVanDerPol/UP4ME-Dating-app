@@ -66,8 +66,6 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
                 }
             );
 
-            console.log(res);
-
             if (!res.cancelled) {
 
                 let fileExtension = res.uri.substr(res.uri.lastIndexOf('.') + 1);
@@ -83,7 +81,6 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
 
                 images[index] = `data:${res.type}/${fileExtension};base64,${res.base64}`;
 
-                // console.log(await createProfilePicture(images[index]));
 
                 profilePicture.current = await createProfilePicture(images[index])
 

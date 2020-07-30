@@ -11,8 +11,6 @@ import UpForMeButton from '../../components/UpForMeButton';
 
 const EditCriteria = () => {
 
-    console.log(DATA_STORE.userCriteria);
-
     const newCriteria = useRef(DATA_STORE.userCriteria);
 
     const [newGender, setNewGender] = useState(DATA_STORE.userCriteria.gender);
@@ -40,8 +38,6 @@ const EditCriteria = () => {
             <View style={RegistStyles.bottom}>
                 <NetworkFeedBackIndicator style={RegistStyles.waitIndicator} message={netFeedback.message} />
                 <UpForMeButton style={RegistStyles.botButton} title={'Opslaan'} enabled={(newGender != -1 && !netFeedback.busy)} onPress={async () => {
-
-                    console.log(newCriteria.current);
 
                     setNetFeedback({
                         busy: true,

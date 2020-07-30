@@ -7,8 +7,6 @@ export default shareApp = async () => {
             url: ''
         });
 
-        console.log(res)
-
         if (res.action === Share.sharedAction) {
             if (res.activityType) {
 

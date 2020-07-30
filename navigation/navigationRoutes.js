@@ -48,6 +48,10 @@ import LoadPlanDate from '../screens/PlanDate/LoadPlanDate';
 import PlanDateLocations from '../screens/PlanDate/PlanDateLocations';
 import LoadPlanDateLocations from '../screens/PlanDate/LoadPlanDateLocations';
 import PlanDateLocationProfile from '../screens/PlanDate/PlanDateLocationProfile';
+import EditDate from '../screens/PlanDate/EditDate';
+import EditDateLocations from '../screens/PlanDate/EditDateLocations';
+import LoadEditDateLocations from '../screens/PlanDate/LoadEditDateLocations';
+import EditDateLocationProfile from '../screens/PlanDate/EditDateLocationProfile';
 
 //Add new routes here + put it in the DevRouter.js
 var appRoutes = [
@@ -226,12 +230,40 @@ var appRoutes = [
     {
         name: 'LoadPlanDateLocations',
         component: LoadPlanDateLocations,
+
     },
     {
         name: 'PlanDateLocationProfile',
         component: PlanDateLocationProfile,
+    },
+    {
+        name: 'EditDate',
+        component: EditDate,
+    },
+    {
+        name: 'EditDateLocations',
+        component: EditDateLocations,
+    },
+    {
+        name: 'LoadEditDateLocations',
+        component: LoadEditDateLocations,
+    },
+    {
+        name: 'EditDateLocationProfile',
+        component: EditDateLocationProfile,
     }
 ];
+
+for (let i = 0; i < appRoutes.length; i++) {
+    if (appRoutes[i].name.includes('Load')) {
+        appRoutes[i] = {
+            ...appRoutes[i],
+            options: {
+                animationEnabled: false,
+            }
+        }
+    }
+}
 
 if (devMode.enabled) {
     appRoutes.unshift(

@@ -28,8 +28,12 @@ const LoadDatesOverview = () => {
             exec: () => {
                 // navigationProxy.navigate('DatesOverview');
                 navigationProxy.reset({
-                    index: 0,
+                    index: 1,
                     routes: [
+                        {
+                            name: 'Home',
+                            params: {},
+                        },
                         {
                             name: 'DatesOverview',
                             params: {},

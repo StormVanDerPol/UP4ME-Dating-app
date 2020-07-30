@@ -53,10 +53,6 @@ const EditUserData = () => {
         message: '',
     })
 
-    useEffect(() => {
-        console.log(initData, userData)
-    }, [userData])
-
     return (
         <KeyboardDismiss>
             <Body>
