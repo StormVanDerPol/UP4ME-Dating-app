@@ -30,7 +30,7 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
 
     const [images, setImages] = useState((initImages.length == 0) ? new Array(6) : initImages);
 
-    const profilePicture = useRef()
+    const profilePicture = useRef(null)
 
     const _init = useRef(false);
 

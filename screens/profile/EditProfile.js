@@ -6,7 +6,7 @@ import InputProperties from '../../components/bigComponents/InputProperties';
 import TextInputField from '../../components/bigComponents/TextInputField';
 import UploadPictures, { createProfilePicture } from '../../components/bigComponents/UploadPictures';
 import TextQuicksand from '../../components/TextQuicksand';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Alert } from 'react-native';
 import { registParams, RegistStyles } from '../../styles/RegistStyles';
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../components/waitIndicator';
 import UpForMeButton from '../../components/UpForMeButton';
@@ -15,6 +15,7 @@ import { postPhotos } from '../../requests/postPhotos';
 import { navigationProxy } from '../../navigation/navigationProxy';
 import endpoints, { getEndpoint } from '../../res/data/endpoints';
 import { dodoFlight } from '../../functions/dodoAirlines';
+import postProfileEdits from '../../requests/postProfileEdits';
 
 export const deRetardifyEditProfile = (userid) => {
 
@@ -77,25 +78,53 @@ const EditProfile = () => {
 
                 <View style={styles.container}>
                     <UpForMeBigRadioButton active={0} headers={['Bewerken', 'Voorbeeld']}
-                        onChange={(active) => {
-                            if (active == 1) {
-                                navigationProxy.reset({
-                                    index: 2,
-                                    routes: [
-                                        {
-                                            name: 'Home',
-                                            params: {},
-                                        },
-                                        {
-                                            name: 'ProfileHub',
-                                            params: {},
-                                        },
-                                        {
-                                            name: 'ExampleProfile',
-                                            params: {},
-                                        },
-                                    ]
-                                });
+                        onChange={async (active) => {
+                            if (active == 1 && !netFeedback.busy) {
+
+                                setNetFeedback({
+                                    busy: true,
+                                    message: networkFeedbackMessages.wait,
+                                })
+
+                                await postProfileEdits({
+                                    oldData: data,
+                                    newData: newData,
+                                    onSuccess: () => {
+
+
+                                        setNetFeedback({
+                                            busy: false,
+                                            message: '',
+                                        })
+
+                                        navigationProxy.reset({
+                                            index: 2,
+                                            routes: [
+                                                {
+                                                    name: 'Home',
+                                                    params: {},
+                                                },
+                                                {
+                                                    name: 'ProfileHub',
+                                                    params: {},
+                                                },
+                                                {
+                                                    name: 'ExampleProfile',
+                                                    params: {},
+                                                },
+                                            ]
+                                        });
+                                    },
+                                    onFail: () => {
+
+                                        setNetFeedback({
+                                            busy: false,
+                                            message: networkFeedbackMessages.err,
+                                        })
+
+                                        alert(`Error updating profile data`)
+                                    }
+                                })
                             }
                         }}
                     />
@@ -147,115 +176,212 @@ const EditProfile = () => {
                 <UpForMeButton style={RegistStyles.botButton} title={'Opslaan'}
                     enabled={(!netFeedback.busy && newData.desc.length > 4 && (newData.images[0] != '' && newData.images[0]))} onPress={async () => {
 
-                        let profilePicture = newData.profilePicture;
-
-                        if (!profilePicture) {
-                            profilePicture = await createProfilePicture(newData.images[0]);
-                        }
-
                         setNetFeedback({
                             busy: true,
                             message: networkFeedbackMessages.wait,
                         });
 
-                        await postPhotos(
-                            DATA_STORE.userID,
-                            newData.images,
-                            profilePicture,
-                            async () => {
+                        //Handle all profile editing calls
+                        await postProfileEdits({
+                            oldData: data,
+                            newData: newData,
+                            onSuccess: async () => {
+                                setNetFeedback({
+                                    busy: false,
+                                    message: '',
+                                });
 
+                                //If all calls succeed, call getpotentials.
                                 await dodoFlight({
-                                    method: 'post',
-                                    url: getEndpoint(endpoints.post.setProfileText),
-                                    data: {
-                                        userid: DATA_STORE.userID,
-                                        profiletext: newData.desc,
-                                    },
+                                    method: 'get',
+                                    url: getEndpoint(endpoints.get.potentialMatches) + DATA_STORE.userID,
 
-                                    thenCallback: async (res) => {
-
-                                        if (res.data === true) {
-
-                                            DATA_STORE.profileCache[DATA_STORE.userID].profieltext = newData.desc;
-
-                                            const newProps = {
-                                                userid: DATA_STORE.userID,
-                                                sport: newData.userProps.sport,
-                                                feesten: newData.userProps.party,
-                                                roken: newData.userProps.smoking,
-                                                alcohol: newData.userProps.alcohol,
-                                                stemmen: newData.userProps.politics,
-                                                werken: newData.userProps.work,
-                                                kinderen: newData.userProps.kids,
-                                                kinderwens: newData.userProps.kidWish,
-                                                eten: newData.userProps.food,
-                                            };
-
-                                            await dodoFlight({
-                                                method: 'post',
-                                                url: getEndpoint(endpoints.post.setProperties),
-                                                data: newProps,
-
-                                                thenCallback: (res) => {
-
-                                                    if (res.data) {
-
-                                                        DATA_STORE.profileCache[DATA_STORE.userID].sporten = newProps.sport;
-                                                        DATA_STORE.profileCache[DATA_STORE.userID].feesten = newProps.feesten;
-                                                        DATA_STORE.profileCache[DATA_STORE.userID].roken = newProps.roken;
-                                                        DATA_STORE.profileCache[DATA_STORE.userID].alcohol = newProps.alcohol;
-                                                        DATA_STORE.profileCache[DATA_STORE.userID].stemmen = newProps.stemmen;
-                                                        DATA_STORE.profileCache[DATA_STORE.userID].uur40 = newProps.werken;
-                                                        DATA_STORE.profileCache[DATA_STORE.userID].kids = newProps.kinderen;
-                                                        DATA_STORE.profileCache[DATA_STORE.userID].kidwens = newProps.kinderwens;
-                                                        DATA_STORE.profileCache[DATA_STORE.userID].eten = newProps.eten;
-
-                                                        setNetFeedback({
-                                                            busy: false,
-                                                            message: '',
-                                                        });
-
-                                                        navigationProxy.reset({
-                                                            index: 1,
-                                                            routes: [
-                                                                {
-                                                                    name: 'Home',
-                                                                    params: {},
-                                                                },
-                                                                {
-                                                                    name: 'ProfileHub',
-                                                                    params: {},
-                                                                }
-                                                            ]
-                                                        })
+                                    thenCallback: (res) => {
+                                        //If potentials
+                                        if (res.data != false) {
+                                            DATA_STORE.pMatches.list = res.data;
+                                            DATA_STORE.pMatches.timeStamp = Date.now();
+                                            navigationProxy.reset({
+                                                index: 1,
+                                                routes: [
+                                                    {
+                                                        name: 'Home',
+                                                        params: {},
+                                                    },
+                                                    {
+                                                        name: 'ProfileHub',
+                                                        params: {},
                                                     }
-                                                },
-
-                                                catchCallback: (err) => {
-                                                    setNetFeedback({
-                                                        busy: false,
-                                                        message: networkFeedbackMessages.err
-                                                    })
-                                                }
+                                                ]
                                             })
+                                        }
+                                        else {
+                                            //if no potential matches, ask the user to soften up, else just continue as normal
+                                            Alert.alert(
+                                                'Geen potentiële matches!',
+                                                'Versoepel je criteria om te kunnen matchen met andere gebruikers.',
+                                                [
+                                                    {
+                                                        text: 'Doorgaan', onPress: () => {
+
+                                                            DATA_STORE.pMatches.list = res.data;
+                                                            DATA_STORE.pMatches.timeStamp = Date.now();
+
+                                                            navigationProxy.reset({
+                                                                index: 1,
+                                                                routes: [
+                                                                    {
+                                                                        name: 'Home',
+                                                                        params: {},
+                                                                    },
+                                                                    {
+                                                                        name: 'ProfileHub',
+                                                                        params: {},
+                                                                    }
+                                                                ]
+                                                            })
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Okay!', onPress: () => {
+                                                            setNetFeedback({
+                                                                busy: false,
+                                                                message: '',
+                                                            });
+                                                        }
+                                                    },
+                                                ],
+                                                { cancelable: false }
+                                            );
                                         }
                                     },
 
                                     catchCallback: (err) => {
+                                        //pot match error
                                         setNetFeedback({
                                             busy: false,
                                             message: networkFeedbackMessages.err,
-                                        })
-                                    },
+                                        });
+                                    }
                                 })
                             },
-                            () => {
+                            onFail: () => {
                                 setNetFeedback({
-                                    busy: true,
+                                    busy: false,
                                     message: networkFeedbackMessages.err,
                                 });
-                            },
-                        )
+                            }
+                        })
+
+                        // let profilePicture = newData.profilePicture;
+
+                        // if (!profilePicture) {
+                        //     profilePicture = await createProfilePicture(newData.images[0]);
+                        // }
+
+                        // setNetFeedback({
+                        //     busy: true,
+                        //     message: networkFeedbackMessages.wait,
+                        // });
+
+                        // await postPhotos(
+                        //     DATA_STORE.userID,
+                        //     newData.images,
+                        //     profilePicture,
+                        //     async () => {
+
+                        //         await dodoFlight({
+                        //             method: 'post',
+                        //             url: getEndpoint(endpoints.post.setProfileText),
+                        //             data: {
+                        //                 userid: DATA_STORE.userID,
+                        //                 profiletext: newData.desc,
+                        //             },
+
+                        //             thenCallback: async (res) => {
+
+                        //                 if (res.data === true) {
+
+                        //                     DATA_STORE.profileCache[DATA_STORE.userID].profieltext = newData.desc;
+
+                        //                     const newProps = {
+                        //                         userid: DATA_STORE.userID,
+                        //                         sport: newData.userProps.sport,
+                        //                         feesten: newData.userProps.party,
+                        //                         roken: newData.userProps.smoking,
+                        //                         alcohol: newData.userProps.alcohol,
+                        //                         stemmen: newData.userProps.politics,
+                        //                         werken: newData.userProps.work,
+                        //                         kinderen: newData.userProps.kids,
+                        //                         kinderwens: newData.userProps.kidWish,
+                        //                         eten: newData.userProps.food,
+                        //                     };
+
+                        //                     await dodoFlight({
+                        //                         method: 'post',
+                        //                         url: getEndpoint(endpoints.post.setProperties),
+                        //                         data: newProps,
+
+                        //                         thenCallback: (res) => {
+
+                        //                             if (res.data) {
+
+                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].sporten = newProps.sport;
+                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].feesten = newProps.feesten;
+                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].roken = newProps.roken;
+                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].alcohol = newProps.alcohol;
+                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].stemmen = newProps.stemmen;
+                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].uur40 = newProps.werken;
+                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].kids = newProps.kinderen;
+                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].kidwens = newProps.kinderwens;
+                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].eten = newProps.eten;
+
+                        //                                 setNetFeedback({
+                        //                                     busy: false,
+                        //                                     message: '',
+                        //                                 });
+
+                        //                                 navigationProxy.reset({
+                        //                                     index: 1,
+                        //                                     routes: [
+                        //                                         {
+                        //                                             name: 'Home',
+                        //                                             params: {},
+                        //                                         },
+                        //                                         {
+                        //                                             name: 'ProfileHub',
+                        //                                             params: {},
+                        //                                         }
+                        //                                     ]
+                        //                                 })
+                        //                             }
+                        //                         },
+
+                        //                         catchCallback: (err) => {
+                        //                             setNetFeedback({
+                        //                                 busy: false,
+                        //                                 message: networkFeedbackMessages.err
+                        //                             })
+                        //                         }
+                        //                     })
+                        //                 }
+                        //             },
+
+                        //             catchCallback: (err) => {
+                        //                 setNetFeedback({
+                        //                     busy: false,
+                        //                     message: networkFeedbackMessages.err,
+                        //                 })
+                        //             },
+                        //         })
+                        //     },
+                        //     () => {
+                        //         setNetFeedback({
+                        //             busy: true,
+                        //             message: networkFeedbackMessages.err,
+                        //         });
+                        //     },
+                        // )
 
                     }} />
             </View>
