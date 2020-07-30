@@ -16,7 +16,7 @@ import { DATA_STORE } from '../../../stored/dataStore';
 import { timeouts } from '../../../res/data/requests';
 import { MemeMath } from '../../../functions/math';
 import { navigationProxy } from '../../../navigation/navigationProxy';
-import { getYearIndex, toRetardDate } from '../../../res/data/time';
+import { getYearIndex, toAPIDate } from '../../../res/data/time';
 import { dodoFlight } from '../../../functions/dodoAirlines';
 
 const RegistUserData = () => {
@@ -73,7 +73,7 @@ const RegistUserData = () => {
                                 data: {
                                     userid: DATA_STORE.userID,
                                     naam: userData.name,
-                                    geboortedatum: toRetardDate(userData.birthday),
+                                    geboortedatum: toAPIDate(userData.birthday),
                                     beroep: userData.job,
                                     lengte: MemeMath.roundTwoDecimals(userData.height),
                                 },

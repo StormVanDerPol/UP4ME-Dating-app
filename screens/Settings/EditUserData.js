@@ -4,7 +4,7 @@ import KeyboardDismiss from '../../components/KeyboardDismiss';
 import { RegistStyles } from '../../styles/RegistStyles';
 import { View } from 'react-native';
 import InputUserData from '../../components/bigComponents/InputUserData';
-import { getYearIndex, toNonRetardDate, toRetardDate } from '../../res/data/time';
+import { getYearIndex, convertDateAPI, toAPIDate } from '../../res/data/time';
 import { DATA_STORE } from '../../stored/dataStore';
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../components/waitIndicator';
 import UpForMeButton from '../../components/UpForMeButton';
@@ -22,7 +22,7 @@ export const deRetardifyUserData = (userid) => {
     const output = {
         name: data.naam,
         job: data.beroep,
-        birthday: toNonRetardDate(data.geboortedatum),
+        birthday: convertDateAPI(data.geboortedatum),
         height: data.lengte,
     };
 
@@ -86,7 +86,7 @@ const EditUserData = () => {
 
                             let newData = {
                                 naam: userData.name,
-                                geboortedatum: toRetardDate(userData.birthday),
+                                geboortedatum: toAPIDate(userData.birthday),
                                 beroep: userData.job,
                                 lengte: MemeMath.roundTwoDecimals(userData.height),
                             }

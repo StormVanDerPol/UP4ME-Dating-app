@@ -7,7 +7,7 @@ import { DATA_STORE } from '../../stored/dataStore';
 import { View, StyleSheet } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import TextQuicksand from '../../components/TextQuicksand';
-import { calcAgeHet, today, writtenMonths, toRetardDate } from '../../res/data/time';
+import { calcAgeHet, today, writtenMonths, toAPIDate } from '../../res/data/time';
 import { Calendar } from 'react-native-calendars';
 import { TimePicker } from 'react-native-wheel-picker-android';
 import UpForMeIcon, { iconIndex } from '../../components/UpForMeIcon';
@@ -151,13 +151,13 @@ const DatePlanner = ({
 
                     await dodoFlight({
                         method: 'post',
-                        url: `http:/192.168.1.12:8080/api/v1/set/date`,
+                        url: `http:/192.168.1.10:8080/api/v1/set/date`,
                         // url: getEndpoint(endpoints.post.setDate),\
                         data: {
                             userid1: DATA_STORE.userID,
                             userid2: dateConfig.userid,
                             status: (editing) ? (canEditLocation) ? 4 : 5 : 2,
-                            date: toRetardDate(dateConfig.date),
+                            date: toAPIDate(dateConfig.date),
                             time: `${dateConfig.time.hr}${dateConfig.time.min}`,
                             resid: dateConfig.locationData.resid,
                         },
@@ -228,8 +228,8 @@ const DaySelect = ({ initDate = null, onChange = ({ day, month, year }) => { } }
         <ArrowButtonDropDown icon={iconIndex.calendar} header={(!date) ? 'Selecteer een datum' : `${date.day} ${writtenMonths[date.month - 1]} ${date.year}`} start={true}>
             <Calendar
 
-                minDate={tomorrow}
-                maxDate={nextMonth}
+                // minDate={tomorrow}
+                // maxDate={nextMonth}
                 markedDates={markedDate}
                 onDayPress={(day) => {
 
