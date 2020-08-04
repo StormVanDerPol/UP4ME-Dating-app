@@ -93,8 +93,11 @@ const DateDetails = ({ route }) => {
             locationData: dateData.resData
         }
 
+        console.log('kanker shit', dateData.dateData.ronde)
+
         navigationProxy.navigate('EditDate', {
             canEdit: canEditLocation,
+            phase: dateData.dateData.ronde,
         })
     }
 

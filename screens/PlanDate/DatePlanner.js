@@ -23,6 +23,7 @@ const DatePlanner = ({
     _resData = null,
     editing = false,
     canEditLocation = true,
+    phase = null,
 
 }) => {
 
@@ -160,6 +161,7 @@ const DatePlanner = ({
                             date: toAPIDate(dateConfig.date),
                             time: `${dateConfig.time.hr}${dateConfig.time.min}`,
                             resid: dateConfig.locationData.resid,
+                            ronde: phase,
                         },
 
                         thenCallback: () => {
