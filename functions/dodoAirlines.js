@@ -34,7 +34,7 @@ export const dodoFlight = async ({
                 ...config,
             });
 
-    await Axios({
+    return await Axios({
         method: method,
         url: url,
         data: data,
@@ -63,6 +63,8 @@ export const dodoFlight = async ({
                 }
 
                 thenCallback(res);
+
+                return res.data;
             }
         })
         .catch((err) => {
@@ -94,15 +96,6 @@ export const dodoFlight = async ({
                 }
                 else if (err.response.status == 404) {
 
-                    // navigationProxy.reset({
-                    //     index: 0,
-                    //     routes: [
-                    //         {
-                    //             name: 'Landing',
-                    //             params: {},
-                    //         },
-                    //     ]
-                    // });
 
                     Alert.alert(
                         '404 not found',

@@ -30,6 +30,7 @@ const endpoints = {
         resProfileTo: `/get/restaurant/profile/to/`,
         smallProfPic: `/get/profile/picture/`,
         profileTo: `/get/profile/to/`,
+
     },
 
     post: {
@@ -44,12 +45,14 @@ const endpoints = {
         setProfileText: `/set/profile/text`,
         setProperties: `/set/properties`,
         setCriteria: `/set/criteria`,
-        setLastedit: `/set/lastedit`,
-        getLastedit: `/get/lastedit`,
+        // setLastedit: `/set/lastedit`,
+        // getLastedit: `/get/lastedit`,
         setMatchResponses: `/set/matchresponses`,
         setReport: `/set/report`,
         setDate: `/set/date`,
         yeetusFetusYourChildDeletus: `/set/remove/profile`,
+        getLastEdit: `/get/profile/lastedit`,
+        setLastEdit: `/set/profile/lastedit`
     }
 };
 

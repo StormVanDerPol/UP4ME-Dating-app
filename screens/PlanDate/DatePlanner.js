@@ -151,8 +151,8 @@ const DatePlanner = ({
 
                     await dodoFlight({
                         method: 'post',
-                        url: `http:/192.168.1.10:8080/api/v1/set/date`,
-                        // url: getEndpoint(endpoints.post.setDate),\
+                        // url: `http:/192.168.1.10:8080/api/v1/set/date`,
+                        url: getEndpoint(endpoints.post.setDate),
                         data: {
                             userid1: DATA_STORE.userID,
                             userid2: dateConfig.userid,
