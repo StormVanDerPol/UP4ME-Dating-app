@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { DATA_STORE } from '../../stored/dataStore';
 import { View, StyleSheet, Alert } from 'react-native';
 import Body, { FlexSection } from '../../components/Body';
@@ -15,6 +15,8 @@ import { ArrowButtonTop } from '../../components/UpForMeArrowButtons';
 import { navigationProxy } from '../../navigation/navigationProxy';
 import { dodoFlight } from '../../functions/dodoAirlines';
 import { networkFeedbackMessages } from '../../components/waitIndicator';
+import { openBrowser } from '../../functions/bowser';
+import endpoints, { getEndpoint } from '../../res/data/endpoints';
 
 const DateDetails = ({ route }) => {
 
@@ -31,23 +33,26 @@ const DateDetails = ({ route }) => {
         busy: false,
     })
 
-    const callSetDate = async (status) => {
+    const callSetDate = async (status, redirect = true) => {
         setNetFeedback({
             busy: true,
             message: networkFeedbackMessages.wait,
         })
 
+        let _tijd = ((dateData.dateData.tijd + '').length == 3) ? '0' + dateData.dateData.tijd : dateData.dateData.tijd;
+
         await dodoFlight({
             method: 'post',
-            // url: getEndpoint(endpoints.post.setDate),
-            url: `http:/192.168.1.10:8080/api/v1/set/date`,
+            url: getEndpoint(endpoints.post.setDate),
+            // url: `http:/192.168.1.10:8080/api/v1/set/date`,
             data: {
                 userid1: DATA_STORE.userID,
                 userid2: dateData.userid,
                 status: status,
                 date: dateData.dateData.datum,
-                time: dateData.dateData.tijd,
+                time: _tijd,
                 resid: dateData.resData.resid,
+                ronde: dateData.dateData.ronde,
             },
 
             thenCallback: () => {
@@ -57,38 +62,62 @@ const DateDetails = ({ route }) => {
                     message: '',
                 })
 
-                navigationProxy.reset({
-                    index: 1,
-                    routes: [
-                        {
-                            name: 'Home',
-                            params: {},
-                        },
-                        {
-                            name: 'LoadDatesOverview',
-                            params: {},
-                        }
-                    ],
-                })
+                if (redirect)
+                    navigationProxy.reset({
+                        index: 1,
+                        routes: [
+                            {
+                                name: 'Home',
+                                params: {},
+                            },
+                            {
+                                name: 'LoadDatesOverview',
+                                params: {},
+                            }
+                        ],
+                    })
             }
+        })
+    }
+
+    const goToEdit = (canEditLocation = true) => {
+        let _time = dateData.time.split(':');
+
+        DATA_STORE.plannedDate = {
+            userid: dateData.userid,
+            time: {
+                hr: _time[0],
+                min: _time[1],
+            },
+            date: dateData.date,
+            locationData: dateData.resData
+        }
+
+        console.log('kanker shit', dateData.dateData.ronde)
+
+        navigationProxy.navigate('EditDate', {
+            canEdit: canEditLocation,
+            phase: dateData.dateData.ronde,
         })
     }
 
     const cannedTuna = (yourStatus, otherStatus, otherName) => {
 
         let theTuna = {
-            message: 'Honto baka da ne~',
-            buttonTitle: 'Honto baka da ne~',
+            message: null,
+            buttonTitle: `your status: ${yourStatus}, ${otherName}'s status: ${otherStatus}`,
             callback: () => { },
-            icons: true,
+            icons: false,
+            type: 'change'
         };
 
-        switch (yourStatus) {
+        switch (true) {
             //You're new to this
-            case -1:
-
+            case (yourStatus == -1):
                 if (otherStatus == 2) {
                     theTuna = {
+                        type: 'change',
+                        icons: false,
                         message: `${otherName} proposed a date! Check the details below and decide wether you want to go or not! You can always suggest something else!`,
                         buttonTitle: `Antwoord`,
                         callback: () => {
@@ -99,7 +128,7 @@ const DateDetails = ({ route }) => {
                                     {
                                         text: 'Ja!',
                                         onPress: async () => {
-                                            await callSetDate(20);
+                                            await callSetDate(2);
                                         }
                                     },
                                     {
@@ -111,40 +140,131 @@ const DateDetails = ({ route }) => {
                                     {
                                         text: 'Stel iets anders voor',
                                         onPress: () => {
-
-                                            let _time = dateData.time.split(':');
-
-                                            DATA_STORE.plannedDate = {
-                                                userid: dateData.userid,
-                                                time: {
-                                                    hr: _time[0],
-                                                    min: _time[1],
-                                                },
-                                                date: dateData.date,
-                                                locationData: dateData.resData
-                                            }
-
-                                            navigationProxy.navigate('EditDate', {
-                                                canEdit: true,
-                                            })
+                                            goToEdit();
                                         }
                                     },
                                 ],
                                 { cancelable: true }
                             )
                         },
+                    }
+                }
+                break;
+
+            case (yourStatus == 1):
+                switch (true) {
+                    case (otherStatus == 2):
+                        theTuna = {
+                            type: 'reserved',
+                            icons: false,
+                            message: `Jij hebt deze date niet geaccepteerd.`,
+                            buttonTitle: '',
+                        }
+                        break;
+                }
+                break;
+
+            //You proposed
+            case (yourStatus == 2 || yourStatus == 6):
+
+                switch (true) {
+                    //he's waiting
+                    case (otherStatus == -1):
+                        theTuna = {
+                            type: 'change',
+                            icons: false,
+                            message: `${otherName} heeft jouw voorstel ontvangen en moet nog reageren.`,
+                            buttonTitle: '',
+                        }
+                        break;
+                    //he declined
+                    case (otherStatus == 1):
+                        theTuna = {
+                            type: 'reserved',
+                            icons: false,
+                            message: `${otherName} heeft jouw date voorstel geweigerd.`,
+                            buttonTitle: '',
+                        }
+                        break;
+                    //He accepted
+                    case (otherStatus == 20):
+                        theTuna = {
+                            type: 'change',
+                            icons: false,
+                            message: `${otherName} heeft de date geaccepteerd. Jij bent nu verantwoordelijk voor de reservering. Type hierbij jullie beide voornamen en UP4ME.`,
+                            buttonTitle: 'reserveer nu',
+                            callback: async () => {
+
+                                if (yourStatus != 6)
+                                    await callSetDate(6, false);
+
+                                await openBrowser(dateData.resData.website).then(() => {
+                                    Alert.alert(
+                                        `Gereserveerd?`,
+                                        `Alles gelukt met het reserven? Zo ja laat het ${otherName} weten door op ja te drukken! Veel plezier met je date!`,
+                                        [
+                                            {
+                                                text: 'Ja!',
+                                                onPress: async () => {
+                                                    await callSetDate(6)
+                                                }
+                                            },
+                                            {
+                                                text: 'Nee',
+                                            }
+                                        ],
+                                        {
+                                            cancelable: true,
+                                        }
+
+                                    )
+                                });
+                            }
+                        }
+                        break;
+                }
+
+                break;
+            //You accepted
+            case (yourStatus == 20):
+
+                if (otherStatus == 60) {
+                    theTuna = {
+                        type: 'reserved',
                         icons: false,
+                        message: `${otherName} heeft greserveerd, Veel plezier met je date!`,
+                        buttonTitle: 'date wijzigen',
+                        callback: () => {
+                            goToEdit(false);
+                        }
                     }
                 }
 
+                break;
+
+            case (yourStatus == 60):
+                if (otherStatus == 20) {
+                    theTuna = {
+                        type: 'reserved',
+                        icons: false,
+                        message: `Je hebt gereserveerd! Veel plezier met je date!`,
+                        buttonTitle: 'date wijzigen',
+                        callback: () => {
+                            goToEdit(false);
+                        }
+                    }
+                }
                 break;
         }
 
         return theTuna;
     }
 
+    const ultraTuna = cannedTuna(dateData.dateData.status, dateData.dateData.status2, data.naam);
+
     return (
         <Body>
+            <TextQuicksand>{dateData.dateData.status} - {dateData.dateData.status2}</TextQuicksand>
             <NavBar route={nbroutes.matches} />
             <FlexSection>
 
@@ -173,12 +293,13 @@ const DateDetails = ({ route }) => {
                     }}
                 />
 
-                {(dateData.dateData.notisent == -1) ? <Notification
+                {(ultraTuna.message) ? <Notification
+                    type={ultraTuna.type}
                     onChange={(output) => {
                         setAccept(output);
                     }}
-                    icons={cannedTuna(dateData.dateData.status, dateData.dateData.status2, data.naam).icons}
-                    message={cannedTuna(dateData.dateData.status, dateData.dateData.status2, data.naam).message}
+                    icons={ultraTuna.icons}
+                    message={ultraTuna.message}
                 /> : <></>}
 
                 <TextQuicksand style={styles.dateHeader}>Date met {data.naam}</TextQuicksand>
@@ -201,12 +322,12 @@ const DateDetails = ({ route }) => {
                     </View>
                 </View>
 
-                <AlbeitABitLate title={cannedTuna(dateData.dateData.status, dateData.dateData.status2, data.naam).buttonTitle}
+                {(ultraTuna.buttonTitle.length == 0) ? <></> : <AlbeitABitLate title={ultraTuna.buttonTitle}
 
                     onPress={() => {
-                        cannedTuna(dateData.dateData.status, dateData.dateData.status2, data.naam).callback()
+                        ultraTuna.callback()
                     }}
-                />
+                />}
             </FlexSection>
         </Body>
     );
@@ -223,6 +344,18 @@ const Notification = ({ initActive = true, icons = true, message = 'Default', ty
             colours = [
                 up4meColours.gradYellow1,
                 up4meColours.gradYellow2,
+            ]
+            break;
+        case 'reserved':
+            colours = [
+                up4meColours.gradPink,
+                up4meColours.gradOrange,
+            ]
+            break;
+        default:
+            colours = [
+                '#000',
+                '#000',
             ]
             break;
     }

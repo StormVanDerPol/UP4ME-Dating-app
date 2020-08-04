@@ -1,24 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Body, { FlexSection } from '../../components/Body';
 import NavBar, { nbroutes } from '../../components/navBar/NavBar';
 import UpForMeBigRadioButton from '../../components/UpForMeBigRadioButton';
 import InputProperties from '../../components/bigComponents/InputProperties';
 import TextInputField from '../../components/bigComponents/TextInputField';
-import UploadPictures, { createProfilePicture } from '../../components/bigComponents/UploadPictures';
+import UploadPictures from '../../components/bigComponents/UploadPictures';
 import TextQuicksand from '../../components/TextQuicksand';
 import { View, StyleSheet, Alert } from 'react-native';
 import { registParams, RegistStyles } from '../../styles/RegistStyles';
 import NetworkFeedBackIndicator, { networkFeedbackMessages } from '../../components/waitIndicator';
 import UpForMeButton from '../../components/UpForMeButton';
 import { DATA_STORE } from '../../stored/dataStore';
-import { postPhotos } from '../../requests/postPhotos';
 import { navigationProxy } from '../../navigation/navigationProxy';
 import endpoints, { getEndpoint } from '../../res/data/endpoints';
 import { dodoFlight } from '../../functions/dodoAirlines';
 import postProfileEdits from '../../requests/postProfileEdits';
 
 export const deRetardifyEditProfile = (userid) => {
-
 
     const data = DATA_STORE.profileCache[userid];
 
@@ -211,7 +209,7 @@ const EditProfile = () => {
                                                     {
                                                         name: 'ProfileHub',
                                                         params: {},
-                                                    }
+                                                    },
                                                 ]
                                             })
                                         }
@@ -273,116 +271,6 @@ const EditProfile = () => {
                             }
                         })
 
-                        // let profilePicture = newData.profilePicture;
-
-                        // if (!profilePicture) {
-                        //     profilePicture = await createProfilePicture(newData.images[0]);
-                        // }
-
-                        // setNetFeedback({
-                        //     busy: true,
-                        //     message: networkFeedbackMessages.wait,
-                        // });
-
-                        // await postPhotos(
-                        //     DATA_STORE.userID,
-                        //     newData.images,
-                        //     profilePicture,
-                        //     async () => {
-
-                        //         await dodoFlight({
-                        //             method: 'post',
-                        //             url: getEndpoint(endpoints.post.setProfileText),
-                        //             data: {
-                        //                 userid: DATA_STORE.userID,
-                        //                 profiletext: newData.desc,
-                        //             },
-
-                        //             thenCallback: async (res) => {
-
-                        //                 if (res.data === true) {
-
-                        //                     DATA_STORE.profileCache[DATA_STORE.userID].profieltext = newData.desc;
-
-                        //                     const newProps = {
-                        //                         userid: DATA_STORE.userID,
-                        //                         sport: newData.userProps.sport,
-                        //                         feesten: newData.userProps.party,
-                        //                         roken: newData.userProps.smoking,
-                        //                         alcohol: newData.userProps.alcohol,
-                        //                         stemmen: newData.userProps.politics,
-                        //                         werken: newData.userProps.work,
-                        //                         kinderen: newData.userProps.kids,
-                        //                         kinderwens: newData.userProps.kidWish,
-                        //                         eten: newData.userProps.food,
-                        //                     };
-
-                        //                     await dodoFlight({
-                        //                         method: 'post',
-                        //                         url: getEndpoint(endpoints.post.setProperties),
-                        //                         data: newProps,
-
-                        //                         thenCallback: (res) => {
-
-                        //                             if (res.data) {
-
-                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].sporten = newProps.sport;
-                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].feesten = newProps.feesten;
-                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].roken = newProps.roken;
-                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].alcohol = newProps.alcohol;
-                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].stemmen = newProps.stemmen;
-                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].uur40 = newProps.werken;
-                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].kids = newProps.kinderen;
-                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].kidwens = newProps.kinderwens;
-                        //                                 DATA_STORE.profileCache[DATA_STORE.userID].eten = newProps.eten;
-
-                        //                                 setNetFeedback({
-                        //                                     busy: false,
-                        //                                     message: '',
-                        //                                 });
-
-                        //                                 navigationProxy.reset({
-                        //                                     index: 1,
-                        //                                     routes: [
-                        //                                         {
-                        //                                             name: 'Home',
-                        //                                             params: {},
-                        //                                         },
-                        //                                         {
-                        //                                             name: 'ProfileHub',
-                        //                                             params: {},
-                        //                                         }
-                        //                                     ]
-                        //                                 })
-                        //                             }
-                        //                         },
-
-                        //                         catchCallback: (err) => {
-                        //                             setNetFeedback({
-                        //                                 busy: false,
-                        //                                 message: networkFeedbackMessages.err
-                        //                             })
-                        //                         }
-                        //                     })
-                        //                 }
-                        //             },
-
-                        //             catchCallback: (err) => {
-                        //                 setNetFeedback({
-                        //                     busy: false,
-                        //                     message: networkFeedbackMessages.err,
-                        //                 })
-                        //             },
-                        //         })
-                        //     },
-                        //     () => {
-                        //         setNetFeedback({
-                        //             busy: true,
-                        //             message: networkFeedbackMessages.err,
-                        //         });
-                        //     },
-                        // )
-
                     }} />
             </View>
         </Body>
@@ -412,4 +300,5 @@ const styles = StyleSheet.create({
         fontSize: 16,
     }
 })
+
 export default EditProfile;
