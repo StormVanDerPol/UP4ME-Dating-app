@@ -35,9 +35,9 @@ function nextDay(inputDate) {
     }
 }
 
-export default function checkCannedTuna(currentStatus, currentStatus2, newStatus, currentDate, currentTime, notisent) {
+export default function checkCannedTuna(currentStatus, currentStatus2, newStatus, dateDate, dateTime, notisent) {
 
-    console.log("currentStatus:", currentStatus, "currentStatus2:", currentStatus2, "date:", currentDate, "time:", currentTime)
+    console.log("currentStatus:", currentStatus, "currentStatus2:", currentStatus2, "date:", dateDate, "time:", dateTime)
 
     const status = newStatus;
     const prevStatus2 = currentStatus2;
@@ -53,8 +53,8 @@ export default function checkCannedTuna(currentStatus, currentStatus2, newStatus
         const reschedAllowed = counterAllowed
         const reservingAllowed = (prevStatus2 == 20) && prevStatus != 6 && myTurn
         const confirmingReservationSucceeded = (prevStatus == 6)
-        const finishDateAllowed = (prevStatus2 == 60 || prevStatus == 60) && nextDay(currentDate)
-        const time2Reply = timeLeft2Reply(currentDate, currentTime)
+        const finishDateAllowed = (prevStatus2 == 60 || prevStatus == 60) && nextDay(dateDate)
+        const time2Reply = timeLeft2Reply(dateDate, dateTime)
 
         console.log("decline_accept = (prevStatus2 == 2 || prevStatus2 == 4 || prevStatus2 == 40 || prevStatus2 == 5 || prevStatus2 == 50) && myTurn ", decline_accept)
         console.log("cancelAllowed  = (prevStatus2 == -1 || prevStatus2 == 6 || prevStatus2 == 60 || prevStatus2 == 20) ", cancelAllowed)
