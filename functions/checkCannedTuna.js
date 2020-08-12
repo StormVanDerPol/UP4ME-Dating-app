@@ -1,4 +1,4 @@
-function timeLeft2Reply(date, time) {
+export function timeLeft2Reply(date, time) {
     if (date == undefined || time == undefined) { console.log("tL2R has no variables input, error"); return false }
     var d = new Date();
     var day = d.getDate();
@@ -18,26 +18,24 @@ function timeLeft2Reply(date, time) {
     //   var timetoday =
 }
 
-function nextDay(date) {
+function nextDay(inputDate) {
     var d = new Date();
     var day = d.getDate();
     var month = (d.getMonth() + 1) * 100;
     var year = d.getFullYear() * 10000;
 
-    var currentDate = year + month + day;
+    var calculatedDate = year + month + day;
 
     console.log("nextDay (currentDate, date) ===> ", currentDate, date)
 
-    if (currentDate > date) {
+    if (calculatedDate > inputDate) {
         return true;
     } else {
         return false;
     }
 }
 
-// export default 
-
-function checkCannedTuna(currentStatus, currentStatus2, newStatus, currentDate, currentTime, notisent) {
+export default function checkCannedTuna(currentStatus, currentStatus2, newStatus, currentDate, currentTime, notisent) {
 
     console.log("currentStatus:", currentStatus, "currentStatus2:", currentStatus2, "date:", currentDate, "time:", currentTime)
 
@@ -55,7 +53,7 @@ function checkCannedTuna(currentStatus, currentStatus2, newStatus, currentDate, 
         const reschedAllowed = counterAllowed
         const reservingAllowed = (prevStatus2 == 20) && prevStatus != 6 && myTurn
         const confirmingReservationSucceeded = (prevStatus == 6)
-        const finishDateAllowed = (prevStatus2 == 60 || prevStatus == 60) && nextDay(prefDate.datum)
+        const finishDateAllowed = (prevStatus2 == 60 || prevStatus == 60) && nextDay(currentDate)
         const time2Reply = timeLeft2Reply(currentDate, currentTime)
 
         console.log("decline_accept = (prevStatus2 == 2 || prevStatus2 == 4 || prevStatus2 == 40 || prevStatus2 == 5 || prevStatus2 == 50) && myTurn ", decline_accept)
@@ -191,17 +189,3 @@ function checkCannedTuna(currentStatus, currentStatus2, newStatus, currentDate, 
     }
     // datum en tijd was enigszins geldig
 } // einde functie setDate
-
-console.log(checkCannedTuna(2,3,5,20200812,2000, -1))
-// userid1, userid2, status, date, time, resid, ronde
-// setDate(110, 2, 1, 20211101, 1830, 10,true)
-// setDate(2, 110, 4, 20211101, 1830, 5,2)
-
-
-//            userid1, userid2, status,  date,    time,  resid, ronde
-// setDate(        110  ,    5   ,   2   ,20200825,  1030,   15   ,   )
-// setDate(        5,      110,      1   ,20201130,  1045,   16,   3)
-
-// -- removeProfile ==> placeholder image, and profpic.
-// -- pauseProfile ==>  does it work?
-// 
