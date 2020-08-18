@@ -5,10 +5,9 @@ import { DATA_STORE } from "../stored/dataStore";
 import { dodoFlight } from "./dodoAirlines";
 import { hrToMS } from "../res/data/time";
 
-
 const GPS_CONFIG = {
     enabled: true,
-    logging: false,
+    logging: true,
 }
 
 export const GPS_DATA = {
@@ -67,11 +66,14 @@ export const getGPS = () => {
                         console.log(res);
                 },
 
-                catchCallback: (err) => {
+                catchCallback: (error) => {
                     GPS_DATA.timestamp -= msOffset + 100;
                     if (GPS_CONFIG.logging) {
-                        console.log(err);
+                        console.log(error);
                         console.warn('error updating GPS', 'new timestamp', GPS_DATA.timestamp);
+                        if (error.code == 2) {
+                            alert('please turn on location services')
+                        }
                     }
                 },
             })

@@ -89,7 +89,6 @@ const EditProfile = () => {
                                     newData: newData,
                                     onSuccess: () => {
 
-
                                         setNetFeedback({
                                             busy: false,
                                             message: '',

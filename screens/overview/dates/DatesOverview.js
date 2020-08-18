@@ -96,6 +96,8 @@ const DateItem = ({ data }) => {
         })
     }, [])
 
+    const ultraHyperTuna = getStatusDescription(data.status, data.status2, name, data.notisent);
+
     return (
         <TapGestureHandler onHandlerStateChange={({ nativeEvent }) => {
             if (nativeEvent.state === State.END) {
@@ -147,10 +149,10 @@ const DateItem = ({ data }) => {
                     </View>
                 </View>
 
-                {(data.notisent == -1) ? <LinearGradient
+                {(ultraHyperTuna.length > 0) ? <LinearGradient
                     style={styles.statusMsg}
                     colors={[up4meColours.gradYellow1, up4meColours.gradYellow2]} >
-                    <TextQuicksand style={styles.statusMsgStr} >{getStatusDescription(data.status, data.status2, name)}</TextQuicksand>
+                    <TextQuicksand style={styles.statusMsgStr} >{ultraHyperTuna}</TextQuicksand>
                 </LinearGradient> : <></>}
 
             </View>
@@ -222,44 +224,108 @@ const styles = StyleSheet.create({
     }
 });
 
-export const getStatusDescription = (yourStatus, otherStatus, otherName) => {
+export const getStatusDescription = (yourStatus, otherStatus, otherName, notisent) => {
 
-    let desc = '';
 
-    const steinsGate = `You've reached Steins;Gate - yours: ${yourStatus}, other: ${otherStatus}`;
-
-    switch (otherStatus) {
-
-        case 60:
-            desc = `${otherName} has reserved!`
-            break;
-
-        //He's reserving
-        case 6:
-            desc = `${otherName} is reserving...`
-            break;
-
-        //He counter proposed
-        case 4 || 40 || 5 || 50:
-            desc = `${otherName} proposed something else!`
-            break;
-        //He canceled
-        case 3:
-            desc = `${otherName} canceled`
-            break;
-        //He accepted
-        case 2:
-            desc = `${otherName} proposed a date!`
-            break;
-        //he declined
-        case 1:
-            desc = `${otherName} declined`
-            break;
-        default:
-            desc = steinsGate;
+    const messages = {
+        newProposal: `Nieuw voorstel`,
+        otherAccept: `${otherName} heeft geaccepteerd`,
     }
 
-    return desc;
+
+    if (yourStatus == 1 || otherStatus == 1) {
+        if (notisent == 1) {
+            return `Je hebt afgewezen.`;
+        } else {
+            return `${otherName} heeft afgewezen.`;
+        }
+    }
+
+    if (yourStatus == 3 || otherStatus == 3) {
+
+        if (notisent == 1) {
+            return `cancelled`;
+
+        } else {
+            return `${otherName} cancelled`;
+        }
+
+    }
+
+    if (yourStatus == -1) {
+        if (otherStatus == 2 || otherStatus == 4 || otherStatus == 5) {
+            return messages.newProposal;
+        }
+    }
+
+    if (yourStatus == 2) {
+        if (otherStatus == -1) {
+
+            return `Je hebt een date voorstel gedaan, wacht op ${otherName} zijn/haar reactie!`;
+        }
+
+        if (otherStatus == 4 || otherStatus == 5) {
+            return messages.newProposal;
+        }
+
+        if (otherStatus == 20) {
+            return messages.otherAccept;
+        }
+    }
+
+    if (yourStatus == 4 || yourStatus == 5) {
+        if (notisent == 1) {
+            return `Je hebt de date aangepast, wacht op ${otherName} zijn/haar reactie!`;
+        }
+        else {
+
+            if (otherStatus == 20) {
+                return messages.otherAccept;
+            } else {
+                return messages.newProposal;
+            }
+        }
+    }
+
+    if (yourStatus == 6) {
+        if (notisent == 1) {
+            return messages.otherAccept;
+        }
+    }
+
+    if (yourStatus == 60) {
+        if (otherStatus == 20) {
+            return `Je hebt gereserveerd! Veel plezier met je date!`;
+        }
+    }
+
+    if (yourStatus == 20) {
+        if (notisent == 1) {
+            return `Je hebt geaccepteerd!`;
+        } else {
+
+            if (otherStatus == 4) {
+                return messages.newProposal;
+            }
+
+            if (otherStatus == 6) {
+                return `${otherName} gaat reserveren!`;
+            }
+            if (otherStatus == 60) {
+                return `${otherName} heeft gereserveerd!`;
+            }
+        }
+    }
+
+    if (yourStatus == 40 || yourStatus == 50) {
+        if (notisent == -1) {
+            if (otherStatus == 4 || otherStatus == 5) {
+                return messages.newProposal;
+            }
+        }
+    }
+
+    return `Steins;gate reached. you: ${yourStatus}, ${otherName}: ${otherStatus}, ${(notisent == -1) ? 'My turn' : otherName + ' turn'}`;
 }
 
 export default DatesOverview;

@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, createRef } from 'react';
 import TextQuicksand from '../TextQuicksand';
 import { StyleSheet, View, Alert } from 'react-native';
-import { TouchableOpacity, TapGestureHandler, State, LongPressGestureHandler, FlingGestureHandler, Directions } from 'react-native-gesture-handler';
+import { TouchableOpacity, TapGestureHandler, State, LongPressGestureHandler, FlingGestureHandler, Directions, TextInput } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 
 import * as ImagePicker from 'expo-image-picker';
@@ -9,6 +9,7 @@ import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
 import { openBrowser } from '../../functions/bowser';
 import ImageResizer from 'react-native-image-resizer';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
+import TextInputField from './TextInputField';
 
 
 export const createProfilePicture = async (image) => {
@@ -174,13 +175,14 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
                                 }}
                                 minDurationMs={300}
                             >
-                                <View key={i} style={styles.item}>
+                                <View style={styles.item}>
 
                                     <FastImage
                                         style={{
                                             width: '100%',
-                                            height: '100%',
-                                            // borderWidth: 2
+                                            height: 200,
+                                            borderRadius: 25,
+                                            backgroundColor: '#e0e0e0',
                                         }}
                                         source={{
                                             uri: image,
@@ -190,7 +192,21 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
                                     {(images[i] == '') ? <UpForMeIcon style={styles.icon} icon={iconIndex.paperplane} /> : <UpForMeIcon style={styles.icon} icon={iconIndex.edit} />}
                                     {(i == 0 && images[0] != '') ? <UpForMeIcon style={styles.favicon} icon={iconIndex.restaurant_star} /> : <></>}
 
+                                    <TextInput
+                                        placeholder={'Beschrijving'}
+                                        multiline={true}
+                                        style={{
+                                            borderRadius: 12,
+                                            borderColor: '#e0e0e0',
+                                            borderWidth: 1,
+                                            paddingHorizontal: 8,
+                                            paddingVertical: 0,
+                                            marginTop: 5,
+                                        }}
+                                    />
+
                                 </View>
+
 
                             </LongPressGestureHandler>
                         </TapGestureHandler>
@@ -220,7 +236,7 @@ const styles = StyleSheet.create({
 
     icon: {
         position: "absolute",
-        bottom: 4,
+        top: 146,
         right: 4,
         width: 50,
         height: 50,
@@ -235,11 +251,10 @@ const styles = StyleSheet.create({
     },
     item: {
         width: '45%',
-        height: 200,
-        backgroundColor: '#e0e0e0',
-        borderRadius: 25,
+        // height: 200,
+
         marginVertical: 15,
-        overflow: "hidden",
+        // overflow: "hidden",
     }
 })
 
