@@ -149,7 +149,8 @@ const EditProfile = () => {
                                 images: output.images,
                                 profilePicture: output.profilePicture
                             })
-                        }} />
+                        }}
+                    />
                 </View>
 
                 <View style={styles.containerProperties}>

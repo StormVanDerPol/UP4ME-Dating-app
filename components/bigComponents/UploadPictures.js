@@ -9,7 +9,7 @@ import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
 import { openBrowser } from '../../functions/bowser';
 import ImageResizer from 'react-native-image-resizer';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
-import TextInputField from './TextInputField';
+import TextInputField, { limitLines } from './TextInputField';
 
 
 export const createProfilePicture = async (image) => {
@@ -27,9 +27,11 @@ export const createProfilePicture = async (image) => {
     return `data:image/jpeg;base64,${res.base64}`;
 }
 
-const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
+const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) => { }, onChangeText = (descriptions) => { } }) => {
 
     const [images, setImages] = useState((initImages.length == 0) ? new Array(6) : initImages);
+
+    const [descs, setDescs] = useState((initDescs.length == 0) ? new Array(6) : initDescs);
 
     const profilePicture = useRef(null)
 
@@ -40,13 +42,6 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
         if (initImages.length == 0) {
             images.fill('');
         }
-        // else {
-        //     initImages.map((img, i) => {
-        //         if (!img) {
-        //             images[i] = '';
-        //         }
-        //     })
-        // }
 
         setImages([...images]);
 
@@ -96,28 +91,42 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
 
     const deletePhoto = async (id) => {
         images[id] = '';
+        descs[id] = '';
 
         if (id == 0) {
             for (let a in images) {
                 if (images[a] != '') {
                     [images[a], images[0]] = [images[0], images[a]];
+
+                    [descs[a], descs[0]] = [descs[0], descs[a]];
+
                     profilePicture.current = await createProfilePicture(images[0])
                     break;
                 }
             }
         }
-        setImages([...images])
+        setImages([...images]);
+        setDescs([...descs]);
     }
 
     const swapProfPic = async (id) => {
         [images[id], images[0]] = [images[0], images[id]];
+
+        [descs[id], descs[0]] = [descs[0], descs[id]];
+
+
         profilePicture.current = await createProfilePicture(images[0]);
         setImages([...images]);
+        setDescs([...descs]);
     }
 
     useEffect(() => {
         onChange({ images: images, profilePicture: profilePicture.current });
-    }, [images])
+    }, [images]);
+
+    useEffect(() => {
+        onChangeText(descs)
+    }, [descs]);
 
 
     const _longTapRef = createRef();
@@ -192,8 +201,16 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
                                     {(images[i] == '') ? <UpForMeIcon style={styles.icon} icon={iconIndex.paperplane} /> : <UpForMeIcon style={styles.icon} icon={iconIndex.edit} />}
                                     {(i == 0 && images[0] != '') ? <UpForMeIcon style={styles.favicon} icon={iconIndex.restaurant_star} /> : <></>}
 
-                                    <TextInput
+                                    {(images[i] != '') ? <TextInput
                                         placeholder={'Beschrijving'}
+                                        defaultValue={descs[i]}
+                                        onChangeText={(input) => {
+
+                                            input = limitLines(2, input);
+
+                                            descs[i] = input;
+                                            setDescs([...descs]);
+                                        }}
                                         multiline={true}
                                         style={{
                                             borderRadius: 12,
@@ -203,10 +220,9 @@ const UploadPictures = ({ initImages = [], onChange = (images) => { } }) => {
                                             paddingVertical: 0,
                                             marginTop: 5,
                                         }}
-                                    />
+                                    /> : <></>}
 
                                 </View>
-
 
                             </LongPressGestureHandler>
                         </TapGestureHandler>

@@ -109,7 +109,6 @@ const DateDetails = ({ route }) => {
 
     const cannedTuna = (yourStatus, otherStatus, otherName, notisent) => {
 
-
         if (yourStatus == 1 || otherStatus == 1) {
             if (notisent == 1) {
                 return {
@@ -285,6 +284,8 @@ const DateDetails = ({ route }) => {
 
     const ultraTuna = cannedTuna(dateData.dateData.status, dateData.dateData.status2, data.naam, dateData.dateData.notisent);
 
+    const muriDate = (dateData.dateData.status == 1 || dateData.dateData.status == 3 || dateData.dateData.status2 == 1 || dateData.dateData.status == 3);
+
     const TunaButton = ({ style = {}, title, newStatus }) => {
         return (
             <>
@@ -339,7 +340,6 @@ const DateDetails = ({ route }) => {
                                         });
                                         break;
                                 }
-
                             }}
                         />
                 }
@@ -350,7 +350,7 @@ const DateDetails = ({ route }) => {
     return (
         <>
             <Body>
-                <TextQuicksand>{dateData.dateData.status} - {dateData.dateData.status2} - {dateData.dateData.notisent}</TextQuicksand>
+                {/* <TextQuicksand>{dateData.dateData.status} - {dateData.dateData.status2} - {dateData.dateData.notisent}</TextQuicksand> */}
                 <NavBar route={nbroutes.matches} />
                 <FlexSection>
 
@@ -408,12 +408,11 @@ const DateDetails = ({ route }) => {
                         </View>
                     </View>
 
-                    <AlbeitABitLate title={'Reageer'}
-
+                    {(muriDate) ? <></> : <AlbeitABitLate title={'Reageer'}
                         onPress={() => {
                             setReplyModalEnabled(true);
                         }}
-                    />
+                    />}
                 </FlexSection>
             </Body>
 
