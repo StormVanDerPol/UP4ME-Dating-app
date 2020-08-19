@@ -17,16 +17,23 @@ import { dodoFlight } from '../../functions/dodoAirlines';
 import { networkFeedbackMessages } from '../../components/waitIndicator';
 import { openBrowser } from '../../functions/bowser';
 import endpoints, { getEndpoint } from '../../res/data/endpoints';
+import UpForMeModal from '../../components/UpForMeModal';
+import checkCannedTuna from '../../functions/checkCannedTuna';
+import UpForMeButton, { ButtonTypes } from '../../components/UpForMeButton';
 
 const DateDetails = ({ route }) => {
 
     const dateData = route.params;
+
+    console.log(dateData);
 
     const data = DATA_STORE.profileCache[dateData.userid];
 
     console.log(dateData);
 
     const [accept, setAccept] = useState(true);
+
+    const [replyModalEnabled, setReplyModalEnabled] = useState(false);
 
     const [netFeedback, setNetFeedback] = useState({
         message: '',
@@ -90,246 +97,358 @@ const DateDetails = ({ route }) => {
                 min: _time[1],
             },
             date: dateData.date,
-            locationData: dateData.resData
+            locationData: dateData.resData,
+            phase: dateData.dateData.ronde
         }
-
-        console.log('kanker shit', dateData.dateData.ronde)
 
         navigationProxy.navigate('EditDate', {
             canEdit: canEditLocation,
-            phase: dateData.dateData.ronde,
+            // phase: dateData.dateData.ronde,
         })
     }
 
-    const cannedTuna = (yourStatus, otherStatus, otherName) => {
+    const cannedTuna = (yourStatus, otherStatus, otherName, notisent) => {
 
-        let theTuna = {
-            message: null,
-            buttonTitle: `your status: ${yourStatus}, ${otherName}'s status: ${otherStatus}`,
-            callback: () => { },
-            icons: false,
-            type: 'change'
-        };
-
-        switch (true) {
-            //You're new to this
-            case (yourStatus == -1):
-                if (otherStatus == 2) {
-                    theTuna = {
-                        type: 'change',
-                        icons: false,
-                        message: `${otherName} proposed a date! Check the details below and decide wether you want to go or not! You can always suggest something else!`,
-                        buttonTitle: `Antwoord`,
-                        callback: () => {
-                            Alert.alert(
-                                `Antwoord`,
-                                `Wil je op deze date met ${otherName}`,
-                                [
-                                    {
-                                        text: 'Ja!',
-                                        onPress: async () => {
-                                            await callSetDate(2);
-                                        }
-                                    },
-                                    {
-                                        text: 'Nee',
-                                        onPress: async () => {
-                                            await callSetDate(1);
-                                        }
-                                    },
-                                    {
-                                        text: 'Stel iets anders voor',
-                                        onPress: () => {
-                                            goToEdit();
-                                        }
-                                    },
-                                ],
-                                { cancelable: true }
-                            )
-                        },
-                    }
-                }
-                break;
-
-            case (yourStatus == 1):
-                switch (true) {
-                    case (otherStatus == 2):
-                        theTuna = {
-                            type: 'reserved',
-                            icons: false,
-                            message: `Jij hebt deze date niet geaccepteerd.`,
-                            buttonTitle: '',
-                        }
-                        break;
-                }
-                break;
-
-            //You proposed
-            case (yourStatus == 2 || yourStatus == 6):
-
-                switch (true) {
-                    //he's waiting
-                    case (otherStatus == -1):
-                        theTuna = {
-                            type: 'change',
-                            icons: false,
-                            message: `${otherName} heeft jouw voorstel ontvangen en moet nog reageren.`,
-                            buttonTitle: '',
-                        }
-                        break;
-                    //he declined
-                    case (otherStatus == 1):
-                        theTuna = {
-                            type: 'reserved',
-                            icons: false,
-                            message: `${otherName} heeft jouw date voorstel geweigerd.`,
-                            buttonTitle: '',
-                        }
-                        break;
-                    //He accepted
-                    case (otherStatus == 20):
-                        theTuna = {
-                            type: 'change',
-                            icons: false,
-                            message: `${otherName} heeft de date geaccepteerd. Jij bent nu verantwoordelijk voor de reservering. Type hierbij jullie beide voornamen en UP4ME.`,
-                            buttonTitle: 'reserveer nu',
-                            callback: async () => {
-
-                                if (yourStatus != 6)
-                                    await callSetDate(6, false);
-
-                                await openBrowser(dateData.resData.website).then(() => {
-                                    Alert.alert(
-                                        `Gereserveerd?`,
-                                        `Alles gelukt met het reserven? Zo ja laat het ${otherName} weten door op ja te drukken! Veel plezier met je date!`,
-                                        [
-                                            {
-                                                text: 'Ja!',
-                                                onPress: async () => {
-                                                    await callSetDate(6)
-                                                }
-                                            },
-                                            {
-                                                text: 'Nee',
-                                            }
-                                        ],
-                                        {
-                                            cancelable: true,
-                                        }
-
-                                    )
-                                });
-                            }
-                        }
-                        break;
+        if (yourStatus == 1 || otherStatus == 1) {
+            if (notisent == 1) {
+                return {
+                    type: 'reserved',
+                    icons: false,
+                    message: `Je hebt deze date afgewezen.`,
                 }
 
-                break;
-            //You accepted
-            case (yourStatus == 20):
-
-                if (otherStatus == 60) {
-                    theTuna = {
-                        type: 'reserved',
-                        icons: false,
-                        message: `${otherName} heeft greserveerd, Veel plezier met je date!`,
-                        buttonTitle: 'date wijzigen',
-                        callback: () => {
-                            goToEdit(false);
-                        }
-                    }
+            } else {
+                return {
+                    type: 'reserved',
+                    icons: false,
+                    message: `${otherName} heeft deze date afgewezen.`,
                 }
-
-                break;
-
-            case (yourStatus == 60):
-                if (otherStatus == 20) {
-                    theTuna = {
-                        type: 'reserved',
-                        icons: false,
-                        message: `Je hebt gereserveerd! Veel plezier met je date!`,
-                        buttonTitle: 'date wijzigen',
-                        callback: () => {
-                            goToEdit(false);
-                        }
-                    }
-                }
-                break;
+            }
         }
 
-        return theTuna;
+        if (yourStatus == 3 || otherStatus == 3) {
+
+            if (notisent == 1) {
+                return {
+                    type: 'reserved',
+                    icons: false,
+                    message: `Je hebt deze date gecancelled`,
+                }
+
+            } else {
+                return {
+                    type: 'reserved',
+                    icons: false,
+                    message: `${otherName} heeft deze date gecancelled`,
+                }
+            }
+
+        }
+
+        if (yourStatus == -1) {
+            if (otherStatus == 2 || otherStatus == 4 || otherStatus == 5) {
+
+                return {
+                    type: 'change',
+                    icons: false,
+                    message: `${otherName} heeft een date voorgesteldt!`,
+                }
+            }
+        }
+
+        if (yourStatus == 2) {
+            if (otherStatus == -1) {
+
+                return {
+                    type: 'change',
+                    icons: false,
+                    message: `Je hebt een date voorstel gedaan, wacht op ${otherName} zijn/haar reactie!`
+                }
+            }
+
+            if (otherStatus == 4 || otherStatus == 5) {
+                return {
+                    type: 'change',
+                    icons: false,
+                    message: `${otherName} heeft de date aangepast.`
+                }
+            }
+
+            if (otherStatus == 20) {
+                return {
+                    type: 'change',
+                    icons: false,
+                    message: `${otherName} heeft geaccepteerd!`
+                }
+            }
+        }
+
+        if (yourStatus == 4 || yourStatus == 5) {
+            if (notisent == 1) {
+                return {
+                    type: 'change',
+                    icons: false,
+                    message: `Je hebt de date aangepast, wacht op ${otherName} zijn/haar reactie!`
+                }
+            }
+            else {
+
+                if (otherStatus == 20) {
+                    return {
+                        type: 'change',
+                        icons: false,
+                        message: `${otherName} heeft de date geaccepteerd. Jij bent nu verantwoordelijk voor de reservering. Type hierbij jullie beide voornamen en UP4ME.`,
+                    }
+                } else {
+                    return {
+                        type: 'change',
+                        icons: false,
+                        message: `${otherName} heeft de date aangepast.`
+                    }
+                }
+            }
+        }
+
+        if (yourStatus == 6) {
+            if (notisent == 1) {
+                return {
+                    type: 'change',
+                    icons: false,
+                    message: `${otherName} heeft de date geaccepteerd. Jij bent nu verantwoordelijk voor de reservering. Type hierbij jullie beide voornamen en UP4ME. Als het reserveren niet lukt is het mischien handig om een nieuw voorstel te doen.`
+                }
+            }
+        }
+
+        if (yourStatus == 60) {
+            if (otherStatus == 20) {
+                return {
+                    type: 'reserved',
+                    icons: false,
+                    message: `Je hebt gereserveerd! Veel plezier met je date!`,
+                }
+            }
+        }
+
+        if (yourStatus == 20) {
+            if (notisent == 1) {
+                return {
+                    type: 'change',
+                    icons: false,
+                    message: `Je hebt geaccepteerd!`
+                }
+            } else {
+
+                if (otherStatus == 4) {
+                    return {
+                        type: 'change',
+                        icons: false,
+                        message: `${otherName} heeft de date aangepast.`
+                    }
+                }
+
+                if (otherStatus == 6) {
+                    return {
+                        type: 'change',
+                        icons: false,
+                        message: `${otherName} is bezig met reserveren...!`
+                    }
+                }
+                if (otherStatus == 60) {
+                    return {
+                        type: 'reserved',
+                        icons: false,
+                        message: `${otherName} heeft gereserveerd! Veel plezier met je date!`
+                    }
+                }
+            }
+        }
+
+        if (yourStatus == 40 || yourStatus == 50) {
+            if (notisent == -1) {
+                if (otherStatus == 4 || otherStatus == 5) {
+                    return {
+                        type: 'change',
+                        icons: false,
+                        message: `${otherName} heeft de date aangepast.`
+                    }
+                }
+            }
+        }
+
+        return {
+            type: 'change',
+            icons: false,
+            message: `Steins;gate reached. you: ${yourStatus}, ${otherName}: ${otherStatus}, ${(notisent == -1) ? 'My turn' : otherName + ' turn'}`,
+        }
     }
 
-    const ultraTuna = cannedTuna(dateData.dateData.status, dateData.dateData.status2, data.naam);
+    const ultraTuna = cannedTuna(dateData.dateData.status, dateData.dateData.status2, data.naam, dateData.dateData.notisent);
+
+    const muriDate = (dateData.dateData.status == 1 || dateData.dateData.status == 3 || dateData.dateData.status2 == 1 || dateData.dateData.status == 3);
+
+    const TunaButton = ({ style = {}, title, newStatus }) => {
+        return (
+            <>
+                {
+                    (checkCannedTuna(
+                        dateData.dateData.status,
+                        dateData.dateData.status2,
+                        newStatus,
+                        dateData.dateData.datum,
+                        dateData.dateData.tijd,
+                        dateData.dateData.notisent,
+                    ) == false) ? <></> : <UpForMeButton
+                            style={style}
+                            title={title}
+                            onPress={async () => {
+
+                                switch (true) {
+                                    case (newStatus >= 1 && newStatus <= 3):
+                                        callSetDate(newStatus);
+                                        break;
+
+                                    case (newStatus == 4):
+                                        goToEdit();
+                                        break;
+                                    case (newStatus == 5):
+                                        goToEdit(false);
+                                        break;
+                                    case (newStatus == 6):
+                                        if (dateData.dateData.status != 6)
+                                            await callSetDate(6, false);
+
+                                        await openBrowser(dateData.resData.website).then(() => {
+                                            Alert.alert(
+                                                `Gereserveerd?`,
+                                                `Alles gelukt met het reserven? Zo ja laat het ${data.naam} weten door op ja te drukken! Veel plezier met je date!`,
+                                                [
+                                                    {
+                                                        text: 'Ja!',
+                                                        onPress: async () => {
+                                                            await callSetDate(6)
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Nee',
+                                                    }
+                                                ],
+                                                {
+                                                    cancelable: true,
+                                                }
+
+                                            )
+                                        });
+                                        break;
+                                }
+                            }}
+                        />
+                }
+            </>
+        )
+    }
 
     return (
-        <Body>
-            <TextQuicksand>{dateData.dateData.status} - {dateData.dateData.status2}</TextQuicksand>
-            <NavBar route={nbroutes.matches} />
-            <FlexSection>
+        <>
+            <Body>
+                {/* <TextQuicksand>{dateData.dateData.status} - {dateData.dateData.status2} - {dateData.dateData.notisent}</TextQuicksand> */}
+                <NavBar route={nbroutes.matches} />
+                <FlexSection>
 
-                <ArrowButtonTop
-                    icon={iconIndex.heart}
-                    header={'Date'} onPress={() => {
-                        navigationProxy.reset({
-                            index: 1,
-                            routes: [
-                                {
-                                    name: 'Home',
-                                    params: {}
-                                },
-                                {
-                                    name: 'LoadDatesOverview',
-                                    params: {},
-                                }
-                            ]
-                        })
+                    <ArrowButtonTop
+                        icon={iconIndex.heart}
+                        header={'Date'} onPress={() => {
+                            navigationProxy.reset({
+                                index: 1,
+                                routes: [
+                                    {
+                                        name: 'Home',
+                                        params: {}
+                                    },
+                                    {
+                                        name: 'LoadDatesOverview',
+                                        params: {},
+                                    }
+                                ]
+                            })
+                        }} />
+
+                    <FastImage
+                        style={styles.image}
+                        source={{
+                            uri: data.foto1,
+                        }}
+                    />
+
+                    {(ultraTuna.message) ? <Notification
+                        type={ultraTuna.type}
+                        onChange={(output) => {
+                            setAccept(output);
+                        }}
+                        icons={ultraTuna.icons}
+                        message={ultraTuna.message}
+                    /> : <></>}
+
+                    <TextQuicksand style={styles.dateHeader}>Date met {data.naam}</TextQuicksand>
+
+                    <View style={styles.infoItem}>
+                        <UpForMeIcon style={styles.infoIcon} icon={iconIndex.calendar} />
+                        <TextQuicksand style={styles.infoText}>{dateData.date.day} {writtenMonths[dateData.date.month - 1]} {dateData.date.year}</TextQuicksand>
+                    </View>
+
+                    <View style={styles.infoItem}>
+                        <UpForMeIcon style={styles.infoIcon} icon={iconIndex.clock} />
+                        <TextQuicksand style={styles.infoText}>{dateData.time}</TextQuicksand>
+                    </View>
+                    <View style={styles.infoItem}>
+                        <UpForMeIcon style={styles.infoIcon} icon={iconIndex.location} />
+                        <View>
+                            <TextQuicksand style={styles.infoText}>{dateData.resData.naam}</TextQuicksand>
+                            <TextQuicksand style={styles.infoText}>{dateData.resData.straat} {dateData.resData.huisnummer}</TextQuicksand>
+                            <TextQuicksand style={styles.infoText}>{dateData.resData.Postcode} {dateData.resData.stad}</TextQuicksand>
+                        </View>
+                    </View>
+
+                    {(muriDate) ? <></> : <AlbeitABitLate title={'Reageer'}
+                        onPress={() => {
+                            setReplyModalEnabled(true);
+                        }}
+                    />}
+                </FlexSection>
+            </Body>
+
+            <UpForMeModal
+                enabled={replyModalEnabled}
+                onPressBackButton={() => {
+                    setReplyModalEnabled(false);
+                }}
+            >
+                <View style={{
+                    flex: 1,
+                }} />
+
+                <View style={{
+                    alignItems: 'center',
+                    marginBottom: 24,
+                }}>
+
+
+                    <TunaButton style={styles.modalBtn} title={'Afwijzen'} newStatus={1} />
+                    <TunaButton style={styles.modalBtn} title={'Accepteer'} newStatus={2} />
+                    <TunaButton style={styles.modalBtn} title={'Cancel'} newStatus={3} />
+                    <TunaButton style={styles.modalBtn} title={'Ander voorstel'} newStatus={4} />
+                    <TunaButton style={styles.modalBtn} title={'Verander tijd en/of datum'} newStatus={5} />
+                    <TunaButton style={styles.modalBtn} title={'Reserveren'} newStatus={6} />
+                    <UpForMeButton style={styles.modalBtn} title={'Annuleren'} buttonType={ButtonTypes.white} onPress={() => {
+                        setReplyModalEnabled(false);
                     }} />
 
-                <FastImage
-                    style={styles.image}
-                    source={{
-                        uri: data.foto1,
-                    }}
-                />
-
-                {(ultraTuna.message) ? <Notification
-                    type={ultraTuna.type}
-                    onChange={(output) => {
-                        setAccept(output);
-                    }}
-                    icons={ultraTuna.icons}
-                    message={ultraTuna.message}
-                /> : <></>}
-
-                <TextQuicksand style={styles.dateHeader}>Date met {data.naam}</TextQuicksand>
-
-                <View style={styles.infoItem}>
-                    <UpForMeIcon style={styles.infoIcon} icon={iconIndex.calendar} />
-                    <TextQuicksand style={styles.infoText}>{dateData.date.day} {writtenMonths[dateData.date.month - 1]} {dateData.date.year}</TextQuicksand>
                 </View>
 
-                <View style={styles.infoItem}>
-                    <UpForMeIcon style={styles.infoIcon} icon={iconIndex.clock} />
-                    <TextQuicksand style={styles.infoText}>{dateData.time}</TextQuicksand>
-                </View>
-                <View style={styles.infoItem}>
-                    <UpForMeIcon style={styles.infoIcon} icon={iconIndex.location} />
-                    <View>
-                        <TextQuicksand style={styles.infoText}>{dateData.resData.naam}</TextQuicksand>
-                        <TextQuicksand style={styles.infoText}>{dateData.resData.straat} {dateData.resData.huisnummer}</TextQuicksand>
-                        <TextQuicksand style={styles.infoText}>{dateData.resData.Postcode} {dateData.resData.stad}</TextQuicksand>
-                    </View>
-                </View>
+            </UpForMeModal>
 
-                {(ultraTuna.buttonTitle.length == 0) ? <></> : <AlbeitABitLate title={ultraTuna.buttonTitle}
+        </>
 
-                    onPress={() => {
-                        ultraTuna.callback()
-                    }}
-                />}
-            </FlexSection>
-        </Body>
+
     );
 }
 
@@ -421,6 +540,9 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         width: 50,
         height: 50,
+    },
+    modalBtn: {
+        marginVertical: 5,
     }
 })
 

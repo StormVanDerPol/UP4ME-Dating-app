@@ -7,14 +7,11 @@ import { DATA_STORE } from '../../stored/dataStore';
 const EditDate = ({ route }) => {
 
     const canEdit = route.params.canEdit;
-    const phase = route.params.phase;
-
-    console.log('kenker shit', phase);
 
     return (
         <Body>
             <NavBar route={nbroutes.matches} />
-            <DatePlanner phase={phase} userid={DATA_STORE.plannedDate.userid} _resData={DATA_STORE.plannedDate.locationData} editing={true} canEditLocation={canEdit} />
+            <DatePlanner phase={DATA_STORE.plannedDate.phase} userid={DATA_STORE.plannedDate.userid} _resData={DATA_STORE.plannedDate.locationData} editing={true} canEditLocation={canEdit} />
         </Body>
     );
 }

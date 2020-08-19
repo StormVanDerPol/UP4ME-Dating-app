@@ -3,8 +3,11 @@ import { navigationProxy } from "../navigation/navigationProxy";
 
 export const planThatDamnDate = (params = {}, keepResID = false) => {
 
-    if (!keepResID)
+    if (!keepResID) {
         DATA_STORE.currentResID = null;
+    }
+
+    console.log('BRUHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
 
     DATA_STORE.plannedDate = {
         userid: null,
@@ -12,7 +15,6 @@ export const planThatDamnDate = (params = {}, keepResID = false) => {
         date: null,
         locationData: null,
     };
-    // navigationProxy.navigate('LoadPlanDate', params);
 
     navigationProxy.reset({
         index: 1,

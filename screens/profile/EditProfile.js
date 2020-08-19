@@ -89,7 +89,6 @@ const EditProfile = () => {
                                     newData: newData,
                                     onSuccess: () => {
 
-
                                         setNetFeedback({
                                             busy: false,
                                             message: '',
@@ -150,7 +149,8 @@ const EditProfile = () => {
                                 images: output.images,
                                 profilePicture: output.profilePicture
                             })
-                        }} />
+                        }}
+                    />
                 </View>
 
                 <View style={styles.containerProperties}>

@@ -25,6 +25,7 @@ export const DATA_STORE = {
         time: null,
         date: null,
         locationData: null,
+        phase: null,
     },
 
     currentResID: null,

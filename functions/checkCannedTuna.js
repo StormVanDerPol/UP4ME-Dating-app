@@ -26,7 +26,7 @@ function nextDay(inputDate) {
 
     var calculatedDate = year + month + day;
 
-    console.log("nextDay (currentDate, date) ===> ", currentDate, date)
+    // console.log("nextDay (currentDate, date) ===> ", currentDate, date)
 
     if (calculatedDate > inputDate) {
         return true;

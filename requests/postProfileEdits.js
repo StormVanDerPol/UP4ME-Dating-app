@@ -60,7 +60,7 @@ export default postProfileEdits = async ({
                                 url: getEndpoint(endpoints.post.setProperties),
                                 data: newProps,
 
-                                thenCallback: (res) => {
+                                thenCallback: async (res) => {
 
                                     if (res.data) {
 
@@ -74,7 +74,20 @@ export default postProfileEdits = async ({
                                         DATA_STORE.profileCache[DATA_STORE.userID].kidwens = newProps.kinderwens;
                                         DATA_STORE.profileCache[DATA_STORE.userID].eten = newProps.eten;
 
-                                        onSuccess();
+
+                                        await dodoFlight({
+                                            method: 'post',
+                                            url: getEndpoint(endpoints.post.setLastEdit),
+                                            data: {
+                                                userid: DATA_STORE.userID,
+                                            },
+
+                                            thenCallback: (res) => {
+                                                if (res.data)
+                                                    onSuccess();
+                                            }
+                                        })
+
                                     }
                                 },
 

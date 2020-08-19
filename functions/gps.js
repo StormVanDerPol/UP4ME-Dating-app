@@ -1,15 +1,10 @@
-import { PermissionsAndroid, Platform } from "react-native";
+import { PermissionsAndroid, Platform, Alert, BackHandler } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
+import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import endpoints, { getEndpoint } from "../res/data/endpoints";
 import { DATA_STORE } from "../stored/dataStore";
 import { dodoFlight } from "./dodoAirlines";
 import { hrToMS } from "../res/data/time";
-
-
-const GPS_CONFIG = {
-    enabled: true,
-    logging: false,
-}
 
 export const GPS_DATA = {
     enabled: false,
@@ -45,9 +40,6 @@ export const requestPermission = async () => {
 export const getGPS = () => {
     Geolocation.getCurrentPosition((pos) => {
 
-        if (GPS_CONFIG.logging)
-            console.log('got location:', pos);
-
         GPS_DATA.coords = pos.coords;
         GPS_DATA.timestamp = Date.now();
 
@@ -61,31 +53,14 @@ export const getGPS = () => {
                     latitude: GPS_DATA.coords.latitude,
                     longitude: GPS_DATA.coords.longitude,
                 },
-
-                thenCallback: (res) => {
-                    if (GPS_CONFIG.logging)
-                        console.log(res);
-                },
-
-                catchCallback: (err) => {
-                    GPS_DATA.timestamp -= msOffset + 100;
-                    if (GPS_CONFIG.logging) {
-                        console.log(err);
-                        console.warn('error updating GPS', 'new timestamp', GPS_DATA.timestamp);
-                    }
-                },
             })
         }
         else {
             GPS_DATA.timestamp -= msOffset + 100;
-
-            if (GPS_CONFIG.logging)
-                console.log('no token available', 'new timestamp', GPS_DATA.timestamp);
         }
 
-    }), (err) => {
-        if (GPS_CONFIG.logging)
-            console.log('error getting location:', err)
+    }), (error) => {
+        alert(error.code);
     }, {
         timeout: 1000,
         maximumAge: 2000,
@@ -98,59 +73,81 @@ let gpsTimer = null;
 
 export const startWatchingGPS = async () => {
 
-    if (GPS_CONFIG.enabled) {
+    if (!GPS_DATA.coords) {
+        getLocation();
+        GPS_DATA.enabled = true;
+    }
 
-        if (!GPS_DATA.coords) {
-            await requestPermission()
-                .then(() => {
-                    getGPS();
-                });
+    gpsTimer = setInterval(() => {
+
+        if (DATA_STORE.userToken) {
+
+            let now = Date.now();
+
+            if (now > GPS_DATA.timestamp + msOffset) {
+                getLocation();
+                GPS_DATA.enabled = true;
+            }
+        } else {
+            clearInterval(gpsTimer);
+            GPS_DATA.enabled = false;
         }
+    }, 10000)
 
-        if (!GPS_DATA.enabled) {
+}
+
+const getLocation = async () => {
 
 
+    var provider;
 
-            gpsTimer = setInterval(() => {
-
-                if (DATA_STORE.userToken) {
-
-                    let now = Date.now()
-
-                    if (now > GPS_DATA.timestamp + msOffset) {
-
-                        requestPermission()
-                            .then(() => {
-                                getGPS();
-                            });
-                    }
-                    else {
-                        if (GPS_CONFIG.logging)
-                            console.log(`${(GPS_DATA.timestamp + msOffset) - now} ms left till update`);
-                    }
-                }
-                else {
-                    clearInterval(gpsTimer);
-                    if (GPS_CONFIG.logging)
-                        console.log('stopped watching GPS...');
-                }
-
-            }, 10000);
-            GPS_DATA.enabled = true;
-        }
+    if (Platform.OS == 'android') {
+        await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({ interval: 1000, fastInterval: 500 })
+            .then((data) => {
+                provider = true;
+            })
+            .catch((error) => {
+                provider = false;
+            });
     }
     else {
-
-        //use mock data instead.
-        GPS_DATA.enabled = true;
-        GPS_DATA.permission = true;
-        GPS_DATA.timestamp = Date.now();
-        GPS_DATA.coords = {
-            latitude: 0,
-            longitude: 0,
-        };
-
-        if (GPS_CONFIG.logging)
-            console.log(`GPS setting would've been enabled now`);
+        provider = true;
     }
+
+    if (provider) {
+
+        const permissionGranted = await requestPermission();
+
+        if (permissionGranted) {
+            getGPS();
+        } else {
+            alert('Location permission not granted');
+        }
+
+    } else {
+
+        clearInterval(gpsTimer);
+        GPS_DATA.enabled = false;
+
+        Alert.alert(
+            'Location notice',
+            'UP4ME Uses location data to make sure your potential matches are within the range the user provides, thus we request the user to enable their geolocation provider to provide this experience',
+            [
+                {
+                    text: 'Agree',
+                    onPress: () => {
+                        startWatchingGPS();
+                    }
+                },
+                {
+                    text: 'Disagree, exit the app.',
+                    onPress: () => {
+                        BackHandler.exitApp();
+                    }
+                }
+            ],
+            { cancelable: false }
+        );
+    }
+
 }

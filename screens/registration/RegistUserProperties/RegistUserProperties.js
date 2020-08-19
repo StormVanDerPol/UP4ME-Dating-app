@@ -18,6 +18,7 @@ import RegistUp4MeLogo from '../../../components/LoginAndRegistration/RegistUp4M
 import InputProperties from '../../../components/bigComponents/InputProperties';
 import TextQuicksand from '../../../components/TextQuicksand';
 import up4meColours from '../../../res/data/colours';
+import { timeouts } from '../../../res/data/requests';
 
 
 const RegistUserProperties = () => {
@@ -87,17 +88,29 @@ const RegistUserProperties = () => {
                             eten: userProperties.current.food,
                         },
 
-                        thenCallback: (res) => {
+                        thenCallback: async (res) => {
+                            if (res.data)
+                                await dodoFlight({
+                                    method: 'post',
+                                    url: getEndpoint(endpoints.post.setLastEdit),
+                                    timeout: timeouts.short,
+                                    data: {
+                                        userid: DATA_STORE.userID,
+                                    },
 
-                            if (res.data) {
+                                    thenCallback: (res) => {
+                                        if (res.data) {
+                                            setNetFeedback({
+                                                busy: false,
+                                                message: '',
+                                            });
 
-                                setNetFeedback({
-                                    busy: false,
-                                    message: '',
-                                });
+                                            navigationProxy.navigate('RegistCriteria');
+                                        }
+                                    }
 
-                                navigationProxy.navigate('RegistCriteria');
-                            }
+                                })
+
                         },
 
                         catchCallback: (err) => {

@@ -4,6 +4,16 @@ import { TextInput } from 'react-native-gesture-handler';
 import { _FOCUSED_C } from '../KeyboardDismiss';
 
 
+export const limitLines = (limit, input) => {
+    let lb = input.split(/\r\n|\r|\n/).length;
+
+    if (lb > limit) {
+        input = input.replace(/\n$/, '');
+    }
+
+    return input;
+}
+
 const TextInputField = ({ initValue = '', onChange = (input) => { } }) => {
 
     const [tiValue, setTiValue] = useState(initValue);
