@@ -98,6 +98,8 @@ const DateItem = ({ data }) => {
 
     const ultraHyperTuna = getStatusDescription(data.status, data.status2, name, data.notisent);
 
+    const muriDate = (data.status == 1 || data.status == 3 || data.status2 == 1 || data.status == 3);
+
     return (
         <TapGestureHandler onHandlerStateChange={({ nativeEvent }) => {
             if (nativeEvent.state === State.END) {
@@ -112,7 +114,7 @@ const DateItem = ({ data }) => {
                 })
             }
         }}>
-            <View style={styles.dateItemContainer}>
+            <View style={[styles.dateItemContainer]}>
 
                 <View style={styles.imageSection} >
                     {(!image) ? <TextQuicksand style={{ height: 250 }}>Loading</TextQuicksand> : <FastImage
@@ -235,7 +237,7 @@ export const getStatusDescription = (yourStatus, otherStatus, otherName, notisen
 
     if (yourStatus == 1 || otherStatus == 1) {
         if (notisent == 1) {
-            return `Je hebt afgewezen.`;
+            return `afgewezen`;
         } else {
             return `${otherName} heeft afgewezen.`;
         }
@@ -261,7 +263,7 @@ export const getStatusDescription = (yourStatus, otherStatus, otherName, notisen
     if (yourStatus == 2) {
         if (otherStatus == -1) {
 
-            return `Je hebt een date voorstel gedaan, wacht op ${otherName} zijn/haar reactie!`;
+            return ``;
         }
 
         if (otherStatus == 4 || otherStatus == 5) {
@@ -275,7 +277,7 @@ export const getStatusDescription = (yourStatus, otherStatus, otherName, notisen
 
     if (yourStatus == 4 || yourStatus == 5) {
         if (notisent == 1) {
-            return `Je hebt de date aangepast, wacht op ${otherName} zijn/haar reactie!`;
+            return ``;
         }
         else {
 
@@ -295,13 +297,13 @@ export const getStatusDescription = (yourStatus, otherStatus, otherName, notisen
 
     if (yourStatus == 60) {
         if (otherStatus == 20) {
-            return `Je hebt gereserveerd! Veel plezier met je date!`;
+            return ``;
         }
     }
 
     if (yourStatus == 20) {
         if (notisent == 1) {
-            return `Je hebt geaccepteerd!`;
+            return ``;
         } else {
 
             if (otherStatus == 4) {

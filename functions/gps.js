@@ -98,15 +98,21 @@ export const startWatchingGPS = async () => {
 
 const getLocation = async () => {
 
+
     var provider;
 
-    await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({ interval: 1000, fastInterval: 500 })
-        .then((data) => {
-            provider = true;
-        })
-        .catch((error) => {
-            provider = false;
-        });
+    if (Platform.OS == 'android') {
+        await RNAndroidLocationEnabler.promptForEnableLocationIfNeeded({ interval: 1000, fastInterval: 500 })
+            .then((data) => {
+                provider = true;
+            })
+            .catch((error) => {
+                provider = false;
+            });
+    }
+    else {
+        provider = true;
+    }
 
     if (provider) {
 
