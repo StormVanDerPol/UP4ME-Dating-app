@@ -123,7 +123,15 @@ const ConfirmationCode = () => {
                                             navigationProxy.navigate('RegistUserData');
                                         }
                                         else {
-                                            navigationProxy.navigate('Landing');
+                                            navigationProxy.reset({
+                                                index: 0,
+                                                routes: [
+                                                    {
+                                                        name: 'LoadHome',
+                                                        params: {},
+                                                    },
+                                                ]
+                                            });
                                         }
 
                                         setNetFeedback({
