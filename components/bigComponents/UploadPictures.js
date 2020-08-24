@@ -1,15 +1,17 @@
 import React, { useState, useRef, useEffect, createRef } from 'react';
 import TextQuicksand from '../TextQuicksand';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Image } from 'react-native';
 import { TouchableOpacity, TapGestureHandler, State, LongPressGestureHandler, FlingGestureHandler, Directions, TextInput } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 
-import * as ImagePicker from 'expo-image-picker';
+import * as ExpoImagePicker from 'expo-image-picker';
 import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
 import { openBrowser } from '../../functions/bowser';
 import ImageResizer from 'react-native-image-resizer';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
 import TextInputField, { limitLines } from './TextInputField';
+import { checkLewd, prepareLewd, checkLewdFromBase64 } from '../../functions/RemovePr0nz';
+import ImagePicker from 'react-native-image-picker';
 
 
 export const createProfilePicture = async (image) => {
@@ -48,13 +50,51 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
         _init.current = true;
     }
 
+    const [model, setModel] = useState(null);
+
+    useEffect(() => {
+        const onMountAsync = async () => {
+            console.log('preparing lewd')
+            setModel(await prepareLewd());
+            console.log('lewd prepared')
+        }
+
+        onMountAsync();
+    }, [])
+
+
+    const processImage = async (id, imagePickerResponse) => {
+        let fileExtension = imagePickerResponse.uri.substr(imagePickerResponse.uri.lastIndexOf('.') + 1);
+
+        if (fileExtension == 'jpg') {
+            fileExtension = 'jpeg';
+        }
+
+        let index = id;
+
+        if (images[0] == '')
+            index = 0;
+
+
+        await checkLewd(imagePickerResponse.uri, model)
+
+        const base64image = `data:${imagePickerResponse.type}/${fileExtension};base64,${imagePickerResponse.base64}`;
+        // await checkLewdFromBase64(base64image, model);
+
+        images[index] = base64image;
+
+        profilePicture.current = await createProfilePicture(images[index])
+
+        setImages([...images])
+    }
+
     const handleChoosePhoto = async (id) => {
 
         try {
 
-            let res = await ImagePicker.launchImageLibraryAsync(
+            let imagePickerResponse = await ExpoImagePicker.launchImageLibraryAsync(
                 {
-                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    mediaTypes: ExpoImagePicker.MediaTypeOptions.Images,
                     allowsEditing: true,
                     aspect: [1, 1],
                     quality: 0.5,
@@ -62,25 +102,10 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
                 }
             );
 
-            if (!res.cancelled) {
+            if (!imagePickerResponse.cancelled) {
 
-                let fileExtension = res.uri.substr(res.uri.lastIndexOf('.') + 1);
+                processImage(id, imagePickerResponse);
 
-                if (fileExtension == 'jpg') {
-                    fileExtension = 'jpeg';
-                }
-
-                let index = id;
-
-                if (images[0] == '')
-                    index = 0;
-
-                images[index] = `data:${res.type}/${fileExtension};base64,${res.base64}`;
-
-
-                profilePicture.current = await createProfilePicture(images[index])
-
-                setImages([...images])
             }
 
         }
@@ -137,96 +162,101 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
 
                 {images.map((image, i) => {
 
-                    return (
-                        <TapGestureHandler
-                            key={i}
-                            onHandlerStateChange={(e) => {
-                                if (e.nativeEvent.state == State.END) {
+                    if (!model) {
+                        return <TextQuicksand>Loading model</TextQuicksand>
+                    } else {
 
-                                    if (image === '') {
-                                        handleChoosePhoto(i);
-                                    }
-                                    else {
-                                        Alert.alert(
-                                            `What to do with image #${i + 1}?`,
-                                            '',
-                                            [
-                                                {
-                                                    text: 'Choose a different image', onPress: () => {
-                                                        handleChoosePhoto(i);
-                                                    }
-                                                },
-                                                {
-                                                    text: 'Set as profile picture', onPress: () => {
-                                                        swapProfPic(i);
-                                                    }
-                                                },
-                                                {
-                                                    text: 'Delete', onPress: () => {
-                                                        deletePhoto(i);
-                                                    }
-                                                },
-                                            ],
-                                            { cancelable: true }
-                                        );
-                                    }
-                                }
-                            }}
-
-                            waitFor={_longTapRef}
-                        >
-                            <LongPressGestureHandler
-                                ref={_longTapRef}
+                        return (
+                            <TapGestureHandler
+                                key={i}
                                 onHandlerStateChange={(e) => {
-                                    if (e.nativeEvent.state == State.ACTIVE) {
-                                        deletePhoto(i);
+                                    if (e.nativeEvent.state == State.END) {
+
+                                        if (image === '') {
+                                            handleChoosePhoto(i);
+                                        }
+                                        else {
+                                            Alert.alert(
+                                                `What to do with image #${i + 1}?`,
+                                                '',
+                                                [
+                                                    {
+                                                        text: 'Choose a different image', onPress: () => {
+                                                            handleChoosePhoto(i);
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Set as profile picture', onPress: () => {
+                                                            swapProfPic(i);
+                                                        }
+                                                    },
+                                                    {
+                                                        text: 'Delete', onPress: () => {
+                                                            deletePhoto(i);
+                                                        }
+                                                    },
+                                                ],
+                                                { cancelable: true }
+                                            );
+                                        }
                                     }
                                 }}
-                                minDurationMs={300}
+
+                                waitFor={_longTapRef}
                             >
-                                <View style={styles.item}>
+                                <LongPressGestureHandler
+                                    ref={_longTapRef}
+                                    onHandlerStateChange={(e) => {
+                                        if (e.nativeEvent.state == State.ACTIVE) {
+                                            deletePhoto(i);
+                                        }
+                                    }}
+                                    minDurationMs={300}
+                                >
+                                    <View style={styles.item}>
 
-                                    <FastImage
-                                        style={{
-                                            width: '100%',
-                                            height: 200,
-                                            borderRadius: 25,
-                                            backgroundColor: '#e0e0e0',
-                                        }}
-                                        source={{
-                                            uri: image,
-                                        }}
-                                    />
+                                        <FastImage
+                                            style={{
+                                                width: '100%',
+                                                height: 200,
+                                                borderRadius: 25,
+                                                backgroundColor: '#e0e0e0',
+                                            }}
+                                            source={{
+                                                uri: image,
+                                            }}
+                                        />
 
-                                    {(images[i] == '') ? <UpForMeIcon style={styles.icon} icon={iconIndex.paperplane} /> : <UpForMeIcon style={styles.icon} icon={iconIndex.edit} />}
-                                    {(i == 0 && images[0] != '') ? <UpForMeIcon style={styles.favicon} icon={iconIndex.restaurant_star} /> : <></>}
+                                        {(images[i] == '') ? <UpForMeIcon style={styles.icon} icon={iconIndex.paperplane} /> : <UpForMeIcon style={styles.icon} icon={iconIndex.edit} />}
+                                        {(i == 0 && images[0] != '') ? <UpForMeIcon style={styles.favicon} icon={iconIndex.restaurant_star} /> : <></>}
 
-                                    {(images[i] != '') ? <TextInput
-                                        placeholder={'Beschrijving'}
-                                        defaultValue={descs[i]}
-                                        onChangeText={(input) => {
+                                        {(images[i] != '') ? <TextInput
+                                            placeholder={'Beschrijving'}
+                                            defaultValue={descs[i]}
+                                            onChangeText={(input) => {
 
-                                            input = limitLines(2, input);
+                                                input = limitLines(2, input);
 
-                                            descs[i] = input;
-                                            setDescs([...descs]);
-                                        }}
-                                        multiline={true}
-                                        style={{
-                                            borderRadius: 12,
-                                            borderColor: '#e0e0e0',
-                                            borderWidth: 1,
-                                            paddingHorizontal: 8,
-                                            paddingVertical: 0,
-                                            marginTop: 5,
-                                        }}
-                                    /> : <></>}
+                                                descs[i] = input;
+                                                setDescs([...descs]);
+                                            }}
+                                            multiline={true}
+                                            style={{
+                                                borderRadius: 12,
+                                                borderColor: '#e0e0e0',
+                                                borderWidth: 1,
+                                                paddingHorizontal: 8,
+                                                paddingVertical: 0,
+                                                marginTop: 5,
+                                            }}
+                                        /> : <></>}
 
-                                </View>
+                                    </View>
 
-                            </LongPressGestureHandler>
-                        </TapGestureHandler>
-                    )
+                                </LongPressGestureHandler>
+                            </TapGestureHandler>
+                        )
+                    }
                 })}
 
             </View>
