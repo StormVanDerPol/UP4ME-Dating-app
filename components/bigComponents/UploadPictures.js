@@ -86,7 +86,7 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
 
             const cn = prediction.className;
 
-            if (cn == 'Porn' || cn == 'Hentai' || cn == 'Sexy') {
+            if (cn == 'Porn' || cn == 'Hentai' || cn == 'Sexy' || cn == 'Drawing') {
                 if (prediction.probability > lewdThreshold) {
                     isLewd = true;
                     break;
@@ -119,6 +119,9 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
             );
 
             if (!imagePickerResponse.cancelled) {
+
+                //handle everything other than jpgs
+
                 processImage(id, imagePickerResponse);
             }
 
