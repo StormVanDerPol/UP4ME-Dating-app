@@ -4,6 +4,8 @@ export const DATA_STORE = {
     userID: null,
     userCriteria: null,
 
+    lewdmodel: null,
+
     settings: {
         notification: {
             newMatch: null,
