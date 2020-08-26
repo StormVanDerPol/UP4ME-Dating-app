@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1027828476340",
+    "firebase_url": "https://monika-120e1.firebaseio.com",
+    "project_id": "monika-120e1",
+    "storage_bucket": "monika-120e1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1027828476340:android:78ccea2f28f19296436ae1",
+        "android_client_info": {
+          "package_name": "com.up4me"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1027828476340-b5cmj5nb8el4946aqs1kemi7p65ulhm8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDmTTPh5PwvKslIDfTSI9GjeWi3FriuHpw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1027828476340-b5cmj5nb8el4946aqs1kemi7p65ulhm8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
