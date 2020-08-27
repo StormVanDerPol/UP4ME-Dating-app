@@ -1,8 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
-import { fetch, bundleResourceIO, decodeJpeg } from '@tensorflow/tfjs-react-native';
-import * as jpeg from 'jpeg-js';
+import { bundleResourceIO, decodeJpeg } from '@tensorflow/tfjs-react-native';
 import * as nsfwjs from 'nsfwjs';
-import { Image } from 'react-native';
 
 
 export const prepareLewd = async () => {

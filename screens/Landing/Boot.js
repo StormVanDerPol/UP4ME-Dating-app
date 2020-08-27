@@ -6,15 +6,22 @@ import endpoints, { getEndpoint } from '../../res/data/endpoints';
 import { navigationProxy } from '../../navigation/navigationProxy';
 import LoadingScreen from '../loading/LoadingScreen';
 import { prepareLewd } from '../../functions/RemovePr0nz';
+import { requestMessagingPermission } from '../../functions/firebaseMessaging';
 
 const Boot = () => {
 
     const tasks = [
+        // {
+        //     name: 'Load Lewd model',
+        //     exec: async () => {
+        //         DATA_STORE.lewdmodel = await prepareLewd();
+        //     },
+        // },
         {
-            name: 'Load Lewd model',
+            name: 'iOS Firebase messaging permissions',
             exec: async () => {
-                DATA_STORE.lewdmodel = await prepareLewd();
-            },
+                await requestMessagingPermission();
+            }
         },
         {
             name: 'load userID',
