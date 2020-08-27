@@ -43,6 +43,7 @@ import RNSVG_magnifying_glass from '../res/icons/rnsvg/rnsvg_magnifying_glass';
 import RNSVG_apple_login_logo from '../res/icons/rnsvg/rnsvg_apple_login_logo';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import RNSVG_heart from '../res/icons/rnsvg/rnsvg_heart';
+import RNSVG_image_add from '../res/icons/rnsvg/rnsvg_image_add';
 
 export const iconIndex = {
 
@@ -108,6 +109,8 @@ export const iconIndex = {
     google_logo: <RNSVG_google_logo />,
 
     apple_login_logo: <RNSVG_apple_login_logo />,
+
+    image_add: <RNSVG_image_add />,
 }
 
 const UpForMeIcon = ({ icon, touchable = false, onPress = () => { }, style = { height: 50, width: 50, } }) => {
