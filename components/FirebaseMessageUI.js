@@ -4,6 +4,7 @@ import getDeviceDimensions from '../functions/dimensions';
 import TextQuicksand from './TextQuicksand';
 import LinearGradient from 'react-native-linear-gradient';
 import up4meColours from '../res/data/colours';
+import UpForMeIcon, { iconIndex } from './UpForMeIcon';
 
 const params = {
     height: 100,
@@ -16,20 +17,21 @@ const FirebaseMessageUI = ({ data, top = false, onDismount = () => { } }) => {
 
     console.log(data);
 
+    const timer = useRef(null);
+
     const MessageBody = () => {
         return (
-            <LinearGradient
-                colors={[up4meColours.gradOrange, up4meColours.gradPink]}
-                start={{ x: 0, y: 1 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.messageBody}>
 
-                <View style={styles.messageInner}>
-                    <TextQuicksand>{data.notification.title}</TextQuicksand>
-                    <TextQuicksand>{data.notification.body}</TextQuicksand>
-                </View>
+            <View style={styles.messageBody}>
+                <TextQuicksand>{data.notification.title}</TextQuicksand>
+                <TextQuicksand>{data.notification.body}</TextQuicksand>
 
-            </LinearGradient>
+                <UpForMeIcon style={styles.messageCloseIcon} icon={iconIndex.match_dislike} touchable={true} onPress={() => {
+                    clearTimeout(timer.current);
+                    fadeOut();
+                }} />
+
+            </View>
         )
     }
 
@@ -67,7 +69,7 @@ const FirebaseMessageUI = ({ data, top = false, onDismount = () => { } }) => {
     useEffect(() => {
         fadeIn();
 
-        setTimeout(() => {
+        timer.current = setTimeout(() => {
             fadeOut();
         }, params.lifeDuration)
 
@@ -92,24 +94,39 @@ const styles = StyleSheet.create({
         width: getDeviceDimensions('window', 'width'),
     },
 
+    messageCloseIcon: {
+        position: "absolute",
+        right: 8,
+        top: 8,
+        width: 36,
+        height: 36,
+    },
+
     messageBody: {
         height: params.height,
         width: getDeviceDimensions('window', 'width'),
 
-    },
-
-    messageInner: {
-        height: params.height - 5,
-        width: getDeviceDimensions('window', 'width') - 5,
-        marginTop: 2.5,
-        marginHorizontal: 2.5,
+        backgroundColor: '#fefefe',
 
         paddingTop: 5,
         paddingHorizontal: 5,
 
-        backgroundColor: '#fff',
-    },
+        borderTopColor: '#ddd',
+        borderTopWidth: 2,
 
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+
+        elevation: 15,
+
+
+
+    },
 })
 
 export default FirebaseMessageUI;

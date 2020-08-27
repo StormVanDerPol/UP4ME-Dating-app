@@ -11,12 +11,12 @@ import { requestMessagingPermission } from '../../functions/firebaseMessaging';
 const Boot = () => {
 
     const tasks = [
-        // {
-        //     name: 'Load Lewd model',
-        //     exec: async () => {
-        //         DATA_STORE.lewdmodel = await prepareLewd();
-        //     },
-        // },
+        {
+            name: 'Load Lewd model',
+            exec: async () => {
+                DATA_STORE.lewdmodel = await prepareLewd();
+            },
+        },
         {
             name: 'iOS Firebase messaging permissions',
             exec: async () => {
