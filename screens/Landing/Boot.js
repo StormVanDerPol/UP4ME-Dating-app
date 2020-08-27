@@ -5,10 +5,17 @@ import { getData, getJSONData } from '../../stored/handleData';
 import endpoints, { getEndpoint } from '../../res/data/endpoints';
 import { navigationProxy } from '../../navigation/navigationProxy';
 import LoadingScreen from '../loading/LoadingScreen';
+import { prepareLewd } from '../../functions/RemovePr0nz';
 
 const Boot = () => {
 
     const tasks = [
+        {
+            name: 'Load Lewd model',
+            exec: async () => {
+                DATA_STORE.lewdmodel = await prepareLewd();
+            },
+        },
         {
             name: 'load userID',
             exec: async () => {

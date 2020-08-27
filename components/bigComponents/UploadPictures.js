@@ -1,15 +1,16 @@
 import React, { useState, useRef, useEffect, createRef } from 'react';
 import TextQuicksand from '../TextQuicksand';
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Image } from 'react-native';
 import { TouchableOpacity, TapGestureHandler, State, LongPressGestureHandler, FlingGestureHandler, Directions, TextInput } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
 
-import * as ImagePicker from 'expo-image-picker';
+import * as ExpoImagePicker from 'expo-image-picker';
 import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
 import { openBrowser } from '../../functions/bowser';
-import ImageResizer from 'react-native-image-resizer';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
-import TextInputField, { limitLines } from './TextInputField';
+import { limitLines } from './TextInputField';
+import { checkLewdFromBase64 } from '../../functions/RemovePr0nz';
+import { DATA_STORE } from '../../stored/dataStore';
 
 
 export const createProfilePicture = async (image) => {
@@ -26,6 +27,7 @@ export const createProfilePicture = async (image) => {
     )
     return `data:image/jpeg;base64,${res.base64}`;
 }
+
 
 const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) => { }, onChangeText = (descriptions) => { } }) => {
 
@@ -48,13 +50,67 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
         _init.current = true;
     }
 
+
+    const processImage = async (id, imagePickerResponse) => {
+
+        let index = id;
+
+        //Remove original image
+        images[index] = '';
+        setImages([...images])
+
+        //Get file extension
+        let fileExtension = imagePickerResponse.uri.substr(imagePickerResponse.uri.lastIndexOf('.') + 1);
+
+        //Case its jpg replace with jpeg because reasons
+        if (fileExtension == 'jpg') {
+            fileExtension = 'jpeg';
+        }
+
+        //if profile picture slot is empty, handle that slot instead.
+        if (images[0] == '')
+            index = 0;
+
+        //Concat base64 string into something useable.
+        const base64image = `data:${imagePickerResponse.type}/${fileExtension};base64,${imagePickerResponse.base64}`;
+
+        //Get lewd predictions
+        const lewdPredictions = await checkLewdFromBase64(imagePickerResponse.base64, DATA_STORE.lewdmodel);
+
+        //Handle predictions
+        let isLewd = false;
+
+        const lewdThreshold = 0.5; //%
+
+        for (let prediction of lewdPredictions) {
+
+            const cn = prediction.className;
+
+            if (cn == 'Porn' || cn == 'Hentai' || cn == 'Sexy' || cn == 'Drawing') {
+                if (prediction.probability > lewdThreshold) {
+                    isLewd = true;
+                    break;
+                }
+            }
+        }
+
+        if (isLewd) {
+            //if picture happens to be lewd
+            alert('Smells kind of fishy')
+        } else {
+            //if it ain't
+            images[index] = base64image;
+            profilePicture.current = await createProfilePicture(images[index]);
+        }
+        setImages([...images])
+    }
+
     const handleChoosePhoto = async (id) => {
 
         try {
-
-            let res = await ImagePicker.launchImageLibraryAsync(
+            let imagePickerResponse = await ExpoImagePicker.launchImageLibraryAsync(
                 {
-                    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+                    mediaTypes: ExpoImagePicker.MediaTypeOptions.Images,
                     allowsEditing: true,
                     aspect: [1, 1],
                     quality: 0.5,
@@ -62,25 +118,11 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
                 }
             );
 
-            if (!res.cancelled) {
+            if (!imagePickerResponse.cancelled) {
 
-                let fileExtension = res.uri.substr(res.uri.lastIndexOf('.') + 1);
+                //handle everything other than jpgs
 
-                if (fileExtension == 'jpg') {
-                    fileExtension = 'jpeg';
-                }
-
-                let index = id;
-
-                if (images[0] == '')
-                    index = 0;
-
-                images[index] = `data:${res.type}/${fileExtension};base64,${res.base64}`;
-
-
-                profilePicture.current = await createProfilePicture(images[index])
-
-                setImages([...images])
+                processImage(id, imagePickerResponse);
             }
 
         }
@@ -127,7 +169,6 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
     useEffect(() => {
         onChangeText(descs)
     }, [descs]);
-
 
     const _longTapRef = createRef();
 
@@ -201,7 +242,7 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
                                     {(images[i] == '') ? <UpForMeIcon style={styles.icon} icon={iconIndex.paperplane} /> : <UpForMeIcon style={styles.icon} icon={iconIndex.edit} />}
                                     {(i == 0 && images[0] != '') ? <UpForMeIcon style={styles.favicon} icon={iconIndex.restaurant_star} /> : <></>}
 
-                                    {(images[i] != '') ? <TextInput
+                                    {/* {(images[i] != '') ? <TextInput
                                         placeholder={'Beschrijving'}
                                         defaultValue={descs[i]}
                                         onChangeText={(input) => {
@@ -220,13 +261,14 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
                                             paddingVertical: 0,
                                             marginTop: 5,
                                         }}
-                                    /> : <></>}
+                                    /> : <></>} */}
 
                                 </View>
 
                             </LongPressGestureHandler>
                         </TapGestureHandler>
                     )
+
                 })}
 
             </View>
