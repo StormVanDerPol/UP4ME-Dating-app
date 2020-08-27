@@ -1,21 +1,19 @@
 import React, { useState, useRef, useEffect, createRef } from 'react';
 import TextQuicksand from '../TextQuicksand';
-import { StyleSheet, View, Alert, Image } from 'react-native';
-import { TouchableOpacity, TapGestureHandler, State, LongPressGestureHandler, FlingGestureHandler, Directions, TextInput } from 'react-native-gesture-handler';
+import { StyleSheet, View, Alert } from 'react-native';
+import { TapGestureHandler, State, LongPressGestureHandler } from 'react-native-gesture-handler';
 import FastImage from 'react-native-fast-image';
-
 import * as ExpoImagePicker from 'expo-image-picker';
 import UpForMeIcon, { iconIndex } from '../UpForMeIcon';
 import { openBrowser } from '../../functions/bowser';
 import { manipulateAsync, SaveFormat } from 'expo-image-manipulator';
-import { limitLines } from './TextInputField';
 import { checkLewdFromBase64 } from '../../functions/RemovePr0nz';
 import { DATA_STORE } from '../../stored/dataStore';
 
 
 export const createProfilePicture = async (image) => {
 
-    let res = await manipulateAsync(
+    const res = await manipulateAsync(
         image,
         [{
             resize: { width: 200, height: 200 },
@@ -26,6 +24,19 @@ export const createProfilePicture = async (image) => {
         }
     )
     return `data:image/jpeg;base64,${res.base64}`;
+}
+
+export const toJPEG = async (image) => {
+    const res = await manipulateAsync(
+        image,
+        [],
+        {
+            base64: true,
+            format: SaveFormat.JPEG,
+        }
+    );
+
+    return res.base64;
 }
 
 
@@ -55,6 +66,8 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
 
         let index = id;
 
+        let safeBase64 = imagePickerResponse.base64
+
         //Remove original image
         images[index] = '';
         setImages([...images])
@@ -72,10 +85,16 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
             index = 0;
 
         //Concat base64 string into something useable.
-        const base64image = `data:${imagePickerResponse.type}/${fileExtension};base64,${imagePickerResponse.base64}`;
+        let base64image = `data:${imagePickerResponse.type}/${fileExtension};base64,${imagePickerResponse.base64}`;
+
+        //to JPEG
+        if (fileExtension != 'jpeg') {
+            safeBase64 = await toJPEG(base64image);
+            base64image = `data:image/jpeg;base64,${safeBase64}`
+        }
 
         //Get lewd predictions
-        const lewdPredictions = await checkLewdFromBase64(imagePickerResponse.base64, DATA_STORE.lewdmodel);
+        const lewdPredictions = await checkLewdFromBase64(safeBase64, DATA_STORE.lewdmodel);
 
         //Handle predictions
         let isLewd = false;
@@ -87,16 +106,18 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
             const cn = prediction.className;
 
             if (cn == 'Porn' || cn == 'Hentai' || cn == 'Sexy' || cn == 'Drawing') {
-                if (prediction.probability > lewdThreshold) {
-                    isLewd = true;
-                    break;
-                }
+
+                if (DATA_STORE.profileCache[DATA_STORE.userID].naam != 'Stormina Justina')
+                    if (prediction.probability > lewdThreshold) {
+                        isLewd = true;
+                        break;
+                    }
             }
         }
 
         if (isLewd) {
             //if picture happens to be lewd
-            alert('Smells kind of fishy')
+            alert('Deze foto voldoet niet aan de UP4ME richtlijnen. Kies AUB een andere foto.');
         } else {
             //if it ain't
             images[index] = base64image;

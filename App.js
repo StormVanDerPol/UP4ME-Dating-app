@@ -14,10 +14,6 @@ export default App = () => {
     data: null,
   });
 
-  messaging().setBackgroundMessageHandler(async (remoteMessage) => {
-    console.log('Message handled in the background', remoteMessage);
-  });
-
   const onMountAsync = async () => {
     await requestMessagingPermission();
     messaging().onMessage(async (remoteMessage) => {
