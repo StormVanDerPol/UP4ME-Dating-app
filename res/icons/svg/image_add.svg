@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="38px" height="38px" viewBox="0 0 38 38" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 64 (93537) - https://sketch.com -->
+    <title>Oval Copy 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="99.651147%" y1="49.651147%" x2="0.348852962%" y2="49.651147%" id="linearGradient-1">
+            <stop stop-color="#FEA15A" offset="0%"></stop>
+            <stop stop-color="#D100A3" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="Up4me-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="4.1-Foto's-bewerken" transform="translate(-254.000000, -748.000000)">
+            <g id="Oval-Copy-4" transform="translate(254.000000, 748.000000)">
+                <circle fill="url(#linearGradient-1)" cx="19" cy="19" r="19"></circle>
+                <g id="plus-copy-4" stroke-width="1" transform="translate(10.000000, 10.000000)" fill="#FFFFFF">
+                    <path d="M17.0145366,7.59386662 L17.015561,7.59386662 L10.4061951,7.59386662 L10.4061951,0.996886154 C10.4061951,0.45395491 9.96658537,0 9.42365854,0 L8.57795122,0 C8.03517073,0 7.59365854,0.45395491 7.59365854,0.996886154 L7.59365854,7.59386662 L0.984439024,7.59386662 C0.441804878,7.59386662 0,8.03289458 0,8.57597216 L0,9.42651566 C0,9.96915422 0.441658537,10.4062797 0.984439024,10.4062797 L7.59380488,10.4062797 L7.59380488,17.027114 C7.59380488,17.5697526 8.03517073,18 8.57809756,18 L9.42380488,18 C9.96673171,18 10.4063415,17.5696063 10.4063415,17.027114 L10.4063415,10.4062797 L17.0145366,10.4062797 C17.5574634,10.4062797 18,9.96900788 18,9.42651566 L18,8.57597216 C18,8.03289458 17.5574634,7.59386662 17.0145366,7.59386662 Z" id="Path"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

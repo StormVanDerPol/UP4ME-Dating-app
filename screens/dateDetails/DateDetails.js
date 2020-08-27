@@ -178,7 +178,7 @@ const DateDetails = ({ route }) => {
                 return {
                     type: 'change',
                     icons: false,
-                    message: `${otherName} heeft geaccepteerd!`
+                    message: `${otherName} heeft de date geaccepteerd. Jij bent nu verantwoordelijk voor de reservering. Type hierbij jullie beide voornamen en UP4ME.`
                 }
             }
         }
@@ -284,7 +284,7 @@ const DateDetails = ({ route }) => {
 
     const ultraTuna = cannedTuna(dateData.dateData.status, dateData.dateData.status2, data.naam, dateData.dateData.notisent);
 
-    const muriDate = (dateData.dateData.status == 1 || dateData.dateData.status == 3 || dateData.dateData.status2 == 1 || dateData.dateData.status == 3);
+    const muriDate = (dateData.dateData.status == 1 || dateData.dateData.status == 3 || dateData.dateData.status2 == 1 || dateData.dateData.status2 == 3);
 
     const TunaButton = ({ style = {}, title, newStatus }) => {
         return (
