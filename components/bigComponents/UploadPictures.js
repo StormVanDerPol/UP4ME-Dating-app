@@ -141,8 +141,6 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
 
             if (!imagePickerResponse.cancelled) {
 
-                //handle everything other than jpgs
-
                 processImage(id, imagePickerResponse);
             }
 
@@ -260,7 +258,7 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
                                         }}
                                     />
 
-                                    {(images[i] == '') ? <UpForMeIcon style={styles.icon} icon={iconIndex.paperplane} /> : <UpForMeIcon style={styles.icon} icon={iconIndex.edit} />}
+                                    {(images[i] == '') ? <UpForMeIcon style={styles.icon} icon={iconIndex.image_add} /> : <UpForMeIcon style={styles.icon} icon={iconIndex.edit} />}
                                     {(i == 0 && images[0] != '') ? <UpForMeIcon style={styles.favicon} icon={iconIndex.restaurant_star} /> : <></>}
 
                                     {/* {(images[i] != '') ? <TextInput
