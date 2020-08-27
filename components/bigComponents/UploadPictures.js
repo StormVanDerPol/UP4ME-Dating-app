@@ -42,6 +42,9 @@ export const toJPEG = async (image) => {
 
 const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) => { }, onChangeText = (descriptions) => { } }) => {
 
+
+    const [isWorking, setIsWorking] = useState(false);
+
     const [images, setImages] = useState((initImages.length == 0) ? new Array(6) : initImages);
 
     const [descs, setDescs] = useState((initDescs.length == 0) ? new Array(6) : initDescs);
@@ -63,6 +66,8 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
 
 
     const processImage = async (id, imagePickerResponse) => {
+
+
 
         let index = id;
 
@@ -123,10 +128,13 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
             images[index] = base64image;
             profilePicture.current = await createProfilePicture(images[index]);
         }
-        setImages([...images])
+        setImages([...images]);
+
     }
 
     const handleChoosePhoto = async (id) => {
+
+        setIsWorking(true);
 
         try {
             let imagePickerResponse = await ExpoImagePicker.launchImageLibraryAsync(
@@ -148,6 +156,8 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
         catch (err) {
             console.log(err);
         }
+
+        setIsWorking(false);
     }
 
     const deletePhoto = async (id) => {
@@ -197,13 +207,16 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
 
                 {images.map((image, i) => {
 
+                    console.log(image);
+                    const imageExists = (id) => (images[id] && images[id] != '' && images[id] != 'NULL');
+
                     return (
                         <TapGestureHandler
                             key={i}
                             onHandlerStateChange={(e) => {
                                 if (e.nativeEvent.state == State.END) {
 
-                                    if (image === '') {
+                                    if (!imageExists(i)) {
                                         handleChoosePhoto(i);
                                     }
                                     else {
@@ -246,22 +259,22 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
                             >
                                 <View style={styles.item}>
 
-                                    <FastImage
-                                        style={{
-                                            width: '100%',
-                                            height: 200,
-                                            borderRadius: 25,
-                                            backgroundColor: '#e0e0e0',
-                                        }}
-                                        source={{
-                                            uri: image,
-                                        }}
-                                    />
+                                    {
+                                        (imageExists(i)) ?
+                                            <FastImage
+                                                style={styles.image}
+                                                source={{
+                                                    uri: image,
+                                                }}
+                                            /> : <View style={styles.image} />
+                                    }
 
-                                    {(images[i] == '') ? <UpForMeIcon style={styles.icon} icon={iconIndex.image_add} /> : <UpForMeIcon style={styles.icon} icon={iconIndex.edit} />}
-                                    {(i == 0 && images[0] != '') ? <UpForMeIcon style={styles.favicon} icon={iconIndex.restaurant_star} /> : <></>}
+                                    {(!imageExists(i)) ? <UpForMeIcon style={styles.icon} icon={iconIndex.image_add} /> : <UpForMeIcon style={styles.icon} icon={iconIndex.edit} />}
+                                    {(i == 0 && imageExists(0)) ? <UpForMeIcon style={styles.favicon} icon={iconIndex.restaurant_star} /> : <></>}
 
-                                    {/* {(images[i] != '') ? <TextInput
+
+                                    {/* PIC DESCRIPTION MARKUP DOWN BELOW */}
+                                    {/* {(imageExists(i)) ? <TextInput
                                         placeholder={'Beschrijving'}
                                         defaultValue={descs[i]}
                                         onChangeText={(input) => {
@@ -290,13 +303,52 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
 
                 })}
 
+                {(isWorking) ? <BusyOverlay /> : null}
+
             </View>
             <TextQuicksand style={styles.guidelines} onPress={() => { openBrowser('https://www.uptodates.nl/richtlijnen-veiligheid') }}>Lees de richtlijnen</TextQuicksand>
         </>
     );
 }
 
+const BusyOverlay = () => {
+    return (
+        <>
+            <View style={styles.busyOverlay} />
+            <TextQuicksand style={styles.busyMessage}>Even geduld AUB! De afbeelding wordt gecontrolleerd en geprocesseerd...</TextQuicksand>
+        </>
+    )
+}
+
 const styles = StyleSheet.create({
+
+    busyOverlay: {
+        backgroundColor: '#000',
+        opacity: 0.5,
+        position: "absolute",
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        marginHorizontal: -24,
+    },
+    busyMessage: {
+        color: '#fff',
+        position: "absolute",
+        textAlign: "center",
+        textAlignVertical: "center",
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+    },
+
+    image: {
+        width: '100%',
+        height: 200,
+        borderRadius: 25,
+        backgroundColor: '#e0e0e0',
+    },
 
     guidelines: {
         textDecorationLine: "underline",
@@ -329,7 +381,6 @@ const styles = StyleSheet.create({
     item: {
         width: '45%',
         // height: 200,
-
         marginVertical: 15,
         // overflow: "hidden",
     }
