@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
-import endpoints, { getEndpoint } from '../res/data/endpoints';
 import TextQuicksand from '../components/TextQuicksand';
 import { Button, View } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import { DATA_STORE } from '../stored/dataStore';
 import { dodoFlight } from '../functions/dodoAirlines';
-import { parse } from 'react-native-svg';
 
 const DevEndpointTests = () => {
 
