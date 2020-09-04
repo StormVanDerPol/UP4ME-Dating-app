@@ -200,16 +200,16 @@ const EditProfile = () => {
                                             DATA_STORE.pMatches.list = res.data;
                                             DATA_STORE.pMatches.timeStamp = Date.now();
                                             navigationProxy.reset({
-                                                index: 1,
+                                                index: 0,
                                                 routes: [
                                                     {
-                                                        name: 'Home',
+                                                        name: 'LoadHome',
                                                         params: {},
                                                     },
-                                                    {
-                                                        name: 'ProfileHub',
-                                                        params: {},
-                                                    },
+                                                    // {
+                                                    //     name: 'ProfileHub',
+                                                    //     params: {},
+                                                    // },
                                                 ]
                                             })
                                         }
@@ -226,16 +226,16 @@ const EditProfile = () => {
                                                             DATA_STORE.pMatches.timeStamp = Date.now();
 
                                                             navigationProxy.reset({
-                                                                index: 1,
+                                                                index: 0,
                                                                 routes: [
                                                                     {
-                                                                        name: 'Home',
+                                                                        name: 'LoadHome',
                                                                         params: {},
                                                                     },
-                                                                    {
-                                                                        name: 'ProfileHub',
-                                                                        params: {},
-                                                                    }
+                                                                    // {
+                                                                    //     name: 'ProfileHub',
+                                                                    //     params: {},
+                                                                    // }
                                                                 ]
                                                             })
                                                         }

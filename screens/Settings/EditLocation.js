@@ -47,32 +47,44 @@ const EditLocation = () => {
                             woontin: placeName,
                         },
 
-                        thenCallback: (res) => {
+                        thenCallback: async (res) => {
 
                             if (res.data) {
 
-                                setNetFeedback({
-                                    busy: false,
-                                    message: '',
-                                });
+                                await dodoFlight({
+                                    method: 'post',
+                                    url: getEndpoint(endpoints.post.setLastEdit),
+                                    data: {
+                                        userid: DATA_STORE.userID,
+                                    },
 
-                                navigationProxy.reset({
-                                    index: 2,
-                                    routes: [
-                                        {
-                                            name: 'Home',
-                                            params: {},
-                                        },
-                                        {
-                                            name: 'ProfileHub',
-                                            params: {},
-                                        },
-                                        {
-                                            name: 'Settings',
-                                            params: {},
-                                        },
-                                    ]
-                                });
+                                    thenCallback: (res) => {
+                                        if (res.data) {
+                                            setNetFeedback({
+                                                busy: false,
+                                                message: '',
+                                            });
+
+                                            navigationProxy.reset({
+                                                index: 2,
+                                                routes: [
+                                                    {
+                                                        name: 'Home',
+                                                        params: {},
+                                                    },
+                                                    {
+                                                        name: 'ProfileHub',
+                                                        params: {},
+                                                    },
+                                                    {
+                                                        name: 'Settings',
+                                                        params: {},
+                                                    },
+                                                ]
+                                            });
+                                        }
+                                    }
+                                })
                             }
                         },
 
