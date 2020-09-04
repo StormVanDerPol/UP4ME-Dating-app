@@ -114,11 +114,12 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
 
             if (cn == 'Porn' || cn == 'Hentai' || cn == 'Sexy' || cn == 'Drawing') {
 
-                if (DATA_STORE.profileCache[DATA_STORE.userID].naam != 'Stormina Justina')
-                    if (prediction.probability > lewdThreshold) {
-                        isLewd = true;
-                        break;
-                    }
+                if (DATA_STORE.profileCache[DATA_STORE.userID])
+                    if (DATA_STORE.profileCache[DATA_STORE.userID].naam != 'Stormina')
+                        if (prediction.probability > lewdThreshold) {
+                            isLewd = true;
+                            break;
+                        }
             }
         }
 
