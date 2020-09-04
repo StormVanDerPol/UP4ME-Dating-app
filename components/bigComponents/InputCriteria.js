@@ -188,9 +188,9 @@ const InputCriteria = ({ initValues = {
                 initValue={initValues.work - 1}
                 defaultValue={4}
                 headers={[
-                    'Ja',
-                    'Af en toe',
-                    'Nee',
+                    '<40 uur',
+                    '40 uur',
+                    '>40 uur',
 
                 ]}
                 onChange={(output) => {

@@ -112,9 +112,9 @@ const InputProperties = ({ initValues = {
                 initValue={initValues.work - 1}
                 defaultValue={-1}
                 headers={[
-                    'Ja',
-                    'Af en toe',
-                    'Nee',
+                    '<40 uur',
+                    '40 uur',
+                    '>40 uur',
 
                 ]}
                 onChange={(output) => {

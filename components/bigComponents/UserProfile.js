@@ -23,7 +23,7 @@ const ImageContainer = ({ images }) => {
             <View>
                 <TouchableWithoutFeedback
                     onPress={() => {
-                        setActive((active < images.length - 1) ? active + 1 : 0);
+                        setActive((active < images.length - 1 && images[active + 1] != 'NULL' && images[active + 1]) ? active + 1 : 0);
                     }}
                 >
                     <FastImage
@@ -37,18 +37,21 @@ const ImageContainer = ({ images }) => {
                 <View style={styles.paginationContainer}>
                     {
                         images.map((img, i) => {
-                            return (
-                                <TouchableOpacity key={i} onPress={() => {
-                                    if (active != i) {
-                                        setActive(i)
-                                    }
-                                }}>
-                                    <View style={[styles.paginationDot, (active == i) ? {
-                                        width: 32,
-                                        height: 32,
-                                    } : {}]} />
-                                </TouchableOpacity>
-                            )
+
+                            if (img != 'NULL' || !img) {
+                                return (
+                                    <TouchableOpacity key={i} onPress={() => {
+                                        if (active != i) {
+                                            setActive(i)
+                                        }
+                                    }}>
+                                        <View style={[styles.paginationDot, (active == i) ? {
+                                            width: 32,
+                                            height: 32,
+                                        } : {}]} />
+                                    </TouchableOpacity>
+                                )
+                            }
                         })
                     }
                 </View>

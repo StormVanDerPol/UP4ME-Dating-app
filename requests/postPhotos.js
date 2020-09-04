@@ -19,7 +19,7 @@ export const postPhotos = async (
     }
 
     while (newImages.length != 6) {
-        newImages.push(null);
+        newImages.push('NULL');
     }
 
     await dodoFlight({

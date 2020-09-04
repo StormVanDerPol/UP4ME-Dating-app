@@ -106,27 +106,40 @@ const EditUserData = () => {
                                     ...newData,
                                 },
 
-                                thenCallback: (res) => {
+                                thenCallback: async (res) => {
 
                                     if (res.data == true) {
-                                        navigationProxy.reset({
-                                            index: 2,
-                                            routes: [
-                                                {
-                                                    name: 'Home',
-                                                    params: {},
-                                                },
-                                                {
-                                                    name: 'ProfileHub',
-                                                    params: {},
-                                                },
-                                                {
-                                                    name: 'Settings',
-                                                    params: {},
-                                                },
-                                            ]
-                                        });
-                                        netFeedback.message = '';
+
+                                        await dodoFlight({
+                                            method: 'post',
+                                            url: getEndpoint(endpoints.post.setLastEdit),
+                                            data: {
+                                                userid: DATA_STORE.userID,
+                                            },
+
+                                            thenCallback: (res) => {
+                                                if (res.data) {
+                                                    navigationProxy.reset({
+                                                        index: 2,
+                                                        routes: [
+                                                            {
+                                                                name: 'Home',
+                                                                params: {},
+                                                            },
+                                                            {
+                                                                name: 'ProfileHub',
+                                                                params: {},
+                                                            },
+                                                            {
+                                                                name: 'Settings',
+                                                                params: {},
+                                                            },
+                                                        ]
+                                                    });
+                                                    netFeedback.message = '';
+                                                }
+                                            }
+                                        })
                                     }
                                     else {
                                         netFeedback.message = networkFeedbackMessages.err;
