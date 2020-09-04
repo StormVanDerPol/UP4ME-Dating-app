@@ -25,11 +25,9 @@ const DateDetails = ({ route }) => {
 
     const dateData = route.params;
 
-    console.log(dateData);
+    // console.log(dateData);
 
     const data = DATA_STORE.profileCache[dateData.userid];
-
-    console.log(dateData);
 
     const [accept, setAccept] = useState(true);
 

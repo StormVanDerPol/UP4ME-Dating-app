@@ -32,7 +32,7 @@ export default App = () => {
     <>
       <NavigationHandler />
       {(dm.show) ? <FirebaseMessageUI
-        // top={true}
+        top={true}
         data={dm.data}
         onDismount={() => {
           displayMessage({

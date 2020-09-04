@@ -12,8 +12,8 @@ const getDeviceDimensions = (target, axis, log = false) => {
     const result = Dimensions.get(target)[axis] - statusBarHeight;
 
     if (log) {
-        console.log('Status bar height', statusBarHeight);
-        console.log('result', result);
+        // console.log('Status bar height', statusBarHeight);
+        // console.log('result', result);
     }
 
     return result;

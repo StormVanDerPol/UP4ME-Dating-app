@@ -221,7 +221,7 @@ const DaySelect = ({ initDate = null, onChange = ({ day, month, year }) => { } }
     const tomorrow = `${_tomorrow.getFullYear()}-${_tomorrow.getMonth()}-${_tomorrow.getDate()}`
     const nextMonth = `${_nextMonth.getFullYear()}-${_nextMonth.getMonth()}-${_nextMonth.getDate()}`
 
-    console.log(tomorrow, nextMonth);
+    // console.log(tomorrow, nextMonth);
 
     return (
         <ArrowButtonDropDown icon={iconIndex.calendar} header={(!date) ? 'Selecteer een datum' : `${date.day} ${writtenMonths[date.month - 1]} ${date.year}`} start={true}>

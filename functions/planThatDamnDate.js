@@ -7,8 +7,6 @@ export const planThatDamnDate = (params = {}, keepResID = false) => {
         DATA_STORE.currentResID = null;
     }
 
-    console.log('BRUHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH');
-
     DATA_STORE.plannedDate = {
         userid: null,
         time: null,
