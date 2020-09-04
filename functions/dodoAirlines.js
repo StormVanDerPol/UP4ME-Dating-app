@@ -4,7 +4,7 @@ import { DATA_STORE } from "../stored/dataStore"
 import { Alert } from "react-native";
 import { navigationProxy } from "../navigation/navigationProxy";
 
-const enableLogging = true;
+const enableLogging = false;
 
 export const dodoFlight = async ({
     method,

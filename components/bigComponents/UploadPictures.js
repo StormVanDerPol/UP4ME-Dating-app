@@ -44,6 +44,8 @@ const UploadPictures = ({ initImages = [], initDescs = [], onChange = (images) =
 
     const [images, setImages] = useState((initImages.length == 0) ? new Array(6) : initImages);
 
+    console.log(initImages);
+
     const [descs, setDescs] = useState((initDescs.length == 0) ? new Array(6) : initDescs);
 
     const profilePicture = useRef(null)
