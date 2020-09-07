@@ -18,7 +18,48 @@ const LoadDatesOverview = () => {
                     timeout: timeouts.short,
 
                     thenCallback: (res) => {
-                        DATA_STORE.dates = res.data
+                        // DATA_STORE.dates = res.data;
+
+                        if (res.data) {
+
+                            let unorderedDates = res.data;
+                            let orderedDates = [];
+
+                            while (unorderedDates.length != 0) {
+
+                                let dateToPush = {
+                                    stamp: 0,
+                                };
+
+                                let index = 0;
+                                let indexToSplice = 0;
+
+                                for (let date of unorderedDates) {
+
+                                    // console.log(date);
+
+                                    // console.log('new stamp', date.stamp, 'old stamp', dateToPush.stamp)
+
+                                    if (date.stamp > dateToPush.stamp) {
+                                        dateToPush = date;
+                                        indexToSplice = index;
+                                    }
+
+                                    index++;
+                                }
+
+                                orderedDates.push(dateToPush);
+                                unorderedDates.splice(indexToSplice, 1);
+                            }
+                            DATA_STORE.dates = orderedDates;
+                        } else {
+                            DATA_STORE.dates = [];
+                        }
+
+                        console.log(DATA_STORE.dates);
+
+
+
                     }
                 });
             }
